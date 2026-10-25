@@ -477,7 +477,11 @@ def _copy_auth_file(src_file: str, dst_file: str, *, deadline_s: float | None = 
 
 
 def _mirror_profile_auth(src: str, dst: str, source_profile: str) -> dict[str, str]:
+<<<<<<< HEAD
     """Mirror ``source_profile``'s auth files into the copy's ``Default`` (agent-browser opens it);
+=======
+    """Mirror ``source_profile``'s auth files into the copy's ``Default`` (the launched browser opens it);
+>>>>>>> origin/main
     returns ``{relative name: reason}`` for the session-cookie DBs that could NOT be copied ({} =
     the signed-in state is usable). Locked password/autofill DBs are logged and skipped."""
     failed: dict[str, str] = {}
@@ -537,10 +541,18 @@ def _profile_is_locked(src: str, source_profile: str) -> bool:
 
 
 def _browser_setting(key: str):
+<<<<<<< HEAD
     """Read ``browser.<key>`` from raw config; None when unset/unreadable."""
     try:
         from hermes_cli.config import read_raw_config
         browser_cfg = read_raw_config().get("browser", {})
+=======
+    """``browser.<key>`` from the effective user config (managed overlay, ``${VAR}`` expanded); None when
+    unset/unreadable."""
+    try:
+        from hermes_cli.config_effective import load_user_config_effective
+        browser_cfg = load_user_config_effective().get("browser", {})
+>>>>>>> origin/main
         return browser_cfg.get(key) if isinstance(browser_cfg, dict) else None
     except Exception as e:
         logger.debug("could not read %s: %s", key, e)

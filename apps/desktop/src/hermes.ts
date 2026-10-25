@@ -19,6 +19,10 @@ export {
 export type { ProfileScope, ResolvedOwner } from './api/client'
 export * from './api/config'
 export * from './api/cron'
+<<<<<<< HEAD
+=======
+export * from './api/delegation'
+>>>>>>> origin/main
 export * from './api/local-models'
 export * from './api/mcp'
 export * from './api/messaging'

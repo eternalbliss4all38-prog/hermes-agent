@@ -1,3 +1,4 @@
+// health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import { defineLocale, type TranslationOverrides } from './define-locale'
@@ -6,20 +7,35 @@ import { jaBoot } from './ja_boot'
 import { jaCatalog, jaSkillDeepLink } from './ja_catalog'
 import { jaClarify } from './ja_clarify'
 import { jaConnectors } from './ja_connectors'
+<<<<<<< HEAD
+=======
+import { jaErrorCodes } from './ja_error_codes'
+import { jaErrorLayers } from './ja_error_layers'
+>>>>>>> origin/main
 import { jaFirstRun } from './ja_first_run'
 import { jaLocalModels } from './ja_local_models'
 import { jaModelMenu } from './ja_model_menu'
 import { jaModelSettings } from './ja_model_settings'
 import { jaNotices } from './ja_notices'
+<<<<<<< HEAD
 import { jaOnboarding } from './ja_onboarding'
 import { jaPluginSettings } from './ja_plugins'
+=======
+import { jaNotifications } from './ja_notifications'
+import { jaOnboarding } from './ja_onboarding'
+import { jaPluginPreviewAccess } from './ja_plugin_preview_access'
+import { jaPluginSettings, jaPluginsTab } from './ja_plugins'
+>>>>>>> origin/main
 import { jaProjects } from './ja_projects'
 import { jaSharedMetrics } from './ja_shared_metrics'
 import { jaThemePicker } from './ja_theme_picker'
 import { jaUpdateChannel } from './ja_update_channel'
 
 export const jaOverrides = {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
   catalog: jaCatalog,
   connectors: jaConnectors.connectors,
   externalOpenFailed: {
@@ -236,6 +252,39 @@ export const jaOverrides = {
   },
 
   settings: {
+<<<<<<< HEAD
+=======
+    // Window plans (Nous subscription with included usage). Other billing strings: overlay-gaps.json.
+    billing: {
+      keepGoingOnCredits: {
+        title: 'クレジットで続行',
+        description: '含まれる利用量を使い切ったらクレジットを使います。オフ: Hermes はリセットを待ちます。',
+        approveInBrowser: '変更するにはブラウザでリモート支出を承認してください。承認するとすぐに適用されます。',
+        openAgain: 'もう一度開く',
+        cancel: 'キャンセル',
+        approvedRetry: 'リモート支出は承認されましたが、変更を保存できませんでした。',
+        tryAgain: '再試行'
+      },
+      state: {
+        usage: {
+          window: {
+            today: '今日',
+            week: '今週',
+            month: '今月',
+            topTier: '大型モデル（月間）',
+            barLabel: title => `${title}の含まれる利用量の使用率`,
+            captionPaused: '一時停止中: サブスクリプションの支払いに失敗しました',
+            captionPausedOther: '一時停止中: ポータルの請求をご確認ください',
+            captionTopTierUsedUp: '月間の枠を使い切りました。残りはクレジットで支払われます',
+            captionTopTierUsedUpKeepGoingOff: '月間の枠を使い切りました。他の含まれるモデルは引き続き使えます',
+            captionResetsIn: duration => `${duration}後にリセット`,
+            captionIncluded: '含まれる利用量',
+            valueUsed: percent => `${percent} 使用`
+          }
+        }
+      }
+    },
+>>>>>>> origin/main
     uninstallSection: {
       dangerZone: '危険ゾーン',
       checkingInstalled: 'インストール内容を確認中…',
@@ -347,6 +396,85 @@ export const jaOverrides = {
       notifications: '通知',
       vault: 'パスワードとログイン',
       plugins: 'プラグイン'
+<<<<<<< HEAD
+    },
+    vault: {
+      title: 'パスワードとログイン',
+      blurb:
+        '「GitHub にログインして」と言えば、エージェントが代わりにサインインします。初めてサインインページに出会ったときにその場でログイン情報を尋ね、以降は自動で処理します。パスワードはこのマシン上で暗号化され、ページに直接入力されます。モデルは一切見ません。',
+      count: n => `${n} 件保存済み`,
+      loadFailed: 'ボールト項目を読み込めませんでした',
+      empty: 'まだ何も保存されていません',
+      emptyDesc:
+        'ここで何かを追加する必要はありません。エージェントにサイトへのサインインを頼むと、その場で一度だけログイン情報を尋ねます。事前に登録したい場合は「追加」を使ってください。',
+      add: '追加',
+      addTitle: 'ログイン情報・カード・住所を追加',
+      addDescription: 'このマシン上に暗号化して保存されます。エージェントがパスワードを見ることはありません。',
+      added: '保存しました。',
+      adding: '保存中…',
+      addConfirm: '保存',
+      kindField: '種類',
+      kinds: { login: 'ログイン', payment: '支払いカード', address: '住所' },
+      labelField: 'ラベル',
+      labelPlaceholder: '例: GitHub 仕事用アカウント',
+      labelRequired: 'ラベルは必須です。',
+      originField: 'サイトのオリジン',
+      originPlaceholder: 'https://github.com',
+      originPlaceholderCheckout: 'https://shop.example.com',
+      originInvalid: 'https://example.com のような有効な URL を入力してください。',
+      identifierTypeField: '識別子の種類',
+      identifierTypes: { email: 'メール', phone: '電話番号', username: 'ユーザー名' },
+      identifierField: '識別子',
+      identifierShown: identifier => identifier,
+      passwordField: 'パスワード',
+      loginFieldsRequired: '識別子とパスワードは必須です。',
+      cardNumberField: 'カード番号',
+      cardNameField: 'カード名義',
+      expMonthField: '有効期限（月）',
+      expYearField: '有効期限（年）',
+      cvcField: 'CVC',
+      postalField: '郵便番号',
+      addressLine1Field: '住所 1 行目',
+      addressLine2Field: '住所 2 行目',
+      cityField: '市区町村',
+      stateField: '都道府県 / 地域',
+      countryField: '国',
+      optional: '（任意）',
+      createdOn: date => `追加日 ${date}`,
+      deleteAction: '保存済み項目を削除',
+      otpField: '認証キー',
+      otpPlaceholder: 'Base32 シークレットまたは otpauth:// リンク',
+      otpHint: '2FA を有効にするときにサイトが表示する「セットアップキー」。保存すると Hermes がコードを生成します。',
+      twoFactorBadge: '2FA 自動',
+      deleteTitle: 'この項目を削除しますか？',
+      deleteDescription: label => `「${label}」は暗号化ボールトから削除されます。元に戻せません。`,
+      deleteConfirm: '削除',
+      sources: {
+        title: 'パスワードマネージャー',
+        blurb:
+          'インストール済みのパスワードマネージャーは自動的に検出されます。エージェントがそこからログイン情報を初めて必要とするときにロック解除を求めます（セッションごとに一度）。メモリに残るのはセッショントークンのみで、エージェントはマスターパスワードやログイン情報を一切見ません。',
+        toggleFailed: 'パスワードマネージャーの設定を更新できませんでした',
+        notInstalled: name =>
+          `未検出です。${name} のコマンドラインツールをインストールしてサインインすると、Hermes が自動的に検出します。`,
+        disabledDesc: '検出済みですが、Hermes では無効になっています。',
+        lockedDesc:
+          '検出済み。エージェントがログイン情報を必要とするときにロック解除を求めます。今すぐ解除することもできます。',
+        unlockedDesc: 'このセッションでロック解除済み。30分間操作がないか Hermes を閉じると自動的にロックされます。',
+        statusLocked: 'ロック中',
+        statusNotDetected: '未検出',
+        statusOff: 'オフ',
+        statusUnlocked: 'ロック解除済み',
+        unlock: 'ロック解除',
+        unlocking: 'ロック解除中…',
+        lock: 'ロック',
+        unlocked: name => `${name} をこのセッションでロック解除しました。`,
+        unlockTitle: name => `${name} のロックを解除`,
+        unlockDescription:
+          'マスターパスワードを入力してください。このマシン上のパスワードマネージャーに渡された後に破棄され、保存・記録されることも、エージェントに表示されることもありません。',
+        masterPasswordPlaceholder: 'マスターパスワード'
+      }
+=======
+>>>>>>> origin/main
     },
     vault: {
       title: 'パスワードとログイン',
@@ -424,52 +552,7 @@ export const jaOverrides = {
         masterPasswordPlaceholder: 'マスターパスワード'
       }
     },
-    notifications: {
-      title: '通知',
-      intro: 'アプリ内トーストとは別の、ネイティブのデスクトップ通知です。設定は端末ごとに保存されます。',
-      enableAll: '通知を有効にする',
-      enableAllDesc: 'オフで以下の通知をすべて無効にします。',
-      focusedHint: '完了通知は Hermes がバックグラウンドにあるときのみ表示されます。',
-      kinds: {
-        approval: {
-          label: '承認が必要',
-          description: 'コマンドが承認または拒否を待っています。'
-        },
-        input: {
-          label: '入力が必要',
-          description: 'Hermes が質問したか、パスワードやシークレットを必要としています。'
-        },
-        turnDone: {
-          label: '応答完了',
-          description: 'Hermes がバックグラウンドのときにターンが完了しました。'
-        },
-        turnError: {
-          label: 'ターン失敗',
-          description: 'バックグラウンドのターンエラー。'
-        },
-        backgroundDone: {
-          label: 'バックグラウンドタスク完了',
-          description: 'バックグラウンドのターミナルコマンドが完了しました。'
-        },
-        credits: {
-          label: 'クレジット通知',
-          description: 'クレジットの利用が停止または復旧しました。'
-        },
-        plugin: {
-          label: 'プラグイン通知',
-          description: 'Hermes がバックグラウンドの間に、デスクトッププラグインが通知を送信しました。'
-        }
-      },
-      test: 'テスト通知を送信',
-      testTitle: 'Hermes',
-      testBody: '通知は正常に動作しています。',
-      testSent:
-        'テストを送信しました。表示されない場合は、OS の通知許可と集中モード／おやすみモードを確認してください。',
-      testUnsupported: 'このシステムはネイティブ通知に対応していません。',
-      completionSoundTitle: '完了サウンド',
-      completionSoundDesc: 'エージェントのターン終了時に再生されます。プリセットを選んでここで試聴できます。',
-      completionSoundPreview: '試聴'
-    },
+    notifications: jaNotifications,
     sections: {
       model: 'モデル',
       chat: 'チャット',
@@ -1325,10 +1408,14 @@ export const jaOverrides = {
 
   skillDeepLink: jaSkillDeepLink,
   skills: {
+<<<<<<< HEAD
     plugins: {
       pageBlurb:
         'プラグインはこのアプリ、エージェント、または両方を拡張できます。それぞれに独立したスイッチがあります。'
     },
+=======
+    plugins: { ...jaPluginPreviewAccess, ...jaPluginsTab },
+>>>>>>> origin/main
     hub: {
       search: '検索',
       searching: '検索中…',
@@ -2380,7 +2467,11 @@ export const jaOverrides = {
       '/init': 'リポジトリを調べて AGENTS.md の指示を作成または更新',
       '/suggestions': '提案された自動化を確認し、採用または却下',
       '/blueprint': 'ブループリントから自動化を設定',
+<<<<<<< HEAD
       '/browser': 'エージェントのブラウザーを管理 [connect|disconnect|status|use]',
+=======
+      '/browser': 'エージェントのブラウザーを管理 [connect|disconnect|status]',
+>>>>>>> origin/main
       '/palette': 'コマンドパレットを開く',
       '/usage': 'このセッションのトークン使用量を表示',
       '/subscription': 'Nous のプランを確認し、ブラウザーで変更',
@@ -2866,7 +2957,31 @@ export const jaOverrides = {
     wasPrice: '旧価格',
     customModel: 'カスタムモデル',
     addCustomModelAction: 'カスタムモデルを追加…',
+<<<<<<< HEAD
     customModelPlaceholder: 'モデル ID を入力（例: openai/gpt-5）'
+=======
+    customModelPlaceholder: 'モデル ID を入力（例: openai/gpt-5）',
+    today: '今日',
+    week: '今週',
+    month: '今月',
+    topTier: '大型モデル（月間）',
+    included: '以下のモデルはすべて含まれます',
+    pausedRenewal: '一時停止: 未払い',
+    pausedOther: '一時停止',
+    includedUsedUp: '含まれる利用量を使い切りました',
+    limitReached: name => `${name}の上限に達しました`,
+    limitNames: { day: '1日', month: '月間', top_tier: '大型モデルの月間', week: '週間' },
+    limitThenCredits: '有料モデルはクレジットを使用中（従量課金）',
+    limitThenCreditsLarge: '大型モデルはクレジットを使用中（従量課金）',
+    limitThenWait: 'それまでは無料モデルのみ',
+    limitThenWaitLarge: 'それまで大型モデルは一時停止',
+    percentUsed: percent => `${percent} 使用済み`,
+    resetsIn: duration => `${duration}後にリセット`,
+    usageLevels: { free: '無料', top_tier: '大' },
+    sectionRecommended: 'おすすめ',
+    sectionOther: 'その他のモデル',
+    largeFootnote: '大型モデルは大型モデルの月間上限も消費します。'
+>>>>>>> origin/main
   },
 
   modelVisibility: {
@@ -3308,6 +3423,7 @@ export const jaOverrides = {
       react: 'リアクション',
       dismissError: 'エラーを閉じる',
       errorGenericProvider: 'AI サービス',
+<<<<<<< HEAD
       errorLayerBodies: {
         generic:
           'Hermes の返信中に問題が発生しました。再試行してください。問題が続く場合はエラー詳細をコピーしてください。',
@@ -3318,6 +3434,11 @@ export const jaOverrides = {
         streaming: '返信が完了する前に接続が切れました。再試行してもう一度送信してください。'
       },
       errorCodes: {
+=======
+      ...jaErrorLayers,
+      errorCodes: {
+        ...jaErrorCodes,
+>>>>>>> origin/main
         provider_policy_blocked: {
           title: 'アカウント設定によりこのモデルはブロックされています',
           body: provider =>
@@ -3368,6 +3489,7 @@ export const jaOverrides = {
           body: provider =>
             `Hermes は ${provider} との安全な接続を検証できませんでした。ネットワークやプロキシの設定を確認するか、プロバイダーを切り替えて再送してください。`
         },
+<<<<<<< HEAD
         cron_session_read_only: {
           title: 'このチャットはスケジュールされたジョブ用です',
           body: 'このチャットはそのジョブの実行専用のため、メッセージは実行されませんでした。送信するには新しいチャットを開始してください。'
@@ -3385,6 +3507,20 @@ export const jaOverrides = {
         streaming: 'ストリーミング接続のエラー'
       },
       errorRetry: '再試行',
+=======
+        usage_window: {
+          title: '含まれる利用量を使い切りました',
+          body: 'プランに含まれる利用量はリセットまで使い切りました。続けるには /topup でクレジットを追加してください。'
+        }
+      },
+      errorRetry: '再試行',
+      errorSwitchToModel: (model, note) => (note ? `${model} に切り替え（${note}）` : `${model} に切り替え`),
+      errorSwitchModelFailed: 'モデルを切り替えられませんでした',
+      errorUseCredits: 'クレジットで続行を有効にする',
+      errorUseCreditsFailed: 'クレジットで続行を有効にできませんでした',
+      errorAddCredits: 'クレジットを追加',
+      errorOpenBillingSettings: '請求設定を開く',
+>>>>>>> origin/main
       errorLimitResets: time => `制限は ${time} にリセットされます`,
       errorRetryAtReset: time => `制限のリセット時に再試行（${time}）`,
       errorRetryScheduled: (time, wait) => `${time} に再試行 — 残り ${wait}`,

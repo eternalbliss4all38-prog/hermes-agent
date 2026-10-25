@@ -37,6 +37,7 @@ class _scoped:
 
 @pytest.fixture
 def two_homes(tmp_path, monkeypatch):
+<<<<<<< HEAD
     a = _make_home(tmp_path / "A", {}, "CAMOFOX_URL=http://camofox-a:9377\n")
     b = _make_home(tmp_path / "A" / "profiles" / "B", {}, "CAMOFOX_URL=http://camofox-b:9377\n")
     monkeypatch.setenv("HERMES_HOME", str(a))
@@ -68,6 +69,14 @@ def test_camofox_vnc_memo_is_keyed_by_the_profiles_server_url(two_homes, monkeyp
         assert cam.get_vnc_url() == "http://camofox-a:6001"
 
 
+=======
+    a = _make_home(tmp_path / "A", {})
+    b = _make_home(tmp_path / "A" / "profiles" / "B", {})
+    monkeypatch.setenv("HERMES_HOME", str(a))
+    return a, b
+
+
+>>>>>>> origin/main
 def test_home_keyed_caches_serve_each_profile_its_own_config(tmp_path, monkeypatch):
     """One mechanism (dict keyed by home / override bypass) across the sites that read per-profile
     config or per-home files: aux-vision routing, learned image cost table, aux

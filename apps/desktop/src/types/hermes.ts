@@ -140,10 +140,17 @@ export interface OAuthPollResponse {
   account_email?: null | string
   error_message?: null | string
   expires_at?: null | number
+<<<<<<< HEAD
+=======
+  /** Approved Nous sign-ins only: the free tier's handoff the sign-in ran
+   *  (what moved, what to reconnect). Null when it replaced no free tier. */
+  handoff_status?: AppHandoffStatus | null
+>>>>>>> origin/main
   /** Approved sign-ins only: the default model the backend settled on. Null
    *  when the config already pointed at the user's own model and was left
    *  alone. */
   model?: null | string
+<<<<<<< HEAD
   /** Why a non-approved terminal status ended that way: `user_declined`
    *  (status `denied`), or `superseded` / `account_retired` /
    *  `account_not_anonymous` / `account_busy` / `timeout` (status `error`).
@@ -153,11 +160,38 @@ export interface OAuthPollResponse {
    *  asked the client to wait before trying again (0 or absent when none). */
   retry_after?: null | number
   /** Failed sign-ins over a free-tier identity: whether a later attempt can succeed. */
+=======
+  /** Why a non-approved terminal status ended that way: `timeout`, or one of
+   *  the account service's `anon_*` verdicts (status `error`). `error_message`
+   *  carries the matching user-facing text. */
+  reason?: null | string
+  /** Failed Nous sign-ins: the seconds the account service asked the client
+   *  to wait before trying again (0 or absent when none). */
+  retry_after?: null | number
+  /** Failed Nous sign-ins: whether a later attempt can succeed. */
+>>>>>>> origin/main
   retryable?: boolean | null
   session_id: string
   status: 'approved' | 'denied' | 'error' | 'expired' | 'pending'
 }
 
+<<<<<<< HEAD
+=======
+/** The free tier's apps moving to the account that replaced it
+ *  (`hermes_cli/guest_handoff.py`, `wire_status`). `lines` is the backend's
+ *  own copy for this state, the same lines the terminal prints. */
+export interface AppHandoffStatus {
+  account_email?: null | string
+  connectors_kind?: null | string
+  dropped_toolkits?: string[]
+  lines: string[]
+  moved_toolkits?: string[]
+  probably_moved?: boolean
+  state: 'claimed' | 'failed' | 'gone' | 'idle' | 'pending' | 'retrying'
+  updated_at?: null | string
+}
+
+>>>>>>> origin/main
 /** Result of the `free_tier.status` RPC. Pull-only: it reads local auth state
  *  and makes no network call, so it is safe to refresh on the ambient status
  *  cadence. */
@@ -185,6 +219,11 @@ export interface FreeTierStatus {
   challenge?: FreeTierChallengePayload | null
   /** Seconds until the one-time first-task sign-in offer is due (0 = now); null when none is owed. */
   nudge_due_in?: number | null
+<<<<<<< HEAD
+=======
+  /** The same for the connector offer: no trial, and apps connected on the free tier. */
+  connector_nudge_due_in?: number | null
+>>>>>>> origin/main
 }
 
 export interface MemoryProviderOAuthStatus {
@@ -886,6 +925,8 @@ export interface UsageStats {
   cost_usd?: number
   input: number
   output: number
+  /** Window plans only (tui_gateway `_get_usage`): today's allowance (else the binding one), for the status bar. */
+  plan_gauge?: { id: string; label: string; resets_at_ms?: null | number; used_bp: number }
   total: number
 }
 
@@ -1608,6 +1649,11 @@ export interface BackendUpdateCheckResponse {
   update_available: boolean
   /** A stable release this build already contains: applying it moves back. */
   rollback_to?: null | string
+<<<<<<< HEAD
+=======
+  /** A stable release `hermes update` refuses: the backend stays on its build. */
+  held?: 'downgrade' | null
+>>>>>>> origin/main
   /** Update-available only; absent on older backends. */
   channel?: string
   branch?: null | string
@@ -1886,6 +1932,8 @@ export interface ModelAssignmentResponse {
   confirm_message?: string
   confirm_required?: boolean
   model?: string
+  /** Window plans, Large model: a warning to show (never a confirm). */
+  notice?: string
   ok: boolean
   provider?: string
   reset?: boolean

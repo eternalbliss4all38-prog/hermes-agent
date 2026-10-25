@@ -54,6 +54,14 @@ export function invalidateConnectors(scope: ProfileScope, ...reads: [ConnectorRe
   }
 }
 
+<<<<<<< HEAD
+=======
+/** A sign-in changed the account the apps ride on, in whichever profile it ran: drop every cached read. */
+export function invalidateAllConnectors(): void {
+  void queryClient.invalidateQueries({ queryKey: [CONNECTORS_QUERY_ROOT] })
+}
+
+>>>>>>> origin/main
 export function invalidateConnectorApp(scope: ProfileScope, slug: string): void {
   void queryClient.invalidateQueries({ queryKey: connectorToolsQueryKey(scope, slug) })
   void queryClient.invalidateQueries({ queryKey: connectorsListQueryKey(scope) })

@@ -20,6 +20,10 @@ import * as path from 'node:path'
 import { _electron, type ElectronApplication, expect, type Page } from '@playwright/test'
 
 import { type CoreSandbox, type ProcInfo, providerConfigYaml, sandboxProcesses } from '../core/harness'
+<<<<<<< HEAD
+=======
+import { processesRunningFrom } from '../core/process-census'
+>>>>>>> origin/main
 import { type ScriptedProvider, startScriptedProvider } from '../core/provider'
 
 import { gatedOn, KNOWN } from './gates'
@@ -255,8 +259,20 @@ export async function launchInstalledApp(facts: InstallFacts, env: Record<string
 
 // ─── Observation ───────────────────────────────────────────────────────
 
+<<<<<<< HEAD
 export function installProcesses(facts: InstallFacts): ProcInfo[] {
   return sandboxProcesses({ hermesHome: facts.hermesHome } as CoreSandbox)
+=======
+/**
+ * Processes carrying this install's HERMES_HOME, plus every process of its packaged app:
+ * Electron 44 zeroes the app's /proc environ, so only the executable path names those.
+ */
+export function installProcesses(facts: InstallFacts): ProcInfo[] {
+  const census = sandboxProcesses({ hermesHome: facts.hermesHome } as CoreSandbox)
+  const known = new Set(census.map(proc => proc.pid))
+
+  return [...census, ...processesRunningFrom(releaseDir(facts)).filter(proc => !known.has(proc.pid))]
+>>>>>>> origin/main
 }
 
 function exeOf(pid: number): string {
@@ -267,6 +283,7 @@ function exeOf(pid: number): string {
   }
 }
 
+<<<<<<< HEAD
 /** Live Desktop main processes of this install (the packaged exe, not its zygote/renderer/gpu children). */
 export function desktopMainProcesses(facts: InstallFacts): ProcInfo[] {
   const exe = fs.realpathSync(path.dirname(packagedExe(facts)))
@@ -274,6 +291,18 @@ export function desktopMainProcesses(facts: InstallFacts): ProcInfo[] {
   return installProcesses(facts).filter(
     proc => exeOf(proc.pid).startsWith(exe + path.sep) && !/--type=/.test(proc.cmdline)
   )
+=======
+/**
+ * Live Desktop main processes of this install (the packaged exe, not its zygote/renderer/gpu
+ * children). A child between fork and exec still shows the main's exe and argv, so a candidate
+ * whose parent is itself a candidate is that child, not a second app.
+ */
+export function desktopMainProcesses(facts: InstallFacts): ProcInfo[] {
+  const candidates = processesRunningFrom(releaseDir(facts)).filter(proc => !/--type=/.test(proc.cmdline))
+  const pids = new Set(candidates.map(proc => proc.pid))
+
+  return candidates.filter(proc => !pids.has(proc.ppid))
+>>>>>>> origin/main
 }
 
 /** The `hermes serve` backend(s) of this install (children of the backend excluded). */

@@ -7,10 +7,18 @@ import path from 'node:path'
 import { test, vi } from 'vitest'
 import WebSocket from 'ws'
 
+<<<<<<< HEAD
 import { serveBackendArgs } from './backend-command'
 import { waitForDashboardPort } from './backend-ready'
 import { createSourcePythonBackend, resolveSourceInstallationBackend, type SourceBackend } from './source-backend'
 
+=======
+import { waitForDashboardPort } from './backend-ready'
+import { createSourcePythonBackend, resolveSourceInstallationBackend, type SourceBackend } from './source-backend'
+
+const SERVE_ARGS = ['serve', '--host', '127.0.0.1', '--port', '0']
+
+>>>>>>> origin/main
 interface Fixture {
   root: string
   launcher: string
@@ -133,7 +141,11 @@ test.skipIf(process.platform === 'win32')(
           }
         }
 
+<<<<<<< HEAD
         const backend: SourceBackend | null = await resolveSourceInstallationBackend(fixture.root, serveBackendArgs(), {
+=======
+        const backend: SourceBackend | null = await resolveSourceInstallationBackend(fixture.root, SERVE_ARGS, {
+>>>>>>> origin/main
           hermesHome: env.HERMES_HOME,
           env
         })
@@ -198,7 +210,11 @@ test.skipIf(process.platform === 'win32')(
 
       fs.unlinkSync(fixture.launcher)
       assert.equal(
+<<<<<<< HEAD
         await resolveSourceInstallationBackend(fixture.root, serveBackendArgs(), { hermesHome: env.HERMES_HOME, env }),
+=======
+        await resolveSourceInstallationBackend(fixture.root, SERVE_ARGS, { hermesHome: env.HERMES_HOME, env }),
+>>>>>>> origin/main
         null,
         'a missing PM command must not fall back to the stale venv'
       )

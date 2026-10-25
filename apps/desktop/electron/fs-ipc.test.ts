@@ -16,6 +16,12 @@ const electron = vi.hoisted(() => ({
 }))
 
 vi.mock('electron', () => ({
+<<<<<<< HEAD
+=======
+  app: { getPath: () => os.tmpdir() },
+  BrowserWindow: { fromWebContents: () => null },
+  dialog: { showOpenDialog: vi.fn() },
+>>>>>>> origin/main
   ipcMain: {
     handle: (channel: string, handler: (...args: unknown[]) => unknown) => electron.handlers.set(channel, handler)
   },

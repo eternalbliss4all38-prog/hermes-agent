@@ -1,3 +1,4 @@
+// health: allow FILE_LINES -- the copy contract for the usage-window plan keys every locale adds (allowance gauges, Large/Free tags, the limit card)
 // Desktop i18n type contract.
 //
 // `Translations` is the single source of truth for every translatable string
@@ -21,7 +22,13 @@ import type { FirstRunCopy } from './types_first_run'
 import type { ModelMenuTranslations } from './types_model_menu'
 import type { ModelSettingsTranslations } from './types_model_settings'
 import type { NoticeTranslations } from './types_notices'
+<<<<<<< HEAD
 import type { OnboardingTranslations } from './types_onboarding'
+=======
+import type { NotificationSettingsTranslations } from './types_notifications'
+import type { OnboardingTranslations } from './types_onboarding'
+import type { PluginPreviewAccessTranslations } from './types_plugin_preview_access'
+>>>>>>> origin/main
 import type { PluginUpdateTranslations } from './types_plugin_update'
 import type { SidebarProjectsTranslations } from './types_projects'
 import type { SharedMetricsTranslations } from './types_shared_metrics'
@@ -684,6 +691,79 @@ catalog: CatalogTranslations
         installUncertain: string
         desktopFailed: string
         missingEnv: (name: string, vars: string) => string
+<<<<<<< HEAD
+      }
+    }
+    vault: {
+      title: string
+      blurb: string
+      count: (n: number) => string
+      loadFailed: string
+      empty: string
+      emptyDesc: string
+      add: string
+      addTitle: string
+      addDescription: string
+      added: string
+      adding: string
+      addConfirm: string
+      kindField: string
+      kinds: Record<'address' | 'login' | 'payment', string>
+      labelField: string
+      labelPlaceholder: string
+      labelRequired: string
+      originField: string
+      originPlaceholder: string
+      originPlaceholderCheckout: string
+      originInvalid: string
+      identifierTypeField: string
+      identifierTypes: Record<'email' | 'phone' | 'username', string>
+      identifierField: string
+      identifierShown: (identifier: string) => string
+      passwordField: string
+      loginFieldsRequired: string
+      cardNumberField: string
+      cardNameField: string
+      expMonthField: string
+      expYearField: string
+      cvcField: string
+      postalField: string
+      addressLine1Field: string
+      addressLine2Field: string
+      cityField: string
+      stateField: string
+      countryField: string
+      optional: string
+      createdOn: (date: string) => string
+      deleteAction: string
+      otpField: string
+      otpPlaceholder: string
+      otpHint: string
+      twoFactorBadge: string
+      deleteTitle: string
+      deleteDescription: (label: string) => string
+      deleteConfirm: string
+      sources: {
+        title: string
+        blurb: string
+        toggleFailed: string
+        notInstalled: (name: string) => string
+        disabledDesc: string
+        lockedDesc: string
+        unlockedDesc: string
+        statusLocked: string
+        statusNotDetected: string
+        statusOff: string
+        statusUnlocked: string
+        unlock: string
+        unlocking: string
+        lock: string
+        unlocked: (name: string) => string
+        unlockTitle: (name: string) => string
+        unlockDescription: string
+        masterPasswordPlaceholder: string
+=======
+>>>>>>> origin/main
       }
     }
     vault: {
@@ -756,25 +836,7 @@ catalog: CatalogTranslations
         masterPasswordPlaceholder: string
       }
     }
-    notifications: {
-      title: string
-      intro: string
-      enableAll: string
-      enableAllDesc: string
-      focusedHint: string
-      kinds: Record<
-        'approval' | 'backgroundDone' | 'credits' | 'input' | 'plugin' | 'turnDone' | 'turnError',
-        { label: string; description: string }
-      >
-      test: string
-      testTitle: string
-      testBody: string
-      testSent: string
-      testUnsupported: string
-      completionSoundTitle: string
-      completionSoundDesc: string
-      completionSoundPreview: string
-    }
+    notifications: NotificationSettingsTranslations
     sections: Record<string, string>
     searchPlaceholder: Record<'about' | 'config' | 'gateway' | 'keys' | 'mcp' | 'sessions', string>
     modeOptions: Record<'light' | 'dark' | 'system', ModeOptionCopy>
@@ -1545,6 +1607,20 @@ catalog: CatalogTranslations
         cancel: string
         effectScheduled: (targetName: string, effectiveAt: string, creditsDelta: string) => string
       }
+<<<<<<< HEAD
+=======
+      keepGoingOnCredits: {
+        title: string
+        description: string
+        /** Shown under the switch while the Remote Spending approval is open in the browser. */
+        approveInBrowser: string
+        openAgain: string
+        cancel: string
+        /** Approved, but the change was still refused: shown with a Try again button. */
+        approvedRetry: string
+        tryAgain: string
+      }
+>>>>>>> origin/main
       autoReload: {
         threshold: string
         thresholdAria: string
@@ -1613,6 +1689,23 @@ catalog: CatalogTranslations
             captionSpending: string
             valueUsed: (spent: string, limit: string) => string
           }
+<<<<<<< HEAD
+=======
+          window: {
+            today: string
+            week: string
+            month: string
+            topTier: string
+            barLabel: (title: string) => string
+            captionPaused: string
+            captionPausedOther: string
+            captionTopTierUsedUp: string
+            captionTopTierUsedUpKeepGoingOff: string
+            captionResetsIn: (duration: string) => string
+            captionIncluded: string
+            valueUsed: (percent: string) => string
+          }
+>>>>>>> origin/main
         }
         planCard: {
           freeTier: string
@@ -1879,7 +1972,12 @@ catalog: CatalogTranslations
     skillArchivedTitle: string
     skillArchivedMessage: string
     tabPlugins: string
+<<<<<<< HEAD
     plugins: PluginUpdateTranslations & {
+=======
+    plugins: PluginUpdateTranslations &
+      PluginPreviewAccessTranslations & {
+>>>>>>> origin/main
       agentTitle: string
       agentBlurb: string
       pageBlurb: string
@@ -3369,6 +3467,7 @@ catalog: CatalogTranslations
     signIn: string
     signInHeading: string
     settingUp: string
+<<<<<<< HEAD
     codeBody: string
     copyLink: string
     doNotShare: string
@@ -3378,11 +3477,27 @@ catalog: CatalogTranslations
     signedInAs: (email: string) => string
     signedIn: string
     completedBody: string
+=======
+    finishInBrowser: string
+    doNotShare: string
+    openPageAgain: string
+    waiting: string
+    finishingHeading: string
+    finishingBody: string
+    /** Over the account email on the completed screen. */
+    signedInAsLabel: string
+    signedIn: string
+    completedBody: string
+    /** The free tier's apps: reconnect the ones that did not move; open Connectors to check. */
+    reconnect: string
+    openConnectors: string
+>>>>>>> origin/main
     defaultModel: string
     change: string
     done: string
     notNow: string
     tryAgain: string
+<<<<<<< HEAD
     startAgain: string
     didNotComplete: string
     rejectedBody: string
@@ -3390,6 +3505,11 @@ catalog: CatalogTranslations
     timedOutHeading: string
     timedOutBody: string
     retiredBody: string
+=======
+    didNotComplete: string
+    timedOutHeading: string
+    timedOutBody: string
+>>>>>>> origin/main
     errorBody: string
     /** The account service asked for a short wait mid sign-in (a busy account, a rate limit, the ops pause). */
     busyHeading: string
@@ -3445,6 +3565,32 @@ catalog: CatalogTranslations
     customModel: string
     addCustomModelAction: string
     customModelPlaceholder: string
+<<<<<<< HEAD
+=======
+    today: string
+    week: string
+    month: string
+    topTier: string
+    included: string
+    pausedRenewal: string
+    pausedOther: string
+    includedUsedUp: string
+    /** Row note: past its included usage, this model bills top-up credits (pay as you go). */
+    /** "Weekly limit reached" from a limit name ("weekly"). */
+    limitReached: (name: string) => string
+    limitNames: { day: string; month: string; top_tier: string; week: string }
+    limitThenCredits: string
+    limitThenCreditsLarge: string
+    limitThenWait: string
+    limitThenWaitLarge: string
+    percentUsed: (percent: string) => string
+    resetsIn: (duration: string) => string
+    /** Window plans: the gateway's per-model word (free / low / medium / top_tier). */
+    usageLevels: { free: string; top_tier: string }
+    sectionRecommended: string
+    sectionOther: string
+    largeFootnote: string
+>>>>>>> origin/main
   }
 
   modelVisibility: {
@@ -3563,6 +3709,11 @@ catalog: CatalogTranslations
       toggleWorkspace: string
       cacheHitRateTitle: string
       tokensPerSecondTitle: string
+<<<<<<< HEAD
+=======
+      togglePlanUsage: string
+      planUsageTitle: (used: string, resetsIn: string) => string
+>>>>>>> origin/main
       agents: string
       closeAgents: string
       openAgents: string
@@ -3931,6 +4082,20 @@ catalog: CatalogTranslations
       errorStartNewSession: string
       errorSwitchProvider: string
       errorChooseModel: string
+<<<<<<< HEAD
+=======
+      /** usage_window: one click to the plan's recommended model; `note` is "free" / "included". */
+      errorSwitchToModel: (model: string, note: string) => string
+      errorSwitchModelFailed: string
+      /** usage_window: turn on Keep going on credits, then re-run the turn. */
+      errorUseCredits: string
+      errorUseCreditsFailed: string
+      /** usage_window with no balance: opens Settings → Billing to add credits. */
+      errorAddCredits: string
+      /** Error card button: opens Settings → Billing in-app (Keep going, buy credits). */
+      errorOpenBillingSettings: string
+      /** Error card body when a Nous account is out of credits (its button opens Settings → Billing). */
+>>>>>>> origin/main
       errorCompressConversation: string
       errorCompressFailed: string
       errorOpenHermesFolder: string

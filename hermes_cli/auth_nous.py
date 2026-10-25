@@ -25,6 +25,10 @@ from hermes_cli.auth_constants import (
     DEVICE_AUTH_POLL_INTERVAL_CAP_SECONDS, NOUS_AUTH_PATH_INVOKE_JWT, NOUS_BILLING_MANAGE_SCOPE,
     NOUS_DEVICE_CODE_SOURCE, NOUS_INFERENCE_INVOKE_SCOPE, NOUS_INVOKE_JWT_MIN_TTL_SECONDS,
     WELCOME_CLAIM_FLAG, _nous_err, httpx)
+<<<<<<< HEAD
+=======
+from hermes_cli.guest_handoff import drain, note_replacement, result_lines
+>>>>>>> origin/main
 
 if TYPE_CHECKING:  # annotation-only; the runtime import would be a cycle
     from hermes_cli.auth import ProviderConfig
@@ -409,12 +413,23 @@ _NOUS_SHARED_STATE_KEYS = (
     "inference_base_url", "obtained_at", "expires_at",
     # Guest (``auth_method: anonymous``) identity: the ``anon_`` credential is the refresh material.
     "auth_method", "account_tier", "anon_token", "user_id", "org_id")
+<<<<<<< HEAD
+=======
+# Shared-store key: an account's latest refresh, kept beside a different identity the store holds.
+_SHARED_RENEWAL_KEY = "renewal"
+>>>>>>> origin/main
 
 
 def _merge_shared_nous_oauth_state(state: dict[str, Any]) -> bool:
     """Copy fresher shared OAuth tokens into a profile-local Nous state."""
     from hermes_cli.auth import _nonempty_str, _parse_iso_timestamp, _read_shared_nous_state
     shared = _read_shared_nous_state() or {}
+<<<<<<< HEAD
+=======
+    renewed = shared.get(_SHARED_RENEWAL_KEY)
+    if isinstance(renewed, dict) and _nous_identity(renewed) == _nous_identity(state):
+        shared = renewed
+>>>>>>> origin/main
     shared_refresh = shared.get("refresh_token")
     if not _nonempty_str(shared_refresh):
         return False  # a free-tier identity has no refresh token; nothing to merge into an OAuth state
@@ -448,9 +463,28 @@ def _nous_shared_shape(src: dict[str, Any]) -> dict[str, Any]:
            if src.get(k) not in (None, "")}}
 
 
+<<<<<<< HEAD
 def _write_shared_nous_state(state: dict[str, Any]) -> None:
     """Persist a minimal copy of the Nous OAuth state to the shared store.
 
+=======
+def _nous_identity(state: dict[str, Any]) -> tuple[str, Any]:
+    """Who a Nous state is: the guest's ``anon_`` credential, else the account's JWT subject (which,
+    unlike the refresh token, survives a refresh)."""
+    from hermes_cli.anon_auth import is_guest_state
+    if is_guest_state(state):
+        return "guest", state.get("anon_token")
+    return "account", _decode_jwt_claims(state.get("access_token")).get("sub")
+
+
+def _write_shared_nous_state(state: dict[str, Any], *, renewal: bool) -> None:
+    """Persist a minimal copy of the Nous OAuth state to the shared store.
+
+    The store holds one identity, which profiles adopt or import. Only a sign-in (or a mint) changes
+    it, so only a sign-in can replace a guest there. A *renewal* (a token refresh) of another
+    identity is kept beside it under ``renewal``: siblings on that account read their next
+    single-use refresh token from there (``_merge_shared_nous_oauth_state``).
+>>>>>>> origin/main
     Best-effort: failures are logged and swallowed; per-profile auth.json stays the source of truth.
     """
     from hermes_cli.auth import _nonempty_str, _save_private_json
@@ -466,6 +500,17 @@ def _write_shared_nous_state(state: dict[str, Any]) -> None:
     try:
         with _nous_shared_store_lock():
             path = _nous_shared_store_path()
+<<<<<<< HEAD
+=======
+            held = _read_shared_nous_state()
+            same = held is not None and _nous_identity(held) == _nous_identity(state)
+            if renewal and held is not None and not same:
+                shared = {**held, _SHARED_RENEWAL_KEY: _nous_shared_shape(state)}
+            else:
+                note_replacement(held, state)
+                if same and _SHARED_RENEWAL_KEY in held:
+                    shared[_SHARED_RENEWAL_KEY] = held[_SHARED_RENEWAL_KEY]
+>>>>>>> origin/main
             _save_private_json(path, shared, sort_keys=True)
         _oauth_trace(
             "nous_shared_store_written", path=str(path),
@@ -604,8 +649,13 @@ def _try_import_shared_nous_state(*, timeout_seconds: float = 15.0) -> Optional[
                 "tls": {"insecure": False, "ca_bundle": None}}
             refreshed = refresh_nous_oauth_from_state(
                 state, timeout_seconds=timeout_seconds, force_refresh=True,
+<<<<<<< HEAD
                 on_state_update=lambda updated, _reason: _write_shared_nous_state(updated))
             _write_shared_nous_state(refreshed)
+=======
+                on_state_update=lambda updated, _reason: _write_shared_nous_state(updated, renewal=True))
+            _write_shared_nous_state(refreshed, renewal=True)
+>>>>>>> origin/main
     except Exception as exc:
         is_auth = isinstance(exc, AuthError)
         _oauth_trace(
@@ -869,7 +919,11 @@ def persist_nous_credentials(creds: dict[str, Any], *, label: Optional[str] = No
     if label and str(label).strip():
         state["label"] = str(label).strip()
     _save_active_provider_state("nous", state)
+<<<<<<< HEAD
     _write_shared_nous_state(state)
+=======
+    _write_shared_nous_state(state, renewal=False)
+>>>>>>> origin/main
     pool = load_pool("nous")
     return next((e for e in pool.entries() if e.source == NOUS_DEVICE_CODE_SOURCE), None)
 
@@ -965,7 +1019,11 @@ class _NousRuntimeResolve:
             access_token_fp=_token_fingerprint(state.get("access_token")))
         self._persisted_state = dict(state)
         self.persisted_any = True
+<<<<<<< HEAD
         _write_shared_nous_state(state)
+=======
+        _write_shared_nous_state(state, renewal=True)
+>>>>>>> origin/main
 
     def shared_lock(self):
         return _nous_shared_store_lock(timeout_seconds=_shared_lock_timeout(self.timeout_seconds))
@@ -1458,7 +1516,11 @@ def _mirror_nous_state_best_effort(auth_state: dict[str, Any]) -> None:
     """Mirror to the shared store + reseed the pool, swallowing all errors (same as _login_nous)."""
     from hermes_cli.auth import _sync_nous_pool_from_auth_store, _write_shared_nous_state
     with suppress(Exception):
+<<<<<<< HEAD
         _write_shared_nous_state(auth_state)
+=======
+        _write_shared_nous_state(auth_state, renewal=False)
+>>>>>>> origin/main
     with suppress(Exception):
         _sync_nous_pool_from_auth_store()
 
@@ -1490,6 +1552,19 @@ def step_up_nous_billing_scope(
         open_browser=open_browser, timeout_seconds=timeout_seconds, on_verification=on_verification)
     _save_active_provider_state("nous", auth_state)
     _mirror_nous_state_best_effort(auth_state)
+<<<<<<< HEAD
+=======
+    drain()  # a step-up that replaced the free tier hands its apps over
+    # Every caller replays the refused billing action next: drop the billing client's 30s token cache
+    # here (not per caller) so that replay sends the new token, not the pre-approval one (403 again).
+    try:
+        from hermes_cli.nous_billing import invalidate_cached_token
+        invalidate_cached_token()
+    except Exception:
+        logger.debug("Billing token cache invalidation failed", exc_info=True)
+    from hermes_cli.anon_auth import settle_after_upgrade
+    settle_after_upgrade(auth_state)  # a step-up that replaced the free tier moves its config too
+>>>>>>> origin/main
     granted = auth_state.get("scope")
     return isinstance(granted, str) and NOUS_BILLING_MANAGE_SCOPE in granted.split()
 
@@ -1553,13 +1628,26 @@ def _pick_nous_model_after_login(
         _policy_notice = nous_policy_notice(removed=_policy_narrowed)
         if _policy_notice:
             print(_policy_notice)
+<<<<<<< HEAD
+=======
+        from hermes_cli.model_picker_usage import featured_first, nous_picker_usage
+        _usage = nous_picker_usage(warm=True)
+        # Window plans: every model is usable; the plan's featured picks lead the list.
+        if _usage is not None:
+            model_ids = featured_first(model_ids, _usage.featured_model_ids)
+>>>>>>> origin/main
         print(
             f"Showing {len(model_ids)} curated models — "
             "use \"Enter custom model name\" for others.")
         return _prompt_model_selection(
             model_ids, pricing=pricing, unavailable_models=unavailable_models, portal_url=_portal,
             unavailable_message=unavailable_message, confirm_provider="nous",
+<<<<<<< HEAD
             confirm_base_url=inference_base_url, confirm_api_key=runtime_key)
+=======
+            confirm_base_url=inference_base_url, confirm_api_key=runtime_key,
+            usage=_usage)
+>>>>>>> origin/main
     if unavailable_models:
         _url = (_portal or DEFAULT_NOUS_PORTAL_URL).rstrip("/")
         print("No free models currently available.")
@@ -1638,11 +1726,24 @@ def _login_nous(args, pconfig: ProviderConfig) -> None:
             prior_active_provider = _load_auth_store().get("active_provider")
         saved_to = _save_active_provider_state("nous", auth_state)
         # Mirror to the shared store so other profiles can one-tap import (best-effort inside).
+<<<<<<< HEAD
         _write_shared_nous_state(auth_state)
         _sync_nous_pool_from_auth_store()
         print()
         print("Login successful!")
         print(f"  Auth state: {saved_to}")
+=======
+        _write_shared_nous_state(auth_state, renewal=False)
+        handoff = drain()  # a replaced free tier hands its apps over once both saves land
+        _sync_nous_pool_from_auth_store()
+        from hermes_cli.anon_auth import settle_after_upgrade
+        settle_after_upgrade(auth_state)  # a config left on the free tier's route moves to the account
+        print()
+        print("Login successful!")
+        print(f"  Auth state: {saved_to}")
+        for line in (line for view in handoff for line in result_lines(view)):
+            print(f"  {line}")
+>>>>>>> origin/main
         # Pick the model BEFORE writing the provider to config.yaml so config is never half-updated.
         selected_model = None
         try:
@@ -1663,6 +1764,12 @@ def _login_nous(args, pconfig: ProviderConfig) -> None:
             "nous", inference_base_url, default_model=selected_model)
         _save_model_choice(selected_model)
         print(f"Default model set to: {selected_model}")
+<<<<<<< HEAD
+=======
+        from hermes_cli.model_picker_usage import large_model_notice
+        if _notice := large_model_notice(selected_model, "nous"):
+            print(f"  ⚠ {_notice}")  # window plans only (a Large mark exists only on their catalog)
+>>>>>>> origin/main
         print(f"  Config updated: {config_path} (model.provider=nous)")
     except KeyboardInterrupt:
         print("\nLogin cancelled.")

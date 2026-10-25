@@ -29,13 +29,24 @@ import { $petActive } from '@/store/pet'
 import { clearPetMessages, type PetSayOptions, sayPetMessage } from '@/store/pet-plugin-messages'
 
 import { type GatewayEventListener, onGatewayEvent } from './events'
+<<<<<<< HEAD
+=======
+import { createPluginFiles, type PluginFiles } from './plugin-files'
+import { createPluginPreview, type PluginPreview } from './plugin-preview'
+>>>>>>> origin/main
 import { $pluginRecords } from './plugins-store'
 import { registry } from './registry'
 import { type PluginSettingsPage, settingsPageContribution } from './settings-pages'
 
+<<<<<<< HEAD
 export type { PluginSettingsPage, PluginSettingsSubpage } from './settings-pages'
+=======
+export type { PluginFileEntry, PluginFiles, PluginFilesResult, PluginFolder } from './plugin-files'
+export type { PluginPreview } from './plugin-preview'
+>>>>>>> origin/main
 import type { Contribution } from './types'
 
+export type { PluginSettingsPage, PluginSettingsSubpage } from './settings-pages'
 export type { PluginRestOptions } from '@/hermes'
 export type { HermesOpenTarget } from '@/lib/hermes-open-target'
 export type { PluginAppActionId, PluginAppActionInfo, PluginRunActionResult } from '@/lib/keybinds/plugin-actions'
@@ -171,8 +182,21 @@ export interface PluginContext {
   runAction: (id: PluginAppActionId) => PluginRunActionResult
   /** The actions `runAction` accepts, with their localized labels. */
   listActions: () => PluginAppActionInfo[]
+<<<<<<< HEAD
+=======
+  /** Run JavaScript in the preview Browser page. Closed unless the plugin
+   *  declares `capabilities: ['preview.executeJavaScript']`, and even then
+   *  the app asks the user once per page origin before anything runs.
+   *  Feature-detect on older hosts: `ctx.preview?.executeJavaScript`. */
+  preview: PluginPreview
+>>>>>>> origin/main
   /** Plugin-scoped persistence. */
   storage: PluginStorage
+  /** Folder-scoped file access: this plugin's own data folder plus folders
+   *  the user grants it through the app's picker, by relative path. The app
+   *  checks every call; nothing outside those folders (or inside Hermes'
+   *  own data) is reachable. Feature-detect on older hosts: `ctx.files?.…`. */
+  files: PluginFiles
   /** Plugin-scoped i18n: ship + register locale bundles under this plugin,
    *  resolved against the app's active locale — no core `en.ts` edit. */
   i18n: PluginI18n
@@ -189,6 +213,10 @@ export interface HermesPlugin {
    *  for opt-in plugins: they inventory in Capabilities ▸ Plugins, off until the
    *  user flips the switch. */
   defaultEnabled?: boolean
+  /** Sensitive doors this plugin uses, declared up front so the app can show
+   *  them and gate them. Today: `'preview.executeJavaScript'` (`ctx.preview`).
+   *  A door the plugin did not declare refuses every call. */
+  capabilities?: readonly string[]
   /** Called once at load; wire contributions through `ctx`. */
   register: (ctx: PluginContext) => void
 }
@@ -343,9 +371,24 @@ function createPluginLifetime(track: (dispose: () => void) => () => void) {
   }
 }
 
+<<<<<<< HEAD
+=======
+/** The declared capabilities of a plugin export, strings only. */
+export function declaredCapabilities(plugin: Pick<HermesPlugin, 'capabilities'>): string[] {
+  return Array.isArray(plugin.capabilities)
+    ? plugin.capabilities.filter((entry): entry is string => typeof entry === 'string')
+    : []
+}
+
+>>>>>>> origin/main
 /** Build the scoped context handed to a plugin's `register`. `onDispose`
- *  receives every registration's disposer (the loader's unload/reload hook). */
-export function createPluginContext(pluginId: string, onDispose?: (dispose: () => void) => void): PluginContext {
+ *  receives every registration's disposer (the loader's unload/reload hook);
+ *  `capabilities` is what the plugin declared (`declaredCapabilities`). */
+export function createPluginContext(
+  pluginId: string,
+  onDispose?: (dispose: () => void) => void,
+  capabilities: readonly string[] = []
+): PluginContext {
   const source = `plugin:${pluginId}`
   const scope = (c: PluginContribution): Contribution => ({ ...c, id: `${pluginId}:${c.id}`, source })
 
@@ -369,7 +412,12 @@ export function createPluginContext(pluginId: string, onDispose?: (dispose: () =
     pet: createPluginPet(pluginId, track),
     runAction: id => runPluginAppAction(pluginId, id),
     listActions: listPluginAppActions,
+<<<<<<< HEAD
+=======
+    preview: createPluginPreview(pluginId, capabilities),
+>>>>>>> origin/main
     storage: createPluginStorage(pluginId),
+    files: createPluginFiles(pluginId),
     i18n: createPluginI18n(pluginId, track)
   }
 }

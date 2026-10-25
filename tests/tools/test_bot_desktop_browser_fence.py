@@ -19,6 +19,7 @@ def _fresh(monkeypatch):
     lease._reset_for_tests()
 
 
+<<<<<<< HEAD
 def _wire(monkeypatch, commands):
     from tools import browser_tool as browser
     from tools import browser_tool_session as session
@@ -43,17 +44,31 @@ def _wire_browser_exec(monkeypatch, run_cli):
     """Route browser_exec through local Chromium without starting a real browser."""
     from tools import browser_tool_cloud as cloud
     from tools import browser_tool_session as session
+=======
+def _wire_browser_exec(monkeypatch, run_cli):
+    """Route browser_exec through the local session layer without starting a real browser."""
+    from tools import browser_lightpanda, browser_session, browser_session_cdp, browser_session_cloud
+>>>>>>> origin/main
     from tools import browser_use_cli as browser_use
 
     monkeypatch.setattr(browser_use, "_find_cli", lambda: ["browser-use"])
     monkeypatch.setattr(browser_use, "_base_subprocess_env", dict)
     monkeypatch.setattr(browser_use, "_real_profile_consented", lambda: False)
+<<<<<<< HEAD
     monkeypatch.setattr(browser_use, "_resolve_lightpanda_cdp", lambda *a: None)
     monkeypatch.setattr("tools.browser_tool_cdp._get_cdp_override", lambda: "")
     monkeypatch.setattr("tools.browser_tool._get_open_command_timeout", lambda **_kw: 5)
     monkeypatch.setattr(cloud, "_get_cloud_provider", lambda: None)
     monkeypatch.setattr(session, "_run_browser_command", lambda *_a, **_kw: {
         "success": True, "data": {"cdpUrl": "http://127.0.0.1:9222"}})
+=======
+    monkeypatch.setattr(browser_lightpanda, "using_lightpanda_engine", lambda: False)
+    monkeypatch.setattr(browser_session_cdp, "get_cdp_override", lambda: "")
+    monkeypatch.setattr(browser_session_cdp, "get_cdp_override_raw", lambda: "")
+    monkeypatch.setattr(browser_session_cloud, "get_cloud_provider", lambda: None)
+    monkeypatch.setattr(browser_session, "get_session_info", lambda *_a, **_kw: {
+        "session_name": "review", "cdp_url": "http://127.0.0.1:9222", "features": {"local": True}})
+>>>>>>> origin/main
     monkeypatch.setattr(browser_use, "_attach_vault_supervisor", lambda *a: None)
     monkeypatch.setattr(browser_use, "_run_cli_killing_process_group", run_cli)
     return browser_use
@@ -90,6 +105,7 @@ def test_browser_exec_result_crossing_a_takeover_is_discarded(monkeypatch):
     assert result.get("code") == "human_has_control"
 
 
+<<<<<<< HEAD
 def test_browser_click_is_fenced_while_human_controls_shared_browser(monkeypatch):
     commands: list = []
     browser, _ = _wire(monkeypatch, commands)
@@ -104,13 +120,36 @@ def test_browser_result_crossing_a_takeover_is_discarded(monkeypatch):
     browser, session = _wire(monkeypatch, commands)
 
     def spawn_then_takeover(*args):
+=======
+def test_run_fenced_refuses_a_local_session_while_human_controls_shared_browser():
+    from tools.browser_session import run_fenced
+
+    dispatched: list = []
+    lease.acquire("human-viewer")
+    result = run_fenced({"session_name": "review", "cdp_url": None, "features": {"local": True}},
+                        lambda: dispatched.append("cmd") or {"success": True})
+    assert dispatched == [], f"human holds the lease, yet a browser command was dispatched: {dispatched}"
+    assert result.get("code") == "human_has_control"
+
+
+def test_run_fenced_discards_a_result_crossing_a_takeover():
+    from tools.browser_session import run_fenced
+
+    def run_then_takeover():
+>>>>>>> origin/main
         lease.acquire("human-viewer")
         lease.release("human-viewer")  # a full cycle, control is back — the frame is still theirs
         return {"success": True, "data": {"secret": "WHAT-THE-HUMAN-TYPED"}}
 
+<<<<<<< HEAD
     monkeypatch.setattr(session, "_spawn_and_collect", spawn_then_takeover)
     result = browser.browser_click("e1", task_id="review")
     assert "WHAT-THE-HUMAN-TYPED" not in result
+=======
+    result = run_fenced({"session_name": "review", "cdp_url": None, "features": {"local": True}},
+                        run_then_takeover)
+    assert "WHAT-THE-HUMAN-TYPED" not in json.dumps(result)
+>>>>>>> origin/main
 
 
 def test_real_profile_local_browser_is_fenced_by_provenance_even_without_a_live_display(monkeypatch):
@@ -118,6 +157,7 @@ def test_real_profile_local_browser_is_fenced_by_provenance_even_without_a_live_
     DISPLAY, so it IS the human's browser: the fence keys on the ``local`` feature, not on the
     transport. And a stranded human lease with the screen already down must still fence (computer_use
     does), not silently unfence the browser."""
+<<<<<<< HEAD
     commands: list = []
     browser, session = _wire(monkeypatch, commands)
     monkeypatch.setattr(session, "_get_session_info", lambda *a: {
@@ -160,6 +200,17 @@ def test_browser_console_supervisor_fast_path_is_fenced_while_human_controls_sha
     result = json.loads(raw)
     assert evaluated == [] and commands == [], "human holds the lease, yet the page was evaluated"
     assert "WHAT-THE-HUMAN-TYPED" not in raw
+=======
+    from tools.browser_session import run_fenced
+
+    dispatched: list = []
+    monkeypatch.setattr(runtime, "published_env", dict)
+    lease.acquire("human-viewer")
+    result = run_fenced({"session_name": "rp_1", "cdp_url": "ws://127.0.0.1:9222/devtools/browser/x",
+                         "features": {"local": True, "real_profile": True}},
+                        lambda: dispatched.append("cmd") or {"success": True})
+    assert dispatched == [], f"human holds the lease, yet a real-profile browser command was dispatched: {dispatched}"
+>>>>>>> origin/main
     assert result.get("code") == "human_has_control"
 
 
@@ -167,10 +218,18 @@ def test_vault_page_operations_respect_the_human_lease(monkeypatch):
     """The vault tools reach the page over the supervisor socket, outside `_run_browser_command`: while a
     human holds the screen they must be refused like every other page access, and never focus, inspect or
     write to the form the human is typing into."""
+<<<<<<< HEAD
     from tools import browser_tool as browser
     from tools import browser_vault_tool as vault
 
     browser._active_sessions["default"] = {"session_name": "review", "cdp_url": None, "features": {"local": True}}
+=======
+    from tools import browser_session
+    from tools import browser_vault_tool as vault
+
+    monkeypatch.setitem(browser_session._active_sessions, "default",
+                        {"session_name": "review", "cdp_url": None, "features": {"local": True}})
+>>>>>>> origin/main
     touched = []
     for name in ("browser_vault_fill", "browser_vault_enter_code", "browser_vault_save_login"):
         monkeypatch.setattr(vault, name, lambda *a, **k: touched.append(name) or json.dumps({"success": True}))
@@ -187,10 +246,18 @@ def test_secret_write_re_admits_after_a_takeover_during_the_code_prompt(monkeypa
     """`enter_code` blocks on the user's code INSIDE the handler fence. A takeover during that wait must
     refuse the write itself: the outer fence only discards the result afterwards, and by then the code is
     already in the page the human is typing into."""
+<<<<<<< HEAD
     from tools import browser_tool as browser
     from tools import browser_vault_tool as vault
 
     browser._active_sessions["default"] = {"session_name": "review", "cdp_url": None, "features": {"local": True}}
+=======
+    from tools import browser_session
+    from tools import browser_vault_tool as vault
+
+    monkeypatch.setitem(browser_session._active_sessions, "default",
+                        {"session_name": "review", "cdp_url": None, "features": {"local": True}})
+>>>>>>> origin/main
     evaluated = []
 
     class Sup:

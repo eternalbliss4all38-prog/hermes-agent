@@ -35,7 +35,11 @@ from hermes_cli.plugin_capabilities import plugin_capability_granted
 from hermes_cli.relay_plugin_cutover import RELAY_PLUGINS_CONFIG_ENV, legacy_relay_plugin_keys
 # Sibling modules' names are re-exported here (origin) so plugins and tests keep one import path.
 from hermes_cli.plugins_manifest import (
+<<<<<<< HEAD
     _CONFIG_SCHEMA_TYPES, SUPPORTED_MANIFEST_VERSION, PluginManifest, _portable_skill_namespace,
+=======
+    _CONFIG_SCHEMA_TYPES, SUPPORTED_MANIFEST_VERSION, PluginManifest, _portable_data_namespace,
+>>>>>>> origin/main
     manifest_key, parse_manifest_file, resolve_module_origin, resolve_plugin_load_order,
     validate_config_schema,
 )
@@ -57,7 +61,13 @@ from hermes_cli.plugins_dispatch import (
     RenderedPluginSystemPromptSection, _EventSubscription, format_system_prompt_sections,
     is_valid_system_prompt_section_id, resolve_plugin_command_result,
 )
+<<<<<<< HEAD
 from hermes_cli.plugins_ledger import PluginLedgerMixin, PluginRegistration
+=======
+from hermes_cli.plugins_capability_ctx import PluginCapabilityCtxMixin
+from hermes_cli.plugins_ledger import PluginLedgerMixin, PluginRegistration
+from hermes_cli.plugins_registrars import _NAME_NORMALIZERS, _SCOPED_PROVIDER_REGISTRARS
+>>>>>>> origin/main
 from hermes_cli.plugins_state import (
     PluginState, _locked_plugin_state, _nested_plugin_mapping, _nested_plugin_value,
     _plugin_relative_segments, _plugin_settings_entry, save_plugin_setting,
@@ -225,7 +235,11 @@ class LoadedPlugin:
     deferred: bool = False
 
 
+<<<<<<< HEAD
 class PluginContext:
+=======
+class PluginContext(PluginCapabilityCtxMixin):
+>>>>>>> origin/main
     """Facade given to plugins so they can register tools and hooks."""
 
     def __init__(self, manifest: PluginManifest, manager: PluginManager):
@@ -280,7 +294,11 @@ class PluginContext:
     @cached_property
     def state(self) -> PluginState:
         """This plugin's profile-scoped durable JSON state facade."""
+<<<<<<< HEAD
         return PluginState(self.plugin_id, self.manifest.skill_namespace)
+=======
+        return PluginState(self.plugin_id, self.manifest.data_namespace)
+>>>>>>> origin/main
 
     @cached_property
     def platform_actions(self):
@@ -387,6 +405,16 @@ class PluginContext:
         never a live agent or private registry."""
         from agent.subagent_lifecycle import SubagentLifecycleService, get_active_subagent_parent
         return SubagentLifecycleService(get_active_subagent_parent)
+<<<<<<< HEAD
+=======
+
+    @cached_property
+    def delegation_backends(self) -> Any:
+        """``agent.delegation_backends.DelegationBackends``: list delegation backends and save one, optionally
+        rebuilding the calling session's tools now (``/delegation``); a host remote facade on the owner process."""
+        from agent.delegation_backends import DelegationBackends
+        return DelegationBackends()
+>>>>>>> origin/main
 
     @property
     def profile_name(self) -> str:
@@ -490,6 +518,7 @@ class PluginContext:
                      " (override)" if override else "")
         return handle
 
+<<<<<<< HEAD
     # -- capability probing (#64228) -----------------------------------------
     def has_capability(self, capability: str) -> bool:
         """True when *capability* is live for this plugin (probe, then degrade gracefully). Bundled
@@ -499,6 +528,8 @@ class PluginContext:
             return True
         return plugin_capability_granted(self.plugin_id, capability)
 
+=======
+>>>>>>> origin/main
     def call_mcp(
         self, server: str, tool: str, arguments: Optional[dict[str, Any]] = None,
         timeout: float = 30,
@@ -614,6 +645,15 @@ class PluginContext:
         """``post_message`` for async code on the gateway loop (edit with ``await handle.aedit``)."""
         from hermes_cli.plugin_messages import apost
         return await apost(self, text)
+<<<<<<< HEAD
+=======
+
+    def ask_choice(self, question: str, choices: list) -> Optional[str]:
+        """From a sync slash-command handler: ask its user to pick one of *choices* (``str`` or
+        ``{value, label?, description?}``); the value, or None if unanswerable: ``plugin_choices.py``."""
+        from hermes_cli.plugin_choices import ask_choice
+        return ask_choice(question, choices)
+>>>>>>> origin/main
 
     def _gateway_injection_allowed(self) -> bool:
         """Return whether this plugin may trigger gateway session turns (read from the plugin's
@@ -1009,6 +1049,7 @@ class PluginContext:
     from hermes_cli.plugins_content import register_automation_blueprint, register_skill
 
 # -- scoped provider registrars ------------------------------------------------------------------
+<<<<<<< HEAD
 # Every ``register_<category>_provider`` shares one body (:meth:`PluginContext._register_scoped_provider`):
 # type-check, register in the scope-keyed process-global registry, lease the slot so unload restores
 # the displaced entry. Rows: (method, kind, registry module, base-class module:attr, label, docstring,
@@ -1063,6 +1104,10 @@ _SCOPED_PROVIDER_REGISTRARS: tuple[tuple[str, str, str, str, str, str, dict[str,
 _NAME_NORMALIZERS: dict[Optional[str], Optional[Callable[[str], str]]] = {
     "strip": lambda n: n.strip(), "lower": lambda n: n.strip().lower(), None: None,
 }
+=======
+# One generated ``register_<category>_provider`` method per row of plugins_registrars.py's table.
+
+>>>>>>> origin/main
 
 
 def _make_scoped_provider_registrar(method_name, kind, registry_mod, base_ref, label, doc, options):
@@ -1501,7 +1546,11 @@ class PluginManager(PluginLoaderMixin, PluginDispatchMixin, PluginLedgerMixin):
             try:  # lazy: this is a startup probe, keep agent_plugins unimported unless needed
                 from hermes_cli.agent_plugins import _discover_mcp
                 if _discover_mcp(Path(manifest.path), get_hermes_home() / "plugin-data"
+<<<<<<< HEAD
                                  / (manifest.skill_namespace or lookup_key), [], create_data=False):
+=======
+                                 / (manifest.data_namespace or lookup_key), [], create_data=False):
+>>>>>>> origin/main
                     return True
             except (OSError, RuntimeError, ValueError):
                 continue  # fail closed on an unreadable package; full discovery reports it

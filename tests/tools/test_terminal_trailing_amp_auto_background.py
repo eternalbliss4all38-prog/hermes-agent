@@ -16,7 +16,11 @@ import pytest
 def _env_config(cwd):
     return {
         "env_type": "local", "timeout": 180, "cwd": str(cwd), "host_cwd": None, "modal_mode": "auto",
+<<<<<<< HEAD
         "docker_image": "", "singularity_image": "", "modal_image": "", "daytona_image": "",
+=======
+        "docker_image": "", "modal_image": "", "daytona_image": "",
+>>>>>>> origin/main
     }
 
 

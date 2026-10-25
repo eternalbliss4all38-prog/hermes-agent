@@ -25,6 +25,10 @@ export const enCatalog: CatalogTranslations = {
   installing: 'Installing…',
   installComplete: (name: string) => `“${name}” installed`,
   destinationChanged: 'The destination changed. Close this dialog and open the install link again.',
+<<<<<<< HEAD
+=======
+  install: 'Install',
+>>>>>>> origin/main
   installed: 'Installed',
   searchSkills: 'Search skills',
   searchPlugins: 'Search plugins',

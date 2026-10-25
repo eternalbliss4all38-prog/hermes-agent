@@ -1,0 +1,1 @@
+import {NextResponse} from 'next/server'; import fs from 'fs'; export async function GET(){ let f: string[] = []; try{f=fs.readdirSync('/opt/openmontage/output').filter(x=>x[0]!=='.');}catch{} return NextResponse.json({renders:f}); }

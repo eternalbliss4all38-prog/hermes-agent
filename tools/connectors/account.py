@@ -77,7 +77,11 @@ def _run(start: AccountOperationStart, action: str, initiator: str | None) -> No
     try:
         drive_operation(
             start.operation,
+<<<<<<< HEAD
             managed.managed_kind(managed.managed_client(initiator=initiator), action, force=False),
+=======
+            managed.managed_kind(managed.managed_client(creates_guest=True, initiator=initiator), action, force=False),
+>>>>>>> origin/main
             connection_callback=lambda _payload: start.done.set(),
             tick_seconds=managed.WATCH_TICK_SECONDS,
             with_urls_in_result=False,

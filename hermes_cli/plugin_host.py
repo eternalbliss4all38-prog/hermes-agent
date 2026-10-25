@@ -216,7 +216,11 @@ class PluginHost:
             "profile_name": self._base_context.copy().run(lambda: ctx.profile_name),
             "manifest": {k: getattr(manifest, k, None) for k in (
                 "name", "version", "description", "author", "source", "path", "key", "kind",
+<<<<<<< HEAD
                 "skill_namespace")},
+=======
+                "data_namespace")},
+>>>>>>> origin/main
             "ctx_methods": sorted(n for n in dir(PluginContext) if not n.startswith("_")),
         }
         self._loading = plugin_key
@@ -535,6 +539,16 @@ def _holds_live_handle(value: Any) -> bool:
     return found or (isinstance(encoded, dict) and "__opaque__" in encoded)
 
 
+<<<<<<< HEAD
+=======
+def is_hosted_object(obj: Any) -> bool:
+    """``obj`` is a proxy for a plugin object whose code runs in the plugin host (``plugins.isolation:
+    host``): its methods run there and anything they return that is not plain data arrives as an
+    :class:`Opaque` placeholder."""
+    return "__hermes_plugin_host_ref__" in vars(type(obj))
+
+
+>>>>>>> origin/main
 def _run_on_gateway_loop(coro: Any) -> Any:
     """A facade coroutine (``platform_actions``) uses adapters bound to the gateway's event loop, so
     it runs there when a gateway is up; otherwise on a private loop. Always called off-loop (a

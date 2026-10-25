@@ -10,6 +10,11 @@ import asyncio
 from contextlib import asynccontextmanager, contextmanager
 import json
 import os
+<<<<<<< HEAD
+=======
+import queue
+import types
+>>>>>>> origin/main
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 import signal
@@ -118,6 +123,11 @@ class _Wire:
         self.thread = threading.Thread(target=self.loop.run_forever, daemon=True)
         self.thread.start()
         self.calls = []
+<<<<<<< HEAD
+=======
+        self.events = queue.Queue()  # the session's frames (none reach this wire's ``call``)
+        self.listeners = types.SimpleNamespace(request_listeners=[])
+>>>>>>> origin/main
 
         async def _open():
             return await websocket(home, desc)
@@ -126,6 +136,12 @@ class _Wire:
     def _run(self, coro):
         return asyncio.run_coroutine_threadsafe(coro, self.loop).result(60)
 
+<<<<<<< HEAD
+=======
+    def state(self, session_id):
+        return self.listeners
+
+>>>>>>> origin/main
     def call(self, method, **params):
         from hermes_cli.gateway_client import GatewayRPCError
         self.calls.append(method)

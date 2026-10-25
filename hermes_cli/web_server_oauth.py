@@ -233,16 +233,27 @@ def _record_sign_in_state(sess: dict[str, Any], state: Any) -> None:
             sess["account_email"] = state.email or None
             # None when the config was left on the user's own model, as the poll route documents.
             sess["model"] = state.model if state.model_changed else None
+<<<<<<< HEAD
             return
         if kind == "declined":
             sess["status"], sess["reason"] = "denied", "user_declined"
             sess["error_message"] = state.copy
+=======
+            # What the free tier's handoff did (moved apps, apps to reconnect); empty without one.
+            sess["handoff"] = list(state.handoff)
+            # The same result as fields, so the desktop can name the apps and follow a retry.
+            sess["handoff_status"] = state.handoff_status
+            return
+        if kind == "cancelled":
+            sess["status"] = "cancelled"
+>>>>>>> origin/main
             return
         if kind == "timed_out":
             sess["status"], sess["reason"] = "error", "timeout"
             # The enriched device-auth guidance, which the dashboard has room for.
             sess["error_message"] = state.detail or state.copy
             return
+<<<<<<< HEAD
         if kind == "retired":
             sess["status"], sess["reason"] = "error", "account_retired"
             sess["error_message"] = state.copy
@@ -278,6 +289,22 @@ def _nous_promotion_poller(session_id: str, sess: dict[str, Any]) -> None:
 
     The generator was created and advanced to its ``Code`` state by ``_start_nous_device_code``, so
     it is already holding the transfer's codes and its HTTP client. Nothing here is wrapped in
+=======
+        sess["status"] = "error"
+        sess["reason"] = getattr(state, "reason", "") or kind or "error"
+        sess["error_message"] = state.copy    # the chat form: no raw exception reaches the UI
+        # Whether a later attempt can succeed, and the wait the service named (seconds).
+        sess["retryable"] = bool(getattr(state, "retryable", False))
+        sess["retry_after"] = int(getattr(state, "retry_after", 0) or 0)
+
+
+@_oauth_poller("nous")
+def _nous_sign_in_poller(session_id: str, sess: dict[str, Any]) -> None:
+    """Drain the sign-in the start route began: the one shared flow, rendered onto the session.
+
+    The generator was created and advanced to its ``Code`` state by ``_start_nous_device_code``, so
+    it is already holding the device code and its HTTP client. Nothing here is wrapped in
+>>>>>>> origin/main
     ``_profile_scope``: that context manager holds a process-global lock and swaps module
     attributes across its ``yield``, and this loop can last the sign-in code's whole expiry. The
     generator scopes its own short config/auth-store sections instead.
@@ -293,6 +320,7 @@ def _nous_promotion_poller(session_id: str, sess: dict[str, Any]) -> None:
             gen.close()     # unwinds the suspended HTTP client if we leave early
 
 
+<<<<<<< HEAD
 @_oauth_poller("nous")
 def _nous_plain_poller(session_id: str, sess: dict[str, Any]) -> None:
     """Background poller for a plain Nous device-code login (no free-tier identity to transfer).
@@ -359,6 +387,8 @@ def _nous_plain_poller(session_id: str, sess: dict[str, Any]) -> None:
         sess["model"] = settled.get("model") or None
 
 
+=======
+>>>>>>> origin/main
 @_oauth_poller("minimax")
 def _minimax_poller(session_id: str, sess: dict[str, Any]) -> None:
     """MiniMax poller: PKCE-style ``code_verifier`` + ``user_code`` instead of Nous's

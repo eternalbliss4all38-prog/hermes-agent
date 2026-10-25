@@ -7,6 +7,10 @@ from unittest.mock import AsyncMock
 import pytest
 
 from gateway.session_contract import SessionRef
+<<<<<<< HEAD
+=======
+from gateway.session_events import SessionEvents
+>>>>>>> origin/main
 from gateway.session_controls import AuthorityConnection
 
 
@@ -50,7 +54,12 @@ async def test_session_resume_still_remaps_legacy_cli_source(monkeypatch):
             } if sid == tip_id else None,
             get_compression_tip=lambda sid: tip_id,
         ),
+<<<<<<< HEAD
         sessions={owner_id: SimpleNamespace(source=SimpleNamespace(platform=None), route=f'agent:main:cli:dm:{owner_id}')},
+=======
+        sessions={owner_id: SimpleNamespace(source=SimpleNamespace(platform=None), route=f'agent:main:cli:dm:{owner_id}',
+                                            event_stream=SessionEvents())},
+>>>>>>> origin/main
         authorize=lambda *a, **k: None,
         attach=AsyncMock(return_value=_attach_snapshot(owner_ref)),
     )

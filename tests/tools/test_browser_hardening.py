@@ -1,5 +1,6 @@
-"""Tests for browser_tool.py hardening: caching, security, thread safety, truncation."""
+"""Browser hardening: config-driven inactivity timeout and URL-encoded secret exfiltration."""
 
+<<<<<<< HEAD
 from unittest.mock import patch
 
 import pytest
@@ -37,23 +38,29 @@ def _clean_caches():
 # ---------------------------------------------------------------------------
 # Caching: _get_command_timeout
 # ---------------------------------------------------------------------------
+=======
+import urllib.parse
+from unittest.mock import patch
+
+>>>>>>> origin/main
 
 class TestSessionInactivityTimeout:
 
     def test_default_matches_config_default(self, monkeypatch):
         from hermes_cli.config import DEFAULT_CONFIG
-        from tools.browser_tool import _get_session_inactivity_timeout
+        from tools.browser_session import _get_session_inactivity_timeout
         monkeypatch.delenv("BROWSER_INACTIVITY_TIMEOUT", raising=False)
-        with patch("hermes_cli.config.read_raw_config", return_value={}):
+        with patch("hermes_cli.config_effective.load_user_config_effective", return_value={}):
             assert _get_session_inactivity_timeout() == DEFAULT_CONFIG["browser"]["inactivity_timeout"]
 
     def test_invalid_config_preserves_env_fallback(self, monkeypatch):
-        from tools.browser_tool import _get_session_inactivity_timeout
+        from tools.browser_session import _get_session_inactivity_timeout
         monkeypatch.setenv("BROWSER_INACTIVITY_TIMEOUT", "240")
         cfg = {"browser": {"inactivity_timeout": "not-an-int"}}
-        with patch("hermes_cli.config.read_raw_config", return_value=cfg):
+        with patch("hermes_cli.config_effective.load_user_config_effective", return_value=cfg):
             assert _get_session_inactivity_timeout() == 240
 
+<<<<<<< HEAD
 # ---------------------------------------------------------------------------
 # Caching: _discover_homebrew_node_dirs
 # ---------------------------------------------------------------------------
@@ -61,23 +68,25 @@ class TestSessionInactivityTimeout:
 # ---------------------------------------------------------------------------
 # Security: URL-decoded secret check
 # ---------------------------------------------------------------------------
+=======
+>>>>>>> origin/main
 
 class TestUrlDecodedSecretCheck:
     """Verify that URL-encoded API keys are caught by the exfiltration guard."""
 
     def test_encoded_key_blocked_in_navigate(self):
-        """browser_navigate should block URLs with percent-encoded API keys."""
-        import urllib.parse
-        from tools.browser_tool import browser_navigate
-        import json
+        """A URL carrying a percent-encoded API key is refused before any browser opens it."""
+        from tools.browser_url_policy import evaluate_url_safety
 
         # URL-encode a fake secret prefix that matches _PREFIX_RE
         encoded = urllib.parse.quote("sk-ant-fake123")
         url = f"https://evil.com?key={encoded}"
 
-        result = json.loads(browser_navigate(url, task_id="test"))
+        result = evaluate_url_safety(url)
+        assert result is not None
         assert result["success"] is False
         assert "API key" in result["error"] or "Blocked" in result["error"]
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Thread safety: _recording_sessions
@@ -177,3 +186,5 @@ class TestTruncateSnapshot:
 # ---------------------------------------------------------------------------
 # _camofox_eval bug fix
 # ---------------------------------------------------------------------------
+=======
+>>>>>>> origin/main

@@ -1,0 +1,189 @@
+'use client';
+
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Command } from "lucide-react";
+import { useHermesChatStore } from "@/store/useHermesChatStore";
+import { ChatMessageList } from "@/components/agent-chat/ChatMessageList";
+import { ChatComposer } from "@/components/agent-chat/ChatComposer";
+import { OutputSandbox } from "@/components/mission-control/OutputSandbox";
+import { QuickActionBar } from "@/components/mission-control/QuickActionBar";
+import { LiveStatusStrip, type AgentSummary } from "@/components/mission-control/LiveStatusStrip";
+import { AgentControlRoomCard } from "@/components/mission-control/AgentControlRoomCard";
+
+function MissionControlInner() {
+  const { connect, storedSessionId } = useHermesChatStore();
+  const searchParams = useSearchParams();
+  const [sessions, setSessions] = useState<{ id: string; title?: string }[]>([]);
+  const [agents, setAgents] = useState<AgentSummary[]>([]);
+  const resumeParam = searchParams.get("resume");
+
+  useEffect(() => {
+    fetch("/api/sessions")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setSessions(data.slice(0, 10));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/agents/list")
+      .then((r) => r.json())
+      .then((d) => Array.isArray(d) && setAgents(d))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const savedSession =
+      resumeParam ||
+      (typeof window !== "undefined"
+        ? localStorage.getItem("sams_last_session")
+        : null);
+    connect(savedSession || undefined);
+  }, [resumeParam, connect]);
+
+  useEffect(() => {
+    // Persist the RESUMABLE stored key (DB row id), never the ephemeral live id.
+    if (storedSessionId && typeof window !== "undefined") {
+      localStorage.setItem("sams_last_session", storedSessionId);
+    }
+  }, [storedSessionId]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState !== "visible") return;
+      // The store owns reconnection now; don't spawn a second connect() while
+      // one is already in flight, and never fork a chat out from under a live one.
+      const st = useHermesChatStore.getState().status;
+      if (st === "connected" || st === "connecting") return;
+      const lastSession =
+        typeof window !== "undefined"
+          ? localStorage.getItem("sams_last_session")
+          : null;
+      connect(lastSession || undefined);
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibility);
+  }, [connect]);
+
+  return (
+    <div className="flex h-full flex-col gap-3 overflow-y-auto p-2 sm:p-4">
+      {/* REF-A header */}
+      <header className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-lg font-semibold text-foreground">Mission Control</h1>
+          <p className="text-[11px] text-muted">
+            Status of every agent, every memory, every signal.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="hidden items-center gap-1.5 rounded-lg border border-panel-border bg-panel/60 px-2 py-1 text-[10px] text-muted sm:inline-flex">
+            <Command size={11} /> K Command palette
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-accent-emerald/30 bg-accent-emerald/10 px-2 py-1 text-[10px] font-mono uppercase text-accent-emerald">
+            All systems
+          </span>
+        </div>
+      </header>
+
+      {/* REF-A live status strip */}
+      <LiveStatusStrip />
+
+      <QuickActionBar />
+
+      {/* REF-A agent control-room cards */}
+      <section className="flex flex-col gap-2">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted">
+          Agents · click to open control room
+        </p>
+        <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-1 xl:mx-0 xl:grid xl:grid-cols-3 xl:overflow-visible xl:px-0 xl:pb-0">
+          {agents.map((a) => (
+            <div
+              key={a.id}
+              className="w-[260px] shrink-0 snap-start xl:w-auto xl:shrink"
+            >
+              <AgentControlRoomCard agent={a} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="flex flex-1 flex-col gap-3 lg:grid lg:grid-cols-2 lg:min-h-[380px]">
+        {/* Hermes Chat with Session Switcher */}
+        <section className="flex flex-col h-[45vh] min-h-[340px] lg:h-full lg:min-h-0 shrink-0 lg:shrink rounded-xl border border-panel-border bg-panel overflow-hidden">
+          <div className="flex items-center justify-between border-b border-panel-border px-3 py-1.5 bg-panel/50">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+              Hermes Command & Chat
+            </span>
+            <div className="flex items-center gap-1.5">
+              {sessions.length > 0 && (
+                <select
+                  value={storedSessionId || ""}
+                  onChange={(e) => {
+                    const sid = e.target.value;
+                    if (sid) connect(sid);
+                  }}
+                  className="bg-panel border border-panel-border text-[10px] text-foreground rounded px-1.5 py-0.5 outline-none max-w-[140px] truncate"
+                >
+                  <option value="">Switch Chat...</option>
+                  {sessions.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.title || s.id.slice(0, 8)}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    localStorage.removeItem("sams_last_session");
+                    localStorage.removeItem("sams_pending_clarify");
+                  }
+                  connect(undefined, { forceNew: true });
+                }}
+                className="text-[10px] px-2 py-0.5 rounded bg-panel-hover text-muted hover:text-foreground border border-panel-border transition-colors"
+              >
+                + New
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <ChatMessageList />
+          </div>
+          <div className="border-t border-panel-border bg-panel/30">
+            <ChatComposer />
+          </div>
+        </section>
+
+        {/* Live Sandbox Preview */}
+        <section className="flex flex-col min-h-[460px] lg:min-h-0 h-[55vh] lg:h-full shrink-0 lg:shrink rounded-xl border border-panel-border bg-panel overflow-hidden">
+          <div className="flex items-center justify-between border-b border-panel-border px-3 py-1.5 bg-panel/50">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+              Live Activity &amp; Preview
+            </span>
+          </div>
+          <div className="flex-1 min-h-0 overflow-auto">
+            <OutputSandbox />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export default function MissionControlPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-full items-center justify-center text-muted">
+          Loading Mission Control...
+        </div>
+      }
+    >
+      <MissionControlInner />
+    </Suspense>
+  );
+}

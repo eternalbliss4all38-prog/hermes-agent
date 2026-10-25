@@ -2,6 +2,10 @@
 from __future__ import annotations
 
 import logging
+<<<<<<< HEAD
+=======
+from contextlib import contextmanager
+>>>>>>> origin/main
 
 from hermes_constants import get_hermes_home, get_default_hermes_root
 from hermes_cli.profiles import parked_marker_path, profile_is_parked, profile_is_standalone, profiles_to_serve
@@ -44,6 +48,24 @@ def host_scope_for_all_verb(owner):
     return _home_env(owner.home if owner is not None else get_default_hermes_root())
 
 
+<<<<<<< HEAD
+=======
+@contextmanager
+def restart_all_verb_scope(owner):
+    """``host_scope_for_all_verb`` plus the owed online notice: ``restart --all`` restarts the host.
+
+    The verb stops the host with a service call or a SIGTERM, so the old process never runs the
+    in-band restart path that stamps the planned-restart marker; without it the next boot reads a
+    plain stop and every home channel stays silent — #142515's gap, on every OS. Yields the stamp
+    for the caller to run once the old host is gone and before the start: a marker written while the
+    old host still drains can be replayed and unlinked by it, and the new host then boots silent.
+    """
+    from gateway.restart_notice import write_planned_restart_marker
+    with host_scope_for_all_verb(owner):
+        yield write_planned_restart_marker
+
+
+>>>>>>> origin/main
 def profile_lifecycle(command: str, args) -> bool:
     """True when a named-profile command was handled (including an unconfirmed request)."""
     from hermes_cli import gateway as gw

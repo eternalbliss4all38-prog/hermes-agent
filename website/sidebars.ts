@@ -490,15 +490,6 @@ const sidebars: SidebarsConfig = {
                 },
                 {
                   type: 'category',
-                  label: 'migration',
-                  key: 'skills-optional-migration',
-                  collapsed: true,
-                  items: [
-                    'user-guide/skills/optional/migration/migration-openclaw-migration',
-                  ],
-                },
-                {
-                  type: 'category',
                   label: 'mlops',
                   key: 'skills-optional-mlops',
                   collapsed: true,
@@ -841,6 +832,10 @@ const sidebars: SidebarsConfig = {
                 'developer-guide/web-search-provider-plugin',
                 'developer-guide/browser-provider-plugin',
                 'developer-guide/terminal-environment-plugin',
+<<<<<<< HEAD
+=======
+                'developer-guide/delegation-provider-plugin',
+>>>>>>> origin/main
                 'developer-guide/plugins/application-declarations',
                 'developer-guide/plugins/catalog-submission',
               ],

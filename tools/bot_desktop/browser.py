@@ -1,5 +1,6 @@
 """The bot's browser on its Bot Desktop: one executable, one persistent user-data-dir per profile.
 
+<<<<<<< HEAD
 The agent drives Chromium through agent-browser; a human who takes over clicks the dock's Browser
 icon. Both must be THE SAME browser — same binary, same ``--user-data-dir`` — or the human logs in
 to a jar the bot never sees. Chromium's singleton makes a second launch on the same user-data-dir
@@ -7,15 +8,28 @@ open a window in the running instance, which is exactly the hand-over we want �
 human's dock instance is already up, agent-browser's own launch is forwarded to it and dies without a
 DevTools endpoint, so the dock exposes a debugging port and the agent ATTACHES to it (see
 :func:`running_instance_cdp_port`) instead of launching.
+=======
+The agent's Chromium (``tools.browser_session`` → ``tools.browser_launcher``) and the dock's Browser icon a
+human clicks must be THE SAME browser — same binary, same ``--user-data-dir`` — or the human logs in to a
+jar the bot never sees. Chromium's singleton makes a second launch on the same user-data-dir open a window
+in the running instance, which is the hand-over we want in ONE direction. When the human's dock instance is
+already up, a launch would be forwarded to it and exit without a DevTools endpoint, so the dock exposes a
+debugging port and the launcher ATTACHES to it instead of launching.
+>>>>>>> origin/main
 """
 
 from __future__ import annotations
 
 import os
 import shutil
+<<<<<<< HEAD
 import socket
 from pathlib import Path
 from typing import Optional, Tuple
+=======
+from pathlib import Path
+from typing import Optional
+>>>>>>> origin/main
 
 from tools.bot_desktop import runtime
 
@@ -25,6 +39,7 @@ _SYSTEM_BROWSERS = ("google-chrome", "google-chrome-stable", "chromium", "chromi
 
 
 def profile_dir() -> Path:
+<<<<<<< HEAD
     """User-data-dir the bot's browser uses on this profile's screen. ``AGENT_BROWSER_PROFILE`` pins your own:
     ``~`` expands, and a relative path is anchored at this profile's HERMES_HOME (where the rest of the screen's
     state lives), so ``pin`` means ``<HERMES_HOME>/pin`` and two profiles never share one jar by accident."""
@@ -37,13 +52,31 @@ def profile_dir() -> Path:
 def executable() -> Optional[str]:
     """The Chromium agent-browser launches: an explicit ``AGENT_BROWSER_EXECUTABLE_PATH``, else the newest
     Playwright Chromium it bundles, else a system Chrome/Chromium. ``None`` when there is none.
+=======
+    """User-data-dir the bot's browser uses on this profile's screen. ``browser.user_data_dir`` pins your own:
+    ``~`` expands, and a relative path is anchored at this profile's HERMES_HOME (where the rest of the screen's
+    state lives), so ``pin`` means ``<HERMES_HOME>/pin`` and two profiles never share one jar by accident."""
+    from tools.browser_session_cloud import user_data_dir
+    override = user_data_dir()
+    return Path(override) if override else runtime.state_dir() / "browser-profile"
+
+
+def executable() -> Optional[str]:
+    """The Chromium the bot runs: an explicit ``browser.executable_path``, else the packaged Chromium, else a
+    system Chrome/Chromium. ``None`` when there is none.
+>>>>>>> origin/main
 
     Non-root under ``kernel.apparmor_restrict_unprivileged_userns=1`` (Ubuntu 23.10+) flips the order:
     Playwright's bundle has no setuid ``chrome_sandbox`` and dies 'FATAL: No usable sandbox!' there, while
     a distro chromium ships the helper. The bundle stays the answer when it is the only browser — a dock
     icon that fails loudly beats a non-root ``--no-sandbox``.
     """
+<<<<<<< HEAD
     explicit = os.environ.get("AGENT_BROWSER_EXECUTABLE_PATH", "").strip()
+=======
+    from tools.browser_session_cloud import executable_path
+    explicit = executable_path()
+>>>>>>> origin/main
     if explicit and os.access(explicit, os.X_OK) and not _is_headless_shell(explicit):
         return explicit
     finders = [_managed_executable, _system_executable]
@@ -60,10 +93,15 @@ def _managed_executable() -> Optional[str]:
 
 
 def _is_headless_shell(exe: str) -> bool:
+<<<<<<< HEAD
     """Playwright's ``chrome-headless-shell`` can drive pages but cannot open a window. The image's boot
     hook exports it as ``AGENT_BROWSER_EXECUTABLE_PATH`` (it is the only build the unsuffixed tags carry,
     and the lighter one everywhere), so trusting that override blindly would pin a windowless binary to
     the dock's Browser icon."""
+=======
+    """Playwright's ``chrome-headless-shell`` can drive pages but cannot open a window; trusting such an
+    override blindly would pin a windowless binary to the dock's Browser icon."""
+>>>>>>> origin/main
     return "headless" in os.path.basename(exe).lower() or "headless_shell" in exe
 
 
@@ -76,7 +114,11 @@ def _is_root() -> bool:
 
 
 def _userns_restricted() -> bool:
+<<<<<<< HEAD
     from tools.browser_tool_session import apparmor_restricts_unprivileged_userns
+=======
+    from tools.browser_launcher import apparmor_restricts_unprivileged_userns
+>>>>>>> origin/main
     return apparmor_restricts_unprivileged_userns()
 
 
@@ -86,6 +128,7 @@ def dock_launch() -> Optional[tuple[str, str]]:
     return (exe, str(profile_dir())) if exe else None
 
 
+<<<<<<< HEAD
 def dock_argv(exe: str, user_data_dir: str, *, sandbox_bypass: Optional[bool] = None) -> list[str]:
     """Command the dock's Browser icon runs. ``--remote-debugging-port=0`` makes a human-started
     instance attachable (Chromium writes the chosen port to ``<user-data-dir>/DevToolsActivePort``);
@@ -101,6 +144,24 @@ def dock_argv(exe: str, user_data_dir: str, *, sandbox_bypass: Optional[bool] = 
     return [exe, f"--user-data-dir={user_data_dir}", "--remote-debugging-port=0", "--no-first-run",
             "--no-default-browser-check", "--test-type", f"--disk-cache-size={DISK_CACHE_BYTES}",
             *(CHROMIUM_SANDBOX_BYPASS_ARGS if (_needs_chromium_sandbox_bypass() if sandbox_bypass is None
+=======
+# Flags the agent's launch and the dock's icon share on the persistent profile. --test-type hides the
+# "Chrome for Testing is only for automated testing" and unsupported-flag (--no-sandbox as root) infobars
+# that would sit over the human's takeover view; the persistent profile's HTTP cache is capped (uncapped it
+# grows for months toward a hosted instance's 6 GB).
+SHARED_PROFILE_ARGS = ("--test-type", f"--disk-cache-size={DISK_CACHE_BYTES}")
+
+
+def dock_argv(exe: str, user_data_dir: str, *, sandbox_bypass: Optional[bool] = None) -> list[str]:
+    """Command the dock's Browser icon runs. ``--remote-debugging-port=0`` makes a human-started
+    instance attachable (Chromium writes the chosen port to ``<user-data-dir>/DevToolsActivePort``);
+    first-run / default-browser dialogs would sit between the human and the bot's tabs. The sandbox policy
+    is the launcher's (root, Docker, AppArmor userns): the human's Browser is the bot's browser."""
+    from tools.browser_launcher import CHROMIUM_SANDBOX_BYPASS_ARGS, needs_chromium_sandbox_bypass
+    return [exe, f"--user-data-dir={user_data_dir}", "--remote-debugging-port=0", "--no-first-run",
+            "--no-default-browser-check", *SHARED_PROFILE_ARGS,
+            *(CHROMIUM_SANDBOX_BYPASS_ARGS if (needs_chromium_sandbox_bypass() if sandbox_bypass is None
+>>>>>>> origin/main
                                               else sandbox_bypass) else ())]
 
 
@@ -113,6 +174,7 @@ def dock_exec_line(exe: str, user_data_dir: str, *, sandbox_bypass: Optional[boo
         quoted = "".join("\\" + ch if ch in '"`$\\' else ch for ch in arg)
         return '"' + quoted.replace("\\", "\\\\") + '"'
     return "Exec=" + " ".join(quote(arg) for arg in dock_argv(exe, user_data_dir, sandbox_bypass=sandbox_bypass))
+<<<<<<< HEAD
 
 
 def running_instance_cdp_port(user_data_dir: str, *, exclude_session: Optional[str] = None) -> Optional[int]:
@@ -182,3 +244,5 @@ def env_for_agent(env: dict) -> dict:
         if not pinned or _is_headless_shell(pinned):
             env["AGENT_BROWSER_EXECUTABLE_PATH"] = exe
     return env
+=======
+>>>>>>> origin/main

@@ -16,6 +16,10 @@ import { requestModelMenuToggle } from '@/app/chat/composer/focus'
 import { useComposerScope } from '@/app/chat/composer/scope'
 import { useSessionView } from '@/app/chat/session-view'
 import { SETTINGS_ROUTE } from '@/app/routes'
+<<<<<<< HEAD
+=======
+import { useBillingApi } from '@/app/settings/billing/api'
+>>>>>>> origin/main
 import { dispatchedTo } from '@/components/assistant-ui/thread/agent-delivery'
 import { ChangedFilesCard } from '@/components/assistant-ui/thread/changed-files-card'
 import {
@@ -47,7 +51,12 @@ import {
   formatLimitReset,
   formatResetClock,
   isOAuthReauthSurface,
+<<<<<<< HEAD
   scheduledRetryDelayMs
+=======
+  scheduledRetryDelayMs,
+  type UsageLimitSuggestion
+>>>>>>> origin/main
 } from '@/lib/error-surface'
 import { errorCardText } from '@/lib/error-surface-copy'
 import { triggerHaptic } from '@/lib/haptics'
@@ -67,6 +76,10 @@ import { markAssistantIdSpoken } from '@/lib/spoken-reply'
 import { useEnterAnimation } from '@/lib/use-enter-animation'
 import { cn } from '@/lib/utils'
 import { playSpeechText, stopVoicePlayback } from '@/lib/voice-playback'
+<<<<<<< HEAD
+=======
+import { requestBillingSettings } from '@/store/billing-block'
+>>>>>>> origin/main
 import { DESKTOP_BUTTON_ACTIONS, recordAction } from '@/store/desktop-metrics'
 import { openFreeTierSignIn } from '@/store/free-tier-sign-in'
 import { notifyError } from '@/store/notifications'
@@ -583,6 +596,7 @@ const StreamingMarker: FC = () => {
 // Retry / Open logs / Copy error details, so nothing regresses on version skew.
 
 const useErrorSurface = () => useAuiState(s => s.message.metadata?.custom?.errorSurface as ErrorSurface | undefined)
+<<<<<<< HEAD
 
 const useErrorText = () =>
   useAuiState(s => {
@@ -836,6 +850,367 @@ const ErrorRecoveryActions: FC = () => {
   const surface = useErrorSurface()
   const errorText = useErrorText()
   const failedAt = useErrorFailedAt()
+=======
+
+const useErrorText = () =>
+  useAuiState(s => {
+    const status = s.message.status as { error?: unknown; type?: string } | undefined
+
+    return status?.type === 'incomplete' && typeof status.error === 'string' ? status.error : ''
+  })
+>>>>>>> origin/main
+
+// When the failure was recorded: the settled bubble's completion (the terminal frame's time), else the
+// row's own timestamp for a hydrated card. Never `createdAt`, whose fallback is render time.
+const useErrorFailedAt = () =>
+  useAuiState(s => {
+    const custom = s.message.metadata?.custom as { timelineCompletedAt?: unknown; timelineTimestamp?: unknown }
+    const at = custom?.timelineCompletedAt ?? custom?.timelineTimestamp
+
+    return typeof at === 'number' && Number.isFinite(at) && at > 0 ? at : undefined
+  })
+
+const ErrorCardHeadline: FC = () => {
+  const { t } = useI18n()
+  const surface = useErrorSurface()
+  const errorText = useErrorText()
+  const { body, title } = errorCardText(t.assistant.thread, surface)
+
+  return (
+    <>
+      <div className="font-medium">{title}</div>
+      <div>{body}</div>
+      {errorText && (
+        <details className="mt-0.5 min-w-0 text-[0.72rem] opacity-70">
+          <summary className="cursor-pointer select-none">{t.assistant.thread.errorDetails}</summary>
+          <div className="wrap-anywhere mt-0.5 whitespace-pre-wrap font-mono">{errorText}</div>
+        </details>
+      )}
+    </>
+  )
+}
+
+// Isolated because useNavigate() THROWS outside a <Router> (bare test
+// harnesses, embedded panes render threads router-free). The parent gates
+// these children's mount on useInRouterContext(), which is safe anywhere.
+const SettingsLinkAction: FC<{ icon?: ReactNode; label: string; to: string }> = ({ icon, label, to }) => {
+  const navigate = useNavigate()
+
+  return (
+    <button className="aui-error-action" onClick={() => navigate(to)} type="button">
+      {icon}
+      {label}
+    </button>
+  )
+}
+
+// "Switch provider" for a provider/endpoint/auth/billing failure: opens the
+// composer pill's LIVE model menu, whose picks go through `model.switch` on
+// this session (use-model-menu-controller.ts) — the same menu the
+// `composer.modelPicker` hotkey toggles. Settings → Models only changes the
+// default for NEW sessions, so it is the fallback for when no chat surface is
+// on screen (requestModelMenuToggle returns false), not the first stop.
+// Targeting follows requestModelMenuToggle: the pane under the pointer, else
+// the active composer — a click on this card puts the pointer in its own pane.
+const SwitchProviderAction: FC<{ label: string }> = ({ label }) => {
+  const navigate = useNavigate()
+
+  const switchProvider = useCallback(() => {
+    triggerHaptic('selection')
+
+    if (!requestModelMenuToggle()) {
+      navigate(`${SETTINGS_ROUTE}?tab=config:model`)
+    }
+  }, [navigate])
+
+  return (
+    <button className="aui-error-action" onClick={switchProvider} type="button">
+      {label}
+    </button>
+  )
+}
+
+// Settings → Providers → API keys deep link for a rejected API key, plus
+// `&key=<ENV>` when the descriptor names the env var (providers-settings.tsx
+// scrolls to and expands that provider). Older backends omit `api_key_env`;
+// the API-keys list alone is still the right place.
+const updateApiKeyRoute = (surface: ErrorSurface | undefined) => {
+  const params = new URLSearchParams({ tab: 'providers', pview: 'keys' })
+
+  if (surface?.apiKeyEnv) {
+    params.set('key', surface.apiKeyEnv)
+  }
+
+  return `${SETTINGS_ROUTE}?${params.toString()}`
+}
+
+// "Edit message" for a safety refusal: opens the preceding user message in
+// the edit composer, the same runtime call the bubble's own click performs
+// (user-message.tsx ActionBarPrimitive.Edit). Retry would reproduce the
+// refusal; changing the words is the only way forward.
+const EditPreviousMessageAction: FC<{ label: string }> = ({ label }) => {
+  const threadRuntime = useThreadRuntime()
+
+  const previousUserMessageId = useAuiState(s => {
+    const messages = s.thread.messages
+    const index = messages.findIndex(message => message.id === s.message.id)
+
+    for (let i = index - 1; i >= 0; i--) {
+      if (messages[i].role === 'user') {
+        return messages[i].id
+      }
+    }
+
+    return null
+  })
+
+  const beginEdit = useCallback(() => {
+    if (!previousUserMessageId) {
+      return
+    }
+
+    triggerHaptic('selection')
+    notifyThreadEditOpen()
+    threadRuntime.getMessageById(previousUserMessageId).composer.beginEdit()
+  }, [previousUserMessageId, threadRuntime])
+
+  if (!previousUserMessageId) {
+    return null
+  }
+
+  return (
+    <button className="aui-error-action" onClick={beginEdit} type="button">
+      {label}
+    </button>
+  )
+}
+
+// "Compress conversation" for a context overflow: runs /compress against the
+// failed turn's OWN session through the app's slash pipeline (the same
+// session.compress RPC path the typed command takes — slash.ts `compress`),
+// so it inherits the stale-runtime recovery, transcript replacement and
+// progress notice instead of re-implementing them here.
+const CompressConversationAction: FC<{ label: string }> = ({ label }) => {
+  const { t } = useI18n()
+  const view = useSessionView()
+  const sessionId = useStore(view.$runtimeId)
+
+  const compress = useCallback(() => {
+    const delegate = sessionTileDelegate()
+
+    if (!sessionId || !delegate) {
+      notifyError(new Error('slash delegate unavailable'), t.assistant.thread.errorCompressFailed)
+
+      return
+    }
+
+    triggerHaptic('submit')
+    // A button, not a typed command: kept out of the slash-command usage count.
+    void delegate.executeSlash('/compress', sessionId, { typed: false }).catch(error => {
+      notifyError(error, t.assistant.thread.errorCompressFailed)
+    })
+  }, [sessionId, t.assistant.thread.errorCompressFailed])
+
+  return (
+    <button className="aui-error-action" onClick={compress} type="button">
+      {label}
+    </button>
+  )
+}
+
+// usage_window: "Switch to Model A" — the plan's recommended model that
+// still works past the limit (agent/plan_limits.py picked it). Switches THIS
+// session (session.info repaints the composer), then re-runs the refused turn
+// only once the switch applied: a guarded target waits for the user's answer,
+// and keeping the current model re-runs nothing. Session-only on purpose: the
+// user's default stays put.
+const SwitchToModelAction: FC<{ suggestion: UsageLimitSuggestion }> = ({ suggestion }) => {
+  const { t } = useI18n()
+  const copy = t.assistant.thread
+  const aui = useAui()
+  const view = useSessionView()
+  const sessionId = useStore(view.$runtimeId)
+  const [busy, setBusy] = useState(false)
+
+  const switchAndRetry = useCallback(async () => {
+    const switchSessionModel = sessionTileDelegate()?.switchSessionModel
+
+    if (!sessionId || !switchSessionModel) {
+      notifyError(new Error('session delegate unavailable'), copy.errorSwitchModelFailed)
+
+      return
+    }
+
+    triggerHaptic('submit')
+    setBusy(true)
+
+    try {
+      if (await switchSessionModel(sessionId, suggestion.model, suggestion.provider)) {
+        aui.message().reload()
+      }
+    } catch (error) {
+      notifyError(error, copy.errorSwitchModelFailed)
+    } finally {
+      setBusy(false)
+    }
+  }, [aui, copy.errorSwitchModelFailed, sessionId, suggestion.model, suggestion.provider])
+
+  return (
+    <button className="aui-error-action" disabled={busy} onClick={() => void switchAndRetry()} type="button">
+      {busy && <Loader2Icon className="size-3 animate-spin" />}
+      {copy.errorSwitchToModel(suggestion.label, suggestion.note)}
+    </button>
+  )
+}
+
+// usage_window, Keep going off with a balance: "Use credits" turns the account
+// setting on (the same call as Settings → Billing's switch), then re-runs the
+// turn. A refusal (remote spending not allowed yet, step-up) opens Billing, which
+// explains and fixes it.
+const UseCreditsAction: FC = () => {
+  const { t } = useI18n()
+  const copy = t.assistant.thread
+  const aui = useAui()
+  const api = useBillingApi()
+  const [busy, setBusy] = useState(false)
+
+  const turnOnCredits = useCallback(async () => {
+    triggerHaptic('submit')
+    setBusy(true)
+
+    try {
+      const result = await api.updateKeepGoingOnCredits(true)
+
+      if (result.ok) {
+        aui.message().reload()
+      } else {
+        requestBillingSettings()
+      }
+    } catch (error) {
+      notifyError(error, copy.errorUseCreditsFailed)
+    } finally {
+      setBusy(false)
+    }
+  }, [api, aui, copy.errorUseCreditsFailed])
+
+  return (
+    <button className="aui-error-action" disabled={busy} onClick={() => void turnOnCredits()} type="button">
+      {busy && <Loader2Icon className="size-3 animate-spin" />}
+      {copy.errorUseCredits}
+    </button>
+  )
+}
+
+// usage_window's own buttons, ahead of the generic ones: switch to the plan's suggested model, or turn
+// on credits. Nothing for any other failure.
+const UsageWindowLeadActions: FC<{ plan: ReturnType<typeof errorRecoveryPlan>; surface?: ErrorSurface }> = ({
+  plan,
+  surface
+}) => {
+  const suggestion = surface?.usageLimit?.suggestions[0]
+
+  return (
+    <>
+      {plan.switchToModel && suggestion && <SwitchToModelAction suggestion={suggestion} />}
+      {plan.useCredits && <UseCreditsAction />}
+    </>
+  )
+}
+
+// A plan limit names the fix as choosing another model; every other failure keeps "switch provider".
+const switchProviderLabel = (
+  copy: { errorChooseModel: string; errorSwitchProvider: string },
+  surface?: ErrorSurface
+) => (surface?.code === 'usage_window' ? copy.errorChooseModel : copy.errorSwitchProvider)
+
+// One client-side retry of THIS turn at the provider's own reset moment (#98852,
+// option B): arm → visible countdown + Cancel → fires `message().reload()` — the
+// exact call behind the Retry button — exactly once. Nothing persists: closing
+// the app, switching sessions or unmounting the card drops the timer, and a
+// retry that 429s again just shows the card (and this button) again.
+const ScheduledRetryAction: FC<{ resetsAt: number }> = ({ resetsAt }) => {
+  const { t } = useI18n()
+  const copy = t.assistant.thread
+  const aui = useAui()
+
+  // Armed once the user clicks; `fireAt` is the wall-clock ms the timer targets.
+  const [fireAt, setFireAt] = useState<null | number>(null)
+  const [now, setNow] = useState(() => Date.now())
+
+  // A manual Retry, a new message, or a later turn all make firing wrong: the
+  // reload would regenerate a message that is no longer the tail. Same gate
+  // `useActionBarReload` applies to the Retry button itself.
+  const stale = useAuiState(s => s.thread.isRunning || s.thread.isDisabled || !s.message.isLast)
+
+  useEffect(() => {
+    if (fireAt === null || stale) {
+      return
+    }
+
+    const timer = window.setTimeout(
+      () => {
+        setFireAt(null)
+        aui.message().reload()
+      },
+      Math.max(0, fireAt - Date.now())
+    )
+
+    const tick = window.setInterval(() => setNow(Date.now()), 1000)
+
+    return () => {
+      window.clearTimeout(timer)
+      window.clearInterval(tick)
+    }
+  }, [aui, fireAt, stale])
+
+  useEffect(() => {
+    if (stale) {
+      setFireAt(null)
+    }
+  }, [stale])
+
+  const delay = scheduledRetryDelayMs(resetsAt, now)
+
+  if (fireAt !== null) {
+    return (
+      <span className="inline-flex items-center gap-1.5" data-testid="error-retry-scheduled">
+        <span className="px-1 text-xs text-muted-foreground">
+          {copy.errorRetryScheduled(formatResetClock(resetsAt), formatCountdown(fireAt - now))}
+        </span>
+        <button className="aui-error-action" onClick={() => setFireAt(null)} type="button">
+          {copy.errorRetryScheduledCancel}
+        </button>
+      </span>
+    )
+  }
+
+  if (delay === null || stale) {
+    return null
+  }
+
+  return (
+    <button
+      className="aui-error-action"
+      onClick={() => {
+        triggerHaptic('submit')
+        setNow(Date.now())
+        setFireAt(resetsAt * 1000)
+      }}
+      type="button"
+    >
+      <RefreshCwIcon className="size-3" />
+      {copy.errorRetryAtReset(formatResetClock(resetsAt))}
+    </button>
+  )
+}
+
+// health: allow CC -- usage-window limit card: an Open Billing button, and diagnostics hidden for plan limits; this action bar was over target on main
+const ErrorRecoveryActions: FC = () => {
+  const { t } = useI18n()
+  const copy = t.assistant.thread
+  const surface = useErrorSurface()
+  const errorText = useErrorText()
+  const failedAt = useErrorFailedAt()
 
   // useNavigate() would throw here when no Router is above us; the deep-link
   // children mount only when one is (see SettingsLinkAction).
@@ -945,6 +1320,10 @@ const ErrorRecoveryActions: FC = () => {
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
+<<<<<<< HEAD
+=======
+      <UsageWindowLeadActions plan={plan} surface={surface} />
+>>>>>>> origin/main
       {plan.editMessage && <EditPreviousMessageAction label={copy.editMessage} />}
       {plan.compress && <CompressConversationAction label={copy.errorCompressConversation} />}
       {plan.chooseModel && (
@@ -1002,22 +1381,38 @@ const ErrorRecoveryActions: FC = () => {
         </span>
       )}
       {plan.retry && surface?.resetsAt !== undefined && <ScheduledRetryAction resetsAt={surface.resetsAt} />}
+<<<<<<< HEAD
       {plan.switchProvider && inRouter && <SwitchProviderAction label={copy.errorSwitchProvider} />}
       {localFolders && (
         <button className="aui-error-action" onClick={() => void openLogs()} type="button">
           {remoteConnection ? copy.errorOpenDesktopLogs : copy.errorOpenLogs}
+=======
+      {plan.openBilling && (
+        <button className="aui-error-action" onClick={() => requestBillingSettings()} type="button">
+          {copy.errorOpenBillingSettings}
+>>>>>>> origin/main
         </button>
       )}
-      <button className="aui-error-action" onClick={() => requestSendDiagnostics(diagnosticsText())} type="button">
-        <Upload className="size-3" />
-        {copy.errorSendDiagnostics}
-      </button>
-      <CopyButton
-        appearance="inline"
-        className="aui-error-action"
-        label={copy.errorCopyDiagnostics}
-        text={diagnosticsText}
-      />
+      {plan.switchProvider && inRouter && <SwitchProviderAction label={switchProviderLabel(copy, surface)} />}
+      {plan.diagnostics && (
+        <>
+          {localFolders && (
+            <button className="aui-error-action" onClick={() => void openLogs()} type="button">
+              {remoteConnection ? copy.errorOpenDesktopLogs : copy.errorOpenLogs}
+            </button>
+          )}
+          <button className="aui-error-action" onClick={() => requestSendDiagnostics(diagnosticsText())} type="button">
+            <Upload className="size-3" />
+            {copy.errorSendDiagnostics}
+          </button>
+          <CopyButton
+            appearance="inline"
+            className="aui-error-action"
+            label={copy.errorCopyDiagnostics}
+            text={diagnosticsText}
+          />
+        </>
+      )}
     </div>
   )
 }

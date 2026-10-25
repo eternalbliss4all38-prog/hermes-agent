@@ -53,6 +53,7 @@ def _http_get(url: str, headers: Optional[dict] = None, timeout: Optional[float]
 
 
 def _browser_available() -> bool:
+<<<<<<< HEAD
     """Is the local browser automation backend (agent-browser) installed?"""
     try:
         from tools.browser_tool_install import _find_agent_browser
@@ -78,6 +79,25 @@ def _launch_browser_probe(timeout: float) -> tuple:
         finally:
             browser.close()
     return (True, "launched + about:blank + closed")
+=======
+    """Is there a Chromium for browser_exec's local launcher?"""
+    return chromium_executable() is not None
+
+
+def _launch_browser_probe(timeout: float) -> tuple:
+    """Launch Chromium through browser_exec's own launcher, wait for its CDP endpoint, stop it.
+    Returns (ok, detail); the probe owns the whole lifecycle and always cleans up."""
+    from tools.browser_launcher import launch_chromium, stop_browser
+
+    key = "doctor-live-probe"
+    try:
+        browser, error = launch_chromium(key, ephemeral=True, timeout=timeout)
+    finally:
+        stop_browser(key)
+    if browser is None:
+        return (False, error or "launch failed")
+    return (True, "launched + CDP ready + stopped")
+>>>>>>> origin/main
 
 
 def _probe_mcp_server(name: str, config: dict, timeout: float):

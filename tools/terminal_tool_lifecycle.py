@@ -7,6 +7,7 @@ Split out of ``tools/terminal_tool.py``; every public/patched name is re-importe
 so ``tools.terminal_tool.<name>`` keeps resolving (and monkeypatching) as before.
 """
 
+<<<<<<< HEAD
 import glob
 import logging
 import inspect
@@ -16,6 +17,13 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 from tools.environments.singularity import _get_scratch_dir
+=======
+import logging
+import inspect
+import threading
+import time
+from typing import Any, Dict, Optional
+>>>>>>> origin/main
 from tools.terminal_tool_backends import (
     _container_config_from_config,
     _local_config_from_config,
@@ -27,6 +35,7 @@ from tools.terminal_tool_config import _quiet
 logger = logging.getLogger("tools.terminal_tool")
 
 
+<<<<<<< HEAD
 # Advisory disk-usage check; cached so the recursive scan doesn't run on
 # every command (a result up to 5 minutes stale is harmless).
 _disk_usage_cache: dict = {"timestamp": 0.0, "result": False}
@@ -64,6 +73,8 @@ def _check_disk_usage_warning():
         return False
 
 
+=======
+>>>>>>> origin/main
 def _create_configured_env(
     config: dict[str, Any], env_type: str, *, image: str, cwd: str, timeout: int,
     task_id: str, host_cwd: Optional[str],
@@ -295,12 +306,15 @@ def cleanup_all_environments():
         except Exception as e:
             logger.error("Error cleaning %s: %s", task_id, e, exc_info=True)
 
+<<<<<<< HEAD
     # Also clean any orphaned directories
     for path in _scratch_paths():
         with _quiet("Failed to remove orphaned path %s", path, exc=OSError):
             shutil.rmtree(path, ignore_errors=True)
             logger.info("Removed orphaned: %s", path)
 
+=======
+>>>>>>> origin/main
     if cleaned > 0:
         logger.info("Cleaned %d environments", cleaned)
     return cleaned

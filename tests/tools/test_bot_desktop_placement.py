@@ -2,7 +2,11 @@
 
 Two invariants, both about the boundary a sandboxed user chose:
   1. A sandbox backend that cannot host a screen never falls back to the gateway host silently; it refuses
+<<<<<<< HEAD
      unless ``bot_desktop.placement: gateway`` opts in. Docker/ssh/singularity resolve to the sandbox.
+=======
+     unless ``bot_desktop.placement: gateway`` opts in. Docker/ssh resolve to the sandbox.
+>>>>>>> origin/main
   2. Every RFB byte between the pane and a sandbox-hosted Xvnc, and cua-driver's MCP stdio, go through the
      terminal backend's exec prefix, never a host socket or a host binary.
 """
@@ -23,7 +27,10 @@ from tools.environments import streams
         ("auto", "local", placement.GATEWAY),
         ("auto", "docker", placement.TERMINAL),
         ("auto", "ssh", placement.TERMINAL),
+<<<<<<< HEAD
         ("auto", "singularity", placement.TERMINAL),
+=======
+>>>>>>> origin/main
         ("auto", "modal", placement.REFUSED),
         ("auto", "daytona", placement.REFUSED),
         ("gateway", "modal", placement.GATEWAY),
@@ -154,6 +161,7 @@ def _placed(monkeypatch, setting, backend):
     monkeypatch.setattr(placement, "_terminal_backend", lambda: backend)
 
 
+<<<<<<< HEAD
 def test_terminal_placement_starts_the_sandbox_screen_instead_of_running_on_the_host(monkeypatch, isolated_home):
     """The placement boundary is policy, not liveness: with ``placement: terminal`` and the screen not yet
     up, the browser preflight and the CUA invocation bring the sandbox screen up (no ``auto_start`` opt-in
@@ -161,6 +169,34 @@ def test_terminal_placement_starts_the_sandbox_screen_instead_of_running_on_the_
     from tools import browser_tool_session as bts
     from tools.computer_use import cua_backend as cb
 
+=======
+def _local_sessions(monkeypatch) -> list:
+    """The session layer on a local backend with an empty cache; returns the HOST Chromium launches."""
+    from tools import browser_launcher, browser_session, browser_session_cdp, browser_session_cloud
+    from tools import browser_session_lifecycle
+
+    for name in ("_active_sessions", "_session_last_activity", "_session_owner_homes", "_cleanup_failures"):
+        monkeypatch.setattr(browser_session, name, {})
+    monkeypatch.setattr(browser_session_lifecycle, "start_cleanup_thread", lambda: None)
+    monkeypatch.setattr(browser_session_cdp, "get_cdp_override", lambda: "")
+    monkeypatch.setattr(browser_session_cloud, "get_cloud_provider", lambda: None)
+    monkeypatch.setattr("tools.browser_session_real_profile.real_profile_cdp", lambda: (None, None))
+    monkeypatch.setattr("tools.browser_lightpanda.using_lightpanda_engine", lambda: False)
+    host_launches: list = []
+    monkeypatch.setattr(browser_launcher, "launch_chromium",
+                        lambda key, **kw: host_launches.append(key) or (None, "host Chromium must not start"))
+    return host_launches
+
+
+def test_terminal_placement_starts_the_sandbox_screen_instead_of_running_on_the_host(monkeypatch, isolated_home):
+    """The placement boundary is policy, not liveness: with ``placement: terminal`` and the screen not yet
+    up, the browser session and the CUA invocation bring the sandbox screen up (no ``auto_start`` opt-in
+    needed inside the user's own sandbox) and route there. Neither hands the tool a host command."""
+    from tools import browser_session, browser_session_sandbox
+    from tools.computer_use import cua_backend as cb
+
+    host_launches = _local_sessions(monkeypatch)
+>>>>>>> origin/main
     _placed(monkeypatch, "terminal", "docker")
     started: list[str] = []
     monkeypatch.setattr(runtime, "sandbox_screen_running", lambda: bool(started))
@@ -168,9 +204,20 @@ def test_terminal_placement_starts_the_sandbox_screen_instead_of_running_on_the_
     monkeypatch.setattr(runtime, "start", lambda **kw: started.append("started"))
     monkeypatch.setattr(runtime, "_sandbox_env", lambda *, create: _FakeDocker())
     monkeypatch.setattr(runtime, "touch_activity", lambda: None)
+<<<<<<< HEAD
 
     assert bts._browser_command_preflight() == {"browser_cmd": "agent-browser"}
     assert started == ["started"]
+=======
+    monkeypatch.setattr(browser_session_sandbox, "create_sandbox_session", lambda key: {
+        "session_name": "sb_1", "cdp_url": "ws://127.0.0.1:45004/devtools/browser/abc",
+        "features": {"local": True, "sandbox": True}, "screen_up": bool(started)})
+
+    info = browser_session.get_session_info("t")
+    assert started == ["started"]
+    assert info["features"].get("sandbox") and info["screen_up"], "the sandbox browser starts after its screen"
+    assert host_launches == []
+>>>>>>> origin/main
 
     from tools.bot_desktop import sandbox_host
     monkeypatch.setattr(sandbox_host, "_user_for", lambda e: "pn")
@@ -182,28 +229,55 @@ def test_terminal_placement_starts_the_sandbox_screen_instead_of_running_on_the_
 
 
 def test_refused_placement_never_falls_back_to_the_host(monkeypatch, isolated_home):
+<<<<<<< HEAD
     from tools import browser_tool_session as bts
     from tools.computer_use import cua_backend as cb
 
     _placed(monkeypatch, "auto", "modal")
     res = bts._browser_command_preflight()
     assert res["success"] is False and "placement: gateway" in res["error"]
+=======
+    from tools import browser_session
+    from tools.computer_use import cua_backend as cb
+
+    host_launches = _local_sessions(monkeypatch)
+    _placed(monkeypatch, "auto", "modal")
+    with pytest.raises(RuntimeError, match="placement: gateway"):
+        browser_session.get_session_info("t")
+    assert host_launches == [], "a refused placement launched the agent's browser on the gateway host"
+>>>>>>> origin/main
     with pytest.raises(RuntimeError, match="placement: gateway"):
         cb.sandbox_mcp_invocation()
 
 
 def test_sandbox_screen_that_cannot_come_up_is_an_error_not_a_host_browser(monkeypatch, isolated_home):
+<<<<<<< HEAD
     from tools import browser_tool_session as bts
 
     _placed(monkeypatch, "terminal", "docker")
     monkeypatch.setattr(runtime, "sandbox_screen_running", lambda: False)
     monkeypatch.setattr(runtime, "published_env", dict)
+=======
+    from tools import browser_session
+
+    host_launches = _local_sessions(monkeypatch)
+    _placed(monkeypatch, "terminal", "docker")
+    monkeypatch.setattr(runtime, "sandbox_screen_running", lambda: False)
+    monkeypatch.setattr(runtime, "published_env", dict)
+    monkeypatch.setattr(runtime, "_sandbox_env", lambda *, create: _FakeDocker())
+>>>>>>> origin/main
 
     def _boom(**kw):
         raise RuntimeError("Bot Desktop needs Xvnc inside the terminal backend's sandbox")
     monkeypatch.setattr(runtime, "start", _boom)
+<<<<<<< HEAD
     res = bts._browser_command_preflight()
     assert res["success"] is False and "Xvnc" in res["error"]
+=======
+    with pytest.raises(RuntimeError, match="Xvnc"):
+        browser_session.get_session_info("t")
+    assert host_launches == []
+>>>>>>> origin/main
 
 
 def test_start_adopting_a_screen_the_sandbox_kept_records_the_marker(monkeypatch, isolated_home):
@@ -323,6 +397,7 @@ def test_forward_port_carries_bytes_both_ways_through_the_exec_stream(monkeypatc
 
 
 def test_sandbox_cdp_endpoint_is_rewritten_to_the_forwarded_local_port(monkeypatch):
+<<<<<<< HEAD
     from tools import browser_use_cli as buc
     from tools import browser_tool_session as bts
 
@@ -335,3 +410,28 @@ def test_sandbox_cdp_endpoint_is_rewritten_to_the_forwarded_local_port(monkeypat
     assert buc._reach_sandbox_cdp("wss://cloud.example/session/1") == "wss://cloud.example/session/1"
     monkeypatch.setattr(bts, "_browser_in_sandbox", lambda: False)
     assert buc._reach_sandbox_cdp("ws://127.0.0.1:9223/x") == "ws://127.0.0.1:9223/x"
+=======
+    """The sandbox Chromium's DevTools port is the sandbox's loopback: the session hands browser_exec the
+    forwarded LOCAL port, keeping Chromium's browser id path."""
+    from tools import browser_session
+    from tools.bot_desktop import sandbox_host
+
+    host_launches = _local_sessions(monkeypatch)
+    _placed(monkeypatch, "terminal", "docker")
+    monkeypatch.setattr(runtime, "sandbox_screen_running", lambda: True)
+    monkeypatch.setattr(runtime, "published_env", lambda: {"DISPLAY": ":20"})
+    monkeypatch.setattr(runtime, "_sandbox_env", lambda *, create: _FakeDocker())
+    monkeypatch.setattr(sandbox_host, "_user_for", lambda e: "pn")
+    monkeypatch.setattr(sandbox_host, "browser_profile_dir", lambda e: "/home/pn/.hermes/bot-desktop/browser-profile")
+
+    def run_in(env, argv, **_kw):
+        out = b"9223\n/devtools/browser/abc\n" if "DevToolsActivePort" in " ".join(argv) else b""
+        return subprocess.CompletedProcess(argv, 0, out, b"")
+    monkeypatch.setattr(streams, "run_in", run_in)
+    monkeypatch.setattr(streams, "forward_port", lambda env, port, *, remote_host="127.0.0.1", user=None: 45000 + port % 7)
+
+    info = browser_session.get_session_info("t")
+    assert info["cdp_url"] == "ws://127.0.0.1:45004/devtools/browser/abc"
+    assert info["features"] == {"local": True, "sandbox": True}
+    assert host_launches == []
+>>>>>>> origin/main

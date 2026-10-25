@@ -221,7 +221,11 @@ class TestDenyOrdering:
     )
     @pytest.mark.parametrize(
         "env_type",
+<<<<<<< HEAD
         ["docker", "singularity", "modal", "daytona", "vercel_sandbox"],
+=======
+        ["docker", "modal", "daytona", "vercel_sandbox"],
+>>>>>>> origin/main
     )
     def test_container_backend_cannot_skip_deny(
             self, guard, env_type, deny_config, clean_env, monkeypatch):
@@ -239,7 +243,11 @@ class TestDenyOrdering:
     )
     @pytest.mark.parametrize(
         "env_type",
+<<<<<<< HEAD
         ["docker", "singularity", "modal", "daytona", "vercel_sandbox"],
+=======
+        ["docker", "modal", "daytona", "vercel_sandbox"],
+>>>>>>> origin/main
     )
     def test_container_backend_still_skips_non_denied_command(
             self, guard, env_type, deny_config, clean_env):

@@ -14,7 +14,11 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from hermes_cli.config import DEFAULT_CONFIG, cfg_get
+<<<<<<< HEAD
 from tools import browser_tool_lifecycle as bt_lifecycle
+=======
+from tools import browser_session_lifecycle as bt_lifecycle
+>>>>>>> origin/main
 
 def _make_runner():
     """Create a minimal GatewayRunner with just the cache infrastructure."""

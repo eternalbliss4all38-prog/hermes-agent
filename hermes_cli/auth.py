@@ -82,6 +82,10 @@ from hermes_cli.auth_codex import (
     _refresh_expired_codex_probe_token, _save_codex_tokens, clear_codex_pool_quota_cooldowns,
     refresh_codex_oauth_pure, resolve_codex_runtime_credentials)
 from hermes_cli.auth_openrouter import _openrouter_pkce_login
+<<<<<<< HEAD
+=======
+from hermes_cli.guest_handoff import note_store_write
+>>>>>>> origin/main
 from hermes_cli.auth_qwen import (
     _qwen_access_token_is_expiring, _qwen_cli_auth_path, _read_qwen_cli_tokens,
     _refresh_qwen_cli_tokens, _save_qwen_cli_tokens, get_qwen_auth_status,
@@ -861,9 +865,14 @@ def _provider_state_transaction(
             yield auth_store, _provider_state_in(_load_auth_store(source_path), provider_id), source_path
 
 
+<<<<<<< HEAD
 def _store_provider_state(
     auth_store: dict[str, Any], provider_id: str, state: dict[str, Any], *, set_active: bool = True,
 ) -> None:
+=======
+def _store_provider_state(auth_store: dict[str, Any], provider_id: str, state: dict[str, Any], *, set_active: bool = True) -> None:
+    note_store_write(auth_store, provider_id, state)
+>>>>>>> origin/main
     _store_section(auth_store, "providers")[provider_id] = state
     if set_active:
         auth_store["active_provider"] = provider_id
@@ -1858,7 +1867,11 @@ def _resolve_nous_access_token(
                                   headers={"Accept": "application/json"}, verify=verify) as client:
                     minted = refresh_guest_state(state, client, purpose="connectors")
                 persist()
+<<<<<<< HEAD
                 _write_shared_nous_state(state)
+=======
+                _write_shared_nous_state(state, renewal=True)
+>>>>>>> origin/main
                 return _memo(minted)
 
             merged_shared = _merge_shared_nous_oauth_state(state)
@@ -1893,7 +1906,11 @@ def _resolve_nous_access_token(
             state["client_id"] = client_id
             state["tls"] = _tls_state_from_verify(verify)
             persist()
+<<<<<<< HEAD
             _write_shared_nous_state(state)
+=======
+            _write_shared_nous_state(state, renewal=True)
+>>>>>>> origin/main
             return _memo(state["access_token"])
 
 

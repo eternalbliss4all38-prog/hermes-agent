@@ -20,7 +20,13 @@ class CapabilitySpec:
     """One declarable capability and the legacy gate it maps to."""
 
     id: str
+<<<<<<< HEAD
     legacy_path: tuple[str, ...]  # deprecated boolean under plugins.entries.<id>, e.g. ("llm", "allow_model_override")
+=======
+    # Deprecated boolean under plugins.entries.<id>, e.g. ("llm", "allow_model_override"); empty for a
+    # capability born after the consent flow, whose only gate is declare + consent.
+    legacy_path: tuple[str, ...]
+>>>>>>> origin/main
     description: str  # one-line risk description shown on the consent screen
 
 
@@ -42,6 +48,12 @@ _CAPABILITY_ROWS = (
     ("llm.task_override", ("llm", "allow_task_override"),
      "Route its LLM calls through the host's built-in auxiliary "
      "task lanes"),
+<<<<<<< HEAD
+=======
+    ("llm.side_question", (),
+     "Ask your agent a short question after each turn. It sees the "
+     "whole session, including memory, and spends your main model's tokens."),
+>>>>>>> origin/main
     ("gateway.platform_actions", ("allow_platform_actions",),
      "Act on connected chat platforms as the gateway bot "
      "(add reactions, rename threads) via ctx.platform_actions"))
@@ -118,7 +130,9 @@ def granted_capabilities(plugin_id: str, config: Optional[Mapping[str, Any]] = N
 
 
 def _legacy_gate_set(entry: Mapping[str, Any], spec: CapabilitySpec) -> bool:
-    """True when the deprecated ``allow_*`` key for *spec* is truthy."""
+    """True when the deprecated ``allow_*`` key for *spec* is truthy (never for a consent-only one)."""
+    if not spec.legacy_path:
+        return False
     node: Any = entry
     for part in spec.legacy_path:
         if not isinstance(node, Mapping):
@@ -174,6 +188,11 @@ def record_consent(plugin_id: str, granted: Iterable[str], declared: Iterable[st
     }
     # Bridge: mirror each grant into its legacy gate (enforcement sites still read allow_*).
     for cap in entry[GRANTED_KEY]:
+<<<<<<< HEAD
+=======
+        if not CAPABILITY_REGISTRY[cap].legacy_path:
+            continue
+>>>>>>> origin/main
         *parents, leaf = CAPABILITY_REGISTRY[cap].legacy_path
         node = entry
         for part in parents:

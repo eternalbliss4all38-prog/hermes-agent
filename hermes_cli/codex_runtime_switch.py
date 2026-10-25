@@ -19,7 +19,11 @@ _ARG_SYNONYMS = {
 
 _HERMES_TOOLS_CALLBACK_NOTE = (
     "Hermes tool callback registered: codex can now use "
+<<<<<<< HEAD
     "web_search, web_extract, browser_*, vision_analyze, "
+=======
+    "web_search, web_extract, vision_analyze, "
+>>>>>>> origin/main
     "image_generate, skill_view, skills_list, text_to_speech, "
     "kanban_* (worker + orchestrator) via MCP.",
     "  (delegate_task, memory, session_search, todo run "

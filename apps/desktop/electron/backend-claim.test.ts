@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
-import { EventEmitter } from 'node:events'
 
 import { test } from 'vitest'
 
+<<<<<<< HEAD
 import {
   claimDecision,
   createBackendOutputTail,
@@ -51,6 +51,9 @@ test('probeStartMarker converts a probe throw into { ok: false, reason }', async
 
   assert.deepEqual(probe, { ok: false, reason: 'PowerShell 5.1 cold start exceeded budget' })
 })
+=======
+import { isPidOnlyStartMarker, processStartMarker } from './backend-claim'
+>>>>>>> origin/main
 
 // --- real probe: drives the actual OS helper (PowerShell on the Windows lane) ---
 
@@ -70,6 +73,7 @@ test('a missing PID is classified as ESRCH so reapOrphans can drop the record', 
 
 // --- PID-only marker helpers --------------------------------------------------
 
+<<<<<<< HEAD
 test('pidOnlyStartMarker round-trips through isPidOnlyStartMarker', () => {
   const marker = pidOnlyStartMarker(4242)
 
@@ -132,3 +136,10 @@ test('exit line stays byte-identical to the legacy shape when the tail is empty 
   )
   assert.equal(formatBackendExitLine('Hermes backend exited', 1, null, null), 'Hermes backend exited (1)')
 })
+=======
+test('isPidOnlyStartMarker recognizes degraded PID-only ownership records', () => {
+  assert.equal(isPidOnlyStartMarker('pid-only:4242'), true)
+  assert.equal(isPidOnlyStartMarker('linux:12345'), false)
+  assert.equal(isPidOnlyStartMarker(undefined), false)
+})
+>>>>>>> origin/main

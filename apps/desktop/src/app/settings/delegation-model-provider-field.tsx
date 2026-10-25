@@ -49,7 +49,11 @@ export function DelegationModelProviderField(props: DelegationModelProviderField
 }
 
 /** Catalog rows for the owner being edited; custom ids enrich only providers returned for that owner. */
+<<<<<<< HEAD
 function useOwnerCatalog(scope: ProfileScope | undefined) {
+=======
+export function useOwnerCatalog(scope: ProfileScope | undefined) {
+>>>>>>> origin/main
   const query = useQuery({
     queryKey: ['model-options', 'delegation', profileScopeKey(scope)],
     queryFn: () => getGlobalModelOptions(undefined, scope),
@@ -71,7 +75,11 @@ function useOwnerCatalog(scope: ProfileScope | undefined) {
 }
 
 /** A saved provider the catalog lacks (alias, display name, custom) stays visible as-is. */
+<<<<<<< HEAD
 function displayProviders(
+=======
+export function displayProviders(
+>>>>>>> origin/main
   providers: readonly ModelOptionProvider[],
   draftProvider: string
 ): readonly ModelOptionProvider[] {

@@ -1,5 +1,9 @@
 """Curses checklist / radiolist / single-select menus with keyboard navigation and fuzzy ``/``
 search, plus a numbered text fallback for terminals without curses."""
+<<<<<<< HEAD
+=======
+import re
+>>>>>>> origin/main
 import sys
 from contextvars import ContextVar, Token
 from dataclasses import dataclass
@@ -8,7 +12,11 @@ from typing import Callable, List, Optional, Sequence, Set, Tuple, Union
 
 from hermes_cli.colors import Colors, color
 
+<<<<<<< HEAD
 # Rich radiolist rows: (text, style). style is None | "yellow" | "dim". Plain ``str`` works too.
+=======
+# Rich radiolist rows: (text, style). style is None | "yellow" | "dim" | "green" | "red". Plain ``str`` works too.
+>>>>>>> origin/main
 RadioItem = str | Sequence[tuple[str, str | None]]
 _NO_REPLAY = object()
 
@@ -119,6 +127,16 @@ def _curses_style_attr(curses, style: Optional[str], *, is_cursor: bool):
         return curses.A_BOLD | (curses.color_pair(1) if has_colors else 0)
     if style == "yellow" and has_colors:
         return curses.color_pair(2)
+<<<<<<< HEAD
+=======
+    if style == "green" and has_colors:
+        return curses.color_pair(1)
+    if style == "red" and has_colors:
+        try:
+            return curses.color_pair(4)
+        except curses.error:
+            return curses.A_BOLD
+>>>>>>> origin/main
     if style != "dim":
         return curses.A_NORMAL
     attr = curses.A_DIM
@@ -128,6 +146,7 @@ def _curses_style_attr(curses, style: Optional[str], *, is_cursor: bool):
         except curses.error:
             pass
     return attr
+<<<<<<< HEAD
 
 
 def _addnstr(stdscr, y: int, x: int, text: str, n: int, attr) -> None:
@@ -186,6 +205,69 @@ def _draw_radio_item(
         max_x)
 
 
+=======
+
+
+def _addnstr(stdscr, y: int, x: int, text: str, n: int, attr) -> None:
+    """``stdscr.addnstr`` that swallows ``curses.error`` (drawing past the screen edge)."""
+    import curses
+    try:
+        stdscr.addnstr(y, x, text, n, attr)
+    except curses.error:
+        pass
+
+
+def _draw_title_and_hint(stdscr, title: str, hint: str, max_x: int, *, hint_row: int = 1) -> None:
+    """Bold/yellow menu title on row 0, dim key hint on ``hint_row``."""
+    import curses
+    hattr = curses.A_BOLD | (curses.color_pair(2) if curses.has_colors() else 0)
+    _addnstr(stdscr, 0, 0, title, max_x - 1, hattr)
+    _addnstr(stdscr, hint_row, 0, hint, max_x - 1, curses.A_DIM)
+
+
+def _draw_segments(stdscr, y: int, x: int, segments, max_x: int) -> None:
+    """Draw ``(text, attr)`` segments left to right from column ``x``, clipped at the edge."""
+    col = x
+    for text, attr in segments:
+        remaining = max_x - 1 - col
+        if remaining <= 0:
+            break
+        chunk = text[:remaining]
+        _addnstr(stdscr, y, col, chunk, remaining, attr)
+        col += len(chunk)
+
+
+def _draw_description_line(stdscr, y: int, text: str, max_x: int) -> None:
+    """Draw a description line, highlighting ★ in yellow and ``[||||    ]`` gauges by how much is used."""
+    import curses
+    star_attr = curses.color_pair(2) if curses.has_colors() else curses.A_NORMAL
+    segments = []
+    for i, part in enumerate(text.split("★")):
+        if i:
+            segments.append(("★", star_attr))
+        if part:
+            segments.extend(
+                (chunk, _curses_style_attr(curses, style, is_cursor=False))
+                for chunk, style in _gauge_bar_segments(part)
+            )
+    _draw_segments(stdscr, y, 0, segments, max_x)
+
+
+def _draw_radio_item(
+    stdscr, y: int, x: int, item: RadioItem, max_x: int, *, is_cursor: bool) -> None:
+    """Draw a plain or segmented radiolist item starting at column ``x``."""
+    import curses
+    if isinstance(item, str):
+        attr = _curses_style_attr(curses, None, is_cursor=is_cursor)
+        _addnstr(stdscr, y, x, item, max(0, max_x - 1 - x), attr)
+        return
+    _draw_segments(
+        stdscr, y, x,
+        ((text, _curses_style_attr(curses, style, is_cursor=is_cursor)) for text, style in item),
+        max_x)
+
+
+>>>>>>> origin/main
 def _draw_plain_row(stdscr, y: int, line: str, max_x: int, *, is_cursor: bool) -> None:
     """Draw a plain menu row, bold green when it is the cursor row."""
     import curses
@@ -442,6 +524,13 @@ def _init_colors(curses, extra_color_pairs: bool) -> None:
         curses.use_default_colors()
         curses.init_pair(1, curses.COLOR_GREEN, -1)
         curses.init_pair(2, curses.COLOR_YELLOW, -1)
+<<<<<<< HEAD
+=======
+        try:
+            curses.init_pair(4, curses.COLOR_RED, -1)  # "red" gauge segments (usage nearly gone)
+        except curses.error:
+            pass  # a terminal with few colour pairs keeps the menu; red gauges just render plain
+>>>>>>> origin/main
         if extra_color_pairs:
             curses.init_pair(3, 8 if curses.COLORS > 8 else curses.COLOR_WHITE, -1)
 
@@ -475,7 +564,11 @@ def _route_key(curses, stdscr, key: int, search: _SearchState, use_search: bool)
 def _run_curses_menu(
     *, initial_cursor, item_count, draw_header, draw_row, on_action, reserve_bottom=1,
     draw_footer=None, extra_color_pairs=False, fallback, cancel_value, searchable=False,
+<<<<<<< HEAD
     search_labels=None):
+=======
+    search_labels=None, selectable=None):
+>>>>>>> origin/main
     """Shared curses single-/multi-select event loop: non-TTY guard, ``curses.wrapper`` setup,
     clear/refresh cycle, scroll math, key dispatch with cursor wrap, KeyboardInterrupt /
     curses-unavailable fallback.
@@ -483,7 +576,12 @@ def _run_curses_menu(
     ``draw_row`` always receives the ORIGINAL item index; ``on_action`` returns ``_KEEP`` to
     continue or any other value to resolve; a ``draw_footer`` row budget must be included in
     ``reserve_bottom``; with ``searchable``, ``/`` filters over ``search_labels`` (length ==
+<<<<<<< HEAD
     ``item_count``) and results are original indices.
+=======
+    ``item_count``) and results are original indices. ``selectable(i)`` (default: every row)
+    marks rows the cursor skips, e.g. section headings: drawn, never landed on.
+>>>>>>> origin/main
     """
     navigation_handler = _MENU_NAVIGATION_HANDLER.get()
 
@@ -529,13 +627,24 @@ def _run_curses_menu(
                 filtered = (
                     _filter_indices(search_labels, search.query) if use_search
                     else list(range(item_count)))
+<<<<<<< HEAD
                 cursor, cursor_pos = _reconcile_cursor(filtered, cursor)
+=======
+                # The cursor only ever rests on selectable rows; every row is still drawn.
+                nav = filtered if selectable is None else [i for i in filtered if selectable(i)]
+                cursor, _nav_pos = _reconcile_cursor(nav, cursor)
+                cursor_pos = filtered.index(cursor) if cursor in filtered else 0
+>>>>>>> origin/main
                 items_start = draw_header(
                     stdscr, max_y, max_x, search=search, back_enabled=allow_back)
                 visible_rows = max(1, max_y - items_start - reserve_bottom)
                 scroll_offset = _scroll_for_cursor(
                     scroll_offset, cursor_pos, visible_rows, len(filtered))
+<<<<<<< HEAD
                 if use_search and search.query and not filtered:
+=======
+                if use_search and search.query and not nav:
+>>>>>>> origin/main
                     _addnstr(stdscr, items_start, 0, "  No matches", max_x - 1, curses.A_DIM)
                 for draw_i, i in enumerate(filtered[scroll_offset : scroll_offset + visible_rows]):
                     y = draw_i + items_start
@@ -549,6 +658,7 @@ def _run_curses_menu(
                 if changed:
                     scroll_offset = 0
                     if search.active:  # Esc-clear resets scroll only; the loop re-reconciles
+<<<<<<< HEAD
                         cursor, cursor_pos = _reconcile_cursor(
                             _filter_indices(search_labels, search.query), cursor)
                 if action in (NAV_UP, NAV_DOWN):
@@ -558,6 +668,19 @@ def _run_curses_menu(
                 if action is _CONSUMED or action not in _RESOLVING or (
                     action == NAV_BACK and not allow_back) or (
                     action == NAV_SELECT and use_search and not filtered):
+=======
+                        refiltered = _filter_indices(search_labels, search.query)
+                        cursor, _ = _reconcile_cursor(
+                            refiltered if selectable is None else [i for i in refiltered if selectable(i)],
+                            cursor)
+                if action in (NAV_UP, NAV_DOWN):
+                    delta = -1 if action == NAV_UP else 1
+                    cursor = _move_filtered_cursor(nav, cursor, _nav_pos, delta)
+                    continue
+                if action is _CONSUMED or action not in _RESOLVING or (
+                    action == NAV_BACK and not allow_back) or (
+                    action == NAV_SELECT and use_search and not nav):
+>>>>>>> origin/main
                     continue
                 if action in (NAV_CANCEL, NAV_INTERRUPT):
                     _notify(MenuNavigationEvent.CANCEL)
@@ -642,14 +765,27 @@ def _simple_header(title: str, confirm: str, cancel: str, searchable: bool):
 def curses_radiolist(
     title: str, items: list[RadioItem], selected: int = 0, *, cancel_returns: int | None = None,
     description: str | None = None, searchable: bool = False,
+<<<<<<< HEAD
     search_labels: list[str] | None = None) -> int:
+=======
+    search_labels: list[str] | None = None, headings: Optional[dict[int, str]] = None) -> int:
+>>>>>>> origin/main
     """Curses single-select radio list -> selected index.
 
     Items are plain strings or ``(text, style)`` segment sequences (``None``/``"yellow"``/
     ``"dim"``); the cursor row is forced green. ``description`` is shown between title and list
     so context survives the curses screen clear. With ``searchable``, ``/`` filters over
     ``search_labels`` (default: display labels); the return value is always the ORIGINAL index.
+<<<<<<< HEAD
+=======
+    ``headings`` (``{item_index: text}``) draws a dim section title above that item; it is never
+    selectable and is hidden while a search query is active.
+>>>>>>> origin/main
     """
+    if headings:
+        return _radiolist_with_headings(
+            title, items, selected, headings, cancel_returns=cancel_returns, description=description,
+            searchable=searchable, search_labels=search_labels)
     if cancel_returns is None:
         cancel_returns = selected
     desc_lines = description.splitlines() if description else []
@@ -680,6 +816,7 @@ def curses_radiolist(
         prefix = f" {arrow} ({radio}) "
         _draw_plain_row(stdscr, y, prefix, max_x, is_cursor=is_cursor)
         _draw_radio_item(stdscr, y, len(prefix), items[i], max_x, is_cursor=is_cursor)
+<<<<<<< HEAD
 
     def _on_action(action, cursor):
         return cursor if action in (NAV_SELECT, NAV_TOGGLE) else cancel_returns  # NAV_CANCEL
@@ -694,6 +831,118 @@ def curses_radiolist(
 
 
 _ANSI_STYLE = {"yellow": Colors.YELLOW, "dim": Colors.DIM}
+=======
+
+    def _on_action(action, cursor):
+        return cursor if action in (NAV_SELECT, NAV_TOGGLE) else cancel_returns  # NAV_CANCEL
+
+    return _run_curses_menu(
+        initial_cursor=selected, item_count=len(items), draw_header=_draw_header,
+        draw_row=_draw_row, on_action=_on_action,
+        extra_color_pairs=True,  # dim gray (pair 3) for unselected "was …" sale chrome
+        fallback=lambda: _radio_numbered_fallback(title, items, selected, cancel_returns),
+        cancel_value=cancel_returns, searchable=searchable,
+        search_labels=search_labels if searchable else None)
+
+
+def _radiolist_with_headings(
+    title: str, items: list[RadioItem], selected: int, headings: dict[int, str], *,
+    cancel_returns: int | None, description: str | None, searchable: bool,
+    search_labels: list[str] | None) -> int:
+    """``curses_radiolist`` with dim, unselectable section titles (``{item_index: text}``) drawn
+    above the given items. Headings carry an empty search label, so any query hides them. Returns
+    the ORIGINAL item index, exactly like the plain list."""
+    if cancel_returns is None:
+        cancel_returns = selected
+    rows: list[tuple[str, int]] = []  # ("h", heading_key) or ("i", original item index)
+    for i in range(len(items)):
+        if i in headings:
+            rows.append(("h", i))
+        rows.append(("i", i))
+    row_of_item = {idx: r for r, (kind, idx) in enumerate(rows) if kind == "i"}
+    labels = (list(search_labels) if search_labels is not None
+              else [radio_item_plain(item) for item in items])
+    row_labels = ["" if kind == "h" else labels[idx] for kind, idx in rows]
+    desc_lines = description.splitlines() if description else []
+
+    def _draw_header(stdscr, max_y, max_x, search=None, back_enabled=False):
+        row = 1
+        choice_rows = min(max(1, len(rows)), 5)
+        description_rows = max(0, max_y - 4 - choice_rows)
+        visible_description = desc_lines[:description_rows]
+        if len(desc_lines) > description_rows and visible_description:
+            hidden = len(desc_lines) - description_rows + 1
+            visible_description[-1] = f"  ... {hidden} more description lines (enlarge terminal)"
+        for dline in visible_description:
+            _draw_description_line(stdscr, row, dline, max_x)
+            row += 1
+        hint = _search_hint(search, searchable, "ENTER/SPACE select", "ESC cancel", back_enabled)
+        _draw_title_and_hint(stdscr, title, hint, max_x, hint_row=row)
+        return row + 2
+
+    def _draw_row(stdscr, y, r, is_cursor, max_x):
+        import curses
+        kind, idx = rows[r]
+        if kind == "h":
+            _addnstr(stdscr, y, 0, f"   {headings[idx]}", max_x - 1, curses.A_DIM | curses.A_BOLD)
+            return
+        radio, arrow = "\u25cf" if idx == selected else "\u25cb", "\u2192" if is_cursor else " "
+        prefix = f" {arrow} ({radio}) "
+        _draw_plain_row(stdscr, y, prefix, max_x, is_cursor=is_cursor)
+        _draw_radio_item(stdscr, y, len(prefix), items[idx], max_x, is_cursor=is_cursor)
+
+    def _on_action(action, cursor):
+        if action in (NAV_SELECT, NAV_TOGGLE):
+            return rows[cursor][1]
+        return cancel_returns
+
+    return _run_curses_menu(
+        initial_cursor=row_of_item.get(selected, 0), item_count=len(rows), draw_header=_draw_header,
+        draw_row=_draw_row, on_action=_on_action, extra_color_pairs=True,
+        fallback=lambda: _radio_numbered_fallback(title, items, selected, cancel_returns, headings=headings),
+        cancel_value=cancel_returns, searchable=searchable,
+        search_labels=row_labels if searchable else None,
+        selectable=lambda r: rows[r][0] == "i")
+
+
+_ANSI_STYLE = {"yellow": Colors.YELLOW, "dim": Colors.DIM, "green": Colors.GREEN, "red": Colors.RED}
+# Exactly the ``render_bar`` shape (``model_picker_usage.BAR_WIDTH`` = 10 cells of ``|`` then spaces), so
+# an unrelated ``[]`` / ``[ ]`` in a description is never painted as a gauge.
+_GAUGE_BAR_RE = re.compile(r"\[(?=[| ]{10}\])\|* *\]")
+
+
+def _gauge_bar_style(bar: str) -> str:
+    """Map a ``[||||    ]`` cell to green/yellow/red from how full it is (what is USED)."""
+    inner = bar[1:-1]
+    used = inner.count("|") / len(inner) if inner else 0.0
+    if used > 0.8:
+        return "red"
+    if used > 0.5:
+        return "yellow"
+    return "green"
+
+
+def _gauge_bar_segments(text: str) -> list[tuple[str, str | None]]:
+    """Split *text* so each ``[||||    ]`` is its own styled segment."""
+    segs: list[tuple[str, str | None]] = []
+    last = 0
+    for match in _GAUGE_BAR_RE.finditer(text):
+        if match.start() > last:
+            segs.append((text[last:match.start()], None))
+        segs.append((match.group(), _gauge_bar_style(match.group())))
+        last = match.end()
+    if last < len(text):
+        segs.append((text[last:], None))
+    return segs or [(text, None)]
+
+
+def colorize_gauge_bars_ansi(text: str) -> str:
+    """Color ``[||||    ]`` runs in a header/legend line (numbered-fallback path)."""
+    return "".join(
+        color(chunk, _ANSI_STYLE[style]) if style in _ANSI_STYLE else chunk
+        for chunk, style in _gauge_bar_segments(text)
+    )
+>>>>>>> origin/main
 
 
 def format_radio_item_ansi(item: RadioItem) -> str:
@@ -705,11 +954,19 @@ def format_radio_item_ansi(item: RadioItem) -> str:
 
 
 def _radio_numbered_fallback(
+<<<<<<< HEAD
     title: str, items: list[RadioItem], selected: int, cancel_returns: int) -> int:
     """Text-based numbered fallback for radio selection."""
+=======
+    title: str, items: list[RadioItem], selected: int, cancel_returns: int, *,
+    headings: Optional[dict[int, str]] = None) -> int:
+    """Text-based numbered fallback for radio selection (section titles printed, never numbered)."""
+>>>>>>> origin/main
     print(color(f"\n  {title}", Colors.YELLOW))
     print(color("  Select by number, Enter to confirm.\n", Colors.DIM))
     for i, label in enumerate(items):
+        if headings and i in headings:
+            print(color(f"  {headings[i]}", Colors.DIM))
         marker = color("(\u25cf)", Colors.GREEN) if i == selected else "(\u25cb)"
         print(f"  {marker} {i + 1:>2}. {format_radio_item_ansi(label)}")
     print()

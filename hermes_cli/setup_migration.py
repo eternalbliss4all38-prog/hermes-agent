@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Post-migration section-skip logic and the OpenClaw first-run migration flow (setup.py
 re-exports the names it still uses; setup helpers are imported lazily so test patches apply)."""
 
@@ -14,6 +15,15 @@ logger = logging.getLogger("hermes_cli.setup")
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 
+=======
+"""Post-import section-skip logic: after ``hermes setup`` imported another agent's settings, each
+section that is already configured shows its summary and offers to skip (setup.py re-exports the
+names it uses; setup helpers are imported lazily so test patches apply)."""
+
+from functools import partial
+from typing import Optional
+
+>>>>>>> origin/main
 
 # ── Post-Migration Section Skip Logic ──
 
@@ -113,8 +123,13 @@ _SECTION_SUMMARIES = {
 
 
 def _get_section_config_summary(config: dict, section_key: str) -> Optional[str]:
+<<<<<<< HEAD
     """Short summary if a setup section is already configured (post-OpenClaw-migration skip
     detection), else None. ``get_env_value`` is reached through hermes_cli.setup so test patches
+=======
+    """Short summary if a setup section is already configured (post-import skip detection), else
+    None. ``get_env_value`` is reached through hermes_cli.setup so test patches
+>>>>>>> origin/main
     on ``setup_mod.get_env_value`` apply."""
     summarize = _SECTION_SUMMARIES.get(section_key)
     return summarize(config) if summarize else None
@@ -129,6 +144,7 @@ def _skip_configured_section(config: dict, section_key: str, label: str) -> bool
     print()
     print_success(f"  {label}: {summary}")
     return not prompt_yes_no(f"  Reconfigure {label.lower()}?", default=False)
+<<<<<<< HEAD
 
 
 # ── OpenClaw Migration ──
@@ -324,3 +340,5 @@ def _offer_openclaw_migration(hermes_home: Path) -> bool:
         print_info(f"Full report saved to: {output_dir}")
     print_success("Migration complete! Continuing with setup...")
     return True
+=======
+>>>>>>> origin/main

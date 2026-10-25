@@ -1,5 +1,9 @@
 import { skillInvocationText } from '@hermes/shared'
+<<<<<<< HEAD
 import { parseCommandDispatch, parseSlashCommand } from '@hermes/shared'
+=======
+import { mergeUsage, parseCommandDispatch, parseSlashCommand } from '@hermes/shared'
+>>>>>>> origin/main
 import { type MutableRefObject, useCallback, useRef } from 'react'
 
 import { mergeOlderTranscriptPage } from '@/app/chat/transcript-backfill'
@@ -922,7 +926,7 @@ export function useSlashCommand(deps: SlashCommandDeps) {
             const usage = { ...result?.usage, ...result?.info?.usage }
 
             if (Object.keys(usage).length && activeSessionIdRef.current === sessionId) {
-              setCurrentUsage(current => ({ ...current, ...usage }))
+              setCurrentUsage(current => mergeUsage(current, usage))
             }
 
             if (result?.info?.title !== undefined) {
@@ -1314,8 +1318,12 @@ export function useSlashCommand(deps: SlashCommandDeps) {
         // gateway host, mirroring the TUI's browser.manage RPC. It mutates
         // BROWSER_CDP_URL (and may launch Chrome) in the gateway process — only
         // meaningful when that process runs on this machine, so those two are
+<<<<<<< HEAD
         // gated to local connections. `status` and `use [off]` (the profile's
         // browser.backend, applied to new chats) are right on any backend.
+=======
+        // gated to local connections. `status` is right on any backend.
+>>>>>>> origin/main
         browser: async ctx => {
           const resolved = await withSlashOutput(ctx)
 
@@ -1327,6 +1335,7 @@ export function useSlashCommand(deps: SlashCommandDeps) {
           const [rawAction = 'status', ...rest] = ctx.arg.trim().split(/\s+/).filter(Boolean)
           const cmdAction = rawAction.toLowerCase()
 
+<<<<<<< HEAD
           if (!['connect', 'disconnect', 'status', 'use'].includes(cmdAction)) {
             renderSlashOutput(
               'usage: /browser [connect|disconnect|status|use] [url] · persistent: set browser.cdp_url in config.yaml'
@@ -1336,6 +1345,9 @@ export function useSlashCommand(deps: SlashCommandDeps) {
           }
 
           if ((cmdAction === 'connect' || cmdAction === 'disconnect') && $connection.get()?.mode === 'remote') {
+=======
+          if (!['connect', 'disconnect', 'status'].includes(cmdAction)) {
+>>>>>>> origin/main
             renderSlashOutput(
               '/browser connect manages a Chromium-family browser on the gateway host — only available when connected to a local gateway.'
             )
@@ -1343,10 +1355,17 @@ export function useSlashCommand(deps: SlashCommandDeps) {
             return
           }
 
+<<<<<<< HEAD
           const mode = cmdAction === 'use' ? (rest[0] ?? 'on').toLowerCase() : undefined
 
           if (mode && mode !== 'on' && mode !== 'off') {
             renderSlashOutput('usage: /browser use [off]')
+=======
+          if ((cmdAction === 'connect' || cmdAction === 'disconnect') && $connection.get()?.mode === 'remote') {
+            renderSlashOutput(
+              '/browser connect manages a Chromium-family browser on the gateway host — only available when connected to a local gateway.'
+            )
+>>>>>>> origin/main
 
             return
           }

@@ -1124,7 +1124,10 @@ _MCP_USAGE = (
     "hermes mcp                                    Open the catalog picker (default)",
     "hermes mcp catalog                            List Nous-approved MCPs",
     "hermes mcp install <name>                     Install a catalog MCP",
+<<<<<<< HEAD
     "hermes mcp serve                              Run as MCP server",
+=======
+>>>>>>> origin/main
     "hermes mcp add <name> --url <endpoint>        Add a custom MCP server",
     "hermes mcp add <name> --command <cmd>         Add a stdio server",
     "hermes mcp add <name> --preset <preset>       Add from a known preset",
@@ -1140,6 +1143,7 @@ _MCP_USAGE = (
 def mcp_command(args):
     """Main dispatcher for ``hermes mcp`` subcommands."""
     action = getattr(args, "mcp_action", None)
+<<<<<<< HEAD
     if action == "serve":
         from mcp_serve import run_mcp_server
         run_mcp_server(verbose=getattr(args, "verbose", False))
@@ -1158,6 +1162,22 @@ def mcp_command(args):
             if rc:
                 _sys.exit(rc)
         return
+=======
+    if action in ("picker", "catalog", "install"):
+        # Catalog subcommands live in mcp_picker / mcp_catalog; import lazily to keep this module cheap.
+        from hermes_cli import mcp_picker
+
+        if action == "picker":
+            mcp_picker.run_picker()
+        elif action == "catalog":
+            mcp_picker.show_catalog()
+        else:
+            import sys as _sys
+            rc = mcp_picker.install_by_name(getattr(args, "identifier", "") or "")
+            if rc:
+                _sys.exit(rc)
+        return
+>>>>>>> origin/main
     handler = {
         "add": cmd_mcp_add, "remove": cmd_mcp_remove, "rm": cmd_mcp_remove, "list": cmd_mcp_list,
         "ls": cmd_mcp_list, "test": cmd_mcp_test, "configure": cmd_mcp_configure,

@@ -8,18 +8,27 @@ a separate first install. A claim that is lost later (the guest is reaped, ``aut
 deleted, the user signs in) is never made again: that user lands on provider setup and sign-in like
 anyone else.
 
+<<<<<<< HEAD
 Guests that ran on the free model before the claim existed keep it (:func:`grandfather_existing_guest`).
+=======
+>>>>>>> origin/main
 Enforcement is client-side; the account service's own entitlement check follows separately.
 """
 
 from __future__ import annotations
 
+<<<<<<< HEAD
 import contextlib
 import logging
 from dataclasses import dataclass
 import sqlite3
 from collections.abc import Callable
 from pathlib import Path
+=======
+import logging
+from dataclasses import dataclass
+from collections.abc import Callable
+>>>>>>> origin/main
 from typing import Any, Optional
 
 from hermes_cli import anon_auth
@@ -129,6 +138,7 @@ def settle_interrupted_claim() -> bool:
     return True
 
 
+<<<<<<< HEAD
 def grandfather_existing_guest() -> bool:
     """A guest from before the claim existed keeps the free model when this home already chatted on
     it. Only a guest with no ``welcome_claim`` key qualifies: every guest minted since carries the
@@ -166,3 +176,5 @@ def _chatted_on_welcome(db: Path) -> bool:
     except sqlite3.Error:
         return False
     return row is not None
+=======
+>>>>>>> origin/main

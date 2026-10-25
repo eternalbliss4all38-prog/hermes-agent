@@ -25,6 +25,12 @@ export interface CanonicalGroupMessages {
   attachFiles: string
   removeAttachment: string
   uploadFailed: string
+<<<<<<< HEAD
+=======
+  memberWorking: string
+  memberQueued: string
+  groupWorking: string
+>>>>>>> origin/main
 }
 
 export const CANONICAL_GROUP_LOCALES = {
@@ -54,7 +60,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'Group message',
     attachFiles: 'Attach files',
     removeAttachment: 'Remove attachment',
+<<<<<<< HEAD
     uploadFailed: 'Upload failed'
+=======
+    uploadFailed: 'Upload failed',
+    memberWorking: 'Working',
+    memberQueued: 'Queued',
+    groupWorking: 'The group is working…'
+>>>>>>> origin/main
   },
   ja: {
     roomStopped: 'グループが停止しました',
@@ -82,7 +95,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'グループメッセージ',
     attachFiles: 'ファイルを添付',
     removeAttachment: '添付ファイルを削除',
+<<<<<<< HEAD
     uploadFailed: 'アップロードに失敗しました'
+=======
+    uploadFailed: 'アップロードに失敗しました',
+    memberWorking: '作業中',
+    memberQueued: '待機中',
+    groupWorking: 'グループが作業中です…'
+>>>>>>> origin/main
   },
   zh: {
     roomStopped: '群组已停止',
@@ -110,7 +130,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: '群组消息',
     attachFiles: '附加文件',
     removeAttachment: '移除附件',
+<<<<<<< HEAD
     uploadFailed: '上传失败'
+=======
+    uploadFailed: '上传失败',
+    memberWorking: '工作中',
+    memberQueued: '排队中',
+    groupWorking: '群组正在处理…'
+>>>>>>> origin/main
   },
   'zh-hant': {
     roomStopped: '群組已停止',
@@ -138,7 +165,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: '群組訊息',
     attachFiles: '附加檔案',
     removeAttachment: '移除附件',
+<<<<<<< HEAD
     uploadFailed: '上傳失敗'
+=======
+    uploadFailed: '上傳失敗',
+    memberWorking: '工作中',
+    memberQueued: '排隊中',
+    groupWorking: '群組正在處理…'
+>>>>>>> origin/main
   },
   ar: {
     roomStopped: 'أُوقفت المجموعة',
@@ -166,7 +200,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'رسالة المجموعة',
     attachFiles: 'إرفاق ملفات',
     removeAttachment: 'إزالة المرفق',
+<<<<<<< HEAD
     uploadFailed: 'فشل الرفع'
+=======
+    uploadFailed: 'فشل الرفع',
+    memberWorking: 'يعمل',
+    memberQueued: 'في الانتظار',
+    groupWorking: 'المجموعة تعمل…'
+>>>>>>> origin/main
   },
   ru: {
     roomStopped: 'Группа остановлена',
@@ -197,7 +238,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'Сообщение группе',
     attachFiles: 'Прикрепить файлы',
     removeAttachment: 'Удалить вложение',
+<<<<<<< HEAD
     uploadFailed: 'Не удалось загрузить файл'
+=======
+    uploadFailed: 'Не удалось загрузить файл',
+    memberWorking: 'Работает',
+    memberQueued: 'В очереди',
+    groupWorking: 'Группа работает…'
+>>>>>>> origin/main
   },
   fr: {
     roomStopped: 'Groupe arrêté',
@@ -227,7 +275,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'Message de groupe',
     attachFiles: 'Joindre des fichiers',
     removeAttachment: 'Retirer la pièce jointe',
+<<<<<<< HEAD
     uploadFailed: 'Échec du téléversement'
+=======
+    uploadFailed: 'Échec du téléversement',
+    memberWorking: 'En cours',
+    memberQueued: 'En attente',
+    groupWorking: 'Le groupe travaille…'
+>>>>>>> origin/main
   },
   de: {
     roomStopped: 'Gruppe angehalten',
@@ -258,7 +313,14 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'Gruppennachricht',
     attachFiles: 'Dateien anhängen',
     removeAttachment: 'Anhang entfernen',
+<<<<<<< HEAD
     uploadFailed: 'Hochladen fehlgeschlagen'
+=======
+    uploadFailed: 'Hochladen fehlgeschlagen',
+    memberWorking: 'Arbeitet',
+    memberQueued: 'In der Warteschlange',
+    groupWorking: 'Die Gruppe arbeitet…'
+>>>>>>> origin/main
   },
   es: {
     roomStopped: 'Grupo detenido',
@@ -288,6 +350,13 @@ export const CANONICAL_GROUP_LOCALES = {
     groupMessage: 'Mensaje de grupo',
     attachFiles: 'Adjuntar archivos',
     removeAttachment: 'Quitar adjunto',
+<<<<<<< HEAD
     uploadFailed: 'Error al subir'
+=======
+    uploadFailed: 'Error al subir',
+    memberWorking: 'Trabajando',
+    memberQueued: 'En cola',
+    groupWorking: 'El grupo está trabajando…'
+>>>>>>> origin/main
   }
 } satisfies Record<string, CanonicalGroupMessages>

@@ -12,6 +12,7 @@ _CDP_SCHEMES = {"http", "https", "ws", "wss"}
 
 def _resolve_browser_cdp_url() -> str:
     """Configured browser CDP override without network I/O (``/browser status`` must be fast;
+<<<<<<< HEAD
     ``tools.browser_tool_cdp._get_cdp_override`` HTTP-probes discovery URLs). Same precedence (this
     profile's live connect, env, then ``browser.cdp_url``) minus WS resolution; ``browser_navigate``
     normalizes on the next call."""
@@ -25,6 +26,13 @@ def _resolve_browser_cdp_url() -> str:
         if isinstance(browser_cfg, dict):
             return str(browser_cfg.get("cdp_url", "") or "").strip()
     return ""
+=======
+    ``tools.browser_session_cdp.get_cdp_override`` HTTP-probes discovery URLs): the browser session's own
+    read (this profile's live connect, env, then the effective ``browser.cdp_url``) minus WS resolution; the
+    next browser session normalizes it."""
+    from tools.browser_session_cdp import get_cdp_override_raw
+    return get_cdp_override_raw()
+>>>>>>> origin/main
 
 
 def _is_default_local_cdp(parsed) -> bool:
@@ -99,14 +107,22 @@ def _reap_profile_browsers() -> None:
     """Close the current profile's browsers only: the live connection is per profile, so other
     profiles' sessions on a multiplexed gateway keep theirs."""
     from hermes_constants import hermes_home_key
+<<<<<<< HEAD
     from tools.browser_tool_lifecycle import cleanup_profile_browsers
+=======
+    from tools.browser_session_lifecycle import cleanup_profile_browsers
+>>>>>>> origin/main
     cleanup_profile_browsers(hermes_home_key())
 
 
 def _browser_connect(rid, params: dict) -> dict:
     import platform
     from hermes_cli.browser_connect import DEFAULT_BROWSER_CDP_URL
+<<<<<<< HEAD
     from tools.browser_tool_cdp import set_live_cdp_override
+=======
+    from tools.browser_session_cdp import set_live_cdp_override
+>>>>>>> origin/main
     from urllib.parse import urlparse
     raw_url = params.get("url")
     if raw_url is not None and not isinstance(raw_url, str):
@@ -135,7 +151,11 @@ def _browser_connect(rid, params: dict) -> dict:
         port = parsed.port or 9222
     try:
         # Hosted ws[s]://.../devtools/browser/<id> endpoints don't serve the HTTP discovery path:
+<<<<<<< HEAD
         # check TCP reachability only and let browser_navigate handshake.
+=======
+        # check TCP reachability only and let the browser session handshake.
+>>>>>>> origin/main
         if parsed.scheme in {"ws", "wss"} and parsed.path.startswith("/devtools/browser/"):
             import socket
             try:
@@ -169,7 +189,11 @@ def _browser_connect(rid, params: dict) -> dict:
 
 def _browser_disconnect(rid) -> dict:
     # Reap, drop this profile's override, reap again — same swap window as ``_browser_connect``.
+<<<<<<< HEAD
     from tools.browser_tool_cdp import set_live_cdp_override
+=======
+    from tools.browser_session_cdp import set_live_cdp_override
+>>>>>>> origin/main
 
     def reap() -> None:
         with contextlib.suppress(Exception):

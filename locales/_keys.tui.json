@@ -47,6 +47,19 @@
   "billing.confirm.portalCardCharged",
   "billing.confirm.title",
   "billing.confirm.total",
+<<<<<<< HEAD
+=======
+  "billing.keepGoing.body",
+  "billing.keepGoing.offLine",
+  "billing.keepGoing.offNote",
+  "billing.keepGoing.onLine",
+  "billing.keepGoing.rowTurnOff",
+  "billing.keepGoing.rowTurnOn",
+  "billing.keepGoing.title",
+  "billing.keepGoing.turnOn",
+  "billing.keepGoing.turnedOff",
+  "billing.keepGoing.turnedOn",
+>>>>>>> origin/main
   "billing.limit.hint",
   "billing.limit.noCapVisible",
   "billing.limit.readOnly",
@@ -543,6 +556,15 @@
   "libText.agentRows.starting",
   "libText.attachments.imageToken",
   "libText.billingDialog.dismiss",
+<<<<<<< HEAD
+=======
+  "libText.billingDialog.limitCreditsAdd",
+  "libText.billingDialog.limitCreditsBoth",
+  "libText.billingDialog.limitCreditsUse",
+  "libText.billingDialog.limitOpenTopup",
+  "libText.billingDialog.limitSwitchTo",
+  "libText.billingDialog.limitTitle",
+>>>>>>> origin/main
   "libText.billingDialog.nousDetail",
   "libText.billingDialog.nousTitle",
   "libText.billingDialog.openBillingPage",
@@ -643,6 +665,24 @@
   "pickers.model.persist.scopeGlobal",
   "pickers.model.persist.scopeSession",
   "pickers.model.persist.toggleHint",
+<<<<<<< HEAD
+=======
+  "pickers.model.plan.largeFootnote",
+  "pickers.model.plan.levels.free",
+  "pickers.model.plan.levels.top_tier",
+  "pickers.model.plan.limitNames.day",
+  "pickers.model.plan.limitNames.month",
+  "pickers.model.plan.limitNames.top_tier",
+  "pickers.model.plan.limitNames.week",
+  "pickers.model.plan.limitReached",
+  "pickers.model.plan.limitThenCredits",
+  "pickers.model.plan.limitThenCreditsLarge",
+  "pickers.model.plan.limitThenWait",
+  "pickers.model.plan.limitThenWaitLarge",
+  "pickers.model.plan.resetsIn",
+  "pickers.model.plan.sectionOther",
+  "pickers.model.plan.sectionRecommended",
+>>>>>>> origin/main
   "pickers.model.provider.current",
   "pickers.model.provider.filterHint",
   "pickers.model.provider.hint",
@@ -925,15 +965,21 @@
   "slashCmd.ops.browser.connectedLive",
   "slashCmd.ops.browser.disconnected",
   "slashCmd.ops.browser.endpoint",
+<<<<<<< HEAD
   "slashCmd.ops.browser.modeBrowserUse",
   "slashCmd.ops.browser.newSessionsOnly",
+=======
+>>>>>>> origin/main
   "slashCmd.ops.browser.nextCallUsesEndpoint",
   "slashCmd.ops.browser.notConnected",
   "slashCmd.ops.browser.urlUnavailable",
   "slashCmd.ops.browser.usage",
+<<<<<<< HEAD
   "slashCmd.ops.browser.useDisabled",
   "slashCmd.ops.browser.useEnabled",
   "slashCmd.ops.browser.useUsage",
+=======
+>>>>>>> origin/main
   "slashCmd.ops.reloadEnv.reloadedOne",
   "slashCmd.ops.reloadEnv.reloadedOther",
   "slashCmd.ops.reloadMcp.complete",
@@ -1288,6 +1334,10 @@
   "userMessages.promptTimeout.vaultCode",
   "userMessages.promptTimeout.vaultSaveLogin",
   "userMessages.promptTimeout.vaultUnlockPrompt",
+<<<<<<< HEAD
+=======
+  "userMessages.rpc.launchCredentialsChanged",
+>>>>>>> origin/main
   "userMessages.rpc.notConnected",
   "userMessages.rpc.sessionNotFound",
   "userMessages.rpc.shellBackendRefused",

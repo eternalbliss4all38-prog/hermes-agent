@@ -243,7 +243,11 @@ const DESKTOP_COMMAND_SPECS: readonly DesktopCommandSpec[] = [
   { name: '/help', description: 'Show desktop slash commands', aliases: ['/commands'], surface: action('help') },
   {
     name: '/browser',
+<<<<<<< HEAD
     description: 'Manage the agent browser [connect|disconnect|status|use]',
+=======
+    description: 'Manage the agent browser [connect|disconnect|status]',
+>>>>>>> origin/main
     surface: action('browser'),
     argumentMode: 'options'
   },

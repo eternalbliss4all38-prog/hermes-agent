@@ -327,6 +327,13 @@ export class HermesGateway extends JsonRpcGatewayClient {
     })
   }
 
+<<<<<<< HEAD
+=======
+  protected override isDesktopLocal(): boolean {
+    return this.canonical
+  }
+
+>>>>>>> origin/main
   override async connect(wsUrl: string): Promise<void> {
     this.connectionGeneration++
     this.canonical = new URL(wsUrl).searchParams.has('native_dial')

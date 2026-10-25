@@ -144,12 +144,142 @@ function blockableProxy(targetPort: number) {
   })
 }
 
+<<<<<<< HEAD
 /** Nothing spins for `ms`: no Stop button in the composer at any sample. */
 async function settledFor(page: Page, ms = 3_000): Promise<void> {
   const end = Date.now() + ms
 
   while (Date.now() < end) {
     expect(await stopButton(page).count(), 'a turn indicator (Stop) is still showing after the turn settled').toBe(0)
+=======
+/**
+ * Failure evidence for the settle checks. This flake has only ever reproduced on CI, so the artifact
+ * must carry its own story: every non-delta gateway frame (events with seq/running, RPC results with
+ * running/replay) and every Stop-button transition, on one clock.
+ */
+interface Timeline {
+  t0: number
+  lines: string[]
+}
+
+function summarizeFrame(text: string): string {
+  try {
+    const msg = JSON.parse(text)
+
+    if (msg?.method === 'event') {
+      const p = msg.params ?? {}
+
+      return /delta$/.test(String(p.type)) ? '' : `event ${p.type} seq=${p.seq} running=${p.payload?.running}`
+    }
+
+    if (msg?.method) {
+      return `${msg.method} id=${msg.id}`
+    }
+
+    if (msg?.result && typeof msg.result === 'object') {
+      const r = msg.result
+      const running = 'running' in r ? ` running=${r.running}` : ''
+
+      const replay = Array.isArray(r.events)
+        ? ` replay=[${r.events
+            .filter((e: { type?: string }) => !/delta$/.test(String(e.type)))
+            .map((e: { seq?: number; type?: string; payload?: { running?: unknown } }) =>
+              `${e.seq}:${e.type}${e.payload && 'running' in e.payload ? `(running=${e.payload.running})` : ''}`
+            )
+            .join(' ')}]`
+        : ''
+
+      return `result id=${msg.id}${running}${replay}`
+    }
+  } catch {
+    /* binary frames carry nothing for the timeline */
+  }
+
+  return ''
+}
+
+function recordTimeline(page: Page): Timeline {
+  const timeline: Timeline = { t0: Date.now(), lines: [] }
+  const note = (line: string) => timeline.lines.push(`${Date.now() - timeline.t0} ${line}`)
+
+  page.on('websocket', ws => {
+    if (!ws.url().includes('/api/ws')) {
+      return
+    }
+
+    note('ws open')
+    ws.on('close', () => note('ws close'))
+
+    const noteFrame = (dir: 'rx' | 'tx', payload: string | Buffer) => {
+      const line = summarizeFrame(String(payload))
+
+      if (line) {
+        note(`${dir} ${line}`)
+      }
+    }
+
+    ws.on('framereceived', frame => noteFrame('rx', frame.payload))
+    ws.on('framesent', frame => noteFrame('tx', frame.payload))
+  })
+
+  return timeline
+}
+
+/** In-page Stop transitions (MutationObserver, so no polling load); re-run after every reload. */
+async function watchStop(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    const w = window as unknown as { __stopLog?: string[]; __stopObs?: MutationObserver }
+    const query = () => document.querySelectorAll('[data-slot="composer-root"] button[aria-label="Stop"]').length
+    let last = query()
+    w.__stopLog = [`${Date.now()} stop=${last}`]
+    w.__stopObs?.disconnect()
+    w.__stopObs = new MutationObserver(() => {
+      const now = query()
+
+      if (now !== last) {
+        last = now
+        w.__stopLog!.push(`${Date.now()} stop=${now}`)
+      }
+    })
+    w.__stopObs.observe(document.body, { attributes: true, childList: true, subtree: true })
+  })
+}
+
+async function attachTimeline(page: Page, timeline: Timeline, name: string): Promise<void> {
+  const stops = await page
+    .evaluate(() => (window as unknown as { __stopLog?: string[] }).__stopLog ?? [])
+    .catch(() => [] as string[])
+
+  const merged = [
+    ...timeline.lines,
+    ...stops.map(line => {
+      const [at, rest] = [Number(line.split(' ')[0]), line.slice(line.indexOf(' ') + 1)]
+
+      return `${at - timeline.t0} DOM ${rest}`
+    })
+  ].sort((a, b) => Number(a.split(' ')[0]) - Number(b.split(' ')[0]))
+
+  // A file in the test's output dir: CI uploads test-results/core on failure.
+  const file = test.info().outputPath(`${name}.txt`)
+  fs.writeFileSync(file, merged.join('\n'))
+  await test.info().attach(name, { path: file, contentType: 'text/plain' })
+}
+
+/** Nothing spins for `ms`: no Stop button in the composer at any sample. */
+async function settledFor(page: Page, timeline: Timeline, ms = 3_000): Promise<void> {
+  const end = Date.now() + ms
+
+  while (Date.now() < end) {
+    const count = await stopButton(page).count()
+
+    if (count !== 0) {
+      // Let the transition finish so the evidence shows how long the indicator stayed up.
+      await page.waitForTimeout(2_000)
+      await attachTimeline(page, timeline, 'stop-timeline')
+    }
+
+    expect(count, 'a turn indicator (Stop) is still showing after the turn settled').toBe(0)
+>>>>>>> origin/main
     await page.waitForTimeout(250)
   }
 }
@@ -161,6 +291,10 @@ function setup(label: string) {
     writeProviderHome(sandbox.hermesHome, provider.url)
     const { app, page } = await launchCoreApp(coreAppEnv(sandbox))
     const ws = recordWebSockets(page)
+<<<<<<< HEAD
+=======
+    const timeline = recordTimeline(page)
+>>>>>>> origin/main
 
     const finished = (marker: string, step = 0, timeout = 120_000) =>
       expect
@@ -170,12 +304,20 @@ function setup(label: string) {
         })
         .toBe(true)
 
+<<<<<<< HEAD
     return { provider, sandbox, app, page, ws, finished }
+=======
+    return { provider, sandbox, app, page, ws, finished, timeline }
+>>>>>>> origin/main
   }
 }
 
 test('socket drop mid-turn: the finished reply shows once on reconnect, and a follow-up right after runs', async () => {
+<<<<<<< HEAD
   const { provider, sandbox, app, page, ws, finished } = await setup('nf2-drop')()
+=======
+  const { provider, sandbox, app, page, ws, finished, timeline } = await setup('nf2-drop')()
+>>>>>>> origin/main
   const proxies: { close: () => Promise<void> }[] = []
   const session: OracleTarget = { sessionId: '', expectUserMarkers: [] }
 
@@ -198,6 +340,10 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
     await page.reload()
     await waitForInteractive(app, page)
     await installDuplicateSampler(page)
+<<<<<<< HEAD
+=======
+    await watchStop(page)
+>>>>>>> origin/main
     await expect.poll(() => proxy.connections(), { timeout: 60_000 }).toBeGreaterThan(0)
     await page.evaluate(id => (window.location.hash = `#/${encodeURIComponent(id)}`), session.sessionId)
     await expect(viewport(page)).toContainText(A(1), { timeout: 60_000 })
@@ -223,7 +369,11 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
       session.lossyWire = [U(2)]
       await assertTranscriptOracle(page, ws, provider, session, 'drop: completed while away')
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
+<<<<<<< HEAD
       await settledFor(page)
+=======
+      await settledFor(page, timeline)
+>>>>>>> origin/main
     })
 
     await test.step('(b) follow-up sent right after the reconnect while the prior turn still runs', async () => {
@@ -248,7 +398,11 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
       session.lossyWire = [U(2), U(3)]
       await assertTranscriptOracle(page, ws, provider, session, 'drop: follow-up after reconnect')
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
+<<<<<<< HEAD
       await settledFor(page)
+=======
+      await settledFor(page, timeline)
+>>>>>>> origin/main
       await dump(page, 'b-done')
     })
   } finally {
@@ -264,12 +418,20 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
 })
 
 test('gateway SIGKILL mid-turn: the lost turn is offered for Discard, and a follow-up never hangs behind it', async () => {
+<<<<<<< HEAD
   const { provider, sandbox, app, page, ws, finished } = await setup('nf2-kill')()
+=======
+  const { provider, sandbox, app, page, ws, finished, timeline } = await setup('nf2-kill')()
+>>>>>>> origin/main
   const session: OracleTarget = { sessionId: '', expectUserMarkers: [] }
 
   try {
     await waitForInteractive(app, page)
     await installDuplicateSampler(page)
+<<<<<<< HEAD
+=======
+    await watchStop(page)
+>>>>>>> origin/main
 
     provider.script(U(1), [{ text: words(A(1), 'first', 'turn') }])
     await send(page, `${U(1)} hello`, 'Enter', ws)
@@ -324,7 +486,11 @@ test('gateway SIGKILL mid-turn: the lost turn is offered for Discard, and a foll
       await finished(U(3), 0, 60_000)
       await expect(viewport(page)).toContainText('END3', { timeout: 60_000 })
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
+<<<<<<< HEAD
       await settledFor(page)
+=======
+      await settledFor(page, timeline)
+>>>>>>> origin/main
       session.expectUserMarkers.push(U(1), U(2), U(3))
       session.lossyWire = [U(2)]
       await dump(page, 'c-done')

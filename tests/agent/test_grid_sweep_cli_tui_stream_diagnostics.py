@@ -74,6 +74,7 @@ def test_invalid_config_int_print_honors_policy_log_always(tmp_path, monkeypatch
 # --- agent/turn_tool_validation.py auto-repair notice ------------------------------------------
 
 
+<<<<<<< HEAD
 # --- CLI mixins -------------------------------------------------------------------------------
 
 
@@ -91,6 +92,8 @@ def test_cli_browser_downgrade_notice_honors_policy(tmp_path, monkeypatch, setti
     assert (len(out) == 1 and "⚠" in out[0]) is _visible(setting)
 
 
+=======
+>>>>>>> origin/main
 # --- TUI (functions are rebound onto tui_gateway.server by bind_module) -------------------------
 
 @pytest.mark.parametrize("setting", MODES)

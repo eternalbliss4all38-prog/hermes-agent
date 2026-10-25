@@ -10,7 +10,10 @@ import pytest
 import hermes_constants
 from hermes_platform.host import runtime as host_runtime
 from hermes_constants import (
+<<<<<<< HEAD
     agent_browser_runnable,
+=======
+>>>>>>> origin/main
     get_default_hermes_root,
     get_hermes_dir,
     get_hermes_home,
@@ -505,6 +508,7 @@ class TestSecureParentDir:
         assert called_with[0] == (str(real_dir), 0o700)
 
 
+<<<<<<< HEAD
 @pytest.mark.platforms("posix")  # POSIX shell stubs; Windows uses .cmd shims
 class TestAgentBrowserRunnable:
     """agent_browser_runnable() validates the resolved CLI actually runs.
@@ -539,6 +543,8 @@ class TestAgentBrowserRunnable:
 
 
 
+=======
+>>>>>>> origin/main
 class TestGetHermesDir:
     """Tests for ``get_hermes_dir(new_subpath, old_name)``.
 

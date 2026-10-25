@@ -133,6 +133,27 @@
       }
     },
     {
+<<<<<<< HEAD
+=======
+      "name": "billing.keep_going_on_credits",
+      "summary": "Window plans: turn 'Keep going on credits' on/off (billing:manage).",
+      "params": [
+        {
+          "name": "params",
+          "schema": {
+            "$ref": "#/components/schemas/BillingKeepGoingOnCreditsParams"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "$ref": "#/components/schemas/BillingMutationResult"
+        }
+      }
+    },
+    {
+>>>>>>> origin/main
       "name": "billing.state",
       "summary": "Read-only billing view (no scope); the Nous free tier is answered locally without a portal call.",
       "params": [
@@ -241,6 +262,7 @@
       }
     },
     {
+<<<<<<< HEAD
       "name": "browser.controller.detach",
       "summary": "Hard-detach only the controller owned by this authenticated transport.",
       "params": [
@@ -315,6 +337,10 @@
     {
       "name": "browser.manage",
       "summary": "Inspect, attach to, or drop the CDP browser the tools use, or switch Browser Use mode (``use``, applies to new sessions); ``messages`` narrate a connect.",
+=======
+      "name": "browser.manage",
+      "summary": "Inspect, attach to, or drop the CDP browser the tools use; ``messages`` narrate a connect.",
+>>>>>>> origin/main
       "params": [
         {
           "name": "params",
@@ -1057,7 +1083,11 @@
         {
           "name": "params",
           "schema": {
+<<<<<<< HEAD
             "$ref": "#/components/schemas/ProfileParams"
+=======
+            "$ref": "#/components/schemas/FreeTierClaimNudgeParams"
+>>>>>>> origin/main
           }
         }
       ],
@@ -5130,6 +5160,16 @@
             ],
             "default": null,
             "title": "Settings Schema"
+<<<<<<< HEAD
+=======
+          },
+          "tools": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tools",
+            "type": "array"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -6396,6 +6436,33 @@
         "title": "BillingChargeStatusResult",
         "type": "object"
       },
+<<<<<<< HEAD
+=======
+      "BillingKeepGoingOnCreditsParams": {
+        "additionalProperties": false,
+        "properties": {
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Profile"
+          },
+          "enabled": {
+            "default": false,
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "title": "BillingKeepGoingOnCreditsParams",
+        "type": "object"
+      },
+>>>>>>> origin/main
       "BillingMonthlyCap": {
         "additionalProperties": false,
         "properties": {
@@ -6995,6 +7062,21 @@
             ],
             "default": null
           },
+<<<<<<< HEAD
+=======
+          "keep_going_on_credits": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Keep Going On Credits"
+          },
+>>>>>>> origin/main
           "portal_url": {
             "anyOf": [
               {
@@ -7029,6 +7111,20 @@
               }
             ],
             "default": null
+<<<<<<< HEAD
+=======
+          },
+          "plan_usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanUsage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -7436,12 +7532,17 @@
         "enum": [
           "status",
           "connect",
+<<<<<<< HEAD
           "disconnect",
           "use"
+=======
+          "disconnect"
+>>>>>>> origin/main
         ],
         "title": "BrowserAction",
         "type": "string"
       },
+<<<<<<< HEAD
       "BrowserControllerCancelPayload": {
         "additionalProperties": false,
         "description": "``gateway/browser_control_broker.py::_cancel_frame``.",
@@ -7695,6 +7796,8 @@
         "title": "BrowserControllerResultResult",
         "type": "object"
       },
+=======
+>>>>>>> origin/main
       "BrowserManageParams": {
         "additionalProperties": false,
         "properties": {
@@ -7714,6 +7817,7 @@
             "default": null,
             "title": "Url"
           },
+<<<<<<< HEAD
           "enabled": {
             "anyOf": [
               {
@@ -7726,6 +7830,8 @@
             "default": null,
             "title": "Enabled"
           },
+=======
+>>>>>>> origin/main
           "session_id": {
             "anyOf": [
               {
@@ -7787,6 +7893,7 @@
             ],
             "default": null,
             "title": "Messages"
+<<<<<<< HEAD
           },
           "browser_use": {
             "anyOf": [
@@ -7799,6 +7906,8 @@
             ],
             "default": null,
             "title": "Browser Use"
+=======
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -8981,6 +9090,24 @@
           "count": {
             "title": "Count",
             "type": "integer"
+<<<<<<< HEAD
+=======
+          },
+          "open_requests": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OpenRequestEntry"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Open Requests"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -10166,6 +10293,7 @@
             "default": null,
             "title": "Tool Availability Warnings"
           },
+<<<<<<< HEAD
           "browser_backend_notice": {
             "anyOf": [
               {
@@ -10178,6 +10306,8 @@
             "default": null,
             "title": "Browser Backend Notice"
           },
+=======
+>>>>>>> origin/main
           "unknown_toolsets": {
             "anyOf": [
               {
@@ -10683,6 +10813,24 @@
               }
             ],
             "default": null
+<<<<<<< HEAD
+=======
+          },
+          "open_requests": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OpenRequestEntry"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Open Requests"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -10906,6 +11054,7 @@
             "default": null,
             "title": "Tool Availability Warnings"
           },
+<<<<<<< HEAD
           "browser_backend_notice": {
             "anyOf": [
               {
@@ -10918,6 +11067,8 @@
             "default": null,
             "title": "Browser Backend Notice"
           },
+=======
+>>>>>>> origin/main
           "unknown_toolsets": {
             "anyOf": [
               {
@@ -11957,6 +12108,14 @@
             "default": false,
             "title": "Server Requests",
             "type": "boolean"
+<<<<<<< HEAD
+=======
+          },
+          "desktop_local": {
+            "default": false,
+            "title": "Desktop Local",
+            "type": "boolean"
+>>>>>>> origin/main
           }
         },
         "title": "ClientCapabilitiesParams",
@@ -15542,6 +15701,7 @@
         "title": "ContextFileSource",
         "type": "object"
       },
+<<<<<<< HEAD
       "ControllerScope": {
         "additionalProperties": false,
         "properties": {
@@ -15589,6 +15749,8 @@
         "title": "ControllerScope",
         "type": "object"
       },
+=======
+>>>>>>> origin/main
       "CorrectionStatus": {
         "enum": [
           "queued",
@@ -18131,7 +18293,11 @@
       },
       "ErrorSurface": {
         "additionalProperties": true,
+<<<<<<< HEAD
         "description": "``agent/error_surface.py::_surface`` \u2014 advisory {layer, code, retryable} (+ identity, + auth hint,\n+ ``resets_at`` epoch seconds when the provider named when its limit lifts).",
+=======
+        "description": "``agent/error_surface.py::_surface`` \u2014 advisory {layer, code, retryable} (+ identity, + auth hint,\n+ ``resets_at`` epoch seconds when the provider named when its limit lifts, + ``usage_limit`` on a\nusage-window plan's limit).",
+>>>>>>> origin/main
         "properties": {
           "layer": {
             "title": "Layer",
@@ -18180,6 +18346,20 @@
             ],
             "default": null,
             "title": "Resets At"
+<<<<<<< HEAD
+=======
+          },
+          "usage_limit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageLimit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -18555,6 +18735,37 @@
         "title": "FreeTierChallengeResultParams",
         "type": "object"
       },
+<<<<<<< HEAD
+=======
+      "FreeTierClaimNudgeParams": {
+        "additionalProperties": false,
+        "properties": {
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Profile"
+          },
+          "kind": {
+            "default": "trial",
+            "enum": [
+              "trial",
+              "connector"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "title": "FreeTierClaimNudgeParams",
+        "type": "object"
+      },
+>>>>>>> origin/main
       "FreeTierClaimNudgeResult": {
         "additionalProperties": false,
         "properties": {
@@ -18734,6 +18945,21 @@
             ],
             "default": null,
             "title": "Nudge Due In"
+<<<<<<< HEAD
+=======
+          },
+          "connector_nudge_due_in": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Connector Nudge Due In"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -24430,6 +24656,35 @@
             "default": null,
             "title": "Unavailable Models"
           },
+<<<<<<< HEAD
+=======
+          "plan_usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanUsage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "usage_levels": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Usage Levels"
+          },
+>>>>>>> origin/main
           "limit": {
             "anyOf": [
               {
@@ -27148,9 +27403,171 @@
         "title": "PingResult",
         "type": "object"
       },
+<<<<<<< HEAD
       "PluginActivation": {
         "additionalProperties": false,
         "description": "What a plugin loaded mid-run does NOW vs later (``hermes_cli.plugins_activation``). ``activated_now``\nkinds (``{kind: [names]}``): ``gateway_commands`` (slash names), ``locales`` (``<lang>.<surface>``\nlanguage-pack layers), ``gateway_transforms`` / ``hooks`` (hook\nnames), ``callbacks`` (platforms / ``slack:<action_id>``) \u2014 live in the running gateway once it reloaded\n(``gateway_reloaded``). ``live_now``: the plugin's MCP servers (connected, with their tools, or the\nerror) and skills, usable in every open chat of the profile from its next turn \u2014 the chats also get a\nnote listing them. ``deferred`` kinds: ``tools`` (Python tool names) and ``prompt`` (section ids)\napply from the next session.",
+=======
+      "PlanGauge": {
+        "additionalProperties": false,
+        "description": "``gateway/session_usage.py::plan_gauge``: a window plan's allowance for the status bar.",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "used_bp": {
+            "title": "Used Bp",
+            "type": "integer"
+          },
+          "resets_at_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resets At Ms"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "used_bp"
+        ],
+        "title": "PlanGauge",
+        "type": "object"
+      },
+      "PlanUsage": {
+        "additionalProperties": false,
+        "description": "``hermes_cli/model_picker_usage.py::PickerUsage.to_payload`` \u2014 usage-window plan chrome.",
+        "properties": {
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Plan"
+          },
+          "gauges": {
+            "items": {
+              "$ref": "#/components/schemas/PlanUsageGauge"
+            },
+            "title": "Gauges",
+            "type": "array"
+          },
+          "top_tier_model_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Top Tier Model Ids",
+            "type": "array"
+          },
+          "featured_model_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Featured Model Ids",
+            "type": "array"
+          },
+          "paused_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Paused Reason"
+          },
+          "credits_pay": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Credits Pay"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "PlanUsage",
+        "type": "object"
+      },
+      "PlanUsageGauge": {
+        "additionalProperties": false,
+        "description": "One server allowance on ``ModelOptionProvider.plan_usage``, in the server's order. ``label`` is the\nserver's id (``day`` / ``week`` / ``month`` / ``top_tier`` have client words; any other id shows\n``title``). ``scope``: which models a full one stops (``all`` / ``top_tier``).",
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "left_fraction": {
+            "title": "Left Fraction",
+            "type": "number"
+          },
+          "style": {
+            "title": "Style",
+            "type": "string"
+          },
+          "resets_at_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resets At Ms"
+          },
+          "scope": {
+            "default": "all",
+            "title": "Scope",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "left_fraction",
+          "style"
+        ],
+        "title": "PlanUsageGauge",
+        "type": "object"
+      },
+      "PluginActivation": {
+        "additionalProperties": false,
+        "description": "What a plugin loaded mid-run does NOW vs later (``hermes_cli.plugins_activation``). ``activated_now``\nkinds (``{kind: [names]}``): ``gateway_commands`` (slash names), ``locales`` (``<lang>.<surface>``\nlanguage-pack layers), ``gateway_transforms`` / ``hooks`` (hook\nnames), ``callbacks`` (platforms / ``slack:<action_id>``) \u2014 live in the running gateway once it reloaded\n(``gateway_reloaded``). ``live_now``: the plugin's MCP servers (connected, with their tools, or the\nerror) and skills, usable in every open chat of the profile from its next turn \u2014 the chats also get a\nnote listing them. ``deferred`` kinds: ``tools`` (Python tool names) and ``prompt`` (section ids)\napply from the next session. ``missing_dependencies``: the plugin's declared Python requirements a\nrunning process cannot import (installed after it booted, or never); ``missing_in`` names which\nprocesses (``gateway``, ``backend`` = the Desktop / dashboard process) \u2014 only restarting them loads them.",
+>>>>>>> origin/main
         "properties": {
           "name": {
             "title": "Name",
@@ -27190,6 +27607,23 @@
             },
             "title": "Deferred",
             "type": "object"
+<<<<<<< HEAD
+=======
+          },
+          "missing_dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Dependencies",
+            "type": "array"
+          },
+          "missing_in": {
+            "items": {
+              "$ref": "#/components/schemas/PluginRestartTarget"
+            },
+            "title": "Missing In",
+            "type": "array"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -27218,6 +27652,14 @@
           "subdir": {
             "title": "Subdir",
             "type": "string"
+<<<<<<< HEAD
+=======
+          },
+          "tier": {
+            "default": "community",
+            "title": "Tier",
+            "type": "string"
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -27370,6 +27812,17 @@
         "title": "PluginLiveSkill",
         "type": "object"
       },
+<<<<<<< HEAD
+=======
+      "PluginRestartTarget": {
+        "enum": [
+          "gateway",
+          "backend"
+        ],
+        "title": "PluginRestartTarget",
+        "type": "string"
+      },
+>>>>>>> origin/main
       "PluginScanFinding": {
         "additionalProperties": false,
         "description": "One security-scan finding (``tools.plugin_guard``) on a plugin tree the scan blocked.",
@@ -27806,7 +28259,11 @@
       },
       "PluginsManageResult": {
         "additionalProperties": false,
+<<<<<<< HEAD
         "description": "``list`` \u2192 ``plugins`` + counts; ``toggle`` \u2192 ``ok``/``unchanged``/``restart_required``/``name``\n(the canonical key written)/``plugin``; ``install`` \u2192 ``hermes_cli.plugins_cmd.dashboard_install_plugin``'s\nok payload; ``toggle``/``install``/``update`` that loaded a plugin also carry ``gateway_reloaded`` (the\nrunning gateway picked it up and re-wired its handlers) and ``activation`` \u2014 the honest split of what is\nlive now vs deferred, so ``restart_required`` is True only when no gateway answered; ``update`` \u2192 ``ok``/``unchanged``/``sha``, or ``ok=false`` + ``consent_required`` with the\n``delta`` (``{surface: [added...]}``) / ``delta_lines`` a widened pin adds \u2014 nothing changed until the\nclient retries with ``accept_capabilities`` \u2014 or ``ok=false`` + ``scan_blocked`` with ``scan_verdict`` /\n``scan_findings`` (retry a caution verdict with ``force``); ``remove`` \u2192 ``ok``/``name`` plus\n``cleared_memory_provider`` when the removed plugin was the live ``memory.provider``.",
+=======
+        "description": "``list`` \u2192 ``plugins`` + counts; ``toggle`` \u2192 ``ok``/``unchanged``/``restart_required``/``name``\n(the canonical key written)/``plugin``; ``install`` \u2192 ``hermes_cli.plugins_cmd.dashboard_install_plugin``'s\nok payload; ``toggle``/``install``/``update`` that loaded a plugin also carry ``gateway_reloaded`` (the\nrunning gateway picked it up and re-wired its handlers) and ``activation`` \u2014 the honest split of what is\nlive now vs deferred, so ``restart_required`` is True only when no gateway answered or the running\ngateway/backend cannot import the plugin's Python dependencies (``activation.missing_dependencies``); ``update`` \u2192 ``ok``/``unchanged``/``sha``, or ``ok=false`` + ``consent_required`` with the\n``delta`` (``{surface: [added...]}``) / ``delta_lines`` a widened pin adds \u2014 nothing changed until the\nclient retries with ``accept_capabilities`` \u2014 or ``ok=false`` + ``scan_blocked`` with ``scan_verdict`` /\n``scan_findings`` (retry a caution verdict with ``force``); ``remove`` \u2192 ``ok``/``name`` plus\n``cleared_memory_provider`` when the removed plugin was the live ``memory.provider``.",
+>>>>>>> origin/main
         "properties": {
           "plugins": {
             "anyOf": [
@@ -33809,7 +34266,11 @@
       },
       "RoomDriverStatus": {
         "additionalProperties": false,
+<<<<<<< HEAD
         "description": "``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}``\nor the driver's approval action (``kind: approval`` + run/session/approval context).",
+=======
+        "description": "``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}``\nor the driver's approval action (``kind: approval`` + run/session/approval context).\n``member_activity`` lists live tasks in admission order (absent from older gateways).",
+>>>>>>> origin/main
         "properties": {
           "running": {
             "title": "Running",
@@ -33838,6 +34299,16 @@
             "title": "Pending Actions",
             "type": "array"
           },
+<<<<<<< HEAD
+=======
+          "member_activity": {
+            "items": {
+              "$ref": "#/components/schemas/RoomMemberActivity"
+            },
+            "title": "Member Activity",
+            "type": "array"
+          },
+>>>>>>> origin/main
           "peer_routes": {
             "items": {
               "$ref": "#/components/schemas/PeerRouteStatus"
@@ -34209,6 +34680,29 @@
         "title": "RoomMember",
         "type": "object"
       },
+<<<<<<< HEAD
+=======
+      "RoomMemberActivity": {
+        "additionalProperties": false,
+        "description": "One live room task: ``status`` is ``queued``, ``running`` or ``stopping``.",
+        "properties": {
+          "member_id": {
+            "title": "Member Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "member_id",
+          "status"
+        ],
+        "title": "RoomMemberActivity",
+        "type": "object"
+      },
+>>>>>>> origin/main
       "RoomMemberInput": {
         "additionalProperties": true,
         "description": "A roster row as the client proposes it; ``validate_roster`` owns the exact rules.",
@@ -38478,6 +38972,20 @@
             ],
             "default": null,
             "title": "Fallback Model"
+<<<<<<< HEAD
+=======
+          },
+          "plan_gauge": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanGauge"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -39019,6 +39527,20 @@
             ],
             "default": null,
             "title": "Fallback Model"
+<<<<<<< HEAD
+=======
+          },
+          "plan_gauge": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanGauge"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "title": "SessionUsagePayload",
@@ -39247,6 +39769,20 @@
             "default": null,
             "title": "Cost Status"
           },
+<<<<<<< HEAD
+=======
+          "plan_gauge": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanGauge"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+>>>>>>> origin/main
           "credits_lines": {
             "anyOf": [
               {
@@ -39261,6 +39797,21 @@
             ],
             "default": null,
             "title": "Credits Lines"
+<<<<<<< HEAD
+=======
+          },
+          "credits_usage_window": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Credits Usage Window"
+>>>>>>> origin/main
           }
         },
         "title": "SessionUsageResult",
@@ -42872,6 +43423,20 @@
               }
             ],
             "default": null
+<<<<<<< HEAD
+=======
+          },
+          "plan_usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanUsage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "required": [
@@ -44866,6 +45431,20 @@
             ],
             "default": null,
             "title": "Cost Status"
+<<<<<<< HEAD
+=======
+          },
+          "plan_gauge": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanGauge"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+>>>>>>> origin/main
           }
         },
         "title": "Usage",
@@ -44925,6 +45504,119 @@
         "title": "UsageBarKind",
         "type": "string"
       },
+<<<<<<< HEAD
+=======
+      "UsageLimit": {
+        "additionalProperties": false,
+        "description": "``agent/plan_limits.py::LimitHit`` \u2014 a usage-window plan's limit: what ran out, when it resets, and\nthe one-click ways on (switch to a recommended model, use / add credits).",
+        "properties": {
+          "gauge_id": {
+            "title": "Gauge Id",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string"
+          },
+          "limit_name": {
+            "title": "Limit Name",
+            "type": "string"
+          },
+          "resets_at_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resets At Ms"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/UsageLimitSuggestion"
+            },
+            "title": "Suggestions",
+            "type": "array"
+          },
+          "credits": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageLimitCredits"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "current_model": {
+            "default": "",
+            "title": "Current Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "gauge_id",
+          "scope",
+          "limit_name",
+          "message"
+        ],
+        "title": "UsageLimit",
+        "type": "object"
+      },
+      "UsageLimitCredits": {
+        "additionalProperties": false,
+        "description": "``agent/plan_limits.py::CreditsOption`` \u2014 ``use_credits`` (turn on Keep going), ``add_credits``, or\n``add_credits_and_keep_going`` (both: Keep going is off and there is no balance).",
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "title": "UsageLimitCredits",
+        "type": "object"
+      },
+      "UsageLimitSuggestion": {
+        "additionalProperties": false,
+        "description": "``agent/plan_limits.py::ModelSuggestion`` \u2014 a recommended model that still works past the limit.",
+        "properties": {
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "provider": {
+            "default": "nous",
+            "title": "Provider",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model",
+          "label",
+          "note"
+        ],
+        "title": "UsageLimitSuggestion",
+        "type": "object"
+      },
+>>>>>>> origin/main
       "UsageModel": {
         "additionalProperties": false,
         "description": "``_serialize_usage_model`` \u2014 also embedded as ``usage`` in the billing / subscription states,\nwhere the fail-open form is a bare ``{available: false}`` (no ``ok``).",
@@ -48450,6 +49142,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "name": "browser.controller.cancel",
       "summary": "Withdraw a pending controller command.",
       "params": [
@@ -48474,6 +49167,8 @@
       ]
     },
     {
+=======
+>>>>>>> origin/main
       "name": "browser.progress",
       "summary": "Browser (CDP) connect / install progress line.",
       "params": [

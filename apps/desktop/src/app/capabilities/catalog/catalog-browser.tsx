@@ -15,6 +15,10 @@ import { DetailColumn, ListColumn, MasterDetail } from '../../master-detail'
 import { PanelEmpty } from '../../overlays/panel'
 import { CapabilitySearch } from '../ui/capability-search'
 
+<<<<<<< HEAD
+=======
+import { CatalogAddButton } from './catalog-add-button'
+>>>>>>> origin/main
 import { CatalogAlert } from './catalog-alert'
 import { CatalogCard, type CatalogCardVariant } from './catalog-card'
 import { type CatalogEntry, type CatalogKind, useCatalog } from './catalog-data'
@@ -22,7 +26,10 @@ import { CatalogDetail } from './catalog-detail'
 import { CatalogDetailDialog } from './catalog-detail-dialog'
 import { CatalogDiscovery } from './catalog-discovery'
 import { CatalogFilterBar } from './catalog-filter-bar'
+<<<<<<< HEAD
 import { CatalogInstallSwitch } from './catalog-install-switch'
+=======
+>>>>>>> origin/main
 import { CatalogListRow } from './catalog-list-row'
 import { CATALOG_POINTER_ENABLED, trackCatalogPointer } from './catalog-pointer'
 import {
@@ -113,6 +120,10 @@ function CatalogEntryInstall({
   installedPending,
   installing,
   kind,
+<<<<<<< HEAD
+=======
+  labeled,
+>>>>>>> origin/main
   onInstall
 }: {
   entry: CatalogEntry
@@ -120,6 +131,7 @@ function CatalogEntryInstall({
   installedPending: boolean
   installing: boolean
   kind: CatalogKind
+<<<<<<< HEAD
   onInstall: () => void
 }) {
   return (
@@ -127,6 +139,17 @@ function CatalogEntryInstall({
       disabled={installedPending || installed || (kind === 'skills' && !entry.installIdentifier)}
       installed={installed}
       installing={installing}
+=======
+  labeled?: boolean
+  onInstall: () => void
+}) {
+  return (
+    <CatalogAddButton
+      disabled={installedPending || installed || (kind === 'skills' && !entry.installIdentifier)}
+      installed={installed}
+      installing={installing}
+      labeled={labeled}
+>>>>>>> origin/main
       name={entry.name}
       onInstall={onInstall}
     />
@@ -387,8 +410,14 @@ export const CatalogBrowser = memo(function CatalogBrowser({
     setDetailOpen(true)
   }
 
+<<<<<<< HEAD
   // Installed entries get the owner's on/off switch; the rest install one-way.
   const entryAction = (entry: CatalogEntry) =>
+=======
+  // Installed entries get the owner's switch + ⋯ menu; the rest get a one-way +.
+  // Hero cards and the detail have room to spell it out: "+ Install".
+  const entryAction = (entry: CatalogEntry, labeled?: boolean) =>
+>>>>>>> origin/main
     renderInstalledAction?.(entry) || (
       <CatalogEntryInstall
         entry={entry}
@@ -396,6 +425,10 @@ export const CatalogBrowser = memo(function CatalogBrowser({
         installedPending={Boolean(installedPending)}
         installing={isInstalling?.(entry) ?? false}
         kind={kind}
+<<<<<<< HEAD
+=======
+        labeled={labeled}
+>>>>>>> origin/main
         onInstall={() => {
           if (kind === 'plugins') {
             setDetailOpen(false)
@@ -409,7 +442,11 @@ export const CatalogBrowser = memo(function CatalogBrowser({
   const card = (entry: CatalogEntry, accentIndex: number, variant: CatalogCardVariant = 'default', placement?: React.CSSProperties) => (
     <CatalogCard
       accentIndex={accentIndex}
+<<<<<<< HEAD
       action={entryAction(entry)}
+=======
+      action={entryAction(entry, variant === 'hero')}
+>>>>>>> origin/main
       entry={entry}
       key={entry.id}
       onCategory={filters.chooseCategory}
@@ -423,7 +460,11 @@ export const CatalogBrowser = memo(function CatalogBrowser({
 
   const details = selected ? (
     <CatalogDetail
+<<<<<<< HEAD
       action={entryAction(selected)}
+=======
+      action={entryAction(selected, true)}
+>>>>>>> origin/main
       dialog={cardView}
       entry={selected}
       kind={kind}

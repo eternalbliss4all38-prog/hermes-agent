@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """PM-owned agent-browser / Chromium discovery, acquisition and readiness.
 
 Split out of ``tools/browser_tool.py``. Facade-owned state is read through ``_bt`` (``tools.browser_tool``, resolved per call) — no import cycle."""
@@ -183,3 +184,15 @@ def check_browser_vision_requirements() -> bool:
         return False
     from tools.vision_tools import check_vision_requirements
     return check_vision_requirements()
+=======
+"""Frozen old-updater compatibility stub (tests/compat/old_updater_surface.json, ``bare`` list).
+
+The extraction-era home of ``warm_agent_browser_npx_cache``: a pre-PM ``hermes update`` still running
+mid-swap may import it from the NEW tree. agent-browser is gone; nothing else belongs here.
+"""
+
+
+def warm_agent_browser_npx_cache(timeout: float = 60.0) -> bool:
+    """Frozen old-updater surface: nothing is warmed (there is no agent-browser to warm); always False."""
+    return False
+>>>>>>> origin/main

@@ -17,6 +17,10 @@ test('a reopened sibling chat delivers retained questions before returning and r
 
   server.on('connection', (socket: any) => socket.on('message', (bytes: Buffer) => {
     const frame = JSON.parse(bytes.toString())
+<<<<<<< HEAD
+=======
+    if (frame.method === 'client.capabilities') { socket.send(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: { server_requests: [] } })); return }
+>>>>>>> origin/main
     sent.push(frame)
     socket.send(JSON.stringify({ jsonrpc: '2.0', id: frame.id,
       result: frame.method === 'session.resume' ? snapshot : { status: 'resolved' } }))
@@ -57,6 +61,10 @@ test('a canonical clarify prompt drives the question card and its lock answers o
   server.on('connection', (socket: any) => {
     socket.on('message', (bytes: Buffer) => {
       const frame = JSON.parse(bytes.toString())
+<<<<<<< HEAD
+=======
+      if (frame.method === 'client.capabilities') { socket.send(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: { server_requests: [] } })); return }
+>>>>>>> origin/main
       sent.push(frame)
       socket.send(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: { status: 'resolved' } }))
     })

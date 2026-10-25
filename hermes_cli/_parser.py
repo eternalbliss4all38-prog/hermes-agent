@@ -343,7 +343,11 @@ def _plugin_command_install_hint(prog: str, value: str):
 
 
 def _moved_command_hint(prog: str, value: str) -> str:
+<<<<<<< HEAD
     """``hermes auth spotify`` / ``hermes spotify`` after Spotify left core: where the command went."""
+=======
+    """Where a command that left core went (``hermes auth spotify``, ``hermes mcp serve``, ...)."""
+>>>>>>> origin/main
     from hermes_cli.left_core_migration import moved_command_hint
     return moved_command_hint(prog, value)
 

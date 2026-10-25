@@ -234,10 +234,17 @@ async def execute_admission(authority, ref, row):
         from gateway.session_cron import execute
         return await execute(authority, ref, row, policy)
     local_policy = policy
+<<<<<<< HEAD
     from gateway.session_managed_worker import managed_policy, execute_managed
     policy = managed_policy(authority, ref)
     if policy is not None:
         return await execute_managed(authority, ref, row, policy)
+=======
+    from gateway.session_managed_worker import managed_policy, admit_managed
+    policy = managed_policy(authority, ref)
+    if policy is not None:
+        return await admit_managed(authority, ref, row, policy)
+>>>>>>> origin/main
     live = authority.sessions[ref.session_id]
     native = row['admission_id'] in authority.native_waiters
     authority.native_waiters.discard(row['admission_id'])

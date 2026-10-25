@@ -61,7 +61,11 @@ def reissue(operation: ConnectionOperation, names: Sequence[str], *, initiator: 
     if targets[0].kind == "connector":
         from tools.connectors.managed import CARD_RETRY, managed_client, mint
 
+<<<<<<< HEAD
         client = managed_client(initiator=initiator or CARD_RETRY, call=operation.call)
+=======
+        client = managed_client(creates_guest=True, initiator=initiator or CARD_RETRY, call=operation.call)
+>>>>>>> origin/main
         mint(client, operation, stale, reinitiate=True, actor=Actor.user)
         return None
     from tools.connectors import catalog

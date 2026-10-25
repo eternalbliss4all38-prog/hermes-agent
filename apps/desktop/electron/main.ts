@@ -66,6 +66,7 @@ import { runAppInstallerChecker } from './appinstaller-checker'
 import { installApplicationMenuAfterFirstWindow } from './application-menu-startup'
 import { stopBackendChild as stopBackendChildImpl, waitForBackendExit } from './backend-child'
 import {
+<<<<<<< HEAD
   type BackendOutputTail,
   claimDecision,
   execText,
@@ -76,6 +77,13 @@ import {
   REAP_PROBE_TIMEOUT_MS
 } from './backend-claim'
 import { dashboardFallbackArgs } from './backend-command'
+=======
+  execText,
+  isPidOnlyStartMarker,
+  processStartMarker,
+  REAP_PROBE_TIMEOUT_MS
+} from './backend-claim'
+>>>>>>> origin/main
 import { createBackendConnectionState } from './backend-connection-state'
 import { assertDescriptorStillOwned, forgetFailedDescriptor } from './backend-descriptor-cache'
 import { BackendDialClaims } from './backend-dial-claim'
@@ -83,7 +91,10 @@ import { buildDesktopBackendEnv, profileBackendParentEnv } from './backend-env'
 import { isReauthRequiredError, waitForHermesReady } from './backend-health'
 import {
   backendCommandMatches,
+<<<<<<< HEAD
   type BackendOwnershipEntry,
+=======
+>>>>>>> origin/main
   createBackendOwnership,
   createBackendShutdownCoordinator
 } from './backend-ownership'
@@ -91,7 +102,10 @@ import { canImportHermesCli, PROBE_TIMEOUT_MS, shouldTrustHermesOverride, verify
 import { recycleOwnedBackend } from './backend-recycle'
 import { isPidAliveWindows, waitForBackendRelease } from './backend-release-gate'
 import { createInstalledRuntimeGate } from './backend-resolution'
+<<<<<<< HEAD
 import { createBackendServeSupportResolver } from './backend-serve-support'
+=======
+>>>>>>> origin/main
 import { desktopBackendSpawnEnv } from './backend-spawn-env'
 import {
   isHostKeyChangedBootFailure,
@@ -133,6 +147,11 @@ import {
 import { CHALLENGE_PARTITION } from './challenge-window'
 import { registerChallengeWindowIpc } from './challenge-window-ipc'
 import { provisionCliLinks } from './cli-provision'
+<<<<<<< HEAD
+=======
+import { readClipboardImagePng } from './clipboard-image'
+import { registerClipboardTextIpc } from './clipboard-ipc'
+>>>>>>> origin/main
 import { closeStopFailureMessage, finishWindowsCloseStop, type RuntimeLock } from './close-stop-kill'
 import { shouldAttemptCloudBootCascade } from './cloud-boot-cascade'
 import { discoverWithTeamFallback } from './cloud-discovery'
@@ -382,7 +401,11 @@ import {
 } from './managed-ssh-update'
 import { registerMcpOauthCallbackIpc } from './mcp-oauth-callback-ipc'
 import { isMediaCapturePermission } from './media-capture-permission'
+<<<<<<< HEAD
 import { createMediaProtocolHandler, MEDIA_PROTOCOL } from './media-protocol'
+=======
+import { createMediaProtocolHandler, MEDIA_PROTOCOL, mediaProtocolDownloadName } from './media-protocol'
+>>>>>>> origin/main
 import { fetchLocalMedia } from './media-range'
 import { createMinimizeToTray } from './minimize-to-tray'
 import {
@@ -416,7 +439,10 @@ import {
 } from './oauth-rest-request'
 import { wireOauthSessionResponse } from './oauth-session-response'
 import { listWindowsProcesses, reapPackageRootedProcesses } from './package-process-reap'
+<<<<<<< HEAD
 import { createParentStartMarkerResolver } from './parent-process-identity'
+=======
+>>>>>>> origin/main
 import {
   bundledPayload,
   installIdForRoot,
@@ -568,6 +594,10 @@ import { ensureLoginShellPath } from './shell-path'
 import { removeStaleSingletonLock } from './singleton-lock'
 import { createSourcePythonBackend, resolveSourceInstallationBackend, type SourceBackend } from './source-backend'
 import { resolveSourcePython } from './source-python'
+<<<<<<< HEAD
+=======
+import { registerSpellcheckDictionaryIpc } from './spellcheck-dictionary-ipc'
+>>>>>>> origin/main
 import { resolveSshBinary } from './ssh-binary'
 import { createBootstrapCoordinator, sshConfigFingerprint } from './ssh-bootstrap-coordinator'
 import { collectSshConfigHosts, parseSshGOutput } from './ssh-config'
@@ -687,7 +717,11 @@ import { buildPathExtCandidates, chooseUpdaterArgs, resolveVenvHermesCommand } f
 import {
   connectWindowsRemote,
   detectRemotePlatform,
+<<<<<<< HEAD
   helper,
+=======
+  inspectWindowsSupport,
+>>>>>>> origin/main
   probeWindowsRemote,
   terminateOwnedWindowsDashboardForUpdate
 } from './windows-remote-lifecycle'
@@ -1932,6 +1966,7 @@ const localBackendLifecycle = createLocalBackendLifecycle<ChildProcess>({
   }
 })
 
+<<<<<<< HEAD
 function spawnOwnedBackend(...args: Parameters<typeof spawn>): ChildProcess {
   const child = localBackendLifecycle.spawn((): ChildProcess => spawn(...args))
   child.once('exit', (): boolean => localBackendLifecycle.release(child))
@@ -1944,6 +1979,8 @@ function spawnOwnedBackend(...args: Parameters<typeof spawn>): ChildProcess {
   return child
 }
 
+=======
+>>>>>>> origin/main
 const remoteLiveness = new RemoteLivenessTracker()
 
 // Pooled remotes are probed on the renderer reconnect cadence (minutes apart),
@@ -3008,6 +3045,7 @@ async function unwrapWindowsVenvHermesCommand(command, backendArgs) {
   })
 }
 
+<<<<<<< HEAD
 // Does the resolved runtime understand the `serve` subcommand? The desktop
 // spawns `hermes serve`; runtimes older than serve only have `dashboard`. We
 // detect support so getBackendArgsForRuntime() can route old runtimes through
@@ -3023,6 +3061,8 @@ async function getBackendArgsForRuntime(backend) {
   return (await backendSupportsServe(backend)) ? backend.args : dashboardFallbackArgs(backend.args)
 }
 
+=======
+>>>>>>> origin/main
 function normalizeExecutablePathForCompare(commandPath) {
   if (!commandPath) {
     return null
@@ -4127,10 +4167,6 @@ function writeBackendOwnership(contents) {
   }
 }
 
-// execText and processStartMarker moved to backend-claim.ts (#93608) so the
-// claim/probe policy is testable — including on Windows CI with real
-// PowerShell — without booting Electron. main.ts calls through the module.
-
 async function backendCommandForPid(pid) {
   try {
     const command = IS_WINDOWS ? 'powershell.exe' : 'ps'
@@ -4298,6 +4334,7 @@ const backendOwnership = createBackendOwnership({
   }
 })
 
+<<<<<<< HEAD
 const desktopParentStartMarker = createParentStartMarkerResolver({
   load: () => processStartMarker(process.pid),
   onError: error => {
@@ -4368,6 +4405,8 @@ async function claimBackendChild(
   }
 }
 
+=======
+>>>>>>> origin/main
 function reapOrphanedBackendsOnce() {
   if (!backendOrphanReapPromise) {
     backendOrphanReapPromise = backendOwnership
@@ -6899,14 +6938,22 @@ function installContextMenuBridge(window: BrowserWindow) {
   })
 }
 
+<<<<<<< HEAD
 // Chromium-initiated downloads (renderer anchor/blob downloads, drag-outs)
 // land here. Without a handler the OS save dialog opens with the process cwd
 // as the default directory (win-unpacked in packaged installs) and whatever
 // extensionless name the anchor carried. Route every download to the user's
 // Downloads directory and guarantee a MIME-derived extension.
+=======
+// Chromium-initiated downloads (renderer anchor/blob downloads, drag-outs, a
+// media player's ⋮ Download) land here. Without a handler the OS save dialog
+// opens in the process cwd (win-unpacked in packaged installs) with whatever name
+// the URL carried. Route every download to Downloads, name hermes-media:// saves
+// after the file, and guarantee a MIME-derived extension.
+>>>>>>> origin/main
 function installDownloadHandling() {
   session.defaultSession.on('will-download', (_event, item) => {
-    const suggested = item.getFilename() || 'download'
+    const suggested = mediaProtocolDownloadName(item.getURL()) || item.getFilename() || 'download'
     const hasExtension = Boolean(path.extname(suggested))
     const extension = hasExtension ? '' : extensionForMimeType(item.getMimeType())
     const filename = `${suggested}${extension}`
@@ -10407,7 +10454,7 @@ async function testDesktopConnectionConfig(input: any = {}) {
           if (platform.os === 'Windows') {
             const runtime = platform
             hermesPath = runtime.hermesPath
-            const inspection = await helper(ssh, runtime, 'inspect', [runtime.hermesPath])
+            const inspection = await inspectWindowsSupport(ssh, runtime)
             hermesVersion = inspection.version
             supported = inspection.supported
           } else {
@@ -10445,7 +10492,7 @@ async function testDesktopConnectionConfig(input: any = {}) {
         }
       }
     } catch (error: any) {
-      return { reachable: false, sshError: error.kind || 'unknown', error: error.message }
+      return { reachable: false, sshError: error.kind || 'unknown', error: redactSecrets(String(error.message)) }
     } finally {
       try {
         await ssh.close()
@@ -15014,8 +15061,8 @@ async function probeSshProfileInventory(connection) {
   )
 
   try {
-    await ssh.open()
-    const profiles = await remoteLifecycle.listRemoteHermesProfiles(ssh)
+    const platform = await ssh.open().then(() => detectRemotePlatform(ssh, sshConfig.remoteHermesPath || ''))
+    const profiles = await remoteLifecycle.listRemoteHermesProfiles(ssh, platform)
 
     if (profiles.length > 0) {
       sshRosterCache.set(connection.id, profiles)
@@ -15025,7 +15072,11 @@ async function probeSshProfileInventory(connection) {
     // install id at all, so two addresses for one machine never collapse into one roster row
     // (#88828 wired this for remote/local only, through /api/status).
     connectionInstallIds.set(connection.id, {
+<<<<<<< HEAD
       id: await remoteLifecycle.readRemoteInstallId(ssh),
+=======
+      id: await remoteLifecycle.readRemoteInstallId(ssh, platform),
+>>>>>>> origin/main
       ts: Date.now()
     })
   } catch (error: any) {
@@ -15276,6 +15327,10 @@ ipcMain.handle('hermes:gateway:ws-url-for', async (_event, payload) => {
 
 const pluginWsUrl = createPluginWsUrlHandler({ ensureBackend, ensureRegistryBackend, forgetLocalGatewayDescriptor,
   forgetRegistryLocalGatewayDescriptor, launchHome: HERMES_HOME, prepare: localGatewayDials.preparePlugin })
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 ipcMain.handle('hermes:plugin:ws-url', (event, payload) => pluginWsUrl(payload ?? {}, event.sender.id))
 
 // Transactional update for a Desktop-managed SSH install. Unlike the generic
@@ -16619,12 +16674,16 @@ ipcMain.handle('hermes:selectPaths', async (_event, options: any = {}) => {
   return result.filePaths
 })
 
-ipcMain.handle('hermes:writeClipboard', (_event, text) => {
-  clipboard.writeText(String(text || ''))
+// Clipboard text read/write for the renderer (clipboard-ipc.ts).
+registerClipboardTextIpc(ipcMain, clipboard)
 
-  return true
+// Save dialogs: the path picker (profile export) and /save's main-process write (save-text-file.ts).
+registerSaveDialogIpc(ipcMain, {
+  defaultDir: () => app.getPath('documents'),
+  showSaveDialog: options => dialog.showSaveDialog(mainWindow, options)
 })
 
+<<<<<<< HEAD
 // Save dialogs: the path picker (profile export) and /save's main-process write (save-text-file.ts).
 registerSaveDialogIpc(ipcMain, {
   defaultDir: () => app.getPath('documents'),
@@ -16637,6 +16696,8 @@ registerSaveDialogIpc(ipcMain, {
 // canvas. The main process has no such gate.
 ipcMain.handle('hermes:readClipboard', () => clipboard.readText())
 
+=======
+>>>>>>> origin/main
 ipcMain.handle('hermes:saveGatewayFile', (_event, payload) => saveGatewayFile(payload))
 
 ipcMain.handle('hermes:saveImageFromUrl', (_event, url) => saveImageFromUrl(String(url || '')))
@@ -16667,30 +16728,12 @@ ipcMain.handle('hermes:context-menu:copy-image', event => {
   }
 })
 
-ipcMain.handle('hermes:context-menu:spellcheck', (event, action) => {
-  const kind = action?.kind
-  const word = String(action?.word || '')
+registerSpellcheckDictionaryIpc(ipcMain, electronWebContents)
 
-  if (!word) {
-    return
-  }
-
-  if (kind === 'replace') {
-    event.sender.replaceMisspelling(word)
-  } else if (kind === 'add') {
-    event.sender.session.addWordToSpellCheckerDictionary(word)
-  }
-})
-
-// Guest dictionary add: the webview TAG exposes replaceMisspelling but no
-// session API, so the renderer names the guest by webContents id.
-ipcMain.handle('hermes:context-menu:guest-add-word', (_event, payload) => {
-  const word = String(payload?.word || '')
+ipcMain.handle('hermes:capturePreview', async (_event, payload) => {
   const guest = electronWebContents.fromId(Number(payload?.webContentsId))
 
-  if (word && guest && !guest.isDestroyed()) {
-    guest.session.addWordToSpellCheckerDictionary(word)
-  }
+  return capturePreviewContents(guest, payload?.rect, payload?.viewport)
 })
 
 ipcMain.handle('hermes:capturePreview', async (_event, payload) => {
@@ -16722,10 +16765,12 @@ ipcMain.handle('hermes:savePastedText', async (_event, payload) => {
 })
 
 ipcMain.handle('hermes:saveClipboardImage', async () => {
-  const image = clipboard.readImage()
+  // Electron 44 removed clipboard.readImage(); PNG bytes now arrive through
+  // clipboard.read() + ClipboardItem.getType('image/png') as a Blob.
+  const png = await readClipboardImagePng(clipboard)
 
-  if (image && !image.isEmpty()) {
-    return writeComposerImage(image.toPNG(), '.png')
+  if (png) {
+    return writeComposerImage(png, '.png')
   }
 
   // WSL2/WSLg doesn't bridge clipboard *images* from the Windows host to the

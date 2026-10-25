@@ -1,3 +1,4 @@
+// health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
 import { FIELD_DESCRIPTIONS, FIELD_LABELS } from '@/app/settings/constants'
 
 import { enAppTour } from './en_app_tour'
@@ -9,6 +10,10 @@ import { enClarify } from './en_clarify'
 import { enConnectorAccounts } from './en_connector_accounts'
 import { enConnectorCard } from './en_connector_card'
 import { enGatewayGroupOpen, enSkillDeepLink } from './en_deep_links'
+<<<<<<< HEAD
+=======
+import { enErrorCodes } from './en_error_codes'
+>>>>>>> origin/main
 import { enErrorLayers } from './en_error_layers'
 import { enExternalOpenFailed } from './en_external_open'
 import { enFirstRun } from './en_first_run'
@@ -16,7 +21,13 @@ import { enLocalModels } from './en_local_models'
 import { enModelMenu } from './en_model_menu'
 import { enModelSettings } from './en_model_settings'
 import { enNotices } from './en_notices'
+<<<<<<< HEAD
 import { enOnboarding } from './en_onboarding'
+=======
+import { enNotifications } from './en_notifications'
+import { enOnboarding } from './en_onboarding'
+import { enPluginPreviewAccess } from './en_plugin_preview_access'
+>>>>>>> origin/main
 import { enPluginUpdate } from './en_plugin_update'
 import { enProjects } from './en_projects'
 import { enSharedMetrics } from './en_shared_metrics'
@@ -830,6 +841,84 @@ export const en: Translations = {
         desktopFailed: 'Desktop plugin install failed',
         missingEnv: (name, vars) =>
           `${name} is installed but needs a key before it can work: ${vars}. Add it now, or the plugin's tools will fail.`
+<<<<<<< HEAD
+      }
+    },
+    vault: {
+      title: 'Passwords & Logins',
+      blurb:
+        'Say "log into GitHub" and the agent signs in for you. The first time it meets a sign-in page it asks you for the login right there; after that it just works. Passwords are encrypted on this machine and filled straight into the page — the model never sees them.',
+      count: n => `${n} saved`,
+      loadFailed: 'Could not load vault items',
+      empty: 'Nothing saved yet',
+      emptyDesc:
+        "You don't have to add anything here. Ask the agent to sign into a site and it will ask you for the login once, on the spot. Use Add if you prefer to enter one ahead of time.",
+      add: 'Add',
+      addTitle: 'Add a login, card or address',
+      addDescription: 'Stored encrypted on this machine. The agent never sees the password.',
+      added: 'Saved.',
+      adding: 'Saving…',
+      addConfirm: 'Save',
+      kindField: 'Kind',
+      kinds: { login: 'Login', payment: 'Payment card', address: 'Address' },
+      labelField: 'Label',
+      labelPlaceholder: 'e.g. GitHub work account',
+      labelRequired: 'A label is required.',
+      originField: 'Site origin',
+      originPlaceholder: 'https://github.com',
+      originPlaceholderCheckout: 'https://shop.example.com',
+      originInvalid: 'Enter a valid URL like https://example.com.',
+      identifierTypeField: 'Identifier type',
+      identifierTypes: { email: 'Email', phone: 'Phone', username: 'Username' },
+      identifierField: 'Identifier',
+      identifierShown: identifier => identifier,
+      passwordField: 'Password',
+      loginFieldsRequired: 'Identifier and password are required.',
+      cardNumberField: 'Card number',
+      cardNameField: 'Name on card',
+      expMonthField: 'Exp. month',
+      expYearField: 'Exp. year',
+      cvcField: 'CVC',
+      postalField: 'Postal code',
+      addressLine1Field: 'Address line 1',
+      addressLine2Field: 'Address line 2',
+      cityField: 'City',
+      stateField: 'State / region',
+      countryField: 'Country',
+      optional: '(optional)',
+      createdOn: date => `Added ${date}`,
+      deleteAction: 'Remove saved item',
+      otpField: 'Authenticator key',
+      otpPlaceholder: 'Base32 secret or otpauth:// link',
+      otpHint: 'The "setup key" the site shows when you enable 2FA. With it saved, Hermes generates the codes itself.',
+      twoFactorBadge: '2FA auto',
+      deleteTitle: 'Delete this item?',
+      deleteDescription: label => `"${label}" will be removed. This cannot be undone.`,
+      deleteConfirm: 'Delete',
+      sources: {
+        title: 'Password managers',
+        blurb:
+          'Installed password managers are picked up automatically. The agent asks you to unlock one the first time it needs a login from it (once per session); only a session token stays in memory, and the agent never sees your master password or any login.',
+        toggleFailed: 'Could not update password manager',
+        notInstalled: name =>
+          `Not detected. Install the ${name} command-line tool and sign in to it; Hermes picks it up automatically.`,
+        disabledDesc: 'Detected but turned off for Hermes.',
+        lockedDesc: 'Detected. The agent will ask you to unlock it when it needs a login, or unlock now.',
+        unlockedDesc: 'Unlocked for this session. Locks automatically after 30 minutes idle or when Hermes closes.',
+        statusLocked: 'Locked',
+        statusNotDetected: 'Not detected',
+        statusOff: 'Off',
+        statusUnlocked: 'Unlocked',
+        unlock: 'Unlock',
+        unlocking: 'Unlocking…',
+        lock: 'Lock',
+        unlocked: name => `${name} unlocked for this session.`,
+        unlockTitle: name => `Unlock ${name}`,
+        unlockDescription:
+          'Enter your master password. It is handed to the password manager on this machine and discarded — it is never stored, logged, or shown to the agent.',
+        masterPasswordPlaceholder: 'Master password'
+=======
+>>>>>>> origin/main
       }
     },
     vault: {
@@ -907,51 +996,7 @@ export const en: Translations = {
         masterPasswordPlaceholder: 'Master password'
       }
     },
-    notifications: {
-      title: 'Notifications',
-      intro: 'OS notifications (not in-app toasts). Per device.',
-      enableAll: 'Enable notifications',
-      enableAllDesc: 'Off silences every notification below.',
-      focusedHint: 'Completion alerts only fire while Hermes is in the background.',
-      kinds: {
-        approval: {
-          label: 'Approval needed',
-          description: 'A command is waiting for you to approve or reject it.'
-        },
-        input: {
-          label: 'Input needed',
-          description: 'Hermes asked a question or needs a password or secret.'
-        },
-        turnDone: {
-          label: 'Response ready',
-          description: 'A turn finished while Hermes was in the background.'
-        },
-        turnError: {
-          label: 'Turn failed',
-          description: 'Background turn errors.'
-        },
-        backgroundDone: {
-          label: 'Background task finished',
-          description: 'A backgrounded terminal command completed.'
-        },
-        credits: {
-          label: 'Credit alerts',
-          description: 'Credit access is paused or restored.'
-        },
-        plugin: {
-          label: 'Plugin notifications',
-          description: 'A desktop plugin sent a notification while Hermes was in the background.'
-        }
-      },
-      test: 'Send test notification',
-      testTitle: 'Hermes',
-      testBody: 'Notifications are working.',
-      testSent: 'Test sent. If nothing appears, check your OS notification permissions and Focus/Do Not Disturb.',
-      testUnsupported: 'This system does not support native notifications.',
-      completionSoundTitle: 'Completion Sound',
-      completionSoundDesc: 'Plays when an agent turn finishes. Pick a preset and preview it here.',
-      completionSoundPreview: 'Preview'
-    },
+    notifications: enNotifications,
     sections: {
       model: 'Model',
       chat: 'Chat',
@@ -1690,6 +1735,19 @@ export const en: Translations = {
         effectScheduled: (targetName, effectiveAt, creditsDelta) =>
           `Change to ${targetName} — takes effect ${effectiveAt}. No charge now; you keep your current plan until then.${creditsDelta ? ` Monthly credits change: ${creditsDelta}.` : ''}`
       },
+<<<<<<< HEAD
+=======
+      keepGoingOnCredits: {
+        title: 'Keep going on credits',
+        description:
+          'Use your credits when included usage runs out. Off: Hermes waits for the reset.',
+        approveInBrowser: 'Approve Remote Spending in your browser to change this. It applies as soon as you approve.',
+        openAgain: 'Open again',
+        cancel: 'Cancel',
+        approvedRetry: 'Remote Spending is approved, but the change didn\'t save.',
+        tryAgain: 'Try again'
+      },
+>>>>>>> origin/main
       autoReload: {
         threshold: 'Threshold',
         thresholdAria: 'Auto-refill threshold',
@@ -1767,7 +1825,25 @@ export const en: Translations = {
             captionDefault: 'Default ceiling',
             captionSpending: 'Monthly remote spending',
             valueUsed: (spent, limit) => `${spent} of ${limit} used`
+<<<<<<< HEAD
           }
+=======
+          },
+          window: {
+            today: 'Today',
+            week: 'This week',
+            month: 'This month',
+            topTier: 'Large models (monthly)',
+            barLabel: title => `${title} included usage used`,
+            captionPaused: 'Paused: subscription payment failed',
+            captionPausedOther: 'Paused: see Billing in the Portal',
+            captionTopTierUsedUp: 'Monthly allowance used up, credits cover the rest',
+            captionTopTierUsedUpKeepGoingOff: 'Monthly allowance used up, other included models still work',
+            captionResetsIn: duration => `Resets in ${duration}`,
+            captionIncluded: 'Included usage',
+            valueUsed: percent => `${percent} used`
+          },
+>>>>>>> origin/main
         },
         planCard: {
           freeTier: 'Free',
@@ -2152,6 +2228,10 @@ export const en: Translations = {
         `Pinned to commit ${sha}. Updates are refused until it is reinstalled with a new pin.`,
       pinnedBadge: (sha: string) => `pinned @ ${sha}`,
       ...enPluginUpdate,
+<<<<<<< HEAD
+=======
+      ...enPluginPreviewAccess,
+>>>>>>> origin/main
       uninstall: 'Uninstall',
       uninstallTip: (name: string, profile: string) => `Uninstall ${name} from ${profile}`,
       uninstallConfirmTitle: (name: string) => `Uninstall ${name}?`,
@@ -3412,7 +3492,11 @@ export const en: Translations = {
       '/init': 'Generate or update AGENTS.md project instructions from a repo scan',
       '/suggestions': 'Review suggested automations (accept/dismiss)',
       '/blueprint': 'Set up an automation from a blueprint template',
+<<<<<<< HEAD
       '/browser': 'Manage the agent browser [connect|disconnect|status|use]',
+=======
+      '/browser': 'Manage the agent browser [connect|disconnect|status]',
+>>>>>>> origin/main
       '/palette': 'Open the fuzzy command palette (also Ctrl+P)',
       '/usage': 'Show token usage and rate limits; `reset` redeems a banked Codex limit reset',
       '/subscription': 'View your Nous plan and change it in the browser',
@@ -3928,6 +4012,7 @@ export const en: Translations = {
     signIn: 'Sign in',
     signInHeading: 'Sign in with a Nous account to unlock more models and tools.',
     settingUp: 'Setting up free inference…',
+<<<<<<< HEAD
     codeBody: 'Enter this code in your browser to finish signing in.',
     copyLink: 'Copy link',
     doNotShare: 'Do not share this code.',
@@ -3937,11 +4022,25 @@ export const en: Translations = {
     signedInAs: email => `Signed in as ${email}`,
     signedIn: 'Signed in.',
     completedBody: 'Your account now carries inference and tools.',
+=======
+    finishInBrowser: 'Finish in your browser',
+    doNotShare: 'Do not share it.',
+    openPageAgain: 'Open page again',
+    waiting: 'Waiting for sign-in…',
+    finishingHeading: 'Finishing sign-in…',
+    finishingBody: 'Approved in the browser. Collecting your account tokens.',
+    signedInAsLabel: 'Signed in as',
+    signedIn: 'Signed in.',
+    completedBody: 'Your account now carries inference and tools.',
+    reconnect: 'Reconnect',
+    openConnectors: 'Open Connectors',
+>>>>>>> origin/main
     defaultModel: 'Default model',
     change: 'Change',
     done: 'Done',
     notNow: 'Not now',
     tryAgain: 'Try again',
+<<<<<<< HEAD
     startAgain: 'Start again',
     didNotComplete: "Sign-in didn't finish",
     rejectedBody: "No problem, you're still on the free Nous service. Sign in whenever you're ready.",
@@ -3950,6 +4049,11 @@ export const en: Translations = {
     timedOutBody: "Start again whenever you're ready. You're still on the free Nous service.",
     retiredBody:
       "Your session ended before the sign-in finished. Hermes will start a new one; then sign in again whenever you're ready.",
+=======
+    didNotComplete: "Sign-in didn't finish",
+    timedOutHeading: 'That sign-in link has expired',
+    timedOutBody: "Start again whenever you're ready. You're still on the free Nous service.",
+>>>>>>> origin/main
     errorBody: "Sign-in didn't finish. Try again whenever you're ready.",
     busyHeading: 'Almost there',
     busyBody: wait =>
@@ -4005,7 +4109,31 @@ export const en: Translations = {
     wasPrice: 'was',
     customModel: 'Custom model',
     addCustomModelAction: 'Add custom model…',
+<<<<<<< HEAD
     customModelPlaceholder: 'Type a model id, e.g. openai/gpt-5'
+=======
+    customModelPlaceholder: 'Type a model id, e.g. openai/gpt-5',
+    today: 'Today',
+    week: 'Week',
+    month: 'Month',
+    topTier: 'Large models (monthly)',
+    included: 'Every model below is included',
+    pausedRenewal: 'paused: renewal unpaid',
+    pausedOther: 'paused',
+    includedUsedUp: 'Included usage used up',
+    limitReached: name => `${name.charAt(0).toUpperCase()}${name.slice(1)} limit reached`,
+    limitNames: { day: 'daily', month: 'monthly', top_tier: 'monthly large-model', week: 'weekly' },
+    limitThenCredits: 'paid models now use your credits (pay as you go)',
+    limitThenCreditsLarge: 'Large models now use your credits (pay as you go)',
+    limitThenWait: 'only Free models until then',
+    limitThenWaitLarge: 'Large models paused until then',
+    percentUsed: percent => `${percent} used`,
+    resetsIn: duration => `resets in ${duration}`,
+    usageLevels: { free: 'Free', top_tier: 'Large' },
+    sectionRecommended: 'Recommended',
+    sectionOther: 'Other models',
+    largeFootnote: 'Large models also use your monthly large-model limit.'
+>>>>>>> origin/main
   },
 
   modelVisibility: {
@@ -4124,6 +4252,12 @@ export const en: Translations = {
       toggleWorkspace: 'Workspace',
       cacheHitRateTitle: 'Prompt cache hit rate this session — cached tokens cost less, so higher is cheaper',
       tokensPerSecondTitle: 'Output tokens per second, averaged over the last 10 model calls',
+<<<<<<< HEAD
+=======
+      togglePlanUsage: 'Plan usage',
+      planUsageTitle: (used, resetsIn) =>
+        `${used} of your plan's usage used${resetsIn ? ` · resets in ${resetsIn}` : ''} · open Billing`,
+>>>>>>> origin/main
       agents: 'Agents',
       closeAgents: 'Close agents',
       openAgents: 'Open agents',
@@ -4459,6 +4593,7 @@ export const en: Translations = {
       dismissError: 'Dismiss error',
       responseStopped: 'Response stopped',
       ...enErrorLayers,
+<<<<<<< HEAD
       errorCodes: {
         auth: {
           title: provider => `${provider} rejected your sign-in`,
@@ -4616,6 +4751,18 @@ export const en: Translations = {
           title: provider => `Your ${provider} sign-in expired`
         }
       },
+=======
+      errorCodes: enErrorCodes,
+      errorAuthKinds: {
+        api_key: {
+          title: provider => `${provider} rejected your API key`,
+          body: provider => `The key saved for ${provider} is invalid or was revoked. Update it, then retry.`
+        },
+        oauth: {
+          title: provider => `Your ${provider} sign-in expired`
+        }
+      },
+>>>>>>> origin/main
       errorDetails: 'Details',
       errorGenericProvider: 'The AI service',
       errorToastTitle: "Hermes couldn't finish the reply",
@@ -4627,6 +4774,15 @@ export const en: Translations = {
       errorStartNewSession: 'Start new session',
       errorSwitchProvider: 'Switch provider',
       errorChooseModel: 'Choose a model',
+<<<<<<< HEAD
+=======
+      errorSwitchToModel: (model, note) => (note ? `Switch to ${model} (${note})` : `Switch to ${model}`),
+      errorSwitchModelFailed: 'Could not switch model',
+      errorUseCredits: 'Turn on Keep going on credits',
+      errorUseCreditsFailed: 'Could not turn on Keep going on credits',
+      errorAddCredits: 'Add credits',
+      errorOpenBillingSettings: 'Open billing settings',
+>>>>>>> origin/main
       errorCompressConversation: 'Compress conversation',
       errorCompressFailed: 'Could not compress the conversation',
       errorOpenHermesFolder: 'Open Hermes folder',

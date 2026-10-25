@@ -20,7 +20,11 @@ vi.mock('@/store/gateway', async importOriginal => ({
   requestGatewayForAgent: vi.fn()
 }))
 
+<<<<<<< HEAD
 describe('usePromptActions /browser connect|disconnect', () => {
+=======
+describe('usePromptActions /browser connect|disconnect|status', () => {
+>>>>>>> origin/main
   beforeEach(() => {
     clearSingleFlightSessionResumeState()
     setSessions(() => [sessionInfo()])
@@ -55,4 +59,31 @@ describe('usePromptActions /browser connect|disconnect', () => {
     expect(requestGateway).toHaveBeenCalledWith('browser.manage', expect.objectContaining(params))
     expect(requestGateway).not.toHaveBeenCalledWith('slash.exec', expect.anything())
   })
+<<<<<<< HEAD
+=======
+
+  // `status` only reads the gateway's CDP state, so unlike connect/disconnect it runs on
+  // remote backends too.
+  it('/browser status on a remote connection is sent as browser.manage', async () => {
+    $connection.set({ connectionId: 'hermes01', mode: 'remote' } as never)
+    const requestGateway = vi.fn(async () => ({ connected: false }) as never)
+
+    let handle: HarnessHandle | null = null
+    await actRender(
+      <Harness
+        onReady={h => (handle = h)}
+        refreshSessions={vi.fn(async () => undefined)}
+        requestGateway={requestGateway}
+      />
+    )
+
+    await handle!.submitText('/browser status')
+
+    expect(requestGateway).toHaveBeenCalledWith('browser.manage', {
+      action: 'status',
+      session_id: RUNTIME_SESSION_ID
+    })
+    expect(requestGateway).not.toHaveBeenCalledWith('slash.exec', expect.anything())
+  })
+>>>>>>> origin/main
 })

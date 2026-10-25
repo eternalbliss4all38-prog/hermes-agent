@@ -704,6 +704,18 @@ describe('createSlashHandler', () => {
     expect(createSlashHandler(ctx)(command)).toBe(true)
     expect(rpc).toHaveBeenCalledWith(method, params)
     expect(gatewayWork(ctx)).toEqual([])
+<<<<<<< HEAD
+=======
+  })
+
+  it('answers the removed /browser use with usage instead of an RPC', () => {
+    const rpc = vi.fn(() => Promise.resolve({}))
+    const ctx = buildCtx({ gateway: { ...buildGateway(), rpc } })
+
+    expect(createSlashHandler(ctx)('/browser use off')).toBe(true)
+    expect(rpc).not.toHaveBeenCalled()
+    expect(ctx.transcript.sys).toHaveBeenCalledWith(expect.stringContaining('/browser [connect|disconnect|status]'))
+>>>>>>> origin/main
   })
 
   it('renders browser connect progress messages from the gateway', async () => {

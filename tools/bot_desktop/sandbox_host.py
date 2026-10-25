@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 """Bot Desktop hosted INSIDE the configured terminal backend (docker / ssh / singularity).
+=======
+"""Bot Desktop hosted INSIDE the configured terminal backend (docker / ssh / a plugin backend with streams).
+>>>>>>> origin/main
 
 Same launcher, same lease, same pane: only WHERE Xvnc + Xfce run changes. ``runtime`` decides between the
 gateway host and this module via ``placement()``; callers keep using ``runtime.start/stop/status/desktop_env``.
@@ -130,7 +134,11 @@ def desktop_home(env: Any) -> str:
 
 
 def browser_profile_dir(env: Any) -> str:
+<<<<<<< HEAD
     """The ONE ``--user-data-dir`` the agent's agent-browser and the dock's Browser icon share inside the
+=======
+    """The ONE ``--user-data-dir`` the agent's browser and the dock's Browser icon share inside the
+>>>>>>> origin/main
     sandbox (same rule as the host: two profiles would mean the human logs into a jar the bot never sees)."""
     return f"{desktop_home(env).rstrip('/')}/.hermes/bot-desktop/browser-profile"
 
@@ -144,7 +152,11 @@ _CHROMIUM_PROBE = (
 
 
 def chromium_executable(env: Any) -> Optional[str]:
+<<<<<<< HEAD
     """Path of the Playwright Chromium agent-browser uses inside ``env`` (the dock's Browser icon must run
+=======
+    """Path of the Playwright Chromium the agent's browser uses inside ``env`` (the dock's Browser icon must run
+>>>>>>> origin/main
     the same binary), or None when the image has none. Cached on the env."""
     cached = getattr(env, "_bd_chromium", "unset")
     if cached != "unset":
@@ -235,7 +247,11 @@ def start(env: Any, profile: str, *, geometry: str, wait_seconds: float = 20.0,
     if missing:
         advice = plugin_image_advice(getattr(env, "_hermes_backend_name", None)) or (
             f"use {SANDBOX_IMAGE_HINT} (the default sandbox base plus the desktop stack) as "
+<<<<<<< HEAD
             f"terminal.docker_image / modal_image / singularity_image")
+=======
+            f"terminal.docker_image / modal_image")
+>>>>>>> origin/main
         raise RuntimeError(
             f"Bot Desktop needs {', '.join(missing)} inside the terminal backend's sandbox. The configured image "
             f"does not have them; {advice}, or set bot_desktop.placement: gateway.")

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
+>>>>>>> origin/main
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import { defineLocale, type TranslationOverrides } from './define-locale'
@@ -5,12 +9,23 @@ import { frBoot } from './fr_boot'
 import { frClarify } from './fr_clarify'
 import { frConnectorAccounts } from './fr_connector_accounts'
 import { frConnectorCard } from './fr_connector_card'
+<<<<<<< HEAD
+=======
+import { frErrorCodes } from './fr_error_codes'
+import { frErrorLayers } from './fr_error_layers'
+>>>>>>> origin/main
 import { frFirstRun } from './fr_first_run'
 import { frLocalModels } from './fr_local_models'
 import { frModelMenu } from './fr_model_menu'
 import { frModelSettings } from './fr_model_settings'
 import { frNotices } from './fr_notices'
+<<<<<<< HEAD
 import { frOnboarding } from './fr_onboarding'
+=======
+import { frNotifications } from './fr_notifications'
+import { frOnboarding } from './fr_onboarding'
+import { frPluginPreviewAccess } from './fr_plugin_preview_access'
+>>>>>>> origin/main
 import { frPluginUpdate } from './fr_plugin_update'
 import { frProjects } from './fr_projects'
 import { frSharedMetrics } from './fr_shared_metrics'
@@ -923,6 +938,7 @@ export const frOverrides = {
         masterPasswordPlaceholder: 'Mot de passe principal'
       }
     },
+<<<<<<< HEAD
     notifications: {
       title: 'Notifications',
       intro: "Notifications système (pas les toasts de l'application). Par appareil.",
@@ -969,6 +985,9 @@ export const frOverrides = {
       completionSoundDesc: "Se joue à la fin d'un tour d'agent. Choisissez un préréglage et prévisualisez-le ici.",
       completionSoundPreview: 'Aperçu'
     },
+=======
+    notifications: frNotifications,
+>>>>>>> origin/main
     sections: {
       model: 'Modèle',
       chat: 'Conversation',
@@ -2042,6 +2061,20 @@ export const frOverrides = {
         effectScheduled: (targetName: string, effectiveAt: string, creditsDelta?: string) =>
           `Passage à ${targetName} — effectif ${effectiveAt}. Aucun débit maintenant ; vous conservez votre forfait actuel jusque-là.${creditsDelta ? ` Variation des crédits mensuels : ${creditsDelta}.` : ''}`
       },
+<<<<<<< HEAD
+=======
+      keepGoingOnCredits: {
+        title: 'Continuer avec les crédits',
+        description:
+          'Utilise vos crédits quand l’usage inclus est épuisé. Désactivé : Hermes attend la réinitialisation.',
+        approveInBrowser:
+          "Approuvez Remote Spending dans votre navigateur pour modifier ce réglage. Il s'applique dès votre approbation.",
+        openAgain: 'Rouvrir',
+        cancel: 'Annuler',
+        approvedRetry: "Remote Spending est approuvé, mais la modification n'a pas été enregistrée.",
+        tryAgain: 'Réessayer'
+      },
+>>>>>>> origin/main
       autoReload: {
         threshold: 'Seuil',
         thresholdAria: 'Seuil de recharge automatique',
@@ -2122,6 +2155,23 @@ export const frOverrides = {
             captionDefault: 'Plafond par défaut',
             captionSpending: 'Dépenses mensuelles à distance',
             valueUsed: (spent: string, limit: string) => `${spent} sur ${limit} utilisés`
+<<<<<<< HEAD
+=======
+          },
+          window: {
+            today: "Aujourd'hui",
+            week: 'Cette semaine',
+            month: 'Ce mois-ci',
+            topTier: 'Grands modèles (mensuel)',
+            barLabel: (title: string) => `${title} : usage inclus consommé`,
+            captionPaused: "En pause : échec du paiement de l'abonnement",
+            captionPausedOther: 'En pause : voir Facturation dans le Portail',
+            captionTopTierUsedUp: 'Quota mensuel épuisé, les crédits couvrent le reste',
+            captionTopTierUsedUpKeepGoingOff: 'Quota mensuel épuisé, les autres modèles inclus fonctionnent toujours',
+            captionResetsIn: (duration: string) => `Réinitialisation dans ${duration}`,
+            captionIncluded: 'Usage inclus',
+            valueUsed: (percent: string) => `${percent} utilisé`
+>>>>>>> origin/main
           }
         },
         planCard: {
@@ -2519,6 +2569,10 @@ export const frOverrides = {
         `Épinglé au commit ${sha}. Les mises à jour sont refusées tant qu’il n’est pas réinstallé avec un nouvel épinglage.`,
       pinnedBadge: (sha: string) => `épinglé @ ${sha}`,
       ...frPluginUpdate,
+<<<<<<< HEAD
+=======
+      ...frPluginPreviewAccess,
+>>>>>>> origin/main
       uninstall: 'Désinstaller',
       uninstallTip: (name: string, profile: string) => `Désinstaller ${name} de ${profile}`,
       uninstallConfirmTitle: (name: string) => `Désinstaller ${name} ?`,
@@ -3855,7 +3909,11 @@ export const frOverrides = {
       '/init': 'Générer ou mettre à jour les instructions de projet AGENTS.md à partir d’une analyse du dépôt',
       '/suggestions': 'Examiner les automatisations suggérées (accepter/ignorer)',
       '/blueprint': 'Configurer une automatisation à partir d’un modèle',
+<<<<<<< HEAD
       '/browser': 'Gérer le navigateur de l’agent [connect|disconnect|status|use]',
+=======
+      '/browser': 'Gérer le navigateur de l’agent [connect|disconnect|status]',
+>>>>>>> origin/main
       '/palette': 'Ouvrir la palette de commandes floue (aussi Ctrl+P)',
       '/usage':
         'Afficher l’utilisation des jetons et les limites de débit ; `reset` utilise une réinitialisation de limite Codex en réserve',
@@ -4368,6 +4426,7 @@ export const frOverrides = {
     signIn: 'Se connecter',
     signInHeading: 'Connectez-vous avec un compte Nous pour débloquer davantage de modèles et outils.',
     settingUp: "Configuration de l'inférence gratuite…",
+<<<<<<< HEAD
     codeBody: 'Saisissez ce code dans votre navigateur pour terminer la connexion.',
     copyLink: 'Copier le lien',
     doNotShare: 'Ne partagez pas ce code.',
@@ -4377,11 +4436,25 @@ export const frOverrides = {
     signedInAs: email => `Connecté en tant que ${email}`,
     signedIn: 'Connecté.',
     completedBody: "Votre compte donne maintenant accès à l'inférence et aux outils.",
+=======
+    finishInBrowser: 'Terminez dans votre navigateur',
+    doNotShare: 'Ne partagez pas ce code.',
+    openPageAgain: 'Rouvrir la page',
+    waiting: 'En attente de la connexion…',
+    finishingHeading: 'Finalisation de la connexion…',
+    finishingBody: 'Autorisation accordée dans le navigateur. Récupération des jetons de votre compte.',
+    signedInAsLabel: 'Connecté en tant que',
+    signedIn: 'Connecté.',
+    completedBody: "Votre compte donne maintenant accès à l'inférence et aux outils.",
+    reconnect: 'Reconnecter',
+    openConnectors: 'Ouvrir les connecteurs',
+>>>>>>> origin/main
     defaultModel: 'Modèle par défaut',
     change: 'Modifier',
     done: 'Terminé',
     notNow: 'Pas maintenant',
     tryAgain: 'Réessayer',
+<<<<<<< HEAD
     startAgain: 'Recommencer',
     didNotComplete: "La connexion n'a pas abouti",
     rejectedBody: "La connexion a été refusée dans le navigateur. Vous restez sur l'offre gratuite.",
@@ -4390,6 +4463,11 @@ export const frOverrides = {
     timedOutBody: "Le code n'a pas été utilisé à temps. Vous restez sur l'offre gratuite.",
     retiredBody:
       "Cette identité d'offre gratuite a déjà été utilisée ou a expiré ; une nouvelle sera créée au prochain démarrage.",
+=======
+    didNotComplete: "La connexion n'a pas abouti",
+    timedOutHeading: 'Délai de connexion dépassé',
+    timedOutBody: "Le code n'a pas été utilisé à temps. Vous restez sur l'offre gratuite.",
+>>>>>>> origin/main
     errorBody: "La connexion n'a pas abouti ; relancez-la.",
     busyHeading: 'Presque terminé',
     busyBody: wait =>
@@ -4446,7 +4524,36 @@ export const frOverrides = {
     wasPrice: 'était',
     customModel: 'Modèle personnalisé',
     addCustomModelAction: 'Ajouter un modèle personnalisé…',
+<<<<<<< HEAD
     customModelPlaceholder: 'Saisissez un ID de modèle, p. ex. openai/gpt-5'
+=======
+    customModelPlaceholder: 'Saisissez un ID de modèle, p. ex. openai/gpt-5',
+    today: "Aujourd'hui",
+    week: 'Semaine',
+    month: 'Mois',
+    topTier: 'Grands modèles (mensuel)',
+    included: 'Tous les modèles ci-dessous sont inclus',
+    pausedRenewal: 'en pause : renouvellement impayé',
+    pausedOther: 'en pause',
+    includedUsedUp: 'Usage inclus épuisé',
+    limitReached: (name: string) => `Limite ${name} atteinte`,
+    limitNames: {
+      day: 'quotidienne',
+      month: 'mensuelle',
+      top_tier: 'mensuelle des grands modèles',
+      week: 'hebdomadaire'
+    },
+    limitThenCredits: "les modèles payants utilisent maintenant vos crédits (paiement à l'usage)",
+    limitThenCreditsLarge: "les grands modèles utilisent maintenant vos crédits (paiement à l'usage)",
+    limitThenWait: "uniquement les modèles gratuits d'ici là",
+    limitThenWaitLarge: "grands modèles en pause d'ici là",
+    percentUsed: (percent: string) => `${percent} utilisé`,
+    resetsIn: (duration: string) => `réinitialisation dans ${duration}`,
+    usageLevels: { free: 'Gratuit', top_tier: 'Grand' },
+    sectionRecommended: 'Recommandés',
+    sectionOther: 'Autres modèles',
+    largeFootnote: 'Les grands modèles comptent aussi dans votre limite mensuelle des grands modèles.'
+>>>>>>> origin/main
   },
   modelVisibility: {
     title: 'Modèles',
@@ -4886,6 +4993,7 @@ export const frOverrides = {
       react: 'Réagir',
       dismissError: "Ignorer l'erreur",
       responseStopped: 'Réponse interrompue',
+<<<<<<< HEAD
       errorLayers: {
         auth: "Erreur d'authentification",
         billing: 'Crédits épuisés',
@@ -4915,6 +5023,11 @@ export const frOverrides = {
         streaming: 'La connexion a été interrompue avant la fin de la réponse. Réessayez pour la renvoyer.'
       },
       errorCodes: {
+=======
+      ...frErrorLayers,
+      errorCodes: {
+        ...frErrorCodes,
+>>>>>>> origin/main
         auth: {
           title: provider => `${provider} a refusé votre connexion`,
           body: provider =>
@@ -5014,10 +5127,13 @@ export const frOverrides = {
           title: 'Hermes est resté bloqué dans une boucle',
           body: 'La réponse répétait les mêmes étapes ; Hermes l’a donc arrêtée. Réessayez ou démarrez une nouvelle conversation.'
         },
+<<<<<<< HEAD
         cron_session_read_only: {
           title: 'Cette conversation appartient à une tâche planifiée',
           body: 'Elle n’exécute que cette tâche ; votre message n’a donc pas été exécuté. Démarrez une nouvelle conversation pour l’envoyer.'
         },
+=======
+>>>>>>> origin/main
         SESSION_NOT_OWNED: {
           title: 'Cette conversation est ouverte ailleurs',
           body: 'Cette conversation est déjà ouverte dans une autre fenêtre Hermes ou un terminal. Fermez-la là-bas puis réessayez, ou démarrez-en une nouvelle ici.'
@@ -5053,6 +5169,13 @@ export const frOverrides = {
         free_tier_refused: {
           title: "Hermes n'a pas pu envoyer ce message sans connexion",
           body: 'La connexion avec un compte Nous est gratuite.'
+<<<<<<< HEAD
+=======
+        },
+        usage_window: {
+          title: 'Usage inclus épuisé',
+          body: 'L’usage inclus de votre forfait est épuisé jusqu’à la réinitialisation. Ajoutez des crédits dans /topup pour continuer.'
+>>>>>>> origin/main
         }
       },
       errorAuthKinds: {
@@ -5069,6 +5192,15 @@ export const frOverrides = {
       errorGenericProvider: "Le service d'IA",
       errorToastTitle: "Hermes n'a pas pu terminer la réponse",
       errorRetry: 'Réessayer',
+<<<<<<< HEAD
+=======
+      errorSwitchToModel: (model, note) => (note ? `Passer à ${model} (${note})` : `Passer à ${model}`),
+      errorSwitchModelFailed: 'Impossible de changer de modèle',
+      errorUseCredits: 'Activer Continuer avec les crédits',
+      errorUseCreditsFailed: 'Impossible d’activer Continuer avec les crédits',
+      errorAddCredits: 'Ajouter des crédits',
+      errorOpenBillingSettings: 'Ouvrir les réglages de facturation',
+>>>>>>> origin/main
       errorLimitResets: (time: string) => `Le quota se réinitialise à ${time}`,
       errorRetryAtReset: (time: string) => `Réessayer à la réinitialisation du quota (${time})`,
       errorRetryScheduled: (time: string, wait: string) => `Nouvel essai à ${time} — dans ${wait}`,

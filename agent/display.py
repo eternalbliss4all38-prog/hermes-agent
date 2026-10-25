@@ -322,6 +322,7 @@ def _read_file_line_label(args: dict) -> str:
     if not isinstance(offset, int) or offset <= 0:
         return ""
     return f"L{offset}-{offset + limit - 1}" if isinstance(limit, int) and limit > 1 else f"L{offset}"
+<<<<<<< HEAD
 
 
 def redact_browser_typed_text_for_display(value: Any, typed_text: Any) -> Any:
@@ -344,6 +345,8 @@ def redact_browser_typed_text_for_display(value: Any, typed_text: Any) -> Any:
     if isinstance(value, tuple):
         return tuple(redact_browser_typed_text_for_display(item, typed_text) for item in value)
     return value
+=======
+>>>>>>> origin/main
 
 
 def redact_tool_args_for_display(tool_name: str, args: dict | None) -> dict | None:
@@ -438,6 +441,7 @@ def _preview_read_file(args: dict, max_len: int) -> str | None:
     return None if label is None else _tail_trunc(f"{label} {_read_file_line_label(args)}".strip(), max_len) or None
 
 
+<<<<<<< HEAD
 def _preview_memory(args: dict, _max_len: int) -> str:
     action, target = args.get("action", ""), args.get("target", "")
     if action == "add":
@@ -445,6 +449,26 @@ def _preview_memory(args: dict, _max_len: int) -> str:
     if action in ("replace", "patch", "remove"):
         old = _oneline(args.get("old_text") or "") or t("display.preview.missing_old_text")
         return f"{'-' if action == 'remove' else '~'}{target}: \"{old[:20]}\""
+=======
+def _memory_first_op(args: dict) -> tuple[dict, str]:
+    """The op a memory progress line shows and a ``" (N more)"`` suffix for the rest of an
+    ``operations[]`` batch (the advertised shape); legacy top-level single-op args are their own op."""
+    ops = args.get("operations")
+    if not isinstance(ops, list) or not ops:
+        return args, ""
+    first = ops[0] if isinstance(ops[0], dict) else {}
+    return first, (f" ({t('cli.shared.n_more', count=len(ops) - 1)})" if len(ops) > 1 else "")
+
+
+def _preview_memory(args: dict, _max_len: int) -> str:
+    op, more = _memory_first_op(args)
+    action, target = op.get("action", ""), args.get("target", "")
+    if action == "add":
+        return f"+{target}: \"{_clip(_oneline(op.get('content') or op.get('new_text') or ''), 25)}\"{more}"
+    if action in ("replace", "patch", "remove"):
+        old = _oneline(op.get("old_text") or "") or t("display.preview.missing_old_text")
+        return f"{'-' if action == 'remove' else '~'}{target}: \"{old[:20]}\"{more}"
+>>>>>>> origin/main
     return action
 
 
@@ -1185,12 +1209,23 @@ def _cute_todo_list(a: dict, result) -> str:
 
 
 def _cute_memory(a: dict, _r) -> str:
+<<<<<<< HEAD
     action, target = a.get("action", "?"), a.get("target", "")
     if action == "add":
         return _cute_row("🧠", "memory", f"+{target}: \"{_cute_trunc(a.get('content', ''))}\"")
     if action in ("replace", "patch", "remove"):
         old = a.get("old_text") or t("display.preview.missing_old_text")
         return _cute_row("🧠", "memory", f"{'-' if action == 'remove' else '~'}{target}: \"{_cute_trunc(old)}\"")
+=======
+    op, more = _memory_first_op(a)
+    action, target = op.get("action", "?"), a.get("target", "")
+    if action == "add":
+        content = op.get("content") or op.get("new_text") or ""
+        return _cute_row("🧠", "memory", f"+{target}: \"{_cute_trunc(content)}\"{more}")
+    if action in ("replace", "patch", "remove"):
+        old = op.get("old_text") or t("display.preview.missing_old_text")
+        return _cute_row("🧠", "memory", f"{'-' if action == 'remove' else '~'}{target}: \"{_cute_trunc(old)}\"{more}")
+>>>>>>> origin/main
     return _cute_row("🧠", "memory", str(action))
 
 

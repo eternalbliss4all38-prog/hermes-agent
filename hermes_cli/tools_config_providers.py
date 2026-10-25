@@ -250,11 +250,15 @@ def _toolset_needs_configuration_prompt(ts_key: str, config: dict, *, force_fres
         section = config.get(ts_key, {})
         if not isinstance(section, dict):
             return True
+<<<<<<< HEAD
         if selection_key in section:
             return False
         # Browser's "Browser Use" row writes browser.backend and leaves cloud_provider unset. Presence is no
         # test of a choice here: browser.backend exists on every install after the defaults merge ("" = unset).
         return not (ts_key == "browser" and _browser_backend(config))
+=======
+        return selection_key not in section
+>>>>>>> origin/main
     if ts_key == "image_gen":  # in-tree FAL backend OR any available plugin image gen provider satisfies
         return not fal_key_is_configured() and not _any_plugin_provider_available("agent.image_gen_registry")
     if ts_key == "video_gen":  # no in-tree fallback — every video backend is a plugin
@@ -432,8 +436,11 @@ def _managed_provider_active(provider: dict, config: dict, managed_feature: str,
                 and not is_truthy_value(gen_cfg.get("use_gateway"), default=False)):
                 return False
         return feature.managed_by_nous
+<<<<<<< HEAD
     # Browser Use mode is a driver on top of the provider (attaches to its CDP endpoint), so the browser
     # provider row stays active alongside the Browser Use row.
+=======
+>>>>>>> origin/main
     if _has_marker(provider, "web_backend"):
         # Search and extract pick their route separately: the managed row serves whichever one
         # resolves to the gateway (a ``nous`` override, or the shared ``nous`` selection).
@@ -445,6 +452,7 @@ def _managed_provider_active(provider: dict, config: dict, managed_feature: str,
     return feature.managed_by_nous
 
 
+<<<<<<< HEAD
 def _browser_use_default_active(config: dict) -> bool:
     """``browser.backend`` unset: Browser Use mode is the default, so the row is active whenever the
     effective mode resolves on (legacy direct-API cloud config, or CLI runnable and no Camofox)."""
@@ -472,12 +480,20 @@ def _browser_provider_active(provider: dict, config: dict) -> bool:
         return False
     # Two local rows differ only by engine ("Local Browser" vs "Lightpanda"): config.yaml is the picker's
     # source of truth here, the AGENT_BROWSER_ENGINE env var is not consulted.
+=======
+def _browser_provider_active(provider: dict, config: dict) -> bool:
+    if provider["browser_provider"] != cfg_get(config, "browser", "cloud_provider"):
+        return False
+    # Two local rows differ only by engine ("Local Browser" vs "Lightpanda"): config.yaml is the picker's
+    # source of truth here.
+>>>>>>> origin/main
     if provider.get("browser_engine"):
         engine = str(cfg_get(config, "browser", "engine") or "auto").strip().lower()
         return engine == provider["browser_engine"]
     return True
 
 
+<<<<<<< HEAD
 def _browser_backend(config: dict) -> str:
     """``browser.backend`` as a string; ``""`` when unset or empty (YAML 1.1 parses an unquoted ``off`` as False)."""
     backend = cfg_get(config, "browser", "backend")
@@ -495,6 +511,8 @@ def _browser_backend_active(provider: dict, config: dict) -> bool:
     return _browser_use_default_active(config)
 
 
+=======
+>>>>>>> origin/main
 def _imagegen_backend_active(provider: dict, config: dict) -> bool:
     image_cfg = config.get("image_gen", {})
     return (
@@ -510,7 +528,10 @@ _ACTIVE_CHECKS: tuple[tuple[str, Callable[[dict, dict], bool]], ...] = (
     ("tts_provider", lambda p, c: cfg_get(c, "tts", "provider") == p["tts_provider"]),
     ("stt_provider", lambda p, c: (cfg_get(c, "stt", "provider") or "local") == p["stt_provider"]),
     ("browser_provider", _browser_provider_active),
+<<<<<<< HEAD
     ("browser_backend", _browser_backend_active),
+=======
+>>>>>>> origin/main
     ("web_backend", _web_backend_active),
     ("computer_use_backend", lambda p, c: cfg_get(c, "computer_use", "backend") == p["computer_use_backend"]),
     ("imagegen_backend", _imagegen_backend_active))
@@ -749,6 +770,7 @@ def _write_provider_config(provider: dict, config: dict, *, managed_feature) -> 
     if "browser_provider" in provider:
         bp = provider["browser_provider"]
         if bp or managed_feature:
+<<<<<<< HEAD
             # Browser Use mode (browser.backend) composes with the provider — keep the driver choice intact.
             _select_into(config, "browser", "cloud_provider", bp, managed_feature)
         else:
@@ -756,6 +778,12 @@ def _write_provider_config(provider: dict, config: dict, *, managed_feature) -> 
     if provider.get("browser_backend"):
         config.setdefault("browser", {})["backend"] = provider["browser_backend"]
     # Local engine rows ("Local Browser" resets to auto, "Lightpanda" sets lightpanda); composes with browser.backend.
+=======
+            _select_into(config, "browser", "cloud_provider", bp, managed_feature)
+        else:
+            config.setdefault("browser", {}).pop("use_gateway", None)
+    # Local engine rows ("Local Browser" resets to auto, "Lightpanda" sets lightpanda).
+>>>>>>> origin/main
     if provider.get("browser_engine"):
         config.setdefault("browser", {})["engine"] = provider["browser_engine"]
 
@@ -887,8 +915,11 @@ def _print_provider_selection(provider: dict, managed_feature, *, reconfigure: b
             _print_success("  Browser set to local mode")
         elif bp:
             _print_success(f"  Browser cloud provider set to: {bp}")
+<<<<<<< HEAD
     if provider.get("browser_backend"):
         _print_success("  Browser set to Browser Use (browser_exec via CLI 3.0)")
+=======
+>>>>>>> origin/main
     if provider.get("browser_engine") and provider["browser_engine"] != "auto":
         _print_success(f"  Browser engine set to: {provider['browser_engine']}")
     if provider.get("web_backend"):

@@ -8,9 +8,15 @@ from tui_gateway import server
 SHA = "a" * 40
 
 
+<<<<<<< HEAD
 def _entry(name, repo=None, subdir=""):
     return pc.entry_from_mapping({"name": name, "repo": repo or f"https://github.com/fx/{name}", "sha": SHA,
                                   "description": "d.", "maintainer": "fx", "subdir": subdir}, name)
+=======
+def _entry(name, repo=None, subdir="", tier="community"):
+    return pc.entry_from_mapping({"name": name, "repo": repo or f"https://github.com/fx/{name}", "sha": SHA,
+                                  "description": "d.", "maintainer": "fx", "subdir": subdir, "tier": tier}, name)
+>>>>>>> origin/main
 
 
 def _lookup(name, **extra):
@@ -21,7 +27,11 @@ def _lookup(name, **extra):
 
 @pytest.fixture
 def catalog(monkeypatch):
+<<<<<<< HEAD
     entries = [_entry("weather"), _entry("aihubmix", "https://github.com/AIhubmix/mono", subdir="aihubmix"),
+=======
+    entries = [_entry("weather"), _entry("aihubmix", "https://github.com/AIhubmix/mono", subdir="aihubmix", tier="official"),
+>>>>>>> origin/main
                _entry("pulled")]
     monkeypatch.setattr(pc, "load_catalog_live", lambda: entries)
     monkeypatch.setattr(pc, "load_removed_list", lambda catalog_dir=None: [pc.RemovedEntry(name="pulled")])
@@ -31,8 +41,16 @@ def catalog(monkeypatch):
 
 def test_a_listed_name_returns_what_the_install_dialog_needs(catalog):
     assert _lookup("aihubmix") == {"status": "found", "entry": {
+<<<<<<< HEAD
         "name": "aihubmix", "repo": "https://github.com/AIhubmix/mono", "sha": SHA, "subdir": "aihubmix"}}
     assert _lookup(" weather ")["entry"]["subdir"] == ""
+=======
+        "name": "aihubmix", "repo": "https://github.com/AIhubmix/mono", "sha": SHA, "subdir": "aihubmix",
+        "tier": "official"}}
+    # The tier rides along so a deep link's dialog badges Official/Verified/Community like an in-app pick.
+    assert _lookup(" weather ")["entry"]["subdir"] == ""
+    assert _lookup("weather")["entry"]["tier"] == "community"
+>>>>>>> origin/main
 
 
 def test_an_unlisted_or_removed_name_is_unknown_never_a_guess(catalog):

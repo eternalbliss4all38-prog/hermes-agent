@@ -480,7 +480,11 @@ class Venv(StatePackage):
                           seed_lock=seed, frozen=repair or not members, replay=replay,
                           source=project, environment=environment)
             resolved_lock = generation / "workspace" / "uv.lock"
+<<<<<<< HEAD
             environment.check()
+=======
+            environment.check(resolved_lock)
+>>>>>>> origin/main
             if repair:
                 from pm.environments import venv_command
                 from pm.recovery import validate_environment
@@ -963,6 +967,7 @@ class CuaDriver(BinaryPackage):
 
 
 @register
+<<<<<<< HEAD
 class AgentBrowser(BinaryPackage):
     name = "agent-browser"
     optional = True
@@ -1022,6 +1027,8 @@ class AgentBrowser(BinaryPackage):
 
 
 @register
+=======
+>>>>>>> origin/main
 class Chromium(Package):
     """Playwright resolves browsers by DIRECTORY NAME under one root:
     `<name with '-'→'_'>-<revision>`, no target suffix. The env points
@@ -1036,6 +1043,13 @@ class Chromium(Package):
 
     name = "chromium"
     optional = True
+<<<<<<< HEAD
+=======
+    # browser_exec's launcher drives this build, and its readiness check
+    # installs it only once per process, so default-install it like the
+    # other OS tools; `install.sh --skip-browser` declines it.
+    default = True
+>>>>>>> origin/main
     on_path = False
     # Neither Chrome-for-Testing nor Playwright's mirror builds for Android.
     gaps = {
@@ -1049,7 +1063,11 @@ class Chromium(Package):
     # playwright's dbazure mirror with its own platform names.
     # win32-arm64 uses the win64 (x64) build: CfT publishes no native
     # win-arm64 chromium, and Windows ARM64 runs x64 binaries via built-in
+<<<<<<< HEAD
     # emulation — the same choice agent-browser's own postinstall makes.
+=======
+    # emulation.
+>>>>>>> origin/main
     _CFT = {
         "linux-x64": "linux64",
         "darwin-x64": "mac-x64",
@@ -1096,10 +1114,18 @@ class Chromium(Package):
         binary = self.binary(entry, target)
         if binary is None:
             raise InstallError(self.name, f"Chromium executable missing under {native(entry)}")
+<<<<<<< HEAD
         return {
             "PLAYWRIGHT_BROWSERS_PATH": str(entry.parent),
             "AGENT_BROWSER_EXECUTABLE_PATH": str(binary),
         }
+=======
+        # Playwright launches without an executable_path (e.g. the
+        # har-derived-api-client skill's `chromium.launch(channel="chromium")`)
+        # find this build through the root; Hermes's own launcher asks
+        # hermes_cli.browser_runtime.chromium_executable() instead.
+        return {"PLAYWRIGHT_BROWSERS_PATH": str(entry.parent)}
+>>>>>>> origin/main
 
 
 class LlamaCpp(BinaryPackage):

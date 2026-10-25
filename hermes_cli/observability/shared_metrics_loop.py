@@ -366,6 +366,7 @@ def record_terminal_backend(plan: Any, result: Any, *, error_class: str | None =
     return record_execution_backend("terminal", getattr(plan, "env_type", None), result, error_class=error_class)
 
 
+<<<<<<< HEAD
 def record_browser_call(call: Callable[[Callable[[Callable[[], Any]], Any]], Any], resolve_backend: Callable[[], str]) -> Any:
     """Run one browser tool call and count it against the backend that served it. ``call`` receives a
     wrapper for the legacy-backend fallback: when the extension controller serves the call instead,
@@ -385,6 +386,17 @@ def record_browser_call(call: Callable[[Callable[[Callable[[], Any]], Any]], Any
         _safe_record_browser(backend, None, "exception")
         raise
     _safe_record_browser(backend, result, None)
+=======
+def record_browser_call(call: Callable[[], Any], resolve_backend: Callable[[], str]) -> Any:
+    """Run one browser_exec call and count it against the backend that served it (``resolve_backend``
+    runs only while collection is on, after the call)."""
+    try:
+        result = call()
+    except Exception:
+        _safe_record_browser(resolve_backend, None, "exception")
+        raise
+    _safe_record_browser(resolve_backend, result, None)
+>>>>>>> origin/main
     return result
 
 

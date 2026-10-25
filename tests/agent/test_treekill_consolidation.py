@@ -7,7 +7,10 @@ termination through :func:`agent.deadline.kill_process_tree`:
 * ``hermes_cli._subprocess_compat.kill_process_tree(proc)`` — also consumed
   by ``agent.shell_hooks`` by name; falls back to
   ``_legacy_kill_process_tree`` when delegation fails.
+<<<<<<< HEAD
 * ``tools.browser_tool_lifecycle._kill_process_tree(proc)`` — same pattern.
+=======
+>>>>>>> origin/main
 * ``tools.code_execution_tool._kill_process_group(proc, escalate=...)`` —
   SIGTERM tree first, then (escalate) bounded wait + SIGKILL tree.
 
@@ -44,6 +47,7 @@ class _FakeProc:
 
 
 # ---------------------------------------------------------------------------
+<<<<<<< HEAD
 # (2) tools.browser_tool_lifecycle._kill_process_tree
 # ---------------------------------------------------------------------------
 
@@ -51,6 +55,9 @@ class _FakeProc:
 
 # ---------------------------------------------------------------------------
 # (3) tools.code_execution_tool._kill_process_group
+=======
+# (2) tools.code_execution_tool._kill_process_group
+>>>>>>> origin/main
 # ---------------------------------------------------------------------------
 
 class TestCodeExecutionDelegation:

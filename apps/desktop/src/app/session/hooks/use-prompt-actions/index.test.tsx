@@ -492,6 +492,7 @@ describe('usePromptActions /title', () => {
   })
 })
 
+<<<<<<< HEAD
 describe('usePromptActions /browser use', () => {
   beforeEach(() => setSessions(() => [sessionInfo()]))
 
@@ -530,6 +531,8 @@ describe('usePromptActions /browser use', () => {
   })
 })
 
+=======
+>>>>>>> origin/main
 describe('usePromptActions /stop', () => {
   afterEach(() => {
     cleanup()

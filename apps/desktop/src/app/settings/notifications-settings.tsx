@@ -9,6 +9,7 @@ import { triggerHaptic } from '@/lib/haptics'
 import { Bell, Play } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { $completionSoundVariantId, setCompletionSoundVariantId } from '@/store/completion-sound'
+import { $hapticsMuted, setHapticsMuted } from '@/store/haptics'
 import {
   $nativeNotifyPrefs,
   NATIVE_NOTIFICATION_KINDS,
@@ -36,6 +37,7 @@ interface NotificationsSettingsProps {
 export function NotificationsSettings({ subpage }: NotificationsSettingsProps = {}) {
   const { t } = useI18n()
   const prefs = useStore($nativeNotifyPrefs)
+  const muted = useStore($hapticsMuted)
   const completionSoundVariantId = useStore($completionSoundVariantId)
   const copy = t.settings.notifications
   const showAlerts = subpage === undefined || subpage === 'alerts'
@@ -77,6 +79,7 @@ export function NotificationsSettings({ subpage }: NotificationsSettingsProps = 
           ))}
         </>
       )}
+<<<<<<< HEAD
 
       {showSounds && (
         <ListRow
@@ -126,6 +129,66 @@ export function NotificationsSettings({ subpage }: NotificationsSettingsProps = 
         />
       )}
 
+=======
+
+      {showSounds && (
+        <>
+          <ToggleRow
+            checked={muted}
+            description={copy.muteSoundsDesc}
+            id={settingElementId(SETTING_IDS.notifications.muteSounds)}
+            label={copy.muteSoundsTitle}
+            onChange={setHapticsMuted}
+          />
+          <ListRow
+            action={
+              <>
+                <Select
+                  onValueChange={value => {
+                    const variantId = Number.parseInt(value, 10)
+
+                    setCompletionSoundVariantId(variantId)
+                    previewCompletionSound(variantId)
+                    triggerHaptic('selection')
+                  }}
+                  value={String(completionSoundVariantId)}
+                >
+                  <SelectTrigger className={cn('min-w-56', CONTROL_TEXT)}>
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {COMPLETION_SOUND_VARIANTS.map(variant => (
+                      <SelectItem key={variant.id} value={String(variant.id)}>
+                        {variant.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Button
+                  className="gap-1.5"
+                  onClick={() => {
+                    previewCompletionSound()
+                    triggerHaptic('crisp')
+                  }}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  <Play className="size-3.5" />
+                  {copy.completionSoundPreview}
+                </Button>
+              </>
+            }
+            description={copy.completionSoundDesc}
+            id={settingElementId(SETTING_IDS.notifications.completionSound)}
+            title={copy.completionSoundTitle}
+          />
+        </>
+      )}
+
+>>>>>>> origin/main
       {showAlerts && (
         <div className="mt-4 flex flex-col gap-2">
           <Button className="self-start" onClick={() => void runTest()} size="sm" type="button" variant="outline">

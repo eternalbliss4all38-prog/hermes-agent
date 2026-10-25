@@ -610,6 +610,7 @@ def find_node_executable(command: str) -> str | None:
 def with_hermes_node_path(env: dict[str, str] | None = None) -> dict[str, str]:
     """Compose installed PM npm and its Node dependency without provisioning."""
     from pm import env_for
+<<<<<<< HEAD
 
     return env_for("npm", base_env=env)
 
@@ -628,6 +629,10 @@ def agent_browser_runnable(path: str | None) -> bool:
     if not path:
         return False
     return _is_executable_file(path) and _version_probe_ok(path)
+=======
+
+    return env_for("npm", base_env=env)
+>>>>>>> origin/main
 
 
 def _legacy_path_has_content(path: Path) -> bool:

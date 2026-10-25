@@ -3,7 +3,11 @@ import { randomUUID } from 'node:crypto'
 import { introMsg, toTranscriptMessages } from '../../domain/messages.js'
 import { CANONICAL_REASONING_EFFORTS, TUI_SESSION_MODEL_FLAG } from '../../domain/slash.js'
 import { t } from '../../i18n/runtime.js'
+<<<<<<< HEAD
 import { asRpcResult } from '../../lib/rpc.js'
+=======
+import { asRpcResult, rpcErrorMessage } from '../../lib/rpc.js'
+>>>>>>> origin/main
 import { patchOverlayState } from '../overlayStore.js'
 import { getUiState, patchUiState } from '../uiStore.js'
 
@@ -225,17 +229,29 @@ export function openModelConfirmation(detail: string | undefined, target: string
   })
 }
 
+<<<<<<< HEAD
+=======
+/** `baseline` is the session info the control started from: an epoch change or a newer turn wins. */
+>>>>>>> origin/main
 function isSupersededControl(
   operation: 'model' | 'branch' | 'compress',
   result: CanonicalControlResult,
   expectedGeneration: number,
+<<<<<<< HEAD
   ctx: SlashRunCtx
+=======
+  baseline: ReturnType<typeof getUiState>['info']
+>>>>>>> origin/main
 ) {
   const current = getUiState().info
 
   return (
     operation !== 'branch' &&
+<<<<<<< HEAD
     (current?.execution_epoch !== ctx.ui.info?.execution_epoch ||
+=======
+    (current?.execution_epoch !== baseline?.execution_epoch ||
+>>>>>>> origin/main
       (current?.execution_generation ?? 0) > (result.execution_generation ?? expectedGeneration))
   )
 }
@@ -263,7 +279,11 @@ async function applyBranchResult(result: CanonicalControlResult, arg: string, ct
   }
 }
 
+<<<<<<< HEAD
 function applyModelResult(result: CanonicalControlResult, ctx: SlashRunCtx) {
+=======
+function applyModelResult(result: CanonicalControlResult, sys: (text: string) => void) {
+>>>>>>> origin/main
   if (!result.model) {
     throw new Error(t('session.main.invalidModelSwitchResponse'))
   }
@@ -271,7 +291,11 @@ function applyModelResult(result: CanonicalControlResult, ctx: SlashRunCtx) {
   if (result.status === 'deferred') {
     // A turn is running: the owner keeps the pick for the next turn, and session.info repaints the
     // model when it lands (or a refusal / confirmation follows on session.updated).
+<<<<<<< HEAD
     ctx.transcript.sys(t('slashCmd.session.model.switchedDeferred', result.model))
+=======
+    sys(t('slashCmd.session.model.switchedDeferred', result.model))
+>>>>>>> origin/main
 
     return
   }
@@ -286,11 +310,64 @@ function applyModelResult(result: CanonicalControlResult, ctx: SlashRunCtx) {
       tools: state.info?.tools ?? {}
     }
   }))
+<<<<<<< HEAD
   ctx.transcript.sys(t('session.main.modelSwitched', result.model))
 
   if (typeof result.effort === 'string') {
     // The level committed in the same selection (a deferred result carries none yet).
     ctx.transcript.sys(t('slashCmd.session.reasoning.current', result.effort))
+=======
+  sys(t('session.main.modelSwitched', result.model))
+
+  if (typeof result.effort === 'string') {
+    // The level committed in the same selection (a deferred result carries none yet).
+    sys(t('slashCmd.session.reasoning.current', result.effort))
+  }
+}
+
+/** A model switch made outside `/model` (a window plan's limit card): the same revision-fenced
+ *  `session.mutate` and guarded-target ask. `onApplied` runs only once the switch committed now,
+ *  never for a refusal, a declined ask, or a pick deferred behind a running turn. Like `/model`, a
+ *  reply that lands after the view moved to another chat (or a newer turn ran) applies nothing:
+ *  `onApplied` re-sends via the active chat, so it must still be `sid`. */
+export async function switchCanonicalModel(
+  gw: MutationGateway,
+  sid: string,
+  arg: string,
+  sys: (text: string) => void,
+  onApplied: () => void,
+  confirm?: string
+): Promise<void> {
+  const baseline = getUiState().info
+  const stale = () => getUiState().sid !== sid
+  const mutation = await mutateCanonicalSession(gw, sid, 'model', arg, stale, confirm)
+
+  if (!mutation || stale() || isSupersededControl('model', mutation.result, mutation.expectedGeneration, baseline)) {
+    return
+  }
+
+  const { result } = mutation
+
+  if (needsModelConfirmation(result)) {
+    if (confirm) {
+      return sys(t('slashCmd.session.model.confirmStale'))
+    }
+
+    return openModelConfirmation(
+      result.confirm_message,
+      result.target_model ?? arg.trim().split(/\s+/)[0] ?? '',
+      () =>
+        void switchCanonicalModel(gw, sid, arg, sys, onApplied, result.confirm).catch((e: unknown) =>
+          sys(`error: ${rpcErrorMessage(e)}`)
+        )
+    )
+  }
+
+  applyModelResult(result, sys)
+
+  if (result.status !== 'deferred') {
+    onApplied()
+>>>>>>> origin/main
   }
 }
 
@@ -358,7 +435,11 @@ export async function runCanonicalSessionControl(
       return
     }
 
+<<<<<<< HEAD
     if (isSupersededControl(operation, result, expectedGeneration, ctx)) {
+=======
+    if (isSupersededControl(operation, result, expectedGeneration, ctx.ui.info)) {
+>>>>>>> origin/main
       return
     }
 
@@ -367,7 +448,11 @@ export async function runCanonicalSessionControl(
     } else if (operation === 'branch') {
       await applyBranchResult(result, arg, ctx)
     } else if (operation === 'model') {
+<<<<<<< HEAD
       applyModelResult(result, ctx)
+=======
+      applyModelResult(result, ctx.transcript.sys)
+>>>>>>> origin/main
     } else if (result.status === 'preview') {
       // `--preview` is a read-only report; nothing to re-hydrate.
       ctx.transcript.sys((result.lines as string[]).join('\n'))

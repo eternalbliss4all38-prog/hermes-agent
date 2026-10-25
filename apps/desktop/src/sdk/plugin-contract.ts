@@ -8,10 +8,21 @@ export type {
   PluginAppActionInfo,
   PluginContext,
   PluginContribution,
+<<<<<<< HEAD
+=======
+  PluginFileEntry,
+  PluginFiles,
+  PluginFilesResult,
+  PluginFolder,
+>>>>>>> origin/main
   PluginNativeNotificationInput,
   PluginNotificationAction,
   PluginOs,
   PluginPet,
+<<<<<<< HEAD
+=======
+  PluginPreview,
+>>>>>>> origin/main
   PluginRestOptions,
   PluginRunActionResult,
   PluginSettingsPage,

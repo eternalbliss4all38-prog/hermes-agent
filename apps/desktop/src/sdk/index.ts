@@ -18,7 +18,7 @@
  *  - `ui.*` — the design language, so plugin UI looks native by default.
  */
 
-import { atom, computed, type ReadableAtom } from 'nanostores'
+import { computed, type ReadableAtom } from 'nanostores'
 import type { ReactNode } from 'react'
 
 import { capabilityScoped, getApiRequestConnection } from '@/api/client'
@@ -28,7 +28,6 @@ import { openSession, type OpenSessionIntent } from '@/app/open-session'
 import { syncWorkspaceRoute } from '@/app/routes'
 import type { ClientSessionState } from '@/app/types'
 import {
-  $narrowViewport,
   $newSessionTabAction,
   $paneVisible,
   adoptContributedPanes,
@@ -120,11 +119,22 @@ import {
 } from './profile-request'
 import { sessionsHost } from './sessions'
 import { desktopSettings } from './settings'
+<<<<<<< HEAD
 
 /** Pane, status bar and titlebar slots; see `./areas` for the mount rules. */
 export { PANES_AREA, STATUSBAR_AREAS, TITLEBAR_AREAS } from './areas'
 /** The plugin authoring contract (`HermesPlugin`, `PluginContext`, `ctx.*` door types). */
 export type * from './plugin-contract'
+=======
+import { spellcheckHost } from './spellcheck'
+import { $viewport, type ViewportRect } from './viewport'
+
+/** Pane, status bar and titlebar slots; see `./areas` for the mount rules. */
+export * from './areas'
+/** The plugin authoring contract (`HermesPlugin`, `PluginContext`, `ctx.*` door types). */
+export type * from './plugin-contract'
+export type { PluginProfileRequestOptions, PluginProfileRoute } from './profile-request'
+>>>>>>> origin/main
 
 // -- state: readonly views over the app's live atoms -------------------------
 
@@ -218,6 +228,7 @@ const $focusedSessionProfile = computed(
     owner?.profile || rememberedSessionProfile(sessions, focused, activeProfile)
 )
 
+<<<<<<< HEAD
 /** Window geometry + the app's responsive posture, one readonly rect. */
 export interface ViewportRect {
   width: number
@@ -232,6 +243,8 @@ const readViewport = (): ViewportRect => ({
   narrow: $narrowViewport.get()
 })
 
+=======
+>>>>>>> origin/main
 /** Runtime session id → mid-turn. Not gateway socket state. */
 const $busyBySession = computed($sessionStates, states => {
   const map: Record<string, boolean> = {}
@@ -243,6 +256,7 @@ const $busyBySession = computed($sessionStates, states => {
   return map
 })
 
+<<<<<<< HEAD
 const $viewport = atom<ViewportRect>(readViewport())
 
 if (typeof window !== 'undefined') {
@@ -251,6 +265,8 @@ if (typeof window !== 'undefined') {
   $narrowViewport.listen(refresh)
 }
 
+=======
+>>>>>>> origin/main
 /** Live usage of the FOCUSED session, projected out of the streamed session
  *  state — the same readout the core statusbar's context chip paints. */
 const $focusedUsage = computed($focusedSessionState, state => state?.usage ?? null)
@@ -1564,6 +1580,12 @@ export const host = {
 
   composer: composerHost,
 
+<<<<<<< HEAD
+=======
+  /** Chromium's custom spell-check dictionary, one validated word per call. */
+  spellcheck: spellcheckHost,
+
+>>>>>>> origin/main
   /** Language packs: `host.i18n.registerAppLocale(id, { endonym, rtl?,
    *  translations })` adds a whole UI language at runtime (see `sdk/i18n.ts`);
    *  `host.i18n.languageOptions()` lists what the switcher shows. */
@@ -1572,11 +1594,19 @@ export const host = {
 
 // -- react bridge -------------------------------------------------------------
 
+<<<<<<< HEAD
 export type { PluginProfileRequestOptions, PluginProfileRoute } from './profile-request'
 
 // -- ui: the design language --------------------------------------------------
 
 export type { DesktopSettingKey, DesktopSettingValues } from './settings'
+=======
+export type { DesktopSettingKey, DesktopSettingValues } from './settings'
+
+// -- ui: the design language --------------------------------------------------
+
+export type { ViewportRect } from './viewport'
+>>>>>>> origin/main
 /** THE whole Capabilities surface (Skills / Tools / MCP tabs, installed
  *  lists, full-skill detail pane, embedded hub picker with one-click
  *  installs). For plugin dialogs pass `embedded` (tab state stays local —
@@ -1601,6 +1631,13 @@ export {
   type ComposerAtCompletionItem,
   type ComposerAtCompletionSource,
   type ComposerAttachmentProvider,
+<<<<<<< HEAD
+=======
+  type ComposerContextMenuAction,
+  type ComposerContextMenuContext,
+  type ComposerContextMenuItem,
+  type ComposerContextMenuProvider,
+>>>>>>> origin/main
   type ComposerMiddleware,
   type ComposerModelPillContext,
   type ComposerModelPillProvider

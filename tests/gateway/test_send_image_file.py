@@ -7,7 +7,6 @@ Covers: local image file sending, file-not-found handling, fallback on error,
 """
 
 import asyncio
-import os
 import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -212,6 +211,7 @@ class TestSlackSendImageFile:
         )
         assert not result.success
         assert "Not connected" in result.error
+<<<<<<< HEAD
 
 
 # ---------------------------------------------------------------------------
@@ -265,3 +265,5 @@ class TestScreenshotCleanup:
         assert old.exists(), "Repeated cleanup should be skipped while throttled"
 
 
+=======
+>>>>>>> origin/main

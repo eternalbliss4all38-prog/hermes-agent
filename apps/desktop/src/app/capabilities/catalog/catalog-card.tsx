@@ -85,7 +85,11 @@ function CatalogCardFooter({ entry, action, hero }: { entry: CatalogEntry; actio
       <CatalogHeaderMeta entry={entry} />
       <span className="flex shrink-0 items-center gap-3">
         <CatalogRating entry={entry} />
+<<<<<<< HEAD
         {hero && <span className="catalog-hero-action relative shrink-0">{action}</span>}
+=======
+        {hero && <span className="catalog-hero-action relative z-10 shrink-0">{action}</span>}
+>>>>>>> origin/main
       </span>
     </div>
   )
@@ -107,7 +111,13 @@ export function CatalogCard({ entry, action, accentIndex, onOpen, onCategory, on
       {showsCardImage(entry) && <CatalogImage className="catalog-card-image aspect-[2/1]" key={entry.imageUrl!} src={entry.imageUrl!} />}
       {variant !== 'default' && <div className="catalog-card-topline">
         <span className="min-w-0 truncate" title={entry.author || catalogLabel(entry.source)}>{entry.author || catalogLabel(entry.source)}</span>
+<<<<<<< HEAD
         {variant !== 'hero' && <span className="relative shrink-0">{action}</span>}
+=======
+        {/* z-10: this slot precedes the title button, whose card-wide ::after
+            would otherwise paint over it and swallow the click. */}
+        {variant !== 'hero' && <span className="relative z-10 shrink-0">{action}</span>}
+>>>>>>> origin/main
       </div>}
       <div className="catalog-card-copy flex min-h-0 w-full flex-col gap-2 p-3">
         <div className="flex min-w-0 items-center gap-2.5">

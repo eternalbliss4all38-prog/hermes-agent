@@ -7,6 +7,10 @@ import hashlib
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 import importlib
 import io
+<<<<<<< HEAD
+=======
+import json
+>>>>>>> origin/main
 import os
 from pathlib import Path
 import shutil
@@ -19,22 +23,61 @@ import zipfile
 import pytest
 
 
+<<<<<<< HEAD
 def _wheel(directory: Path, name: str, version: str = "1.0", requirements=()) -> Path:
+=======
+def _wheel(directory: Path, name: str, version: str = "1.0", requirements=(), extra=None) -> Path:
+    """Build a wheel whose bytes depend only on its arguments.
+
+    A name/version on a real index is one immutable artifact, and uv keeps a seeded lock's hash
+    for an unchanged path-wheel version. A wheel rebuilt in place (``installing_member`` for a
+    second plugin) must therefore hash the same: ``writestr(name, ...)`` stamps the wall clock,
+    so a rebuild that crosses a 2-second zip-time tick failed ``uv sync`` with a hash mismatch.
+    """
+>>>>>>> origin/main
     metadata = f"{name}-{version}.dist-info"
     entries = {
         f"{name}/__init__.py": f"__version__ = {version!r}\n",
         f"{metadata}/METADATA": f"Metadata-Version: 2.1\nName: {name}\nVersion: {version}\n"
         + "".join(f"Requires-Dist: {requirement}\n" for requirement in requirements),
         f"{metadata}/WHEEL": "Wheel-Version: 1.0\nRoot-Is-Purelib: true\nTag: py3-none-any\n",
+<<<<<<< HEAD
+=======
+        **(extra or {}),
+>>>>>>> origin/main
     }
     entries[f"{metadata}/RECORD"] = "".join(f"{path},,\n" for path in entries)
     wheel = directory / f"{name}-{version}-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
         for path, body in entries.items():
+<<<<<<< HEAD
             archive.writestr(path, body)
     return wheel
 
 
+=======
+            info = zipfile.ZipInfo(path, date_time=(1980, 1, 1, 0, 0, 0))
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, body)
+    return wheel
+
+
+def installing_member(plugin: Path, name: str, wheels: Path, *, requires_python: str = ">=3.11") -> None:
+    """Give *plugin* a pyproject that installs one real package, resolvable offline.
+
+    Only a plugin that installs something is a dependency-workspace member: ``dependencies = []``
+    leaves the environment alone, so it cannot stand in for a member.
+    """
+    wheels.mkdir(parents=True, exist_ok=True)
+    wheel = _wheel(wheels, "member_dep")
+    plugin.mkdir(parents=True, exist_ok=True)
+    (plugin / "pyproject.toml").write_text(
+        f'[project]\nname="{name}"\nversion="1"\nrequires-python="{requires_python}"\n'
+        'dependencies=["member-dep==1.0"]\n[tool.uv]\npackage=false\n'
+        f'[tool.uv.sources]\nmember-dep = {{ path = {json.dumps(wheel.as_posix())} }}\n', encoding="utf-8")
+
+
+>>>>>>> origin/main
 def stage_host_python(python: Path) -> Path:
     """Place a runnable copy of the test host's interpreter at ``python`` (``<root>/bin/python…``).
 

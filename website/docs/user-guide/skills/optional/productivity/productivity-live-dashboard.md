@@ -47,7 +47,11 @@ Don't use for: one-off status questions (answer directly), price/availability th
 
 ## Prerequisites
 
+<<<<<<< HEAD
 - At least one source connector the dashboard will read from: email/calendar via `himalaya` or `google-workspace`, websites via `web_extract` or `browser_navigate`, local files via `read_file`. If none is configured, renegotiate the sources in step 1 before writing any artifact.
+=======
+- At least one source connector the dashboard will read from: email/calendar via `himalaya` or `google-workspace`, websites via `web_extract` or `browser_exec`, local files via `read_file`. If none is configured, renegotiate the sources in step 1 before writing any artifact.
+>>>>>>> origin/main
 - `cronjob` for the recurring tick.
 - Optional: the `desktop_preview` tool (Hermes desktop app sessions). When it is in the toolset, dashboards render in the in-app preview pane; otherwise the user is given the file path.
 
@@ -59,7 +63,11 @@ From the user's sentence, pin down: the dashboard's purpose in one line, the ent
 
 ### 2. Verify each source with one live read
 
+<<<<<<< HEAD
 For each source, do one bounded foreground read now: email/calendar via the connector skills (`himalaya`, `google-workspace`), websites via `web_extract` or `browser_navigate`, local files via `read_file`. Record what was actually retrievable — auth walls, missing permissions, or empty results surface here, not on the first scheduled run. Drop or replace sources that fail. Done when every field's source returned real data or was explicitly renegotiated with the user.
+=======
+For each source, do one bounded foreground read now: email/calendar via the connector skills (`himalaya`, `google-workspace`), websites via `web_extract` or `browser_exec`, local files via `read_file`. Record what was actually retrievable — auth walls, missing permissions, or empty results surface here, not on the first scheduled run. Drop or replace sources that fail. Done when every field's source returned real data or was explicitly renegotiated with the user.
+>>>>>>> origin/main
 
 ### 3. Build the dashboard artifact
 

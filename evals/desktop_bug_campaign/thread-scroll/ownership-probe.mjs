@@ -3,7 +3,12 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const out=process.env.THREAD_SCROLL_OUTPUT;
 assert.ok(out);
+<<<<<<< HEAD
 const browser=await chromium.launch({channel:'chromium',executablePath:process.env.AGENT_BROWSER_EXECUTABLE_PATH,headless:true,args:['--no-sandbox']});
+=======
+// pm's Chromium: PLAYWRIGHT_BROWSERS_PATH (from `hermes pm env`) is where channel 'chromium' finds it.
+const browser=await chromium.launch({channel:'chromium',headless:true,args:['--no-sandbox']});
+>>>>>>> origin/main
 const result={};
 try {
  const page=await browser.newPage({viewport:{width:1200,height:800}});

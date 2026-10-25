@@ -4,7 +4,11 @@ One ``CDPSupervisor`` per Hermes ``task_id`` with a reachable CDP endpoint: one
 persistent WebSocket, ``Page`` / ``Runtime`` / ``Target`` events on every attached
 session (top page + auto-attached OOPIF / worker targets), pending dialogs + frame
 tree exposed via a thread-safe snapshot. Not in the tool schema — output reaches the
+<<<<<<< HEAD
 agent via ``browser_snapshot`` / ``browser_dialog``. Dialog capture and frame tracking
+=======
+agent via ``browser_dialog``. Dialog capture and frame tracking
+>>>>>>> origin/main
 are mixins (``browser_supervisor_dialogs`` / ``browser_supervisor_frames``).
 Design spec: ``website/docs/developer-guide/browser-supervisor.md``.
 """
@@ -88,7 +92,11 @@ class SupervisorSnapshot:
     task_id: str
 
     def to_dict(self) -> dict[str, Any]:
+<<<<<<< HEAD
         """Serialize for inclusion in ``browser_snapshot`` output."""
+=======
+        """Serialize for inclusion in tool output."""
+>>>>>>> origin/main
         out: dict[str, Any] = {"pending_dialogs": [d.to_dict() for d in self.pending_dialogs], "frame_tree": self.frame_tree}
         if self.recent_dialogs:
             out["recent_dialogs"] = [d.to_dict() for d in self.recent_dialogs]
@@ -369,7 +377,11 @@ class CDPSupervisor(DialogSupervisionMixin, FrameTrackingMixin):
 
     async def _run(self) -> None:
         """Top-level reconnecting supervisor coroutine. Browserbase tears down the CDP
+<<<<<<< HEAD
         socket whenever a short-lived client (agent-browser's per-command CDP client)
+=======
+        socket whenever a short-lived client (a per-call browser_cdp or harness CDP connection)
+>>>>>>> origin/main
         disconnects, so on drop we reset per-session ids, re-attach, and keep going.
         A failure before the first successful attach is fatal for ``start()``."""
         reconnect_failures, last_success_at, backoff = 0, 0.0, 0.5

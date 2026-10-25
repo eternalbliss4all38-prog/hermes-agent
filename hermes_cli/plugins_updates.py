@@ -51,7 +51,11 @@ class CheckResult:
     latest: Optional[str] = None
     update_available: Optional[bool] = None   # None = unknown/uncheckable
     needs_fixing: Optional[str] = None        # mismatch reason when set
+<<<<<<< HEAD
     min_hermes: Optional[str] = None          # feed's version floor, if any
+=======
+    min_hermes: Optional[str] = None          # feed floor / catalog requires_hermes, if any
+>>>>>>> origin/main
     reason: str = ""
 
     def to_json(self) -> dict:
@@ -130,6 +134,21 @@ def check_local_provenance(prov: Provenance) -> CheckResult:
     return result
 
 
+<<<<<<< HEAD
+=======
+def held_for_newer_hermes(result: CheckResult) -> Optional[str]:
+    """``needs Hermes <spec>; this is <version>`` when the update's ``min_hermes`` (a feed floor or the
+    catalog entry's ``requires_hermes``) rejects the running Hermes, else ``None``. The update path refuses
+    such an update, so listings name it as waiting on a Hermes update instead of offering it."""
+    if not result.min_hermes:
+        return None
+    from hermes_cli.plugins_manifest import requires_hermes_error, running_hermes_version
+    if not requires_hermes_error({"requires_hermes": result.min_hermes}):
+        return None
+    return f"needs Hermes {result.min_hermes}; this is {running_hermes_version()}"
+
+
+>>>>>>> origin/main
 def check_provenanced(
     prov: Provenance,
     *,
@@ -158,6 +177,10 @@ def check_provenanced(
             return result
         result.latest = entry.sha
         result.update_available = result.current != entry.sha
+<<<<<<< HEAD
+=======
+        result.min_hermes = entry.requires_hermes or None
+>>>>>>> origin/main
         return result
     result = check_local_provenance(prov)
     if result.reason or result.needs_fixing:

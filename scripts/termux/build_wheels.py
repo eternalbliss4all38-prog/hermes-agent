@@ -4,7 +4,11 @@ against THIS container's bionic python, retag, and run the offline
 completeness + import gates. Invoked by termux_build.sh inside the
 digest-pinned termux/termux-docker container.
 
+<<<<<<< HEAD
 Usage: build_wheels.py --resolved RESOLVED.txt --build-set BUILD_SET.txt \
+=======
+Usage: build_wheels.py --resolved RESOLVED.txt --lock UV.LOCK --build-set BUILD_SET.txt \
+>>>>>>> origin/main
            --wheelhouse DIR --retag RETAG_SCRIPT --platform-tag TAG
 
 Everything here runs under the container's termux python (bionic): pip
@@ -32,6 +36,10 @@ from urllib.parse import urlsplit
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--resolved", required=True, help="tab-separated name/spec/marker file")
+<<<<<<< HEAD
+=======
+    p.add_argument("--lock", required=True, help="uv.lock the resolved graph was exported from")
+>>>>>>> origin/main
     p.add_argument("--build-set", required=True, help="names needing sdist builds (one per line)")
     p.add_argument("--wheelhouse", required=True)
     p.add_argument("--retag", required=True, help="path to retag_wheel.py")
@@ -346,7 +354,11 @@ def import_native_modules(build_set: list[str]) -> None:
         print("  imported", module, flush=True)
 
 
+<<<<<<< HEAD
 def wheelhouse_gates(resolved: Path, wheelhouse: Path, build_set: list[str]) -> None:
+=======
+def wheelhouse_gates(resolved: Path, wheelhouse: Path, build_set: list[str], lock: Path) -> None:
+>>>>>>> origin/main
     """Offline install of every marker-admitted dep into ONE clean venv,
     shared by both gates (the full offline install runs once, not twice).
 
@@ -367,6 +379,10 @@ def wheelhouse_gates(resolved: Path, wheelhouse: Path, build_set: list[str]) -> 
         vp = build_requirements_environment(
             reqs.read_text(encoding="utf-8-sig").splitlines(), out=tmp / "venv",
             python=Path(sys.executable), wheelhouse=wheelhouse, offline=True, explicit=True,
+<<<<<<< HEAD
+=======
+            lock=lock,
+>>>>>>> origin/main
         )
         print("  completeness gate: offline install of the marker-admitted graph OK")
         subprocess.run(
@@ -403,7 +419,11 @@ def main() -> int:
         repaired = repair_wheel(wheel, library)
         if repaired:
             print(f"  linked {repaired} native extensions to {library.name}: {wheel.name}")
+<<<<<<< HEAD
     wheelhouse_gates(resolved, wheelhouse, build_set)
+=======
+    wheelhouse_gates(resolved, wheelhouse, build_set, Path(args.lock))
+>>>>>>> origin/main
     print(f"wheelhouse complete: {len(list(wheelhouse.glob('*.whl')))} wheels in {wheelhouse}")
     return 0
 

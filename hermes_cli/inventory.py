@@ -3,6 +3,10 @@
 
 from __future__ import annotations
 
+<<<<<<< HEAD
+=======
+import logging
+>>>>>>> origin/main
 from contextvars import copy_context
 from dataclasses import dataclass, replace
 from threading import Lock, Thread, current_thread
@@ -271,7 +275,13 @@ def _apply_limits(rows: list[dict]) -> None:
     pooled = {slug for slug, entries in read_credential_pool().items() if entries}
     for row in rows:
         slug = str(row.get("slug") or "")
+<<<<<<< HEAD
         if slug not in pooled or row.get("is_user_defined"):
+=======
+        # Window plans say their limits in plan_usage (gauges + limit line); a credential cooldown chip
+        # beside them would show a second, unrelated reset time.
+        if slug not in pooled or row.get("is_user_defined") or row.get("plan_usage"):
+>>>>>>> origin/main
             continue
         try:
             state = load_pool(slug).limit_state(row.get("models") or [])
@@ -862,6 +872,46 @@ def _reorder_canonical(rows: list[dict]) -> list[dict]:
     return canon + extras
 
 
+<<<<<<< HEAD
+=======
+def _attach_nous_plan_usage(row: dict, *, warm: bool):
+    """Stamp ``plan_usage`` from the portal snapshot (window plans only) and return the PickerUsage (or
+    None). A cache-only open reads the last snapshot at any age: the 60s account cache has usually lapsed
+    by the time someone opens the composer menu. Accounts without a window plan get nothing."""
+    try:
+        from hermes_cli.model_picker_usage import nous_picker_usage
+        usage = nous_picker_usage(warm=warm, any_age=not warm)
+    except Exception:
+        logging.getLogger(__name__).debug("Nous plan usage unavailable", exc_info=True)
+        return None
+    if usage is not None:
+        row["plan_usage"] = usage.to_payload()
+        # Main's subscription-usage chip (`usage.windows`): the same gauge for a window
+        # plan, so it warns near a limit in the existing slot. Once an allowance is full the picker's limit
+        # line says it (with what happens next), so the chip would only repeat it; paused plans say so in
+        # the plan line.
+        if not usage.paused_reason and not row.get("usage") and not any(g.left_fraction <= 0.0 for g in usage.gauges):
+            windows = [_plan_usage_window(g) for g in usage.gauges if g.resets_at_ms]
+            if windows:
+                row["usage"] = {"windows": windows}
+    return usage
+
+
+def _plan_usage_window(g) -> dict:
+    """One window-plan allowance in main's ``ProviderUsageWindow`` shape. The label is Hermes's row title
+    (``Today``), like the other providers' English window labels."""
+    from datetime import datetime
+    from agent.usage_gauges import WindowGauge, gauge_title
+    return {
+        "label": gauge_title(WindowGauge(g.label, g.scope, g.title or g.label, 0)),
+        "used_percent": round(g.used_fraction * 100.0, 2),
+        "resets_at": datetime.fromtimestamp(g.resets_at_ms / 1000, UTC).isoformat(),
+        "scope": "account" if g.scope == "all" else "model",
+    }
+
+
+# health: allow CC -- usage-window plans: one branch attaches plan usage to the Nous row (built in _attach_nous_plan_usage); over target on main
+>>>>>>> origin/main
 def _apply_pricing(rows: list[dict], *, force_fresh_nous_tier: bool = False, cached_only: bool = False) -> None:
     """Set ``row["pricing"] = {model_id: {input, output, cache | None, free}}``; for Nous also
     ``free_tier`` (account is free-tier) and ``unavailable_models`` (paid models a free user can't pick).
@@ -897,6 +947,10 @@ def _apply_pricing(rows: list[dict], *, force_fresh_nous_tier: bool = False, cac
         except Exception:
             raw_pricing = {}
         cached_nous_tier: Optional[bool] = None
+<<<<<<< HEAD
+=======
+        plan_usage = _attach_nous_plan_usage(row, warm=not cached_only) if slug == "nous" else None
+>>>>>>> origin/main
         if slug == "nous" and cached_only:
             cached_nous_tier = get_cached_nous_free_tier()
             if cached_nous_tier is None:
@@ -956,6 +1010,14 @@ def _apply_pricing(rows: list[dict], *, force_fresh_nous_tier: bool = False, cac
             except Exception:  # tier detection failed — fail open (no gating)
                 row["free_tier"] = False
                 row["unavailable_models"] = []
+            if plan_usage is not None:
+                from hermes_cli.model_picker_usage import usage_levels
+                # The gateway's per-plan word per model (free / low / medium / top_tier).
+                row["usage_levels"] = usage_levels(list(models), raw_pricing)
+                # Top-tier marks from the gateway (it decides, not the client).
+                row["plan_usage"] = plan_usage.with_pricing({m: raw_pricing.get(m) for m in models}).to_payload()
+                # Window plans: the picker shows the usage word, not per-token prices.
+                row.pop("pricing", None)
 
 
 def _local_runtime_row(ctx: ConfigContext) -> dict | None:
@@ -1033,6 +1095,84 @@ def _prewarm_pricing_async(
         return thread
 
 
+<<<<<<< HEAD
+def _local_runtime_row(ctx: ConfigContext) -> dict | None:
+    """The ``llamacpp`` row from staged GGUFs (``None`` when none) — downloaded models must be selectable
+    before the server runs (selection starts it via the runtime_provider seam). The row's id comes from
+    the provider registry's own definition, never a local literal: a row the resolver can't resolve is
+    the bug this row's offline-first contract depends on not having."""
+    try:
+        from hermes_cli.local_runtime.bootstrap import staged_model_ids
+        from hermes_cli.providers import LLAMACPP_ALIASES, LLAMACPP_PROVIDER_ID
+
+        staged = staged_model_ids()
+        if not staged:
+            return None
+        current = (ctx.current_provider or "").strip().lower() in LLAMACPP_ALIASES
+        if not current:
+            # A LIVE session on the managed server reports provider "custom" with the managed base_url;
+            # match on the endpoint so the session being chatted in still shows a selection.
+            try:
+                from hermes_cli.local_runtime.endpoint import _state_endpoint
+
+                managed = _state_endpoint()
+                current = bool(managed and (ctx.current_base_url or "").strip().rstrip("/")
+                               == managed["base_url"].rstrip("/"))
+            except Exception:
+                current = False
+        # Bare "Local" user-facing (engine name is an implementation detail); authenticated = reachability.
+        return _row(LLAMACPP_PROVIDER_ID, "Local", current, models=staged, total_models=len(staged),
+                    source="local-runtime", authenticated=True, auth_type="local", warning=None)
+    except Exception:
+        return None
+
+
+def _prewarm_pricing_async(
+    rows: list[dict], *, current_provider: str = "", current_base_url: str = "",
+) -> Optional[Thread]:
+    """Warm picker pricing caches without delaying the current payload (one worker per
+    profile + endpoint scope; a live worker is reused)."""
+    from hermes_constants import hermes_home_key
+    from hermes_cli.models_pricing import pricing_cache_scope
+
+    slugs = {
+        (
+            str(row.get("slug") or "").lower(),
+            str(row.get("api_url") or "") if str(row.get("slug") or "").lower().startswith("custom:") else "",
+        )
+        for row in rows if row.get("slug")
+    }
+    endpoint_scope = tuple(sorted(
+        (slug, pricing_cache_scope(
+            slug, base_url=base_url, current_provider=current_provider, current_base_url=current_base_url,
+        ))
+        for slug, base_url in slugs))
+    prewarm_key = (hermes_home_key(), endpoint_scope)
+
+    with _pricing_prewarm_lock:
+        current = _pricing_prewarm_threads.get(prewarm_key)
+        if current is not None and current.is_alive():
+            return current
+        # The worker mutates only private copies; the pricing helpers populate shared process caches.
+        worker_rows = [{**row, "models": list(row.get("models") or [])} for row in rows]
+
+        def _worker() -> None:
+            try:
+                _apply_pricing(worker_rows)
+            finally:
+                with _pricing_prewarm_lock:
+                    if _pricing_prewarm_threads.get(prewarm_key) is current_thread():
+                        _pricing_prewarm_threads.pop(prewarm_key, None)
+
+        thread = Thread(target=copy_context().run, args=(_worker,),
+                        name="hermes-picker-pricing-prewarm", daemon=True)
+        _pricing_prewarm_threads[prewarm_key] = thread
+        thread.start()
+        return thread
+
+
+=======
+>>>>>>> origin/main
 def _moa_provider_row(current_provider: str = "") -> dict | None:
     """The virtual ``moa`` row shared by the CLI inventory and gateway picker; ``None`` without presets.
 

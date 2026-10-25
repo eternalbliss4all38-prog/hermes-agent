@@ -1,12 +1,10 @@
-"""Unit tests for the supervisor-WS fast path in browser_console / _browser_eval.
-
-These exercise the dispatch logic in ``tools.browser_tool._browser_eval`` and
-the response shaping in ``CDPSupervisor.evaluate_runtime`` using mocks — no
-real browser, no real WebSocket.  Real-CDP coverage lives in
-``tests/tools/test_browser_supervisor.py`` (gated on Chrome being installed).
+"""Unit tests for ``CDPSupervisor.evaluate_runtime`` response shaping (the eval path browser_vault
+and browser_exec's supervisor share), using mocks — no real browser, no real WebSocket. Real-CDP
+coverage lives in ``tests/tools/test_browser_supervisor.py`` (gated on Chrome being installed).
 """
 from __future__ import annotations
 
+<<<<<<< HEAD
 import json
 from unittest.mock import MagicMock
 
@@ -113,6 +111,8 @@ class TestBrowserEvalSupervisorPath:
         assert "DOM node" in out["error"] or "dom node" in out["error"].lower()
 
 
+=======
+>>>>>>> origin/main
 # ---------------------------------------------------------------------------
 # Response shaping: CDPSupervisor.evaluate_runtime
 # ---------------------------------------------------------------------------

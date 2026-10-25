@@ -32,6 +32,10 @@ export const fromItemValue = (item: string): string | null =>
 
 interface ModelSelectProps {
   'aria-label'?: string
+<<<<<<< HEAD
+=======
+  'aria-invalid'?: boolean
+>>>>>>> origin/main
   className?: string
   /** The provider's catalog row when known: the typed id is remembered under
    *  it and made visible in the pickers. Absent (provider not in the catalog)
@@ -52,6 +56,10 @@ interface ModelSelectProps {
  */
 export function ModelSelect({
   'aria-label': ariaLabel,
+<<<<<<< HEAD
+=======
+  'aria-invalid': ariaInvalid,
+>>>>>>> origin/main
   className,
   models,
   onValueChange,
@@ -95,6 +103,10 @@ export function ModelSelect({
   if (typing) {
     return (
       <Input
+<<<<<<< HEAD
+=======
+        aria-invalid={ariaInvalid}
+>>>>>>> origin/main
         aria-label={ariaLabel}
         className={cn(CONTROL_TEXT, 'font-mono')}
         containerClassName={className}
@@ -140,7 +152,11 @@ export function ModelSelect({
       }}
       value={toItemValue(value)}
     >
+<<<<<<< HEAD
       <SelectTrigger aria-label={ariaLabel} className={cn(className, CONTROL_TEXT)}>
+=======
+      <SelectTrigger aria-invalid={ariaInvalid} aria-label={ariaLabel} className={cn(className, CONTROL_TEXT)}>
+>>>>>>> origin/main
         <SelectValue placeholder={m.model} />
       </SelectTrigger>
       <SelectContent>

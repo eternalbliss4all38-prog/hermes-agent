@@ -86,6 +86,7 @@ def _stat(path):
 
 
 def start_due_boot() -> None:
+<<<<<<< HEAD
     """Serve boot, desktop's local backend: work out the due answer off the RPC path, after the setup
     bootstrap has recorded a fresh install and kept an existing guest's trial."""
     from agent.memory_provider import spawn_context_thread
@@ -94,6 +95,13 @@ def start_due_boot() -> None:
 
     if not on_local_desktop_backend():
         return
+=======
+    """Work out the local Desktop's due answer off the RPC path, after the setup bootstrap has recorded
+    a fresh install (``begin_local_desktop_boot``)."""
+    from agent.memory_provider import spawn_context_thread
+    from hermes_cli import free_tier_bootstrap, onboarding_due
+
+>>>>>>> origin/main
     finish = onboarding_due.begin_boot(_due_stamp)
 
     def compute() -> dict[str, bool]:
@@ -104,6 +112,35 @@ def start_due_boot() -> None:
     spawn_context_thread(finish, name="onboarding-due", args=(compute,)).start()
 
 
+<<<<<<< HEAD
+=======
+_local_desktop_boot_lock = threading.Lock()
+_local_desktop_boot_started = False
+
+
+def begin_local_desktop_boot() -> None:
+    """An accepted local Desktop connection to this process: record a fresh install, settle an
+    interrupted claim, the setup record and the due answer, once, as work for that Desktop. This
+    process outlives app launches, so a later connection retries the install steps a failed boot
+    left unsettled."""
+    global _local_desktop_boot_started
+    from agent.memory_provider import spawn_context_thread
+    from hermes_cli import free_tier_bootstrap
+    from hermes_cli.process_identity import serving_local_desktop
+    from tui_gateway.launch_profile_policy import launch_profile_scope_if_multiplexed
+
+    with _local_desktop_boot_lock:
+        first, _local_desktop_boot_started = not _local_desktop_boot_started, True
+    # The record and the latch are the launch profile's; the connecting profile may be another one.
+    with launch_profile_scope_if_multiplexed(), serving_local_desktop(True):  # threads copy this context
+        if not first:
+            spawn_context_thread(free_tier_bootstrap.resettle_after_failed_boot, name="free-tier-resettle").start()
+            return
+        free_tier_bootstrap.start_background_bootstrap()
+        start_due_boot()
+
+
+>>>>>>> origin/main
 # ── first-run onboarding: one chat in the default profile, driven by setup_beat ───────────────
 
 # Onboarding always runs in the default profile, whichever profile this backend was launched under.
@@ -133,6 +170,11 @@ def _claim_before_run(scope: dict, *, assume_fresh: bool):
     from hermes_cli import anon_auth
     from hermes_cli.onboarding_run import set_run
     from hermes_cli.welcome_trial import claim_desktop_free_tier, provider_configured
+<<<<<<< HEAD
+=======
+    if not anon_auth.on_local_desktop_backend():  # gateway/session_onboarding.py::_claim_before_run
+        raise _NoModelForTheRun("First-run onboarding starts only in the Desktop app on this machine.")
+>>>>>>> origin/main
     set_run(True)
     with _session_profile_runtime_scope(scope):
         claimed = claim_desktop_free_tier(assume_fresh=assume_fresh)
@@ -276,6 +318,7 @@ def _setup_beat_request(sid: str, payload: dict) -> dict | None:
     return server_requests.send("setup_beat", sid, dict(payload), timeout=CARD_TIMEOUT_S)
 
 
+<<<<<<< HEAD
 def _builds_onboarding(agent) -> bool:
     return "setup_beat" in (getattr(agent, "valid_tool_names", None) or ())
 
@@ -344,6 +387,14 @@ def _stage_onboarding_turn_note(sid: str, agent, history_empty: bool) -> None:
     if is_active(record) and (note := turn_note(record)):
         prior = getattr(agent, "_gateway_turn_context_notes", "") or ""
         agent._gateway_turn_context_notes = f"{prior}\n\n{note}" if prior else note
+=======
+def _stage_onboarding_turn_note(sid: str, agent, history_empty: bool) -> None:
+    """Before a user turn in the onboarding chat (``agent.onboarding_session.onboarding_turn_note``)."""
+    from agent.onboarding_session import append_turn_note, onboarding_turn_note
+    from tui_gateway import server_requests
+    append_turn_note(agent, onboarding_turn_note(
+        agent, history_empty=history_empty, card_waiting=server_requests.pending_kind(sid) == "setup_beat"))
+>>>>>>> origin/main
 
 
 def register(server) -> None:

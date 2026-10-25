@@ -61,7 +61,11 @@ _FEATURES: dict[str, _FeatureSpec] = {
     ),
     "browser": _FeatureSpec(
         "Browser automation", True, "browser-use", "browser-use", ("browser", "cloud_provider"),
+<<<<<<< HEAD
         "Browser automation (Browser Use)", "Browser Use/Browserbase key or Camofox",
+=======
+        "Browser automation (Browser Use)", "Browser Use/Browserbase key",
+>>>>>>> origin/main
         ("BROWSER_USE_API_KEY", "BROWSERBASE_API_KEY"),
     ),
     "modal": _FeatureSpec("Modal execution", False, "modal", "modal"),
@@ -184,6 +188,7 @@ def _toolset_enabled(config: dict[str, object], toolset_key: str) -> bool:
     return False
 
 
+<<<<<<< HEAD
 def _has_agent_browser() -> bool:
     # Read the runtime's choice; a broken resolver is not permission to
     # advertise an unchecked binary through a second discovery ladder.
@@ -207,13 +212,37 @@ def _local_browser_runnable() -> bool:
     except Exception:
         return True  # runtime probe unavailable: fall back to binary presence rather than crashing
     return _using_lightpanda_engine() or _chromium_installed()
+=======
+def _has_browser_harness() -> bool:
+    """browser_exec's engine (browser-harness, a core venv dependency) is importable: the only local
+    requirement for a cloud browser provider, which hosts its own Chromium."""
+    from tools.browser_use_cli import _find_cli
+
+    return _find_cli() is not None
+
+
+def _local_browser_runnable(browser_cfg: dict[str, object]) -> bool:
+    """True when the *local* browser would actually start: browser-harness plus the engine it attaches
+    to — ``lightpanda serve`` when ``browser.engine`` selects it, else a Chromium the launcher can run."""
+    if not _has_browser_harness():
+        return False
+    if str(browser_cfg.get("engine") or "auto").strip().lower() == "lightpanda":
+        return True
+    from hermes_cli.browser_runtime import chromium_executable
+
+    return chromium_executable() is not None
+>>>>>>> origin/main
 
 
 # kind -> (default provider, provider -> display label)
 _PROVIDER_LABELS = {
     "browser": ("local", {
         "browserbase": "Browserbase", "browser-use": "Browser Use", "firecrawl": "Firecrawl",
+<<<<<<< HEAD
         "camofox": "Camofox", "local": "Local browser",
+=======
+        "local": "Local browser",
+>>>>>>> origin/main
     }),
     "tts": ("edge", {
         "openai": "OpenAI TTS", "elevenlabs": "ElevenLabs", "edge": "Edge TTS", "xai": "xAI TTS",
@@ -359,13 +388,18 @@ def _audio_features(
 
 
 def _browser_feature(
+<<<<<<< HEAD
     browser_cfg: dict[str, object], tool_enabled: bool, managed: bool, selected: Optional[str], browser_gw: bool, direct_firecrawl: bool,
+=======
+    browser_cfg: dict[str, object], tool_enabled: bool, managed: bool, browser_gw: bool, direct_firecrawl: bool,
+>>>>>>> origin/main
 ) -> NousFeatureState:
     """Resolve browser availability using the same precedence as runtime."""
     explicit = "cloud_provider" in browser_cfg
     provider = normalize_browser_cloud_provider(browser_cfg.get("cloud_provider") if explicit else None)
     if provider == "nous" or browser_gw:
         provider = "browser-use"
+<<<<<<< HEAD
     # CAMOFOX_URL is the server address, not a selection: an explicit different choice wins over it.
     direct_camofox = _any_env("CAMOFOX_URL") and (selected is None or selected == "camofox")
     direct_browserbase = bool(get_env_value("BROWSERBASE_API_KEY") and get_env_value("BROWSERBASE_PROJECT_ID")) and not browser_gw
@@ -373,19 +407,32 @@ def _browser_feature(
     # local_available = the agent-browser CLI is present, the only local requirement for cloud providers.
     local_available = _has_agent_browser()
     local_runnable = _local_browser_runnable()
+=======
+    direct_browserbase = bool(get_env_value("BROWSERBASE_API_KEY") and get_env_value("BROWSERBASE_PROJECT_ID")) and not browser_gw
+    direct_browser_use = _any_env("BROWSER_USE_API_KEY") and not browser_gw
+    local_available = _has_browser_harness()
+    local_runnable = _local_browser_runnable(browser_cfg)
+>>>>>>> origin/main
     browser_use_managed = bool(tool_enabled and local_available and managed and not direct_browser_use)
 
     if explicit:
         cloud_available = {
+<<<<<<< HEAD
             "camofox": direct_camofox, "browserbase": local_available and direct_browserbase,
+=======
+            "browserbase": local_available and direct_browserbase,
+>>>>>>> origin/main
             "browser-use": local_available and (managed or direct_browser_use), "firecrawl": local_available and direct_firecrawl,
         }
         current = provider if provider in cloud_available else "local"
         available = bool(cloud_available.get(current, local_runnable))
         managed_now = browser_use_managed if current == "browser-use" else False
+<<<<<<< HEAD
     # Never-configured autodetect: CAMOFOX_URL activates Camofox when no selection was stored.
     elif direct_camofox:
         current, available, managed_now = "camofox", True, False
+=======
+>>>>>>> origin/main
     elif managed or direct_browser_use:
         current, available, managed_now = "browser-use", bool(local_available), browser_use_managed
     elif direct_browserbase:
@@ -464,7 +511,11 @@ def get_nous_subscription_features(config: Optional[dict[str, object]] = None, *
         "tts": tts,
         "stt": stt,
         "browser": _browser_feature(
+<<<<<<< HEAD
             _section(config, "browser"), enabled["browser"], managed["browser"], selected["browser"], use_gateway["browser"], direct_firecrawl,
+=======
+            _section(config, "browser"), enabled["browser"], managed["browser"], use_gateway["browser"], direct_firecrawl,
+>>>>>>> origin/main
         ),
         "modal": _modal_feature(_section(config, "terminal"), enabled["terminal"], managed["modal"], managed_tools_flag),
     }
@@ -526,7 +577,12 @@ def apply_nous_managed_defaults(config: dict[str, object], *, enabled_toolsets: 
 def _get_gateway_direct_credentials() -> dict[str, bool]:
     """tool_key -> has_direct_credentials. Env-configured keyless local backends (SearXNG, CAMOFOX_URL)
     count as configured so they are never classified "unconfigured" and pre-checked; Whisper shares
+<<<<<<< HEAD
     the audio key with TTS."""
+=======
+    the audio key with TTS. CAMOFOX_URL: the home browses through Camofox (the ``camofox`` plugin
+    since it left core), so the managed browser is offered, not pre-checked over it."""
+>>>>>>> origin/main
     fal_direct = fal_key_is_configured()
     audio_direct = bool(resolve_openai_audio_api_key())
     return {
@@ -708,6 +764,11 @@ def _run_nous_portal_login_only(*, capability: str) -> bool:
             auth_state = auth._try_import_shared_nous_state(timeout_seconds=15.0)
         if auth_state is None:
             auth_state = auth._nous_device_code_login()
+<<<<<<< HEAD
+=======
+        from hermes_cli.anon_auth import settle_after_upgrade
+        from hermes_cli.guest_handoff import drain, result_lines
+>>>>>>> origin/main
         with auth._auth_store_lock():
             auth_store = auth._load_auth_store()
             auth._save_provider_state(auth_store, "nous", auth_state)
@@ -716,9 +777,18 @@ def _run_nous_portal_login_only(*, capability: str) -> bool:
             else:
                 auth_store.pop("active_provider", None)
             auth._save_auth_store(auth_store)
+<<<<<<< HEAD
         auth._write_shared_nous_state(auth_state)
         auth._sync_nous_pool_from_auth_store()
+=======
+        auth._write_shared_nous_state(auth_state, renewal=False)
+        handoff = drain()  # a replaced free tier hands its apps over once both saves land
+        auth._sync_nous_pool_from_auth_store()
+        settle_after_upgrade(auth_state)  # a config left on the free tier's route moves to the account
+>>>>>>> origin/main
         print("  Nous Portal login successful.")
+        for line in (line for view in handoff for line in result_lines(view)):
+            print(f"  {line}")
         return True
     except KeyboardInterrupt:
         print("\n  Login cancelled.")

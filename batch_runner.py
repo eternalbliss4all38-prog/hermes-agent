@@ -178,7 +178,11 @@ def _prepare_container_image(
     prompt_index: int, prompt_data: dict[str, Any], batch_num: int, task_id: str, config: dict[str, Any]
 ) -> Optional[dict[str, Any]]:
     """Register the dataset row's per-prompt container image (``image``/``docker_image``)
+<<<<<<< HEAD
     for this task's sandbox (Docker, Modal, Singularity, Daytona).
+=======
+    for this task's sandbox (Docker, Modal, Daytona, or a plugin backend such as Singularity).
+>>>>>>> origin/main
 
     For Docker the image is verified (local cache, then pull) before spending tokens on the
     agent loop; Modal pulls server-side so no local check. Returns a failure result when the
@@ -218,8 +222,14 @@ def _prepare_container_image(
     overrides = {
         "docker_image": container_image,
         "modal_image": container_image,
+<<<<<<< HEAD
         "singularity_image": f"docker://{container_image}",
         "daytona_image": container_image,
+=======
+        "daytona_image": container_image,
+        # A plugin backend reads its own ``<backend>_image`` override (tools.terminal_tool._select_image).
+        f"{env_type}_image": container_image,
+>>>>>>> origin/main
     }
     if prompt_data.get("cwd"):
         overrides["cwd"] = prompt_data["cwd"]

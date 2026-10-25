@@ -167,6 +167,17 @@ export class JsonRpcGatewayClient {
     Omit<GatewayClientOptions, 'onRequestHandlerError' | 'onUnhandledRequest' | 'socketFactory'>
   > &
     Pick<GatewayClientOptions, 'onRequestHandlerError' | 'onUnhandledRequest' | 'socketFactory'>
+<<<<<<< HEAD
+=======
+
+  /**
+   * This client is the Desktop app on the backend's own machine, read at each socket open
+   * (`JsonRpcRequestChannelOptions.desktopLocal`). Only the Desktop's client knows; others are not.
+   */
+  protected isDesktopLocal(): boolean {
+    return false
+  }
+>>>>>>> origin/main
 
   constructor(options: GatewayClientOptions = {}) {
     this.options = {
@@ -187,6 +198,10 @@ export class JsonRpcGatewayClient {
     }
     this.channel = new JsonRpcRequestChannel({
       createRequestId: this.options.createRequestId,
+<<<<<<< HEAD
+=======
+      desktopLocal: () => this.isDesktopLocal(),
+>>>>>>> origin/main
       heartbeatDeadlineMs: this.options.heartbeatDeadlineMs,
       heartbeatIntervalMs: this.options.heartbeatIntervalMs,
       // Desktop/web and the TUI alike count any inbound frame as liveness

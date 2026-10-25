@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { usageFromTick } from '@hermes/shared'
+=======
+import { mergeUsage, usageFromTick } from '@hermes/shared'
+>>>>>>> origin/main
 
 import { finalizeInterruptedMessages } from '@/lib/chat-messages'
 import { normalizePersonalityValue } from '@/lib/chat-runtime'
@@ -307,8 +311,12 @@ export function handleSessionInfoEvent(ctx: GatewayEventContext): boolean {
           return {
             ...nextState,
             usage: {
+<<<<<<< HEAD
               ...previousUsage,
               ...payload.usage,
+=======
+              ...mergeUsage({ ...previousUsage }, payload.usage),
+>>>>>>> origin/main
               calls: payload.usage.calls ?? previousUsage?.calls ?? 0,
               // session.info is authoritative: omission means unavailable, not
               // "reuse the previous runtime's compression count".
@@ -510,8 +518,12 @@ export function handleSessionInfoEvent(ctx: GatewayEventContext): boolean {
     if (payload?.usage && (!explicitSid || isActiveEvent)) {
       const usage = payload.usage
       setCurrentUsage(current => ({
+<<<<<<< HEAD
         ...current,
         ...usage,
+=======
+        ...mergeUsage(current, usage),
+>>>>>>> origin/main
         compressions: usage.compressions
       }))
     }
@@ -547,11 +559,19 @@ export function handleSessionInfoEvent(ctx: GatewayEventContext): boolean {
       // while the primary-only global mirrors the active session.
       updateSessionState(sessionId, state => ({
         ...state,
+<<<<<<< HEAD
         usage: { calls: 0, input: 0, output: 0, total: 0, ...state.usage, ...usage }
       }))
 
       if (isActiveEvent) {
         setCurrentUsage(current => ({ ...current, ...usage }))
+=======
+        usage: mergeUsage({ calls: 0, input: 0, output: 0, total: 0, ...state.usage }, usage)
+      }))
+
+      if (isActiveEvent) {
+        setCurrentUsage(current => mergeUsage(current, usage))
+>>>>>>> origin/main
       }
     }
 

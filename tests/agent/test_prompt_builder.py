@@ -838,7 +838,11 @@ class TestEnvironmentHints:
         probe must use the bare call instead of dying on TypeError."""
         import agent.prompt_builder as _pb
 
+<<<<<<< HEAD
         monkeypatch.setenv("TERMINAL_ENV", "singularity")
+=======
+        monkeypatch.setenv("TERMINAL_ENV", "daytona")
+>>>>>>> origin/main
         _pb._clear_backend_probe_cache()
 
         calls = []
@@ -859,7 +863,11 @@ class TestEnvironmentHints:
         import tools.terminal_tool_backends as _tt
         monkeypatch.setattr(_tt, "_create_environment", lambda **kw: _LegacyEnv())
 
+<<<<<<< HEAD
         assert _pb._probe_remote_backend("singularity") is not None
+=======
+        assert _pb._probe_remote_backend("daytona") is not None
+>>>>>>> origin/main
         assert calls == ["bare"]
 
     def test_probe_remote_backend_ssh_is_probe_only_and_torn_down(self, monkeypatch):

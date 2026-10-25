@@ -5081,11 +5081,23 @@ class SlackAdapter(BasePlatformAdapter):
         provider = next((p for p in providers if p["slug"] == provider_slug), None)
         pname = provider.get("name", provider_slug) if provider else provider_slug
         models = (provider or {}).get("models", [])[:100]
+<<<<<<< HEAD
         options = []
         for idx, model_id in enumerate(models):
             short = model_id.split("/")[-1] if "/" in model_id else model_id
             options.append({
                 "text": {"type": "plain_text", "text": short[:75], "emoji": True},
+=======
+        from hermes_cli.model_picker_usage import picker_row_suffix
+        options = []
+        for idx, model_id in enumerate(models):
+            short = model_id.split("/")[-1] if "/" in model_id else model_id
+            # Window plans: "Large" / "Free" rides on the option; others unchanged.
+            suffix = picker_row_suffix(provider, model_id)
+            text = f"{short[:75 - len(suffix) - 3]} · {suffix}" if suffix else short[:75]
+            options.append({
+                "text": {"type": "plain_text", "text": text, "emoji": True},
+>>>>>>> origin/main
                 "value": str(idx),
             })
         total = (provider or {}).get("total_models", len(models))
@@ -5094,7 +5106,12 @@ class SlackAdapter(BasePlatformAdapter):
             if total > len(models)
             else ""
         )
+<<<<<<< HEAD
         section_text = t("platform.slack.picker.model_header", provider=pname, extra=extra)
+=======
+        plan_line = f"⚠️ {provider['plan_line']}\n" if provider and provider.get("plan_line") else ""
+        section_text = plan_line + t("platform.slack.picker.model_header", provider=pname, extra=extra)
+>>>>>>> origin/main
         elements = [
             {
                 "type": "static_select",

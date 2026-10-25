@@ -7,7 +7,6 @@ OpenAI-compatible frontend connects at http://localhost:8642/v1 with API_SERVER_
 """
 
 import asyncio
-import concurrent.futures
 import errno
 import hashlib
 import hmac
@@ -41,6 +40,7 @@ def _prefix_names_served_profile(profile: str) -> bool:
     except Exception:
         return False
 
+<<<<<<< HEAD
 
 # Per-request /p/<profile>/ selection: set by the profile-prefix middleware, read by handlers.
 _api_request_profile: ContextVar[Optional[str]] = ContextVar(
@@ -63,6 +63,13 @@ class _ArtifactScopeFacade:
 # Advertised in capabilities and echoed in registration responses; validated by the broker.
 _BROWSER_CONTROL_PROTOCOL_VERSION = 1
 
+=======
+
+# Per-request /p/<profile>/ selection: set by the profile-prefix middleware, read by handlers.
+_api_request_profile: ContextVar[Optional[str]] = ContextVar(
+    "api_server_request_profile", default=None)
+
+>>>>>>> origin/main
 # /v1/capabilities static feature flags (order is part of the JSON shape).
 _STATIC_FEATURE_FLAGS = {
     "run_status": True, "run_events_sse": True, "run_stop": True, "run_steer": True,
@@ -96,6 +103,7 @@ _CAPABILITY_ENDPOINTS = (
     ("session_fork", ("POST", "/api/sessions/{session_id}/fork")),
     ("session_chat", ("POST", "/api/sessions/{session_id}/chat")),
     ("session_chat_stream", ("POST", "/api/sessions/{session_id}/chat/stream")),
+<<<<<<< HEAD
     ("session_model_lock", ("POST", "/api/sessions/{session_id}/model")),
     ("browser_control_register", ("POST", "/v1/browser-control/register")),
     ("browser_control_ws", ("GET", "/v1/browser-control/ws")),
@@ -103,6 +111,9 @@ _CAPABILITY_ENDPOINTS = (
     ("artifact_download", ("GET", "/v1/artifacts/download/{artifact_id}")))
 _BROWSER_CONTROL_WS_PROTOCOL = "hermes-browser-control-v1"
 _BROWSER_CONTROL_TICKET_PROTOCOL_PREFIX = "hermes-browser-control-ticket."
+=======
+    ("session_model_lock", ("POST", "/api/sessions/{session_id}/model")))
+>>>>>>> origin/main
 
 
 def _approval_event_choices(*, smart_denied: bool, allow_session: bool, allow_permanent: bool) -> list[str]:
@@ -151,6 +162,7 @@ from agent.i18n import t
 from agent.redact import redact_sensitive_text
 from agent.interrupt_compat import request_hard_interrupt
 from gateway.readiness import collect_runtime_readiness
+<<<<<<< HEAD
 from gateway.browser_control_artifacts import (
     ArtifactError, ArtifactRateLimiter, ArtifactStore, ArtifactTooLarge, DEFAULT_ALLOWED_MIME_TYPES,
     DEFAULT_MAX_ARTIFACT_BYTES, DEFAULT_ARTIFACT_TTL_SECONDS)
@@ -158,6 +170,8 @@ from gateway.browser_control_broker import (
     BROWSER_CONTROL_ARTIFACT_CAPABILITIES, BROWSER_CONTROL_CAPABILITIES, BROWSER_CONTROL_DEVELOPER_CAPABILITIES,
     ControllerScope, ControllerTicketInvalid, browser_control_developer_mode,
     browser_control_protocol_supported, filter_browser_control_capabilities, get_browser_control_broker)
+=======
+>>>>>>> origin/main
 
 from gateway.parked_route_refusal import ParkedRouteRefused
 from gateway.platforms._shared import coerce_port as _coerce_port, get_scoped_secret as _get_scoped_secret
@@ -168,6 +182,7 @@ from hermes_state_errors import SessionActiveWriteGuardError
 logger = logging.getLogger(__name__)
 
 
+<<<<<<< HEAD
 def _browser_controller_ws_sender(ws, loop, *, wait_timeout: float = 10.0):
     """Return a loop-aware broker sender for one aiohttp controller socket.
 
@@ -199,6 +214,14 @@ def _browser_controller_ws_sender(ws, loop, *, wait_timeout: float = 10.0):
                     logger.exception("browser-controller websocket send failed after wait timeout")
             future.add_done_callback(observe_late_send)
     return send
+=======
+async def _call_verifier(verifier, *args, **kwargs):
+    """Await a sync-or-async verifier; sync ones may do blocking network I/O (signing-cert / JWKS
+    fetches), so they run off the loop."""
+    if asyncio.iscoroutinefunction(verifier):
+        return await verifier(*args, **kwargs)
+    return await asyncio.to_thread(verifier, *args, **kwargs)
+>>>>>>> origin/main
 
 
 async def _call_verifier(verifier, *args, **kwargs):
@@ -1176,6 +1199,7 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
         self.gateway_runner: Optional[Any] = None  # set by gateway/run.py
         # Admitted requests not yet in agent bookkeeping, so shutdown drain counts them.
         self._pending_agent_requests: int = 0
+<<<<<<< HEAD
 # Shared broker; this adapter maps HTTP registration + controller WS onto it.
         self._browser_control_broker = get_browser_control_broker()
         # One-shot artifact transport: lazy per-profile stores + limiter (tests inject).
@@ -1184,6 +1208,8 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
         # Per-profile single-flight locks for the off-loop store construction in
         # _artifact_store_for_async(); a lost race would strand receipts (in-memory index).
         self._browser_control_artifact_locks: dict[str, asyncio.Lock] = {}
+=======
+>>>>>>> origin/main
         # Daily API metrics + heartbeat stamps published to gateway runtime status (#52323).
         self._metrics_day: str = self._metrics_day_key()
         self._metrics_requests_today: int = 0
@@ -1629,6 +1655,7 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
             token = _api_request_profile.set(profile)
             try:
                 with self._profile_scope(profile):
+<<<<<<< HEAD
                     resolved_profile = profile or "default"
                     principal_token = _api_request_browser_control_principal.set(
                         self._derive_browser_control_principal(resolved_profile))
@@ -1639,6 +1666,9 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
                     finally:
                         _api_request_browser_control_transport_family.reset(family_token)
                         _api_request_browser_control_principal.reset(principal_token)
+=======
+                    return await handler(request)
+>>>>>>> origin/main
             finally:
                 _api_request_profile.reset(token)
         return profile_prefix_middleware
@@ -1653,12 +1683,15 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
             ("GET", "/v1/models", self._handle_models),
             ("GET", "/api/model/options", self._handle_model_options),
             ("GET", "/v1/capabilities", self._handle_capabilities),
+<<<<<<< HEAD
             # Browser-control (gated on browser.extension_control.enabled + API key): POST
             # mints a short-lived ticket, WS consumes it; artifacts are bounded + scope-bound.
             ("POST", "/v1/browser-control/register", self._handle_browser_control_register),
             ("GET", "/v1/browser-control/ws", self._handle_browser_control_ws),
             ("POST", "/v1/artifacts/upload", self._handle_artifact_upload),
             ("GET", "/v1/artifacts/download/{artifact_id}", self._handle_artifact_download),
+=======
+>>>>>>> origin/main
             ("GET", "/v1/skills", self._handle_skills),
             ("GET", "/v1/toolsets", self._handle_toolsets),
             ("GET", "/api/sessions", self._handle_list_sessions),
@@ -2460,6 +2493,7 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
             "runs_idempotency": _api_runs._idempotency_capabilities(self, store_type=RunIdempotencyStore),
             **_STATIC_FEATURE_FLAGS,
             "run_unknown_resolution": getattr(runner, "session_authority", None) is not None,
+<<<<<<< HEAD
             "cors": bool(self._cors_origins),
             # Always advertised for feature-detection; enabled follows config.
             "browser_extension_control": {
@@ -2480,6 +2514,9 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
                 "transports": {
                     "local_vps": "websocket-subprotocol-ticket",
                     "cloud": "authenticated-gateway-rpc"}}}
+=======
+            "cors": bool(self._cors_origins)}
+>>>>>>> origin/main
         return web.json_response({
             "object": "hermes.api_server.capabilities", "platform": "hermes-agent",
             "model": self._model_name,
@@ -2497,6 +2534,7 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
                 if len(entry) < 3 or features[entry[2]]},
         })
 
+<<<<<<< HEAD
     # -- Browser-extension control (authenticated local/VPS API) ----------------------
 
     async def _handle_browser_control_register(self, request: web.Request) -> web.Response:
@@ -2883,6 +2921,20 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
                 )
             )
         except Exception:
+=======
+    @_require_auth
+    async def _handle_skills(self, request: web.Request) -> web.Response:
+        """GET /v1/skills — deterministic JSON listing of installed skills (name, description,
+        category), the same set ``/skills list`` shows."""
+        try:
+            from tools.skills_tool import find_all_skills, sort_skills
+            skills = sort_skills(
+                find_all_skills(
+                    skip_disabled=False, include_editorial=True
+                )
+            )
+        except Exception:
+>>>>>>> origin/main
             logger.exception("GET /v1/skills failed")
             return _error_response("Failed to enumerate skills", 500, err_type="server_error")
         return web.json_response({"object": "list", "data": skills})
@@ -4064,7 +4116,10 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
     @staticmethod
     def _bind_api_server_session(
         *, chat_id: str = "", session_key: str = "", session_id: str = "", profile: str = "",
+<<<<<<< HEAD
         browser_control_principal: str = "", browser_control_transport_family: str = "",
+=======
+>>>>>>> origin/main
         session_history_delivery: str = "") -> list:
         """Bind an API turn with push disabled and history delivery default-denied.
 
@@ -4077,9 +4132,13 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
         from gateway.session_context import set_session_vars
         return set_session_vars(
             platform="api_server", chat_id=chat_id, session_key=session_key, session_id=session_id,
+<<<<<<< HEAD
             profile=profile, browser_control_principal=browser_control_principal,
             browser_control_transport_family=browser_control_transport_family,
             async_delivery=False, cron_session="", session_history_delivery=session_history_delivery)
+=======
+            profile=profile, async_delivery=False, cron_session="", session_history_delivery=session_history_delivery)
+>>>>>>> origin/main
 
     def _turn_runtime_metadata(
         self, agent: Any, *, route: Optional[dict[str, Any]], requested_runtime: Optional[dict[str, Any]],
@@ -4199,8 +4258,11 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
         loop = asyncio.get_running_loop()
         # ContextVars do not follow run_in_executor threads: capture here, re-enter in _run().
         request_profile = _api_request_profile.get()
+<<<<<<< HEAD
         request_browser_control_principal = _api_request_browser_control_principal.get()
         request_browser_control_transport_family = _api_request_browser_control_transport_family.get()
+=======
+>>>>>>> origin/main
 
         def _run():
             from gateway.session_context import clear_session_vars
@@ -4208,8 +4270,11 @@ class APIServerAdapter(OpenAICompatRoutesMixin, BasePlatformAdapter):
                 tokens = self._bind_api_server_session(
                     chat_id=session_id or "", session_key=gateway_session_key or session_id or "",
                     session_id=session_id or "", profile=request_profile or "",
+<<<<<<< HEAD
                     browser_control_principal=request_browser_control_principal,
                     browser_control_transport_family=request_browser_control_transport_family,
+=======
+>>>>>>> origin/main
                     session_history_delivery=session_history_delivery)
                 agent = None
                 from agent.notification_presentation import notification_turn

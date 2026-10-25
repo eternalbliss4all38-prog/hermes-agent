@@ -1,20 +1,8 @@
 /**
  * backend-claim.ts
  *
- * The start-marker probe and the claim decision for a freshly spawned local
- * backend child, extracted from main.ts so the policy is testable without
- * booting Electron — including on a Windows CI lane that drives the probe
- * with REAL PowerShell (`processStartMarker` shells out to powershell.exe).
- *
- * Why this exists (#93608): `claimBackendChild` used to hard-fail on ANY
- * probe error — `Get-Process` timing out on a PowerShell 5.1 cold start
- * (see #87169) killed a perfectly healthy backend, the renderer "repaired"
- * by respawning, and the next probe timeout killed that one too. The rule is
- * now the same one `createParentStartMarkerResolver` already applies to the
- * parent marker: a failed probe against a LIVE child degrades to PID-only
- * identity instead of killing the child; only a child that actually DIED
- * keeps the fail-closed throw (now carrying its stderr tail, so the real
- * exit reason reaches desktop.log and the boot UI).
+ * Process start-marker probes used to match backend ownership records against
+ * live processes.
  */
 
 import { execFile } from 'node:child_process'
@@ -58,8 +46,7 @@ export const REAP_PROBE_TIMEOUT_MS = 5_000
 /**
  * Cross-platform process start marker: a value that changes when a PID is
  * reused, so `pid + marker` identifies one specific process incarnation.
- * Throws when the probe fails — callers decide what a failure means (see
- * `claimDecision` / `probeStartMarker`).
+ * Throws when the probe fails — callers decide what a failure means.
  */
 export async function processStartMarker(pid: number, timeoutMs: number = 30_000): Promise<string> {
   // Cheap native dead-PID gate. Windows Get-Process / macOS `ps -p` exit 1
@@ -125,35 +112,17 @@ export async function processStartMarker(pid: number, timeoutMs: number = 30_000
   return `ps:${started}`
 }
 
-export type StartMarkerProbe = { ok: true; startMarker: string } | { ok: false; reason: string }
-
-/** Run the marker probe, converting a throw into a value the pure decision can consume. */
-export async function probeStartMarker(
-  pid: number,
-  probe: (pid: number) => Promise<string> = processStartMarker
-): Promise<StartMarkerProbe> {
-  try {
-    return { ok: true, startMarker: await probe(pid) }
-  } catch (error) {
-    return { ok: false, reason: error instanceof Error ? error.message : String(error) }
-  }
-}
-
 const PID_ONLY_MARKER_PREFIX = 'pid-only:'
 
 /**
- * Degraded identity marker recorded when the start-marker probe failed but
- * the child was verifiably alive. It satisfies the ownership schema (a
- * non-empty startMarker) while telling identity matchers that only PID
- * liveness — plus the command-line check layered on top — can be verified.
+ * Degraded identity marker written by the former local-spawn claim path when
+ * the start-marker probe failed against a live child. Ownership records may
+ * still carry it; identity matchers treat it as PID-liveness only.
  */
-export function pidOnlyStartMarker(pid: number): string {
-  return `${PID_ONLY_MARKER_PREFIX}${pid}`
-}
-
 export function isPidOnlyStartMarker(startMarker: unknown): boolean {
   return typeof startMarker === 'string' && startMarker.startsWith(PID_ONLY_MARKER_PREFIX)
 }
+<<<<<<< HEAD
 
 export type ClaimDecision =
   { action: 'claim'; startMarker: string } | { action: 'degrade'; reason: string } | { action: 'fail'; reason: string }
@@ -242,3 +211,5 @@ export function formatBackendExitLine(
 ): string {
   return `${label} (${signal || code})${outputTail?.describe() ?? ''}`
 }
+=======
+>>>>>>> origin/main

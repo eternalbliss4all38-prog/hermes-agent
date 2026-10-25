@@ -7,9 +7,16 @@ from __future__ import annotations
 
 import argparse
 import os
+<<<<<<< HEAD
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from types import SimpleNamespace
+=======
+import sys
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from types import ModuleType, SimpleNamespace
+>>>>>>> origin/main
 
 import pytest
 
@@ -21,7 +28,7 @@ from hermes_cli.doctor_live import (
 from tools import browser_tool_install as bt_install
 
 # Captured before the autouse fixture below stubs doctor_live._browser_available
-# to a constant, so TestBrowserAvailableNpxRung can exercise the real function.
+# to a constant, so TestBrowserAvailable can exercise the real function.
 _real_browser_available = doctor_live._browser_available
 
 # The exact environment Clash Verge / mihomo exports (issue #118159): a bracketed-IPv6
@@ -203,6 +210,7 @@ def test_http_get_sanitizes_bracketed_ipv6_no_proxy(monkeypatch, kind, entry):
         finally:
             httpd.shutdown()
             thread.join(timeout=5)
+<<<<<<< HEAD
 
 
 def test_run_live_checks_sanitizes_clash_env_and_probes_pass(clash_env, monkeypatch):
@@ -257,28 +265,113 @@ def test_run_live_checks_leaves_a_clean_environment_untouched(monkeypatch):
 
 class TestBrowserAvailable:
     """Live probes use the same passive selection as browser execution."""
+=======
+>>>>>>> origin/main
 
-    def _block_path_and_node_modules_checks(self, monkeypatch, tmp_path):
-        monkeypatch.setattr("shutil.which", lambda *a, **k: None)
-        monkeypatch.setattr("hermes_cli.doctor.HERMES_HOME", tmp_path / "home")
-        monkeypatch.setattr("hermes_cli.doctor.PROJECT_ROOT", tmp_path / "root")
 
+<<<<<<< HEAD
     def test_true_when_installed_browser_resolves(self, monkeypatch, tmp_path):
         self._block_path_and_node_modules_checks(monkeypatch, tmp_path)
 
         monkeypatch.setattr(bt_install, "_find_agent_browser", lambda **_kw: "/pm/agent-browser")
+=======
+def test_run_live_checks_sanitizes_clash_env_and_probes_pass(clash_env, monkeypatch):
+    # Red-on-base end-to-end: _keyed_probe -> _http_get -> bare httpx.get raised
+    # InvalidURL under this env; _run_one's catch-all dressed it up as
+    # "(Invalid port: ':1]')" — a backend-failure verdict for a healthy service.
+    monkeypatch.setenv("FIRECRAWL_API_KEY", "fc-test")
 
-        assert _real_browser_available() is True
+    # Real HTTP origin: a 200 from an actual socket proves both client construction
+    # and the request reaching a reachable origin. The remote-credential probes would
+    # send real auth material or 401 without proving either.
+    with HTTPServer(("127.0.0.1", 0), _Probes) as httpd:
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        try:
+            monkeypatch.setitem(
+                doctor_live._KEYED_PROBES, "Firecrawl",
+                (f"http://127.0.0.1:{httpd.server_port}/v2/team/credit-usage",
+                 "FIRECRAWL_API_KEY", "Bearer"))
+            issues: list[str] = []
+            results = {r.name: r for r in run_live_checks(issues)}
+            assert results["Firecrawl"].status == "pass"
+            assert issues == []
+            assert "Invalid port" not in (results["Firecrawl"].detail or "")
+        finally:
+            httpd.shutdown()
+            thread.join(timeout=5)
+    # The seam rewrote the entry in place, the established pattern of this seam
+    # (chat transports and run_probes already do exactly this).
+    assert "[::1]" not in os.environ["NO_PROXY"]
+    assert os.environ["no_proxy"] == "127.0.0.1,localhost,::1"
+>>>>>>> origin/main
 
+
+<<<<<<< HEAD
     def test_false_when_nothing_resolves(self, monkeypatch, tmp_path):
         self._block_path_and_node_modules_checks(monkeypatch, tmp_path)
+=======
+def test_run_live_checks_leaves_a_clean_environment_untouched(monkeypatch):
+    for key in ("NO_PROXY", "no_proxy", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
+                "http_proxy", "https_proxy", "all_proxy"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("NO_PROXY", "example.com,10.0.0.0/8")
+    # _http_get is untouched by the sanitize-once design; a socket-level 200 proves
+    # the live path still works end to end when there is nothing to sanitize.
+    with HTTPServer(("127.0.0.1", 0), _Probes) as httpd:
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        try:
+            assert doctor_live._http_get(
+                f"http://127.0.0.1:{httpd.server_port}/", timeout=5.0).status_code == 200
+        finally:
+            httpd.shutdown()
+            thread.join(timeout=5)
+    assert os.environ["NO_PROXY"] == "example.com,10.0.0.0/8"
+>>>>>>> origin/main
 
-        def _raise(**_kw):
-            raise FileNotFoundError("agent-browser CLI not found")
 
+<<<<<<< HEAD
         monkeypatch.setattr(bt_install, "_find_agent_browser", _raise)
+=======
+class TestBrowserAvailable:
+    """Live probes use the launcher's own Chromium selection."""
 
-        assert _real_browser_available() is False
+    @pytest.mark.parametrize("found,available", [("/pm/chromium/chrome", True), (None, False)])
+    def test_follows_chromium_selection(self, monkeypatch, found, available):
+        monkeypatch.setattr(doctor_live, "chromium_executable", lambda **_kw: found)
+
+        assert _real_browser_available() is available
+
+>>>>>>> origin/main
+
+class TestLaunchBrowserProbe:
+    """The probe launches through browser_exec's launcher and always stops what it started."""
+
+    def _fake_launcher(self, monkeypatch, result):
+        calls = []
+        fake = ModuleType("tools.browser_launcher")
+        fake.launch_chromium = lambda key, **kw: calls.append(("launch", key, kw)) or result
+        fake.stop_browser = lambda key: calls.append(("stop", key))
+        monkeypatch.setitem(sys.modules, "tools.browser_launcher", fake)
+        return calls
+
+    def test_success_stops_the_browser(self, monkeypatch):
+        calls = self._fake_launcher(monkeypatch, (SimpleNamespace(cdp_url="ws://x"), None))
+
+        ok, detail = doctor_live._launch_browser_probe(5.0)
+
+        assert ok is True and "CDP ready" in detail
+        assert [c[0] for c in calls] == ["launch", "stop"]
+        assert calls[0][2]["timeout"] == 5.0 and calls[0][2]["ephemeral"] is True
+
+    def test_launch_error_is_reported_and_still_stopped(self, monkeypatch):
+        calls = self._fake_launcher(monkeypatch, (None, "Chromium exited: missing libnss3"))
+
+        ok, detail = doctor_live._launch_browser_probe(5.0)
+
+        assert ok is False and "libnss3" in detail
+        assert [c[0] for c in calls] == ["launch", "stop"]
 
 
 class TestFailureIsolation:

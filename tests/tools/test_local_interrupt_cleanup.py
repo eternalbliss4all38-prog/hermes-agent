@@ -220,7 +220,10 @@ def test_exit_cleanup_kills_foreground_command_still_running(monkeypatch):
     the host exiting mid-command would otherwise orphan it to init."""
     from tools import terminal_tool_lifecycle
 
+<<<<<<< HEAD
     monkeypatch.setattr(terminal_tool_lifecycle, "_scratch_paths", list)
+=======
+>>>>>>> origin/main
     env = LocalEnvironment(cwd="/tmp")
     result: dict = {}
     t = threading.Thread(target=lambda: result.update(env.execute("sleep 3517", timeout=600)), daemon=True)

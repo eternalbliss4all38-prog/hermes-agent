@@ -1,6 +1,10 @@
 import type { TranslationOverride } from '@hermes/shared/i18n'
 
 import { ruAuxTasks } from './ru_aux_tasks'
+<<<<<<< HEAD
+=======
+import { ruDelegationRouting } from './ru_delegation_routing'
+>>>>>>> origin/main
 import type { ModelSettingsTranslations } from './types_model_settings'
 
 export const ruModelSettings: TranslationOverride<ModelSettingsTranslations> = {
@@ -71,6 +75,11 @@ export const ruModelSettings: TranslationOverride<ModelSettingsTranslations> = {
     directClear:
       'Применение этого маршрута удалит прямой эндпоинт и его сохранённый ключ. Остальные настройки запросов сохранятся.',
     catalogFailed: 'Каталог моделей недоступен. Введите провайдера и модель вручную или повторите попытку.',
+<<<<<<< HEAD
     draftHint: 'Изменения остаются локальными, пока вы их не примените.'
+=======
+    draftHint: 'Изменения остаются локальными, пока вы их не примените.',
+    routing: ruDelegationRouting
+>>>>>>> origin/main
   }
 }

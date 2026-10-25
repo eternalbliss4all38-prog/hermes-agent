@@ -1,6 +1,10 @@
 import type { TranslationOverride } from '@hermes/shared/i18n'
 
 import { jaAuxTasks } from './ja_aux_tasks'
+<<<<<<< HEAD
+=======
+import { jaDelegationRouting } from './ja_delegation_routing'
+>>>>>>> origin/main
 import type { ModelSettingsTranslations } from './types_model_settings'
 
 export const jaModelSettings: TranslationOverride<ModelSettingsTranslations> = {
@@ -68,6 +72,11 @@ export const jaModelSettings: TranslationOverride<ModelSettingsTranslations> = {
     directClear:
       'このルートを適用すると、直接エンドポイントと保存済みのキーが削除されます。その他のリクエスト設定は保持されます。',
     catalogFailed: 'モデルカタログを取得できません。プロバイダーとモデルを手動で入力するか、再試行してください。',
+<<<<<<< HEAD
     draftHint: '適用するまで変更はローカルにのみ保持されます。'
+=======
+    draftHint: '適用するまで変更はローカルにのみ保持されます。',
+    routing: jaDelegationRouting
+>>>>>>> origin/main
   }
 }

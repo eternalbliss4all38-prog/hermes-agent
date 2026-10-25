@@ -752,6 +752,7 @@ if [ -d "$INSTALL_DIR/skills" ]; then
         || echo "[stage2] Warning: skills_sync.py failed; continuing"
 fi
 
+<<<<<<< HEAD
 # --- Point agent-browser at the pinned Chromium binary ---
 # The image's Dockerfile pm-provisions pinned full Chromium into
 # $HERMES_RUNTIME_DIR (/opt/hermes/tools) at BUILD time and bakes the
@@ -786,6 +787,24 @@ if [ -z "${AGENT_BROWSER_EXECUTABLE_PATH:-}" ] && \
         printf '%s' "$browser_bin" > /run/s6/container_environment/AGENT_BROWSER_EXECUTABLE_PATH
     else
         echo "[stage2] Warning: baked Chromium binary is missing (${browser_bin:-<empty>}); browser tool may fail"
+=======
+# --- Check the pinned Chromium binary ---
+# The image's Dockerfile pm-provisions pinned full Chromium into
+# $HERMES_RUNTIME_DIR (/opt/hermes/tools) at BUILD time and bakes the
+# resolved binary path into /etc/hermes/chromium-executable-path (the layout
+# differs per arch, so it is resolved at build time, not hard-coded). Hermes
+# reads that file itself (hermes_cli/browser_runtime.py) when pm's facts are
+# hidden, so nothing is exported here: the hook only says, once per boot,
+# when the baked path no longer names a runnable binary (a custom build that
+# stripped the tool store), instead of leaving the first browser_exec call to
+# discover it. No file at all is quiet: such builds never baked one.
+if [ -f /etc/hermes/chromium-executable-path ]; then
+    browser_bin="$(cat /etc/hermes/chromium-executable-path)"
+    if [ -n "$browser_bin" ] && [ -x "$browser_bin" ]; then
+        echo "[stage2] Using pinned Chromium binary: $browser_bin"
+    else
+        echo "[stage2] Warning: baked Chromium binary is missing (${browser_bin:-<empty>}); browser_exec cannot launch the pinned browser"
+>>>>>>> origin/main
     fi
 fi
 

@@ -170,6 +170,7 @@ def test_prepare_agent_startup_skips_discovery_when_chat_resolves_to_tui(
     assert mcp_startup._current_home_thread() is None
 
 
+<<<<<<< HEAD
 def test_prepare_agent_startup_keeps_discovery_for_non_chat_commands(
     monkeypatch,
 ):
@@ -210,6 +211,8 @@ def test_prepare_agent_startup_keeps_discovery_for_non_chat_commands(
     assert calls["inline"] == 1
 
 
+=======
+>>>>>>> origin/main
 def test_background_mcp_discovery_suppresses_interactive_oauth(monkeypatch):
     state = {"active": False, "during_discover": None}
 
@@ -454,7 +457,10 @@ def test_prepare_agent_startup_installs_server_filter(monkeypatch, _reset_mcp_se
         types.SimpleNamespace(discover_plugins=lambda: None),
     )
     monkeypatch.setattr(main_mod, "_should_background_mcp_startup", lambda args: False)
+<<<<<<< HEAD
     monkeypatch.setattr(main_mod, "_command_has_dedicated_mcp_startup", lambda args: True)
+=======
+>>>>>>> origin/main
     main_mod._prepare_agent_startup(_agent_args(toolsets="terminal,code-mcp"))
     assert mcp_startup.get_mcp_server_filter() == ["terminal", "code-mcp"]
 

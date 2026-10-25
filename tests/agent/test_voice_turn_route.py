@@ -7,6 +7,10 @@ server actually received rather than on agent attributes.
 from __future__ import annotations
 
 from pathlib import Path
+<<<<<<< HEAD
+=======
+from types import SimpleNamespace
+>>>>>>> origin/main
 
 import pytest
 
@@ -74,6 +78,28 @@ def test_reasoning_off_falls_to_the_lowest_valid_level(model, api_mode, expected
     assert got == ({"enabled": True, "effort": expected} if expected else {"enabled": False})
 
 
+<<<<<<< HEAD
+=======
+def test_session_runtime_view_preserves_requested_provider_during_voice_turn():
+    from agent.voice_turn_route import session_runtime_view
+
+    main = SimpleNamespace(
+        model="voice-model", provider="custom", requested_provider="custom:voice",
+        base_url="https://voice.example/v1", api_mode="chat_completions",
+        reasoning_config={"enabled": False}, _voice_route_state=None,
+    )
+    main._voice_route_state = {
+        "snapshot": {
+            "model": "main-model", "provider": "custom", "requested_provider": "custom:main",
+            "base_url": "https://main.example/v1", "api_mode": "chat_completions",
+        },
+        "reasoning_config": {"enabled": True},
+    }
+    view = session_runtime_view(main)
+    assert (view.provider, view.requested_provider) == ("custom", "custom:main")
+
+
+>>>>>>> origin/main
 def test_voice_usage_never_becomes_the_session_route(tmp_path):
     from hermes_state import SessionDB
 

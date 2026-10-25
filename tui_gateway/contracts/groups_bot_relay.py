@@ -1,14 +1,25 @@
+<<<<<<< HEAD
 """Hosted Group Chat rooms (``groups.*``), cross-connection bot relay (``bot_relay.*``) and the
 dashboard browser controller (``browser.controller.*``).
 
 Handlers: ``tui_gateway/methods_groups.py``, ``tui_gateway/methods_bot_relay.py``,
 ``tui_gateway/methods_browser_control.py``. Room / event / page shapes are produced by
+=======
+"""Hosted Group Chat rooms (``groups.*``) and cross-connection bot relay (``bot_relay.*``).
+
+Handlers: ``tui_gateway/methods_groups.py``, ``tui_gateway/methods_bot_relay.py``. Room / event / page shapes are produced by
+>>>>>>> origin/main
 ``gateway/hosted_rooms.py`` (``_room_from_row`` / ``_event_from_row`` / ``read_events``) and
 ``gateway/hosted_room_replicas.py``; the RoomLink catalog by ``gateway/hosted_room_peer.py``.
 """
 
 from __future__ import annotations
 
+<<<<<<< HEAD
+=======
+from pydantic import Field
+
+>>>>>>> origin/main
 from .base import JsonValue, Params, Result, WireEnum
 from .common import OkResult, OpenModel, ProfileParams
 from .registry import method
@@ -208,15 +219,33 @@ class PeerRouteStatus(Result):
     status: str
 
 
+<<<<<<< HEAD
 class RoomDriverStatus(Result):
     """``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}``
     or the driver's approval action (``kind: approval`` + run/session/approval context)."""
+=======
+class RoomMemberActivity(Result):
+    """One live room task: ``status`` is ``queued``, ``running`` or ``stopping``."""
+
+    member_id: str
+    status: str
+
+
+class RoomDriverStatus(Result):
+    """``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}``
+    or the driver's approval action (``kind: approval`` + run/session/approval context).
+    ``member_activity`` lists live tasks in admission order (absent from older gateways)."""
+>>>>>>> origin/main
 
     running: bool
     working: bool
     blocked: bool
     counts: dict[str, int]
     pending_actions: list[dict[str, JsonValue]]
+<<<<<<< HEAD
+=======
+    member_activity: list[RoomMemberActivity] = Field(default_factory=list)
+>>>>>>> origin/main
     peer_routes: list[PeerRouteStatus]
 
 
@@ -575,6 +604,7 @@ method("bot_relay.reply", params=BotRelayReplyParams, result=OkResult,
        doc="Write a relayed reply and/or typed error for an envelope so the sender-side waiter resolves.")
 
 
+<<<<<<< HEAD
 # ── browser controller ────────────────────────────────────────────────────────────────────────
 
 
@@ -640,6 +670,8 @@ method("browser.controller.detach", params=BrowserControllerParams, result=Brows
        doc="Hard-detach only the controller owned by this authenticated transport.")
 
 
+=======
+>>>>>>> origin/main
 __all__ = [
     "GroupsLogResult", "RelayEnvelope", "Room", "RoomAuthority", "RoomEvent", "RoomLinkCatalog",
     "RoomMember", "RoomMemberInput",

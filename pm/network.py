@@ -17,6 +17,10 @@ from typing import Callable, TypeVar
 _T = TypeVar("_T")
 _ATTEMPTS = 4
 _MAX_DELAY = 30.0
+<<<<<<< HEAD
+=======
+_MAX_RECOVERY_DELAY = 300.0
+>>>>>>> origin/main
 _HTTP_RETRY = frozenset({408, 429, 500, 502, 503, 504})
 _R2_HOSTS = frozenset({"hermes-assets.nousresearch.com"})
 _NETWORK_ERRNOS = frozenset({
@@ -84,24 +88,43 @@ def _delay(exc: Exception, attempt: int) -> float:
                 except (TypeError, ValueError, OverflowError):
                     retry_after = 0.0
             delay = max(delay, retry_after)
+<<<<<<< HEAD
     return min(delay, _MAX_DELAY)
+=======
+    return delay
+>>>>>>> origin/main
 
 
 def retry_network(
     operation: Callable[[], _T], *, wait: Callable[[float], None] | None = None,
+<<<<<<< HEAD
+=======
+    progress: Callable[[], int] | None = None, fallback_available: bool = False,
+>>>>>>> origin/main
 ) -> _T:
     """Retry the complete request and body read, never an install or publish.
 
     The caller resets attempt-local buffers and keeps any resumable bytes.
     A download supplies an interruptible wait so pause does not wait for backoff.
+<<<<<<< HEAD
     """
     attempt = 1
+=======
+    Downloads supply ``progress``: durable forward progress renews their
+    budget. Metadata and non-resumable requests still get four attempts.
+    A resumable request yields to an available fallback before a long wait.
+    """
+    failures_since_progress = 0
+    backoff = 0
+    saved = progress() if progress is not None else 0
+>>>>>>> origin/main
     while True:
         try:
             return operation()
         except Exception as exc:
             if isinstance(exc, urllib.error.HTTPError):
                 exc.close()
+<<<<<<< HEAD
             if not is_transient(exc) or attempt >= _ATTEMPTS:
                 raise
             delay = _delay(exc, attempt - 1)
@@ -109,5 +132,27 @@ def retry_network(
             logging.getLogger(__name__).warning(
                 "network request failed (%s); retrying in %gs (attempt %d/%d)",
                 exc, delay, attempt, _ATTEMPTS,
+=======
+            if not is_transient(exc):
+                raise
+            current = progress() if progress is not None else saved
+            if current > saved:
+                failures_since_progress = 0
+                backoff = 0
+                saved = current
+            else:
+                failures_since_progress += 1
+            if failures_since_progress >= _ATTEMPTS:
+                raise
+            delay = _delay(exc, backoff)
+            if progress is None:
+                delay = min(delay, _MAX_DELAY)
+            elif delay > (_MAX_DELAY if fallback_available else _MAX_RECOVERY_DELAY):
+                raise
+            backoff += 1
+            logging.getLogger(__name__).warning(
+                "network request failed (%s); retrying in %gs (%d/%d failures without progress)",
+                exc, delay, failures_since_progress, _ATTEMPTS,
+>>>>>>> origin/main
             )
             (wait or time.sleep)(delay)

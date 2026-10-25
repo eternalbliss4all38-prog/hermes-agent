@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Tests for browser first-open timeout and timeout diagnostics."""
 
 import subprocess
@@ -26,24 +27,42 @@ def _reset_browser_caches(monkeypatch, tmp_path):
     bt._active_sessions.clear()
     bt._session_last_activity.clear()
     bt._last_active_session_key.clear()
+=======
+"""Tests for the Chromium first-launch timeout floor and the sandbox-bypass host probe."""
+
+import pytest
+
+from tools import browser_launcher, browser_session_cloud
+
+
+@pytest.fixture(autouse=True)
+def _fresh_cache():
+    browser_session_cloud.reset_caches()
+    yield
+    browser_session_cloud.reset_caches()
+>>>>>>> origin/main
 
 
 class TestOpenCommandTimeout:
     def test_first_open_uses_longer_floor(self, monkeypatch):
-        monkeypatch.setattr(bt, "_get_command_timeout", lambda: 30)
-        assert bt._get_open_command_timeout(first_open=True) == bt.MIN_FIRST_OPEN_TIMEOUT
-        assert bt._get_open_command_timeout(first_open=False) == bt.MIN_OPEN_TIMEOUT
+        monkeypatch.setattr(browser_session_cloud, "command_timeout", lambda: 30)
+        assert browser_launcher._launch_timeout(None) == browser_launcher._MIN_FIRST_LAUNCH_TIMEOUT_S
 
     def test_respects_config_above_floor(self, monkeypatch):
-        monkeypatch.setattr(bt, "_get_command_timeout", lambda: 180)
-        assert bt._get_open_command_timeout(first_open=True) == 180
-        assert bt._get_open_command_timeout(first_open=False) == 180
+        monkeypatch.setattr(browser_session_cloud, "command_timeout", lambda: 180)
+        assert browser_launcher._launch_timeout(None) == 180
 
 
 class TestSandboxBypass:
 
     def test_apparmor_userns_triggers_bypass(self, monkeypatch, tmp_path):
+<<<<<<< HEAD
         monkeypatch.setattr("tools.browser_tool_install._running_in_docker", lambda: False)
+=======
+        monkeypatch.setattr(browser_launcher, "running_in_docker", lambda: False)
+        # Non-root, so only the AppArmor sysctl can answer True.
+        monkeypatch.setattr(browser_launcher.os, "geteuid", lambda: 1000, raising=False)
+>>>>>>> origin/main
         sysctl = tmp_path / "apparmor_restrict_unprivileged_userns"
         sysctl.write_text("1\n", encoding="utf-8")
 
@@ -57,6 +76,7 @@ class TestSandboxBypass:
             return real_open(path, *args, **kwargs)
 
         monkeypatch.setattr(builtins, "open", _open)
+<<<<<<< HEAD
         assert bt_session._needs_chromium_sandbox_bypass() is True
 
 
@@ -170,3 +190,6 @@ class TestBrowserNavigateOpenTimeout:
 
         bt.browser_navigate("https://example.com", task_id="task-1")
         assert captured["timeout"] == 120
+=======
+        assert browser_launcher.needs_chromium_sandbox_bypass() is True
+>>>>>>> origin/main

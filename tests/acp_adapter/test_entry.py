@@ -98,4 +98,8 @@ def test_setup_browser_is_one_explicit_package_request(monkeypatch):
 
     entry.main(["--setup-browser", "--yes"])
 
+<<<<<<< HEAD
     assert calls == [("agent-browser", {"explicit": True})]
+=======
+    assert calls == [("chromium", {"explicit": True})]
+>>>>>>> origin/main

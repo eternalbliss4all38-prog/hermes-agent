@@ -183,6 +183,11 @@ def _print_switch_summary(cli, result, old_model, *, one_turn: bool, strict_cont
         _cprint(f"    {t('gateway.model.prompt_caching_enabled')}")
     if result.warning_message:
         _cprint(f"    ⚠ {result.warning_message}")
+<<<<<<< HEAD
+=======
+    if getattr(result, "usage_notice", ""):
+        _cprint(f"    ⚠ {result.usage_notice}")
+>>>>>>> origin/main
 
 
 def _switch_model_from(
@@ -833,6 +838,14 @@ class CLIModelSwitchMixin:
                 # rather than a dead session (#50163).
                 for _k, _v in _cli_snapshot.items():
                     setattr(self, _k, _v)
+<<<<<<< HEAD
+=======
+                if str(exc) == "launch_credentials_unavailable":
+                    # No model switch can fix a chat whose launch key changed; say what does.
+                    from hermes_cli.cli_chat_error_copy import refusal_text
+                    _cprint(f"  {refusal_text(exc)}")
+                    return False
+>>>>>>> origin/main
                 _cprint(f"  {t('cli.model.switch_failed', model=result.new_model, error=exc, old_model=old_model)}")
                 return False
             finally:

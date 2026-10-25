@@ -177,6 +177,7 @@ def _start_desktop_cron_ticker(stop_event: threading.Event, interval: int = 60) 
 _DESKTOP_MCP_DISCOVERY_DELAY_S = 1.0
 
 
+<<<<<<< HEAD
 def _probe_install_before_state_db() -> None:
     from hermes_cli.anon_auth import on_local_desktop_backend
 
@@ -196,6 +197,14 @@ from hermes_cli.web_server_app import app_lifespan
 def _app_state_default(app: FastAPI, name: str, factory):
     """Return ``app.state.<name>``, lazily creating it for non-``with`` TestClient usages.
 
+=======
+from hermes_cli.web_server_app import app_lifespan
+
+
+def _app_state_default(app: FastAPI, name: str, factory):
+    """Return ``app.state.<name>``, lazily creating it for non-``with`` TestClient usages.
+
+>>>>>>> origin/main
     The lifespan normally initialises these on the running event loop (an
     asyncio.Lock created at import time binds to whatever loop was active then).
     """
@@ -795,6 +804,10 @@ from hermes_cli.web_routers import (
     chat_workspaces as _chat_workspaces_routes,
     dashboard_ui as _dashboard_ui_routes,
     shared_metrics as _shared_metrics_routes,
+<<<<<<< HEAD
+=======
+    delegation as _delegation_routes,
+>>>>>>> origin/main
 )
 
 app.include_router(_files_routes.router)
@@ -828,6 +841,10 @@ app.include_router(_chat_ws_routes.router)
 app.include_router(_chat_workspaces_routes.router)
 app.include_router(_dashboard_ui_routes.router)
 app.include_router(_shared_metrics_routes.router)
+<<<<<<< HEAD
+=======
+app.include_router(_delegation_routes.router)
+>>>>>>> origin/main
 
 # Plugin API routes and the dashboard auth routes (/login, /auth/*, /api/auth/*)
 # mount before the SPA catch-all so /{full_path:path} doesn't swallow them. Auth

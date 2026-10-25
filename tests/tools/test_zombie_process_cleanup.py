@@ -242,7 +242,11 @@ class TestGatewayCleanupWiring:
             with patch("gateway.status.remove_pid_file"), \
                  patch("gateway.status.write_runtime_status"), \
                  patch("tools.terminal_tool.cleanup_all_environments"), \
+<<<<<<< HEAD
                  patch("tools.browser_tool_lifecycle.cleanup_all_browsers"):
+=======
+                 patch("tools.browser_session_lifecycle.cleanup_all_browsers"):
+>>>>>>> origin/main
                 loop.run_until_complete(GatewayRunner.stop(runner))
         finally:
             loop.close()

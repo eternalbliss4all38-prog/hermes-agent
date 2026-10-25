@@ -25,7 +25,11 @@ def _plugin(home, name, *, dependencies=True):
     path.mkdir(parents=True)
     (path / "plugin.yaml").write_text(f"name: {name}\n", encoding="utf-8")
     if dependencies:
+<<<<<<< HEAD
         (path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
+=======
+        (path / "pyproject.toml").write_text('[project]\ndependencies = ["requests>=2"]\n', encoding="utf-8")
+>>>>>>> origin/main
     return path
 
 

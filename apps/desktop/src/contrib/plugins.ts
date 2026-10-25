@@ -14,7 +14,11 @@
  */
 
 import { trackGatewayEventDisposers } from './events'
+<<<<<<< HEAD
 import { createPluginContext, type HermesPlugin } from './plugin'
+=======
+import { createPluginContext, declaredCapabilities, type HermesPlugin } from './plugin'
+>>>>>>> origin/main
 import { pluginActive, publishPlugin } from './plugins-store'
 import { watchRuntimePlugins } from './runtime-loader'
 
@@ -45,10 +49,13 @@ export function discoverBundledPlugins(): void {
     // Same inventory + live-toggle contract as runtime plugins: each bundled
     // plugin publishes a record with activate/deactivate handles, and a
     // persisted disable survives boots by skipping registration here.
+    const capabilities = declaredCapabilities(plugin)
+
     const record = {
       id: plugin.id,
       name: plugin.name ?? plugin.id,
       description: plugin.description,
+      capabilities,
       kind: 'bundled' as const
     }
 
@@ -61,7 +68,11 @@ export function discoverBundledPlugins(): void {
       try {
         trackGatewayEventDisposers(
           dispose => disposers.push(dispose),
+<<<<<<< HEAD
           () => plugin.register(createPluginContext(plugin.id, dispose => disposers.push(dispose)))
+=======
+          () => plugin.register(createPluginContext(plugin.id, dispose => disposers.push(dispose), capabilities))
+>>>>>>> origin/main
         )
         publishPlugin({ ...record, status: 'loaded' })
       } catch (error) {

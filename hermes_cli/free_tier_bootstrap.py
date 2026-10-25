@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Serve-start record of who carries inference, for ``setup.status`` and ``setup.ready``.
 
 ``hermes serve`` runs this once at boot on a daemon thread. It never creates an identity: the
@@ -6,6 +7,16 @@ are the only creators. On the desktop's local backend it first records a fresh i
 decision (``onboarding_run.latch_first_install``), settles a claim cut off before its marker write
 (``welcome_trial.settle_interrupted_claim``), then keeps the trial for a guest that already ran
 on the free model (``welcome_trial.grandfather_existing_guest``). Then it inventories
+=======
+"""Record of who carries inference, for ``setup.status`` and ``setup.ready``.
+
+It runs once per process on a daemon thread: at ``hermes serve`` boot, and on the gateway when the
+local Desktop first connects (``tui_gateway.methods_onboarding.begin_local_desktop_boot``). It never
+creates an identity: the desktop's welcome-trial claim (``hermes_cli.welcome_trial``) and the first
+hosted connector action are the only creators. For the desktop's local backend it first records a
+fresh install's onboarding decision (``onboarding_run.latch_first_install``) and settles a claim cut
+off before its marker write (``welcome_trial.settle_interrupted_claim``). Then it inventories
+>>>>>>> origin/main
 credentials cheap-first, resolves which provider carries inference, records the answer in process
 memory, and tells every connected client with one ``setup.ready`` event. ``free_tier.status`` and
 ``setup.status`` read the record; provider resolution never reaches the portal.
@@ -63,6 +74,11 @@ _lock = threading.Lock()
 _record: Optional[SetupRecord] = None
 _done = threading.Event()
 _started = False
+<<<<<<< HEAD
+=======
+_settled = False  # the bootstrap recorded the install and settled the claim (``_settle_install``)
+_resettle_lock = threading.Lock()
+>>>>>>> origin/main
 # ``(mtime_ns, size)`` of the files the inventory reads, taken by the inventory that built the
 # current record; ``reconcile_record`` re-inventories only when they moved.
 _inventory_stamp: Optional[tuple] = None
@@ -117,10 +133,18 @@ def reconcile_record() -> Optional[SetupRecord]:
 
 
 def reset_for_tests() -> None:
+<<<<<<< HEAD
     global _record, _started, _inventory_stamp
     with _lock:
         _record = None
         _started = False
+=======
+    global _record, _started, _settled, _inventory_stamp
+    with _lock:
+        _record = None
+        _started = False
+        _settled = False
+>>>>>>> origin/main
         _inventory_stamp = None
         _done.clear()
 
@@ -186,10 +210,17 @@ def _build_record(*, other: bool) -> SetupRecord:
 
 
 def run_bootstrap(*, announce: bool = True) -> SetupRecord:
+<<<<<<< HEAD
     """Grandfather an existing free-model guest -> inventory -> resolve inference -> record ->
     broadcast. Idempotent per process: a second call returns the existing record. Never raises.
     ``announce=False`` skips the ``setup.ready`` event."""
     global _record, _started
+=======
+    """Settle an interrupted claim -> inventory -> resolve inference -> record ->
+    broadcast. Idempotent per process: a second call returns the existing record. Never raises.
+    ``announce=False`` skips the ``setup.ready`` event."""
+    global _record, _started, _settled
+>>>>>>> origin/main
     with _lock:
         if _record is not None:
             return _record
@@ -199,11 +230,29 @@ def run_bootstrap(*, announce: bool = True) -> SetupRecord:
                 return _record
         _started = True
 
+<<<<<<< HEAD
+=======
+    settled = _settle_install()
+    record = _build_record(other=_inventory_other_providers())
+    with _lock:
+        _record, _settled = record, settled
+        _done.set()
+    if announce:
+        _broadcast(record)
+    return record
+
+
+def _settle_install() -> bool:
+    """Record a fresh install and settle the guest's claim; True when neither step failed. A failure is
+    logged: onboarding.state still answers live, and the record still says who carries inference."""
+    settled = True
+>>>>>>> origin/main
     try:
         from hermes_cli import anon_auth
         from hermes_cli.onboarding_run import latch_first_install
         if anon_auth.on_local_desktop_backend():
             latch_first_install()
+<<<<<<< HEAD
     except Exception:  # the next boot tries again; onboarding.state still answers live
         logger.warning("onboarding: could not record the first-install decision", exc_info=True)
     try:
@@ -219,6 +268,36 @@ def run_bootstrap(*, announce: bool = True) -> SetupRecord:
     if announce:
         _broadcast(record)
     return record
+=======
+    except Exception:
+        settled = False
+        logger.warning("onboarding: could not record the first-install decision", exc_info=True)
+    try:
+        from hermes_cli.welcome_trial import settle_interrupted_claim
+        settle_interrupted_claim()
+    except Exception:
+        settled = False
+        logger.warning("free tier: could not settle an interrupted claim", exc_info=True)
+    return settled
+
+
+def resettle_after_failed_boot() -> None:
+    """The local Desktop connected again to a process whose bootstrap could not settle the install:
+    try those steps again and rebuild the record when they pass. Nothing before the bootstrap
+    finished or once it settled."""
+    global _settled
+    with _lock:
+        unsettled = _record is not None and not _settled
+    if not unsettled or not _resettle_lock.acquire(blocking=False):  # one retry at a time
+        return
+    try:
+        if _settle_install():
+            with _lock:
+                _settled = True
+            refresh_record()
+    finally:
+        _resettle_lock.release()
+>>>>>>> origin/main
 
 
 def refresh_record(*, announce: bool = True) -> Optional[SetupRecord]:
@@ -251,7 +330,11 @@ def _broadcast(record: SetupRecord) -> None:
 
 
 def start_background_bootstrap() -> threading.Thread:
+<<<<<<< HEAD
     """``hermes serve`` entry: run on a daemon thread so the inventory never delays the socket."""
+=======
+    """Run on a daemon thread so the inventory never delays the socket."""
+>>>>>>> origin/main
     from agent.memory_provider import spawn_context_thread
 
     thread = spawn_context_thread(run_bootstrap, name="free-tier-bootstrap")

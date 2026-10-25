@@ -1,11 +1,13 @@
 import type { ModelOptionProvider } from '@hermes/shared'
 import { atom } from 'nanostores'
 
+import { invalidateAllConnectors } from '@/app/capabilities/connectors/data/keys'
 import {
   cancelOAuthSession,
   getGlobalModelOptions,
   getRecommendedDefaultModel,
   listOAuthProviders,
+  OAUTH_LONG_POLL_SECONDS,
   pollOAuthSession,
   type ProfileScope,
   setEnvVar,
@@ -14,6 +16,10 @@ import {
   validateProviderCredential
 } from '@/hermes'
 import { translateNow } from '@/i18n'
+<<<<<<< HEAD
+=======
+import { restOfLongPollGap } from '@/lib/long-poll'
+>>>>>>> origin/main
 import { isProviderSetupErrorMessage } from '@/lib/provider-setup-errors'
 import { evaluateRuntimeReadiness, type RuntimeReadinessResult } from '@/lib/runtime-readiness'
 import {
@@ -23,17 +29,37 @@ import {
   refreshFreeTierStatus,
   setFreeTierRoute
 } from '@/store/free-tier'
+<<<<<<< HEAD
+=======
+import { followHandoff, handoffStillMoving } from '@/store/free-tier-sign-in'
+>>>>>>> origin/main
 import { $gatewayBootGeneration } from '@/store/live-sync'
 import { setMainModelAssignment } from '@/store/model-assignment'
 import { dismissNotification, notify, notifyError } from '@/store/notifications'
 import { afterOnboardingSurfaceClear, onboardingSurfaceOpen } from '@/store/onboarding-presence'
 import { captureOnboardingScope, type OnboardingScope } from '@/store/onboarding-scope'
+<<<<<<< HEAD
 import type { OAuthProvider, OAuthStartResponse } from '@/types/hermes'
+=======
+import type { AppHandoffStatus, OAuthPollResponse, OAuthProvider, OAuthStartResponse } from '@/types/hermes'
+>>>>>>> origin/main
 
 type PkceStart = Extract<OAuthStartResponse, { flow: 'pkce' }>
 type DeviceStart = Extract<OAuthStartResponse, { flow: 'device_code' }>
 
 export type OnboardingMode = 'apikey' | 'oauth'
+
+export interface OnboardingSignedIn {
+  email: null | string
+  handoff: AppHandoffStatus | null
+}
+
+function signedInFrom(result: OAuthPollResponse): OnboardingSignedIn | undefined {
+  const email = result.account_email ?? null
+  const handoff = result.handoff_status ?? null
+
+  return email || handoff ? { email, handoff } : undefined
+}
 
 export type OnboardingFlow =
   | { status: 'idle' }
@@ -55,6 +81,8 @@ export type OnboardingFlow =
       label: string
       providerSlug: string
       saving: boolean
+      // A Nous sign-in's account and what the free tier's apps did, shown on the screen it happened on.
+      signedIn?: OnboardingSignedIn
       status: 'confirming_model'
     }
   | { detail?: string; message: string; provider?: OAuthProvider; start?: OAuthStartResponse; status: 'error' }
@@ -104,7 +132,6 @@ export interface OnboardingContext {
 
 const CONFIGURED_CACHE_KEY = 'hermes-desktop-onboarded-v1'
 const SKIP_CACHE_KEY = 'hermes-onboarding-skipped-v1'
-const POLL_MS = 2000
 const COPY_FLASH_MS = 1500
 export const DEFAULT_ONBOARDING_REASON = 'No inference provider is configured.'
 export const DEFAULT_MANUAL_ONBOARDING_REASON = 'Add or switch inference provider.'
@@ -182,7 +209,10 @@ export const $desktopOnboarding = atom<DesktopOnboardingState>(INITIAL)
 
 let flowGeneration = 0
 let flowScope: OnboardingScope | undefined
+<<<<<<< HEAD
 let pollTimer: number | null = null
+=======
+>>>>>>> origin/main
 let providersRefreshPromise: null | Promise<void> = null
 
 const errMessage = (e: unknown) => (e instanceof Error ? e.message : String(e))
@@ -206,10 +236,17 @@ const setFlow = (flow: OnboardingFlow) => patch(flow.status === 'idle' ? { flow 
 
 const sessionIdFor = (flow: OnboardingFlow) => ('start' in flow && flow.start ? flow.start.session_id : undefined)
 
+// The poll loop itself ends with its flow (see `pollSession`); only the expiry floor is a timer.
 function clearPoll() {
-  if (pollTimer !== null) {
-    window.clearInterval(pollTimer)
-    pollTimer = null
+  clearPollExpiry()
+}
+
+let pollExpiryTimer: number | null = null
+
+function clearPollExpiry() {
+  if (pollExpiryTimer !== null) {
+    window.clearTimeout(pollExpiryTimer)
+    pollExpiryTimer = null
   }
 
   clearPollExpiry()
@@ -222,6 +259,19 @@ function clearPollExpiry() {
     window.clearTimeout(pollExpiryTimer)
     pollExpiryTimer = null
   }
+}
+
+/** Lapse a device-code session locally when its window expires, instead of
+ * polling a dead session forever. Uses the flow's own `expires_in`; the
+ * backend poller may still flip the session to error first, and its message
+ * (surfaced by `pollSession`) is preferred whenever it arrives in time. */
+function schedulePollExpiry(start: DeviceStart, onExpire: () => void) {
+  clearPollExpiry()
+  const ttlMs = Math.max(1, Number(start.expires_in) || 0) * 1000
+  pollExpiryTimer = window.setTimeout(() => {
+    pollExpiryTimer = null
+    onExpire()
+  }, ttlMs)
 }
 
 /** Lapse a device-code session locally when its window expires, instead of
@@ -435,7 +485,8 @@ async function completeWithModelConfirm(
   // When true, a failing runtime check no longer blocks progression — the
   // user is allowed through onboarding regardless. Used by the API-key path,
   // where we intentionally don't validate the key (it blocked too many users).
-  ignoreRuntimeGate = false
+  ignoreRuntimeGate = false,
+  signedIn?: OnboardingSignedIn
 ) {
   const generation = flowGeneration
 
@@ -445,6 +496,12 @@ async function completeWithModelConfirm(
     await ctx.requestGateway('reload.env').catch(() => undefined)
   }
 
+<<<<<<< HEAD
+=======
+  // A sign-in can change the account the apps ride on.
+  invalidateAllConnectors()
+
+>>>>>>> origin/main
   if (generation !== flowGeneration) {
     return
   }
@@ -522,8 +579,36 @@ async function completeWithModelConfirm(
     providerSlug: defaults.providerSlug,
     currentModel: defaults.defaultModel,
     label: providerLabel,
-    saving: false
+    saving: false,
+    signedIn
   })
+
+  void followSignedInMove(signedIn, generation, ctx.scope)
+}
+
+// Keep the confirm screen's line about the moving apps current until the move settles or the screen goes.
+async function followSignedInMove(signedIn: OnboardingSignedIn | undefined, generation: number, scope?: ProfileScope) {
+  const moving = signedIn?.handoff
+
+  if (!signedIn || !moving || !handoffStillMoving(moving)) {
+    return
+  }
+
+  const shown = () => {
+    const { flow } = $desktopOnboarding.get()
+
+    return generation === flowGeneration && flow.status === 'confirming_model' ? flow : null
+  }
+
+  const publish = (handoff: AppHandoffStatus) => {
+    const flow = shown()
+
+    if (flow) {
+      setFlow({ ...flow, signedIn: { email: signedIn.email, handoff } })
+    }
+  }
+
+  await followHandoff(moving, () => shown() !== null, publish, scope)
 }
 
 function providerResolutionFailure(reason: null | string) {
@@ -946,7 +1031,11 @@ export async function startProviderOAuth(provider: OAuthProvider, ctx: Onboardin
         message: translateNow('onboarding.signInExpired')
       })
     )
+<<<<<<< HEAD
     pollTimer = window.setInterval(() => void pollSession(provider, start, ctx, generation), POLL_MS)
+=======
+    void pollSession(provider, start, ctx, generation)
+>>>>>>> origin/main
   } catch (error) {
     if (generation !== flowGeneration) {
       return
@@ -956,6 +1045,7 @@ export async function startProviderOAuth(provider: OAuthProvider, ctx: Onboardin
   }
 }
 
+<<<<<<< HEAD
 // Poll a session-backed device-code flow until it resolves.
 async function pollSession(provider: OAuthProvider, start: DeviceStart, ctx: OnboardingContext, generation: number) {
   try {
@@ -964,16 +1054,50 @@ async function pollSession(provider: OAuthProvider, start: DeviceStart, ctx: Onb
     if (generation !== flowGeneration) {
       return
     }
+=======
+// Long-poll a session-backed device-code flow until it resolves. The loop ends with its flow: a
+// cancel, a newer flow, or the local expiry floor all move the flow off this session's `polling`.
+async function pollSession(provider: OAuthProvider, start: DeviceStart, ctx: OnboardingContext, generation: number) {
+  const live = () => {
+    const { flow } = $desktopOnboarding.get()
+>>>>>>> origin/main
 
-    if (status === 'approved') {
-      clearPoll()
-      setFlow({ status: 'success', provider })
-      await completeWithModelConfirm(ctx, provider.name, [provider.id], reason =>
+    return generation === flowGeneration && flow.status === 'polling' && sessionIdFor(flow) === start.session_id
+  }
+
+  try {
+    for (;;) {
+      const askedAt = Date.now()
+      const result = await pollOAuthSession(provider.id, start.session_id, ctx.scope, OAUTH_LONG_POLL_SECONDS)
+
+      if (!live()) {
+        return
+      }
+
+      if (result.status === 'approved') {
+        clearPoll()
+        setFlow({ status: 'success', provider })
+        await completeWithModelConfirm(
+          ctx,
+          provider.name,
+          [provider.id],
+          reason => setFlow({ status: 'error', provider, message: providerResolutionFailure(reason) }),
+          false,
+          signedInFrom(result)
+        )
+
+        return
+      }
+
+      if (result.status !== 'pending') {
+        clearPoll()
         setFlow({
           status: 'error',
           provider,
-          message: providerResolutionFailure(reason)
+          start,
+          ...signInDidNotFinish(provider, result.error_message || result.status)
         })
+<<<<<<< HEAD
       )
     } else if (status !== 'pending') {
       clearPoll()
@@ -981,6 +1105,20 @@ async function pollSession(provider: OAuthProvider, start: DeviceStart, ctx: Onb
     }
   } catch (error) {
     if (generation !== flowGeneration) {
+=======
+
+        return
+      }
+
+      await restOfLongPollGap(askedAt)
+
+      if (!live()) {
+        return
+      }
+    }
+  } catch (error) {
+    if (!live()) {
+>>>>>>> origin/main
       return
     }
 

@@ -1,9 +1,16 @@
 """The build beat names a plugin's skill by the name it registered under.
 
+<<<<<<< HEAD
 A first task writes a plugin skill readably (``blender:blender``), but a portable plugin's skills
 register under a collision-resistant namespace (``agent-plugin-blender-<sha8>:blender``). In a live run
 the build beat sent the readable form, ``skill_view("blender:blender")`` missed, and the model rendered
 headless without the skill. Real plugin discovery against a temp ``HERMES_HOME``.
+=======
+A first task writes a plugin skill as ``<catalog-name>:<skill>`` and a portable plugin's skills register
+under the plugin's own name, so ``blender:blender`` is the name ``skill_view`` resolves. Skills saved
+under the older ``agent-plugin-<slug>-<sha8>:<skill>`` form still resolve. Real plugin discovery
+against a temp ``HERMES_HOME``.
+>>>>>>> origin/main
 """
 
 from __future__ import annotations
@@ -59,12 +66,31 @@ def test_the_build_beat_names_an_installed_plugin_skill_by_its_registered_name(h
     manager = plugins_mod.get_plugin_manager()
     manager.discover_and_load(force=True)
     [registered] = [skill["name"] for skill in manager.list_plugin_skill_metadata()]
+<<<<<<< HEAD
     assert registered.startswith("agent-plugin-blender-") and registered.endswith(":blender")
 
     line = _build_skills_line()
 
     assert registered in line
     assert "blender:blender" not in line.replace(registered, "")
+=======
+    assert registered == "blender:blender"
+
+    assert registered in _build_skills_line()
+
+
+def test_a_skill_saved_under_the_hashed_portable_name_still_loads(home):
+    from hermes_cli.plugins_manifest import _portable_data_namespace
+    from tools.skills_tool import skill_view
+
+    _install_blender_from_catalog(home)
+    plugins_mod.get_plugin_manager().discover_and_load(force=True)
+
+    result = json.loads(skill_view(f"{_portable_data_namespace('blender')}:blender"))
+
+    assert result["success"] is True
+    assert result["name"] == "blender:blender"
+>>>>>>> origin/main
 
 
 def test_a_plugin_skill_that_is_not_installed_is_dropped(home):

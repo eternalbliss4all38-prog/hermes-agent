@@ -656,6 +656,10 @@ def get_plugin_skill_commands() -> dict[str, dict[str, Any]]:
     """
     from agent.skill_utils import get_disabled_skill_names
     from hermes_cli.plugins import discover_plugins, get_plugin_manager
+<<<<<<< HEAD
+=======
+    from hermes_cli.plugins_content import plugin_skill_owners
+>>>>>>> origin/main
     from hermes_cli.plugins_discovery import _get_disabled_plugins
     from hermes_constants import get_hermes_home
 
@@ -674,7 +678,11 @@ def get_plugin_skill_commands() -> dict[str, dict[str, Any]]:
     return {
         key: info for key, info in cached.items()
         if not (info["name"] in disabled or info["name"].split(":", 1)[1] in disabled
+<<<<<<< HEAD
                 or info["name"].split(":", 1)[0] in disabled_plugins)
+=======
+                or plugin_skill_owners(manager, info["name"]) & disabled_plugins)
+>>>>>>> origin/main
     }
 
 

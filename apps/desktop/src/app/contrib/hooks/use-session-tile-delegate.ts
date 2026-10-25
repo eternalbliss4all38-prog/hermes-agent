@@ -14,6 +14,10 @@ import {
 import { translateNow } from '@/i18n/runtime'
 import { type ChatMessage, chatMessageText, toChatMessages } from '@/lib/chat-messages'
 import { markReasoningEffortPending } from '@/lib/chat-runtime'
+<<<<<<< HEAD
+=======
+import { type GuardedModelSwitchResult, surfaceModelSwitchConfirm } from '@/lib/guarded-model-switch'
+>>>>>>> origin/main
 import { noteMessageSent } from '@/store/desktop-metrics'
 import { notify } from '@/store/notifications'
 import {
@@ -267,6 +271,42 @@ export function useSessionTileDelegate({
       },
       executeSlash: async (rawCommand, sessionId, options) => {
         await executeSlashCommand(rawCommand, { sessionId, ...options })
+<<<<<<< HEAD
+=======
+      },
+      // The picker's wire (config.set model), always --session (never the profile default), with a
+      // guarded target asked through the ONE shared confirm flow and awaited: true only once the switch
+      // applied (or is queued for the next turn start), so a caller can safely re-run a turn on it;
+      // false when the user kept the current model. A refused switch throws.
+      switchSessionModel: async (runtimeId, model, provider) => {
+        const storedSessionId = storedSessionIdForRuntime(runtimeId)
+
+        const request = (confirmExpensiveModel: boolean) => {
+          const params = {
+            key: 'model',
+            session_id: runtimeId,
+            value: `${model} --provider ${provider} --session`,
+            ...(confirmExpensiveModel ? { confirm_expensive_model: true } : {})
+          }
+
+          return storedSessionId
+            ? requestForStoredSession<GuardedModelSwitchResult>(storedSessionId, 'config.set', params)
+            : requestGateway<GuardedModelSwitchResult>('config.set', params)
+        }
+
+        const result = await request(false)
+
+        if (!result?.confirm_required) {
+          return true
+        }
+
+        return surfaceModelSwitchConfirm({
+          confirmMessage: result.confirm_message,
+          failureMessage: translateNow('desktop.modelSwitchFailed'),
+          model,
+          requestConfirmed: () => request(true)
+        })
+>>>>>>> origin/main
       },
       // Gateway reconnect (sleep/wake, backend respawn): every stored→runtime
       // binding recorded pre-reconnect points at a runtime id the respawned

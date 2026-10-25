@@ -116,6 +116,14 @@ beforeEach(() => {
         return structuredClone(config)
       }
 
+<<<<<<< HEAD
+=======
+      // This backend predates delegation routing: the Subagents page keeps its pre-routing shape.
+      if (request.path.startsWith('/api/delegation/')) {
+        throw new Error('404: Not Found')
+      }
+
+>>>>>>> origin/main
       return { ok: true }
     })
   } as typeof window.hermesDesktop

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 """Browser automation tools driven by the agent-browser CLI.
 
@@ -1374,3 +1375,16 @@ for _name, _emoji, _check_fn, _defaults, *_extra in _BROWSER_TOOL_TABLE:
     registry.register(name=_name, toolset="browser", schema=_BROWSER_SCHEMA_MAP[_name],
                       handler=_routed_handler(_name, _fallback_call(_name, _defaults, *_extra)),
                       check_fn=_check_fn, emoji=_emoji)
+=======
+"""Frozen old-updater compatibility stub (tests/compat/old_updater_surface.json, ``bare`` list).
+
+The built-in browser_* tools and agent-browser are gone; ``browser_exec`` (``tools/browser_use_cli.py``)
+is the browser. A pre-PM ``hermes update`` still running mid-swap imports this module and the name below
+from the NEW tree, so both must keep existing. Nothing else belongs here.
+"""
+
+
+def warm_agent_browser_npx_cache(timeout: float = 60.0) -> bool:
+    """Frozen old-updater surface: nothing is warmed (there is no agent-browser to warm); always False."""
+    return False
+>>>>>>> origin/main

@@ -38,6 +38,7 @@ _EMAIL_FS_RE = re.compile(r"[^a-z0-9._@-]+")
 # Least privilege: chat.messages.create covers BOTH media.upload and the
 # subsequent messages.create; no drive.file or other scopes.
 SCOPES: list[str] = ["https://www.googleapis.com/auth/chat.messages.create"]
+<<<<<<< HEAD
 
 # Declared extras (pyproject) and the exact pins they carry; the pins double as the
 # staleness probe so a half-synced interpreter is repaired instead of trusted.
@@ -89,6 +90,59 @@ def _pending_auth_path(email: Optional[str] = None) -> Path:
 # -- Library API — called from the adapter at runtime -------------------------
 
 
+=======
+
+# Declared extras (pyproject) and the exact pins they carry; the pins double as the
+# staleness probe so a half-synced interpreter is repaired instead of trusted.
+_DEPENDENCY_EXTRAS = ["google", "google-chat"]
+_REQUIRED_PACKAGES = [
+    "google-cloud-pubsub==2.39.0",
+    "google-api-python-client==2.201.0",
+    "google-auth==2.62.0",
+    "google-auth-oauthlib==1.5.0",
+    "google-auth-httplib2==0.4.4",
+    "httplib2==0.32.0",
+    "pyasn1==0.6.4",
+]
+
+# Google deprecated the ``oob`` flow: use a localhost redirect that is expected
+# to FAIL; the user pastes the code from the failed browser URL back into chat.
+_REDIRECT_URI = "http://localhost:1"
+
+
+def _sanitize_email(email: str) -> str:
+    cleaned = _EMAIL_FS_RE.sub("_", (email or "").strip().lower())
+    return cleaned or "_unknown_"
+
+
+def _token_rel(email: Optional[str]) -> str:
+    """HERMES_HOME-relative token file: per-user under the tokens dir, else the legacy path."""
+    return f"google_chat_user_tokens/{_sanitize_email(email)}.json" if email else "google_chat_user_token.json"
+
+
+def _user_tokens_dir() -> Path:
+    return get_hermes_home() / "google_chat_user_tokens"
+
+
+def _token_path(email: Optional[str] = None) -> Path:
+    """Per-user token path for ``email``, or the legacy single-user path."""
+    return get_hermes_home() / _token_rel(email)
+
+
+def _client_secret_path() -> Path:
+    return get_hermes_home() / "google_chat_user_client_secret.json"
+
+
+def _pending_auth_path(email: Optional[str] = None) -> Path:
+    if email:
+        return get_hermes_home() / "google_chat_user_oauth_pending" / f"{_sanitize_email(email)}.json"
+    return get_hermes_home() / "google_chat_user_oauth_pending.json"
+
+
+# -- Library API — called from the adapter at runtime -------------------------
+
+
+>>>>>>> origin/main
 def _refresh_and_persist(creds: Any, token_path: Path, request_cls: Any, *, failure_msg: str) -> Optional[Any]:
     """Refresh expired creds and write them back; None when unusable or refresh fails."""
     if creds.valid:

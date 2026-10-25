@@ -1,4 +1,8 @@
 import type { AuxTaskCopyMap } from './types_aux_tasks'
+<<<<<<< HEAD
+=======
+import type { DelegationRoutingTranslations } from './types_delegation_routing'
+>>>>>>> origin/main
 
 // Settings → Model; `Translations.settings.model`.
 export interface ModelSettingsTranslations {
@@ -71,5 +75,10 @@ export interface ModelSettingsTranslations {
     directClear: string
     catalogFailed: string
     draftHint: string
+<<<<<<< HEAD
+=======
+    /** The Routing section above the subagent model: modes, model routes, profile routes. */
+    routing: DelegationRoutingTranslations
+>>>>>>> origin/main
   }
 }

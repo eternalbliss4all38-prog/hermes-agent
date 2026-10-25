@@ -5,9 +5,15 @@ trial (``hermes_cli.welcome_trial``), and on the first hosted connector action f
 Nous identity (``tools.connectors.gateway.config.ensure_guest_identity``, gated by ``guest_allowed``).
 Either mints an anonymous Nous account (``POST /api/anonymous/create``); its ``anon_`` credential is
 later exchanged for short-lived JWTs (``POST /api/anonymous/token``). The result is persisted as the
+<<<<<<< HEAD
 singleton ``providers.nous``. Only a guest stamped with the trial claim carries inference, and only on
 the backend the desktop spawned on this machine (:func:`free_inference_active`); every other guest
 serves connectors and managed tools. In the resolver ladder (``resolve_provider``) a guest that
+=======
+singleton ``providers.nous``. Only a guest stamped with the trial claim carries inference
+(:func:`free_inference_active`), on every surface of the install once the desktop claimed it: chats,
+cron, side agents, workers, the CLI. Every other guest serves connectors and managed tools. In the resolver ladder (``resolve_provider``) a guest that
+>>>>>>> origin/main
 carries inference sits directly above the implicit AWS Bedrock chain (NS-829): any explicit provider
 (env key, ``model.provider``, OpenRouter pool, a logged-in ``active_provider``) beats it, and the
 ladder never creates one.
@@ -200,6 +206,7 @@ def has_guest() -> bool:
 
 
 def on_local_desktop_backend() -> bool:
+<<<<<<< HEAD
     """This process is the backend the desktop app spawned on this machine: never an SSH, URL or
     cloud backend, and never a gateway or shell the desktop merely launched."""
     from hermes_cli.anon_challenge import client_surface
@@ -213,6 +220,28 @@ def free_inference_active(state: Any = None) -> bool:
     state = current_nous_state() if state is None else state
     return (is_guest_state(state) and state.get(WELCOME_CLAIM_FLAG) is True and guest_allowed()
             and on_local_desktop_backend())
+=======
+    """This activity is work for the Desktop app on this machine: a request from, or a turn of a chat
+    created by, a connection ``process_identity.local_desktop_client`` accepted. Never an SSH, URL or
+    cloud backend, a shell the desktop launched, or the gateway's other clients."""
+    from hermes_cli.process_identity import serves_local_desktop_now
+    return serves_local_desktop_now()
+
+
+def free_inference_active(state: Any = None) -> bool:
+    """The welcome trial carries inference: a guest that claimed it and guests
+    still allowed. Only the claim is the local Desktop's (``welcome_trial``); once claimed, every
+    surface of the install runs on it. *state* defaults to the profile's."""
+    state = current_nous_state() if state is None else state
+    return is_guest_state(state) and state.get(WELCOME_CLAIM_FLAG) is True and guest_allowed()
+
+
+def trial_model() -> str:
+    """The last rung of model resolution, below every model the user named (``model.default``, a cron
+    or task pin): ``nous/welcome`` while the welcome trial carries inference, else ''. Never written to
+    config.yaml, so it stops applying the moment the user configures a real model."""
+    return GUEST_MODEL if free_inference_active() else ""
+>>>>>>> origin/main
 
 
 def has_free_tier_account() -> bool:
@@ -501,12 +530,19 @@ def _mint_locked(client: httpx.Client, portal: str, auth_store: dict[str, Any], 
         "portal_base_url": portal.rstrip("/"),
         "user_id": minted.get("user_id"), "org_id": minted.get("org_id"),
         "idle_ttl_days": minted.get("idle_ttl_days"),
+<<<<<<< HEAD
         # Always present: an absent key marks a guest minted before the claim existed (grandfathering).
+=======
+>>>>>>> origin/main
         WELCOME_CLAIM_FLAG: welcome_claim,
     }
     _store_provider_state(auth_store, "nous", state, set_active=False)
     _save_auth_store(auth_store)
+<<<<<<< HEAD
     _write_shared_nous_state(state)
+=======
+    _write_shared_nous_state(state, renewal=False)
+>>>>>>> origin/main
     logger.info("Nous free tier ready (identity minted)")
     return state
 
@@ -623,7 +659,12 @@ def _reconcile_and_provision(*, timeout_seconds: float, force: bool = False,
         _auth_store_lock, _load_auth_store, _load_provider_state, _save_auth_store,
         _store_provider_state, _resolve_verify)
     from hermes_cli.auth_nous import (
+<<<<<<< HEAD
         _nous_http_client, _nous_shared_store_lock, _read_shared_nous_state, _write_shared_nous_state)
+=======
+        _SHARED_RENEWAL_KEY, _nous_http_client, _nous_shared_store_lock, _read_shared_nous_state,
+        _write_shared_nous_state)
+>>>>>>> origin/main
     portal = _portal_base_url()
     with _auth_store_lock():
         auth_store = _load_auth_store()
@@ -631,14 +672,22 @@ def _reconcile_and_provision(*, timeout_seconds: float, force: bool = False,
         with _nous_shared_store_lock(timeout_seconds=max(timeout_seconds, 5.0)):
             shared = _read_shared_nous_state()
             if shared and _shared_identity_key(shared) != _shared_identity_key(profile_state):
+<<<<<<< HEAD
                 state = dict(shared)
+=======
+                state = {k: v for k, v in shared.items() if k != _SHARED_RENEWAL_KEY}  # another account's tokens
+>>>>>>> origin/main
                 _store_provider_state(auth_store, "nous", state, set_active=not is_guest_state(state))
                 _save_auth_store(auth_store)
                 logger.debug("Nous identity adopted from the shared store")
                 return state
             if profile_state:
                 if not shared:
+<<<<<<< HEAD
                     _write_shared_nous_state(profile_state)
+=======
+                    _write_shared_nous_state(profile_state, renewal=False)
+>>>>>>> origin/main
                 return profile_state
             # A caller queued on these locks behind a mint that just failed waits out its cooldown.
             failure = _mint_failure_for_profile()
@@ -702,6 +751,12 @@ def ensure_portal_identity(
         raise err from exc
     if state is not None:
         _clear_mint_failure()
+<<<<<<< HEAD
+=======
+        # Adopting a sibling profile's sign-in replaced this profile's guest under the locks above.
+        from hermes_cli.guest_handoff import drain
+        drain()
+>>>>>>> origin/main
     return state
 
 
@@ -992,6 +1047,7 @@ def set_guest_flag(flag: str) -> Optional[dict[str, Any]]:
     return state
 
 
+<<<<<<< HEAD
 def stamp_legacy_guest_claim() -> Optional[dict[str, Any]]:
     """Grandfathering's write (``welcome_trial.grandfather_existing_guest``): stamp the welcome claim on
     a guest minted before the key existed and publish it to the shared store, in one transaction under
@@ -1011,6 +1067,8 @@ def stamp_legacy_guest_claim() -> Optional[dict[str, Any]]:
     return state
 
 
+=======
+>>>>>>> origin/main
 def _save_guest_state(auth_store: dict[str, Any], state: dict[str, Any], source_path: Path) -> None:
     """Write the guest's ``providers.nous`` back to the store it was read from (the caller holds its lock)."""
     from hermes_cli.auth import _auth_file_path, _load_auth_store, _same_path, _save_auth_store, _store_section
@@ -1023,6 +1081,7 @@ def _save_guest_state(auth_store: dict[str, Any], state: dict[str, Any], source_
         _save_auth_store(source_store, target_path=source_path)
 
 
+<<<<<<< HEAD
 # --- ``hermes auth upgrade``: sign the guest into a real Nous account, keeping its connectors ---------
 #
 # Wire: the normal device-code flow, with a promotion intent registered on NAS BETWEEN the code
@@ -1032,10 +1091,18 @@ def _save_guest_state(auth_store: dict[str, Any], state: dict[str, Any], source_
 # ``completed`` promotion is followed by the token grant, which ``persist_nous_credentials`` writes
 # over the guest singleton and the shared store. The server never reports expiry: our own
 # ``expires_in`` clock ends the wait. User-facing copy never says guest / anonymous / claim.
+=======
+# --- Sign-in completion: the account state from a token grant, and the config settle -------------
+#
+# Every Nous sign-in is the plain device-code login (``anon_sign_in.run_sign_in``). The free tier it
+# replaces hands its apps over in ``guest_handoff`` after the save. User-facing copy never says
+# guest / anonymous / claim.
+>>>>>>> origin/main
 
 UPGRADED_AUTH_METHOD = "oauth_device_code"
 
 
+<<<<<<< HEAD
 def register_promotion_intent(
     client: httpx.Client, portal_base_url: str, anon_token: str, *, user_code: str, device_code: str,
 ) -> dict[str, Any]:
@@ -1120,6 +1187,8 @@ def wait_for_promotion(
     return {"status": "timeout"}
 
 
+=======
+>>>>>>> origin/main
 def _account_state_from_token(
     token_data: dict[str, Any], *, portal_base_url: str, client_id: str, scope: Optional[str], verify: Any,
     timeout_seconds: float,
@@ -1213,9 +1282,15 @@ def persist_nous_credentials(*args, **kwargs):
 # The flow imports this module only inside calls, so either module can be imported first.
 from hermes_cli.anon_sign_in import (
     AlreadySignedIn,
+<<<<<<< HEAD
     Code,
     Completed,
     Declined,
+=======
+    Cancelled,
+    Code,
+    Completed,
+>>>>>>> origin/main
     FREE_TIER_RATE_LIMIT_CARD,
     FREE_TIER_RATE_LIMIT_CHAT,
     Failed,
@@ -1224,9 +1299,13 @@ from hermes_cli.anon_sign_in import (
     LOGIN_DM_ONLY,
     LOGIN_NOT_ALLOWED,
     LOGIN_STARTING,
+<<<<<<< HEAD
     Retired,
     SignInState,
     Superseded,
+=======
+    SignInState,
+>>>>>>> origin/main
     TimedOut,
     UPGRADE_ALREADY_SIGNED_IN,
     UPGRADE_CANCELLED,
@@ -1234,6 +1313,7 @@ from hermes_cli.anon_sign_in import (
     UPGRADE_NOT_COMPLETED,
     UPGRADE_NO_DEFAULT_CHAT,
     UPGRADE_NO_DEFAULT_TERMINAL,
+<<<<<<< HEAD
     UPGRADE_REASON_COPY,
     UPGRADE_START,
     UPGRADE_TIMED_OUT,
@@ -1246,6 +1326,14 @@ from hermes_cli.anon_sign_in import (
     _RETIRED_REASONS,
     _default_persist_guard,
     _outcome_state,
+=======
+    UPGRADE_START,
+    UPGRADE_TIMED_OUT,
+    UPGRADE_WAITING,
+    UPGRADE_WAITING_UP_TO,
+    Waiting,
+    _default_persist_guard,
+>>>>>>> origin/main
     format_wait_line,
     run_sign_in,
 )

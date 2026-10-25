@@ -1,5 +1,6 @@
 import { useStore } from '@nanostores/react'
 import { useQueryClient } from '@tanstack/react-query'
+import { atom } from 'nanostores'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useI18n } from '@/i18n'
@@ -22,7 +23,34 @@ export interface StepUpMessage {
   title: string
 }
 
+<<<<<<< HEAD
 export function useStepUpFlow() {
+=======
+/**
+ * True while a Remote Spending approval is in flight. The device flow swaps this terminal's login when it
+ * lands, so Billing pauses its focus/interval refetches meanwhile: a refetch on the old login mid-swap can
+ * be refused, and a refused billing.state collapses the page (every money control, the row that started
+ * the approval included, disappears). The flow's own completion refetches once on the new login.
+ */
+export const $stepUpInFlight = atom(false)
+
+// Billing mounts several step-up flows (the Remote Spending card, refusal inlines, Keep going on credits).
+// Each holds the pause under its own token, so one row dismissing its idle flow never resumes refetches
+// while another row's approval is still in flight.
+const stepUpHolders = new Set<object>()
+
+function holdStepUp(holder: object, held: boolean) {
+  if (held) {
+    stepUpHolders.add(holder)
+  } else {
+    stepUpHolders.delete(holder)
+  }
+
+  $stepUpInFlight.set(stepUpHolders.size > 0)
+}
+
+export function useStepUpFlow({ autoOpen = false }: { autoOpen?: boolean } = {}) {
+>>>>>>> origin/main
   const { t } = useI18n()
   const b = t.settings.billing
   const api = useBillingApi()
@@ -47,6 +75,7 @@ export function useStepUpFlow() {
   const dismiss = useCallback(() => {
     runIdRef.current += 1
     runningRef.current = false
+    holdStepUp(runningRef, false)
     unsubscribe()
     setMessage(null)
     setPhase('idle')
@@ -55,6 +84,7 @@ export function useStepUpFlow() {
 
   useEffect(
     () => () => {
+      holdStepUp(runningRef, false)
       runIdRef.current += 1
       runningRef.current = false
       unsubscribe()
@@ -70,12 +100,14 @@ export function useStepUpFlow() {
     void window.hermesDesktop?.openExternal?.(verification.url)
   }, [verification?.url])
 
-  const start = useCallback(async () => {
+  /** Resolves true once Remote Spending is allowed (billing queries already refetched), else false. */
+  const start = useCallback(async (): Promise<boolean> => {
     if (runningRef.current) {
-      return
+      return false
     }
 
     runningRef.current = true
+    holdStepUp(runningRef, true)
     const runId = runIdRef.current + 1
 
     runIdRef.current = runId
@@ -98,27 +130,40 @@ export function useStepUpFlow() {
           url
         })
         setPhase('verifying')
+
+        // The user just asked for this (clicked a control that needs it): open the approval page
+        // right away, like sign-in does, instead of making them click a second button for it.
+        if (autoOpen) {
+          void window.hermesDesktop?.openExternal?.(url)
+        }
       }) ?? null
 
     const result = await api.stepUp()
 
     if (runIdRef.current !== runId) {
-      return
+      return false
     }
 
     runningRef.current = false
+    holdStepUp(runningRef, false)
     unsubscribe()
+    setPhase('idle')
+    setVerification(null)
 
     if (!result.ok) {
       setMessage({ status: 'refusal', refusal: result.refusal })
 
+<<<<<<< HEAD
       return
+=======
+      return false
+>>>>>>> origin/main
     }
 
     if (!result.data.granted) {
       setMessage({ status: 'denied' })
 
-      return
+      return false
     }
 
     await Promise.all([
@@ -126,8 +171,15 @@ export function useStepUpFlow() {
       queryClient.invalidateQueries({ queryKey: ['billing', 'subscription'] })
     ])
     setMessage({ status: 'success' })
+<<<<<<< HEAD
   }, [api, gateway, queryClient, unsubscribe])
 
+=======
+
+    return true
+  }, [api, autoOpen, gateway, queryClient, unsubscribe])
+
+>>>>>>> origin/main
   let displayMessage: StepUpMessage | null = null
 
   if (message?.status === 'refusal') {

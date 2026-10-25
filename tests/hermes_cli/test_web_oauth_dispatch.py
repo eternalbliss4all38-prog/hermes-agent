@@ -460,6 +460,7 @@ def test_codex_worker_final_save_is_atomic_with_cancel_delete(tmp_path, monkeypa
     # so this is the legitimate too-late-to-cancel outcome: token saved,
     # session subsequently removed by the now-unblocked DELETE.
     assert sid not in _web_server_oauth._oauth_sessions
+<<<<<<< HEAD
 
 
 
@@ -511,12 +512,17 @@ def test_nous_dashboard_poller_preserves_effective_scope_when_token_omits_scope(
         assert _web_server_oauth._oauth_sessions[session_id]["status"] == "approved"
     finally:
         _web_server_oauth._oauth_sessions.pop(session_id, None)
+=======
+>>>>>>> origin/main
 
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/main
 def test_anthropic_dashboard_oauth_is_removed_and_external():
     """Anthropic subscription OAuth is not minted by the dashboard anymore."""
 

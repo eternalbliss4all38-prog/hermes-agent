@@ -2,7 +2,11 @@
 
 ``bot_desktop.placement``:
   ``auto``      (default) follow the terminal backend when it is a sandbox that can host a stream
+<<<<<<< HEAD
                 (docker / ssh / singularity, or a plugin backend declaring ``supports_streams``); the
+=======
+                (docker / ssh, or a plugin backend declaring ``supports_streams``); the
+>>>>>>> origin/main
                 gateway host when ``terminal.backend`` is local. A
                 sandbox backend that CANNOT host one (modal, daytona, vercel) resolves to ``refused``:
                 the user chose a sandbox for the agent's actions, so quietly running the screen, cua-driver
@@ -26,7 +30,11 @@ logger = logging.getLogger(__name__)
 GATEWAY = "gateway"
 TERMINAL = "terminal"
 REFUSED = "refused"
+<<<<<<< HEAD
 _STREAM_BACKENDS = ("docker", "ssh", "singularity")
+=======
+_STREAM_BACKENDS = ("docker", "ssh")
+>>>>>>> origin/main
 
 
 @dataclass(frozen=True)

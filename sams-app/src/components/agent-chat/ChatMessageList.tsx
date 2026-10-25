@@ -1,0 +1,82 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import clsx from "clsx";
+import { ChevronRight, Clock, Wrench } from "lucide-react";
+import { useHermesChatStore, type ChatMessage, type ToolCall } from "@/store/useHermesChatStore";
+import { ClarifyPrompt } from "@/components/agent-chat/ClarifyPrompt";
+
+function ToolCallCard({ tool }: { tool: ToolCall }) {
+  return (
+    <div className="flex items-center gap-2 rounded-lg border border-panel-border bg-panel-hover px-2.5 py-1.5 text-xs text-muted">
+      <Wrench size={12} className={tool.status === "running" ? "animate-pulse text-accent-cyan" : "text-accent-emerald"} />
+      <span className="font-mono">{tool.name}</span>
+      <ChevronRight size={12} className="text-muted/50" />
+      <span>{tool.status === "running" ? "running…" : tool.error ? "failed" : "done"}</span>
+    </div>
+  );
+}
+
+function MessageCard({ message }: { message: ChatMessage }) {
+  const isUser = message.role === "user";
+  return (
+    <div className={clsx("flex", isUser ? "justify-end" : "justify-start")}>
+      <div
+        className={clsx(
+          "flex max-w-[85%] flex-col gap-2 rounded-2xl border px-3.5 py-2.5 text-sm leading-relaxed select-text",
+          isUser
+            ? "border-accent-cyan/25 bg-accent-cyan/10 text-foreground"
+            : "border-panel-border bg-panel text-foreground",
+        )}
+      >
+        {message.tools.length > 0 && (
+          <div className="flex flex-col gap-1.5">
+            {message.tools.map((tool) => (
+              <ToolCallCard key={tool.id} tool={tool} />
+            ))}
+          </div>
+        )}
+        {message.text && (<div><p className="whitespace-pre-wrap select-text">{message.text}</p>{!isUser && (<button type="button" onClick={() => navigator.clipboard.writeText(message.text || "")} className="mt-2 inline-flex items-center gap-1 rounded bg-panel-border/50 px-2.5 py-1 text-xs text-muted hover:text-foreground active:scale-95 transition-all">Copy</button>)}</div>)}
+        {message.streaming && !message.text && (
+          <span className="flex gap-1">
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.2s]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.1s]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted" />
+          </span>
+        )}
+        {message.error && <p className="text-xs text-accent-red">{message.error}</p>}
+        {message.queued && (
+          <span className="inline-flex items-center gap-1 text-[10px] text-accent-amber">
+            <Clock size={10} /> waiting for reconnect — sends automatically
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function ChatMessageList() {
+  const { messages, status, error } = useHermesChatStore();
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages]);
+
+  return (
+    <div className="flex-1 space-y-3 overflow-y-auto p-4">
+      {status === "connecting" && <p className="text-center text-xs text-muted">Connecting to Hermes…</p>}
+      {status === "error" && (
+        <p className="text-center text-xs text-accent-red">{error ?? "Could not connect to Hermes."}</p>
+      )}
+      {messages.length === 0 && status === "connected" && (
+        <p className="text-center text-xs text-muted">Say something to get started.</p>
+      )}
+      {messages.map((message) => (
+        <MessageCard key={message.id} message={message} />
+      ))}
+      <ClarifyPrompt />
+      <div ref={bottomRef} />
+    </div>
+  );
+}

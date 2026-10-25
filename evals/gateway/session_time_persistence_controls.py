@@ -1,6 +1,9 @@
 """Isolated production-library controls; no transport/provider calls."""
 import contextlib
+<<<<<<< HEAD
 import importlib.util
+=======
+>>>>>>> origin/main
 import io
 import json
 import os
@@ -98,6 +101,7 @@ assert fenced.session_id != suspended.session_id
 results["historical_expiry_fence_preserved"] = True
 store._db.close()
 
+<<<<<<< HEAD
 spec = importlib.util.spec_from_file_location("migration_probe", repo / "optional-skills/migration/openclaw-migration/scripts/openclaw_to_hermes.py")
 module = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = module
@@ -113,6 +117,8 @@ migrator.migrate_session_config({"session": {"reset": {"mode": "daily", "atHour"
 assert (target / "config.yaml").read_bytes() == before
 assert json.loads((migrator.archive_dir / "session-config.json").read_text(encoding="utf-8")) == {"identityLinks": {"test": "identity"}}
 results["migration_timers_ignored_advanced_archived"] = True
+=======
+>>>>>>> origin/main
 from contextlib import redirect_stdout
 from io import StringIO
 from hermes_cli.cli_info_mixin import CLIInfoMixin

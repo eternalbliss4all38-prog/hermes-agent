@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
+>>>>>>> origin/main
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import { defineLocale, type TranslationOverrides } from './define-locale'
@@ -5,12 +9,23 @@ import { esBoot } from './es_boot'
 import { esClarify } from './es_clarify'
 import { esConnectorAccounts } from './es_connector_accounts'
 import { esConnectorCard } from './es_connector_card'
+<<<<<<< HEAD
+=======
+import { esErrorCodes } from './es_error_codes'
+import { esErrorLayers } from './es_error_layers'
+>>>>>>> origin/main
 import { esFirstRun } from './es_first_run'
 import { esLocalModels } from './es_local_models'
 import { esModelMenu } from './es_model_menu'
 import { esModelSettings } from './es_model_settings'
 import { esNotices } from './es_notices'
+<<<<<<< HEAD
 import { esOnboarding } from './es_onboarding'
+=======
+import { esNotifications } from './es_notifications'
+import { esOnboarding } from './es_onboarding'
+import { esPluginPreviewAccess } from './es_plugin_preview_access'
+>>>>>>> origin/main
 import { esPluginUpdate } from './es_plugin_update'
 import { esProjects } from './es_projects'
 import { esSharedMetrics } from './es_shared_metrics'
@@ -924,6 +939,7 @@ export const esOverrides = {
         masterPasswordPlaceholder: 'Contraseña maestra'
       }
     },
+<<<<<<< HEAD
     notifications: {
       title: 'Notificaciones',
       intro: 'Notificaciones del sistema operativo (no avisos dentro de la app). Por dispositivo.',
@@ -971,6 +987,9 @@ export const esOverrides = {
         'Reproduce un sonido cuando termina el turno de un agente. Elige un ajuste predefinido y pruébalo aquí.',
       completionSoundPreview: 'Vista previa'
     },
+=======
+    notifications: esNotifications,
+>>>>>>> origin/main
     sections: {
       model: 'Modelo',
       chat: 'Chat',
@@ -2032,6 +2051,18 @@ export const esOverrides = {
         effectScheduled: (targetName: string, effectiveAt: string, creditsDelta?: string) =>
           `Cambio a ${targetName}: entra en vigor ${effectiveAt}. No se cobra nada ahora; conservas tu plan actual hasta entonces.${creditsDelta ? ` Cambio de créditos mensuales: ${creditsDelta}.` : ''}`
       },
+<<<<<<< HEAD
+=======
+      keepGoingOnCredits: {
+        title: 'Seguir con créditos',
+        description: 'Usa tus créditos cuando se agote el uso incluido. Desactivado: Hermes espera al reinicio.',
+        approveInBrowser: 'Aprueba Remote Spending en tu navegador para cambiar esto. Se aplica en cuanto lo apruebes.',
+        openAgain: 'Abrir de nuevo',
+        cancel: 'Cancelar',
+        approvedRetry: 'Remote Spending está aprobado, pero el cambio no se guardó.',
+        tryAgain: 'Reintentar'
+      },
+>>>>>>> origin/main
       autoReload: {
         threshold: 'Umbral',
         thresholdAria: 'Umbral de recarga automática',
@@ -2111,6 +2142,23 @@ export const esOverrides = {
             captionDefault: 'Límite predeterminado',
             captionSpending: 'Gasto remoto mensual',
             valueUsed: (spent: string, limit: string) => `${spent} de ${limit} usados`
+<<<<<<< HEAD
+=======
+          },
+          window: {
+            today: 'Hoy',
+            week: 'Esta semana',
+            month: 'Este mes',
+            topTier: 'Modelos grandes (mensual)',
+            barLabel: (title: string) => `${title}: uso incluido consumido`,
+            captionPaused: 'En pausa: falló el pago de la suscripción',
+            captionPausedOther: 'En pausa: consulta Facturación en el Portal',
+            captionTopTierUsedUp: 'Cuota mensual agotada, los créditos cubren el resto',
+            captionTopTierUsedUpKeepGoingOff: 'Cuota mensual agotada, los demás modelos incluidos siguen funcionando',
+            captionResetsIn: (duration: string) => `Se restablece en ${duration}`,
+            captionIncluded: 'Uso incluido',
+            valueUsed: (percent: string) => `${percent} usado`
+>>>>>>> origin/main
           }
         },
         planCard: {
@@ -2507,6 +2555,10 @@ export const esOverrides = {
         `Fijado al commit ${sha}. Las actualizaciones se rechazan hasta que se reinstale con un nuevo commit fijado.`,
       pinnedBadge: (sha: string) => `fijado @ ${sha}`,
       ...esPluginUpdate,
+<<<<<<< HEAD
+=======
+      ...esPluginPreviewAccess,
+>>>>>>> origin/main
       uninstall: 'Desinstalar',
       uninstallTip: (name: string, profile: string) => `Desinstalar ${name} de ${profile}`,
       uninstallConfirmTitle: (name: string) => `¿Desinstalar ${name}?`,
@@ -3841,7 +3893,11 @@ export const esOverrides = {
       '/init': 'Generar o actualizar las instrucciones de proyecto AGENTS.md a partir de un análisis del repositorio',
       '/suggestions': 'Revisar las automatizaciones sugeridas (aceptar/descartar)',
       '/blueprint': 'Configurar una automatización a partir de una plantilla',
+<<<<<<< HEAD
       '/browser': 'Gestionar el navegador del agente [connect|disconnect|status|use]',
+=======
+      '/browser': 'Gestionar el navegador del agente [connect|disconnect|status]',
+>>>>>>> origin/main
       '/palette': 'Abrir la paleta de comandos aproximada (también Ctrl+P)',
       '/usage':
         'Mostrar el uso de tokens y los límites de frecuencia; `reset` canjea un restablecimiento de límite de Codex acumulado',
@@ -4354,6 +4410,7 @@ export const esOverrides = {
     signIn: 'Iniciar sesión',
     signInHeading: 'Inicia sesión con una cuenta de Nous para desbloquear más modelos y herramientas.',
     settingUp: 'Configurando la inferencia gratuita…',
+<<<<<<< HEAD
     codeBody: 'Introduce este código en tu navegador para terminar de iniciar sesión.',
     copyLink: 'Copiar enlace',
     doNotShare: 'No compartas este código.',
@@ -4363,11 +4420,25 @@ export const esOverrides = {
     signedInAs: (email: string) => `Sesión iniciada como ${email}`,
     signedIn: 'Sesión iniciada.',
     completedBody: 'Tu cuenta ya incluye inferencia y herramientas.',
+=======
+    finishInBrowser: 'Termina en tu navegador',
+    doNotShare: 'No compartas este código.',
+    openPageAgain: 'Abrir la página de nuevo',
+    waiting: 'Esperando el inicio de sesión…',
+    finishingHeading: 'Terminando el inicio de sesión…',
+    finishingBody: 'Aprobado en el navegador. Obteniendo los tokens de tu cuenta.',
+    signedInAsLabel: 'Sesión iniciada como',
+    signedIn: 'Sesión iniciada.',
+    completedBody: 'Tu cuenta ya incluye inferencia y herramientas.',
+    reconnect: 'Reconectar',
+    openConnectors: 'Abrir Conectores',
+>>>>>>> origin/main
     defaultModel: 'Modelo predeterminado',
     change: 'Cambiar',
     done: 'Listo',
     notNow: 'Ahora no',
     tryAgain: 'Reintentar',
+<<<<<<< HEAD
     startAgain: 'Empezar de nuevo',
     didNotComplete: 'No se completó el inicio de sesión',
     rejectedBody: 'No pasa nada, sigues en el servicio gratuito de Nous. Inicia sesión cuando quieras.',
@@ -4377,6 +4448,11 @@ export const esOverrides = {
     timedOutBody: 'Empieza de nuevo cuando quieras. Sigues en el servicio gratuito de Nous.',
     retiredBody:
       'Tu sesión terminó antes de completar el inicio de sesión. Hermes iniciará una nueva; luego vuelve a iniciar sesión cuando quieras.',
+=======
+    didNotComplete: 'No se completó el inicio de sesión',
+    timedOutHeading: 'Ese enlace de inicio de sesión caducó',
+    timedOutBody: 'Empieza de nuevo cuando quieras. Sigues en el servicio gratuito de Nous.',
+>>>>>>> origin/main
     errorBody: 'No se completó el inicio de sesión. Vuelve a intentarlo cuando quieras.',
     busyHeading: 'Ya casi está',
     busyBody: (wait: string) =>
@@ -4433,7 +4509,31 @@ export const esOverrides = {
     wasPrice: 'antes',
     customModel: 'Modelo personalizado',
     addCustomModelAction: 'Añadir modelo personalizado…',
+<<<<<<< HEAD
     customModelPlaceholder: 'Escribe un ID de modelo, p. ej., openai/gpt-5'
+=======
+    customModelPlaceholder: 'Escribe un ID de modelo, p. ej., openai/gpt-5',
+    today: 'Hoy',
+    week: 'Semana',
+    month: 'Mes',
+    topTier: 'Modelos grandes (mensual)',
+    included: 'Todos los modelos de abajo están incluidos',
+    pausedRenewal: 'en pausa: renovación impagada',
+    pausedOther: 'en pausa',
+    includedUsedUp: 'Uso incluido agotado',
+    limitReached: (name: string) => `Límite ${name} alcanzado`,
+    limitNames: { day: 'diario', month: 'mensual', top_tier: 'mensual de modelos grandes', week: 'semanal' },
+    limitThenCredits: 'los modelos de pago ahora usan tus créditos (pago por uso)',
+    limitThenCreditsLarge: 'los modelos grandes ahora usan tus créditos (pago por uso)',
+    limitThenWait: 'solo modelos gratuitos hasta entonces',
+    limitThenWaitLarge: 'modelos grandes en pausa hasta entonces',
+    percentUsed: (percent: string) => `${percent} usado`,
+    resetsIn: (duration: string) => `se restablece en ${duration}`,
+    usageLevels: { free: 'Gratis', top_tier: 'Grande' },
+    sectionRecommended: 'Recomendados',
+    sectionOther: 'Otros modelos',
+    largeFootnote: 'Los modelos grandes también cuentan para tu límite mensual de modelos grandes.'
+>>>>>>> origin/main
   },
   modelVisibility: {
     title: 'Modelos',
@@ -4873,6 +4973,7 @@ export const esOverrides = {
       react: 'Reaccionar',
       dismissError: 'Descartar error',
       responseStopped: 'Respuesta detenida',
+<<<<<<< HEAD
       errorLayers: {
         auth: 'Problema de inicio de sesión',
         billing: 'Créditos agotados',
@@ -4900,6 +5001,11 @@ export const esOverrides = {
         streaming: 'La conexión se cortó antes de que terminara la respuesta. Reinténtalo para enviarla de nuevo.'
       },
       errorCodes: {
+=======
+      ...esErrorLayers,
+      errorCodes: {
+        ...esErrorCodes,
+>>>>>>> origin/main
         auth: {
           title: (provider: string) => `${provider} rechazó tu inicio de sesión`,
           body: (provider: string) =>
@@ -5001,10 +5107,13 @@ export const esOverrides = {
           title: 'Hermes se quedó atascado en un bucle',
           body: 'La respuesta repetía los mismos pasos, así que Hermes la detuvo. Reinténtalo o empieza un chat nuevo si vuelve a ocurrir.'
         },
+<<<<<<< HEAD
         cron_session_read_only: {
           title: 'Este chat pertenece a una tarea programada',
           body: 'Solo ejecuta esa tarea, así que tu mensaje no se ejecutó. Empieza un chat nuevo para enviarlo.'
         },
+=======
+>>>>>>> origin/main
         SESSION_NOT_OWNED: {
           title: 'Este chat está abierto en otro sitio',
           body: 'Este chat está abierto en otra ventana de Hermes o en un terminal. Ciérralo allí y vuelve a enviar el mensaje, o empieza un chat nuevo aquí.'
@@ -5040,6 +5149,13 @@ export const esOverrides = {
         free_tier_refused: {
           title: 'Hermes no pudo enviarlo sin iniciar sesión',
           body: 'Iniciar sesión con una cuenta de Nous es gratis.'
+<<<<<<< HEAD
+=======
+        },
+        usage_window: {
+          title: 'Uso incluido agotado',
+          body: 'El uso incluido de tu plan está agotado hasta el reinicio. Añade créditos en /topup para seguir.'
+>>>>>>> origin/main
         }
       },
       errorAuthKinds: {
@@ -5056,6 +5172,15 @@ export const esOverrides = {
       errorGenericProvider: 'El servicio de IA',
       errorToastTitle: 'Hermes no pudo terminar la respuesta',
       errorRetry: 'Reintentar',
+<<<<<<< HEAD
+=======
+      errorSwitchToModel: (model, note) => (note ? `Cambiar a ${model} (${note})` : `Cambiar a ${model}`),
+      errorSwitchModelFailed: 'No se pudo cambiar de modelo',
+      errorUseCredits: 'Activar Seguir con créditos',
+      errorUseCreditsFailed: 'No se pudo activar Seguir con créditos',
+      errorAddCredits: 'Añadir créditos',
+      errorOpenBillingSettings: 'Abrir ajustes de facturación',
+>>>>>>> origin/main
       errorLimitResets: (time: string) => `El límite se restablece a las ${time}`,
       errorRetryAtReset: (time: string) => `Reintentar cuando se restablezca el límite (${time})`,
       errorRetryScheduled: (time: string, wait: string) => `Reintentando a las ${time}, dentro de ${wait}`,

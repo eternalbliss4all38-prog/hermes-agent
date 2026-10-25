@@ -1043,7 +1043,11 @@ def _should_skip_container_guards(env_type: str, has_host_access: bool = False) 
     exception once host paths are bind-mounted: ``rm -rf /workspace`` then reaches host files."""
     if env_type == "docker":
         return not has_host_access
+<<<<<<< HEAD
     if env_type in ("singularity", "modal", "daytona", "vercel_sandbox"):
+=======
+    if env_type in ("modal", "daytona", "vercel_sandbox"):
+>>>>>>> origin/main
         return True
     # Plugin backends declare the same classification through the provider ABI (#94400);
     # fail-soft to False so an unknown or raising backend — or a raising registry

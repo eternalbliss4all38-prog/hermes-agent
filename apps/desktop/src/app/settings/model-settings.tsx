@@ -35,6 +35,10 @@ import { isSubmitEnter } from '@/lib/ime'
 import { catalogProviderMatches, findCatalogProvider } from '@/lib/model-options'
 import { composerServiceTier } from '@/lib/model-status-label'
 import { cn } from '@/lib/utils'
+<<<<<<< HEAD
+=======
+import { showLargeModelNotice } from '@/store/agent-notices'
+>>>>>>> origin/main
 import { $customModels, withCustomModels } from '@/store/custom-models'
 import { setMainModelAssignment } from '@/store/model-assignment'
 import { notify, notifyError, readableError } from '@/store/notifications'
@@ -902,6 +906,10 @@ export function ModelSettings({ onMainModelChanged, scopeProfile, subpage }: Mod
       const provider = result.provider || selectedProvider
       const model = result.model || selectedModel
       setMainModel({ provider, model })
+
+      if (result.notice) {
+        showLargeModelNotice(result.notice)
+      }
       setSwitchStaleAux(result.stale_aux ?? [])
       notify({ kind: 'success', title: m.mainAppliedTitle, message: m.mainAppliedMessage(model) })
 
