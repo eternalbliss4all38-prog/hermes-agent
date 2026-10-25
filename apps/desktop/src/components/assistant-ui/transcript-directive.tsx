@@ -49,17 +49,6 @@ const DirectiveEntry: FC<{
   streaming: boolean
 }> = ({ contribution, parsed, streaming }) => {
   const render = (contribution.data as TranscriptDirectiveContribution).render
-<<<<<<< HEAD
-
-  // Stable component IDENTITY per (render, parsed) — a fresh type per parent
-  // render would remount the widget (card-sized jump). Streaming arrives as a
-  // real prop on that stable type, so the settle flip re-renders the same
-  // mount instead of being memo-skipped (ref-only reads were exactly that).
-  const Leaf = useMemo(
-    () =>
-      function DirectiveLeafHost({ streaming: live }: { streaming: boolean }) {
-        return <>{render({ attrs: parsed.attrs, source: parsed.source, streaming: live })}</>
-=======
   // The surface this transcript renders in (primary pane or a tile) names the
   // chat that owns the card, so its actions can address that chat's composer.
   const view = useSessionView()
@@ -82,18 +71,13 @@ const DirectiveEntry: FC<{
         streaming: boolean
       }) {
         return <>{render({ attrs: parsed.attrs, sessionId: owner, source: parsed.source, streaming: live })}</>
->>>>>>> origin/main
       },
     [render, parsed]
   )
 
   return (
     <ContribBoundary id={contribution.id} variant="chip">
-<<<<<<< HEAD
-      <Leaf streaming={streaming} />
-=======
       <Leaf sessionId={sessionId} streaming={streaming} />
->>>>>>> origin/main
     </ContribBoundary>
   )
 }

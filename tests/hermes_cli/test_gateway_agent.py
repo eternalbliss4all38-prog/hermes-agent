@@ -1,9 +1,6 @@
 """GatewayAgent drives main's HermesCLI callbacks from a scripted gateway (no live gateway)."""
 import asyncio
-<<<<<<< HEAD
-=======
 import json
->>>>>>> origin/main
 import threading
 from contextlib import asynccontextmanager
 
@@ -491,8 +488,6 @@ def test_gateway_sudo_request_opens_mains_sudo_panel_and_replies_with_the_value(
     assert replies == [("srq-abc", {"value": "pw-from-panel"})]
 
 
-<<<<<<< HEAD
-=======
 @pytest.mark.parametrize(("method", "params", "setter", "callback", "expected"), [
     ("vault.code", {"site": "example.com", "hint": ""}, "set_code_prompt_callback",
      lambda site, hint: "123456", "123456"),
@@ -521,7 +516,6 @@ def test_gateway_vault_requests_open_mains_panels_and_reply_with_the_value(make_
     assert replies == [("srq-vault", {"value": expected})]
 
 
->>>>>>> origin/main
 def test_connection_reply_sends_a_jsonrpc_response_frame():
     sent = []
 
@@ -913,8 +907,6 @@ def test_another_viewer_completing_the_clarify_batch_releases_mains_panel(make_a
     assert replies == [("srq-clr", {"answers": {}, "outcome": "cancelled"})]
 
 
-<<<<<<< HEAD
-=======
 @pytest.mark.parametrize("method", ["vault.code", "vault.unlock_prompt", "vault.save_login"])
 def test_another_viewer_answering_a_vault_prompt_releases_mains_panel(make_agent, method):
     """The vault prompts open main's panels on the sudo panel's state. When a Desktop or Ink viewer answers
@@ -958,7 +950,6 @@ def test_another_viewer_answering_a_vault_prompt_releases_mains_panel(make_agent
     assert replies == [("srq-vlt", {"value": ""})]
 
 
->>>>>>> origin/main
 def test_a_withdrawal_for_another_request_leaves_the_panel_open(make_agent):
     agent, _client = make_agent([])
     closed = []

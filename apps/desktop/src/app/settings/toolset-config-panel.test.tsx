@@ -678,11 +678,7 @@ describe('ToolsetConfigPanel', () => {
 
       fireEvent.click(await screen.findByRole('button', { name: /Re-run setup/ }))
 
-<<<<<<< HEAD
-      await waitFor(() => expect(runToolsetPostSetup).toHaveBeenCalledWith('browser', 'agent_browser'))
-=======
       await waitFor(() => expect(runToolsetPostSetup).toHaveBeenCalledWith('browser', 'lightpanda'))
->>>>>>> origin/main
     })
   })
 

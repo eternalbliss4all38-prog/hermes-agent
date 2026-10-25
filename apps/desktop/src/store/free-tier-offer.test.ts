@@ -1,9 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { $freeTierStatus, type FreeTierRequester } from '@/store/free-tier'
-<<<<<<< HEAD
-import { $freeTierSignIn, closeFreeTierSignIn, stopFreeTierOffer, syncFreeTierOffer } from '@/store/free-tier-sign-in'
-=======
 import {
   $freeTierSignIn,
   $openAppWindows,
@@ -11,7 +8,6 @@ import {
   stopFreeTierOffer,
   syncFreeTierOffer
 } from '@/store/free-tier-sign-in'
->>>>>>> origin/main
 import { activeGatewayProfileKey, ensureGatewayForProfile } from '@/store/gateway'
 import { $localModelOfferPending } from '@/store/local-model-offer'
 import { $onboardingDecided, markOnboardingDecided, setOnboardingSurfaceActive } from '@/store/onboarding-presence'
@@ -93,8 +89,6 @@ describe('sign-in offer after a finished task', () => {
     expect($freeTierSignIn.get().status).toBe('offer')
   })
 
-<<<<<<< HEAD
-=======
   it('waits while an app window is open, so it never covers it', async () => {
     const requestGateway = gateway({ statuses: [status(null)] })
     $openAppWindows.set(1)
@@ -109,7 +103,6 @@ describe('sign-in offer after a finished task', () => {
     expect($freeTierSignIn.get().status).toBe('offer')
   })
 
->>>>>>> origin/main
   it('due now: claims once and opens the offer', async () => {
     const requestGateway = gateway({ statuses: [status(null)] })
 
@@ -117,11 +110,7 @@ describe('sign-in offer after a finished task', () => {
     await vi.advanceTimersByTimeAsync(0)
 
     expect(claims(requestGateway)).toBe(1)
-<<<<<<< HEAD
-    expect($freeTierSignIn.get()).toEqual({ status: 'offer' })
-=======
     expect($freeTierSignIn.get()).toEqual({ kind: 'trial', status: 'offer' })
->>>>>>> origin/main
   })
 
   it('due later: waits out nudge_due_in, re-reads the status, then claims', async () => {
@@ -138,9 +127,6 @@ describe('sign-in offer after a finished task', () => {
 
     expect(requestGateway).toHaveBeenCalledWith('free_tier.status')
     expect(claims(requestGateway)).toBe(1)
-<<<<<<< HEAD
-    expect($freeTierSignIn.get()).toEqual({ status: 'offer' })
-=======
     expect($freeTierSignIn.get()).toEqual({ kind: 'trial', status: 'offer' })
   })
 
@@ -158,7 +144,6 @@ describe('sign-in offer after a finished task', () => {
     await vi.advanceTimersByTimeAsync(0)
 
     expect($freeTierSignIn.get()).toEqual({ kind: 'trial', status: 'offer' })
->>>>>>> origin/main
   })
 
   it('a claim another window won leaves the dialog closed', async () => {

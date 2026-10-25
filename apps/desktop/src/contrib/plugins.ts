@@ -14,11 +14,7 @@
  */
 
 import { trackGatewayEventDisposers } from './events'
-<<<<<<< HEAD
-import { createPluginContext, type HermesPlugin } from './plugin'
-=======
 import { createPluginContext, declaredCapabilities, type HermesPlugin } from './plugin'
->>>>>>> origin/main
 import { pluginActive, publishPlugin } from './plugins-store'
 import { watchRuntimePlugins } from './runtime-loader'
 
@@ -68,11 +64,7 @@ export function discoverBundledPlugins(): void {
       try {
         trackGatewayEventDisposers(
           dispose => disposers.push(dispose),
-<<<<<<< HEAD
-          () => plugin.register(createPluginContext(plugin.id, dispose => disposers.push(dispose)))
-=======
           () => plugin.register(createPluginContext(plugin.id, dispose => disposers.push(dispose), capabilities))
->>>>>>> origin/main
         )
         publishPlugin({ ...record, status: 'loaded' })
       } catch (error) {

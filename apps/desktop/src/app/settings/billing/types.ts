@@ -39,10 +39,7 @@ export type {
   BillingMutationResponse,
   BillingRefusalCode,
   ChargeFailureReason,
-<<<<<<< HEAD
-=======
   PlanUsage,
->>>>>>> origin/main
   SharedBillingStateResponse,
   SubscriptionPreviewResponse,
   SubscriptionStateResponse,

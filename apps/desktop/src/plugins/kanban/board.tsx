@@ -34,10 +34,7 @@ import {
   host,
   Input,
   isSubmitEnter,
-<<<<<<< HEAD
-=======
   KanbanCardBadges,
->>>>>>> origin/main
   Loader,
   SearchField,
   Select,

@@ -343,11 +343,8 @@ class GatewayModelCommandsMixin:
             lines.append(t("gateway.model.prompt_caching_enabled"))
         if result.warning_message:
             lines.append(t("gateway.model.warning_prefix", warning=result.warning_message))
-<<<<<<< HEAD
-=======
         if getattr(result, "usage_notice", ""):
             lines.append(f"⚠️ {result.usage_notice}")
->>>>>>> origin/main
         if ctx.persist_global and global_error is not None:
             # Never claim a clean global commit the disk did not take (#100314).
             lines.append(t("gateway.model.warning_prefix", warning=global_error))
@@ -603,11 +600,7 @@ class GatewayModelCommandsMixin:
             # that searches by the complete peer tuple when session_key doesn't match. origin_json and
             # display_name complete the identity (same shape as the reset path's db_create_kwargs in
             # gateway/session.py, #82633) so consumers that read routing/presentation data from state.db
-<<<<<<< HEAD
-            # (mcp_serve, mirror, channel directory) see the branch row fully formed with zero backfill gap.
-=======
             # (the mcp-serve plugin, mirror, channel directory) see the branch row fully formed with zero backfill gap.
->>>>>>> origin/main
             session_key=session_key,
             source=source,
             config_path=(profile_home or _hermes_home) / "config.yaml",
@@ -631,8 +624,6 @@ class GatewayModelCommandsMixin:
             return guard_reply
         return await self._commit_model_switch_locked(result, ctx, source=source, picker=False)
 
-<<<<<<< HEAD
-=======
     # -------------------------------------------------- usage-window limit: one-tap switch
 
     def _schedule_usage_limit_offer(self, event: MessageEvent, limit: dict, *, session_key: str = "",
@@ -746,7 +737,6 @@ class GatewayModelCommandsMixin:
         except Exception:
             logger.debug("usage-limit retry dispatch failed", exc_info=True)
 
->>>>>>> origin/main
     # -------------------------------------------------- /codex-runtime, /personality
 
     async def _handle_codex_runtime_command(self, event: MessageEvent) -> str:

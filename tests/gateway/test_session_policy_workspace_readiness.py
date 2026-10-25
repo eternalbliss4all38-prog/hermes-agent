@@ -25,8 +25,6 @@ async def test_removed_workspace_reads_and_moves_but_refuses_a_turn(tmp_path, mo
     finally:
         await owner.close()
         store.close_all_db_handles()
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.asyncio
@@ -131,4 +129,3 @@ def test_managed_turn_in_removed_workspace_settles_failed_and_never_parks_the_qu
         peer.shutdown()
     sent_texts = json.dumps(peer.requests)
     assert 'NEVER_RUN' not in sent_texts and 'FOLDER_BACK' in sent_texts
->>>>>>> origin/main

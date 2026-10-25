@@ -199,8 +199,6 @@ test('an unrelated invalid_params keeps the generic toast', () => {
     'Edit failed'
   )
   expect(lastMessage()).toBe('invalid_params')
-<<<<<<< HEAD
-=======
 })
 
 // #143133: a model pick or option change on a chat whose launch API key changed showed the raw
@@ -227,5 +225,4 @@ test('a launch-credentials refusal says the key changed and offers a new chat', 
   clearNotifications()
   notifyError(new Error('launch_credentials_unavailable'), en.desktop.modelSwitchFailed)
   expect(lastMessage()).toBe(en.assistant.thread.errorCodes.launch_credentials_unavailable.body)
->>>>>>> origin/main
 })

@@ -7,11 +7,7 @@ from types import SimpleNamespace
 
 import pytest
 
-<<<<<<< HEAD
-from agent.prompt_builder import SKILL_SAFETY_HEADING
-=======
 from agent.prompt_builder import SKILLS_GUIDANCE
->>>>>>> origin/main
 from hermes_cli import sessions_cmd
 from hermes_cli.sessions_cmd import _cmd_repair_prompts
 from hermes_state import SessionDB
@@ -19,11 +15,7 @@ from hermes_state import SessionDB
 HEALTHY = (
     "You are Hermes.\n"
     "<available_skills>\n  dogfood: exploratory QA of web apps\n</available_skills>\n"
-<<<<<<< HEAD
-    f"{SKILL_SAFETY_HEADING}\nReload [SKILL_PRUNED] placeholders with skill_view.\n"
-=======
     f"{SKILLS_GUIDANCE}\n"
->>>>>>> origin/main
 )
 DEGRADED = "You are Hermes.\n(reduced maintenance build without the skills index)\n"
 
@@ -110,8 +102,6 @@ def test_scan_leaves_reduced_memory_only_zero_skills_rows_and_session_id_overrid
     assert "already has no stored prompt" in capsys.readouterr().out
     assert _cmd_repair_prompts(db, _args(session_id="no-such-session", apply=True)) == 1
     assert "No session matches" in capsys.readouterr().out
-<<<<<<< HEAD
-=======
 
 
 def test_scan_leaves_a_healthy_prompt_stored_before_the_skill_guidance_rewordings(db, monkeypatch, capsys):
@@ -130,4 +120,3 @@ def test_scan_leaves_a_healthy_prompt_stored_before_the_skill_guidance_rewording
 
     assert _apply_json(db, monkeypatch, capsys)["cleared"] == []
     assert db.get_session(healthy)["system_prompt"] == legacy
->>>>>>> origin/main

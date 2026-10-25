@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import type { ModelOptionProvider, ModelPricing } from '@hermes/shared'
-=======
 import type { ModelOptionProvider, ModelPricing, PlanUsage, PlanUsageGauge } from '@hermes/shared'
 import {
   gaugeTitle,
@@ -11,7 +8,6 @@ import {
   splitRecommended,
   usageTag
 } from '@hermes/shared'
->>>>>>> origin/main
 import { fuzzyRank, modelSearchText } from '@hermes/shared'
 import { useStore } from '@nanostores/react'
 import { useQuery } from '@tanstack/react-query'
@@ -22,10 +18,7 @@ import { catalogProviderMatches, modelOptionsQueryKey, requestModelOptions } fro
 import { currentPickerSelection } from '@/lib/model-status-label'
 import { accountResetMs, formatReset, modelResetMs } from '@/lib/provider-limit'
 import { foldIncludes, normalize } from '@/lib/text'
-<<<<<<< HEAD
-=======
 import { formatPercentUsed, formatResetsIn } from '@/lib/usage-percent'
->>>>>>> origin/main
 import { cn } from '@/lib/utils'
 import { $customModels, addCustomModel, customModelCandidate, withCustomModels } from '@/store/custom-models'
 import { $localModelsEnabled } from '@/store/local-models-flag'
@@ -332,12 +325,8 @@ function ModelResults({
 
   const groups = configured.map(provider => ({
     provider,
-<<<<<<< HEAD
-    // Empty query: the backend's curated order, verbatim.
-=======
     // Empty query: the backend's curated order, verbatim (it already leads a
     // window plan with its featured picks).
->>>>>>> origin/main
     models: rankModels(provider, provider.models ?? []),
     downloads: provider.slug === LOCAL_PROVIDER_SLUG ? visibleDownloads : []
   }))
@@ -366,8 +355,6 @@ function ModelResults({
 
         const unavailable = new Set(provider.unavailable_models ?? [])
         const accountLimited = accountResetMs(provider) !== null
-<<<<<<< HEAD
-=======
 
         const renderModel = (model: string) => {
           const isCurrent = model === currentModel && catalogProviderMatches(provider, currentProvider)
@@ -436,7 +423,6 @@ function ModelResults({
         // Window plans, no query: "Recommended" (the plan's picks) then "Other models".
         // A query is its own ranking, so the list stays flat while searching.
         const split = q ? null : splitRecommended(provider, models)
->>>>>>> origin/main
 
         return (
           <CommandGroup heading={<ProviderHeading provider={provider} />} key={provider.slug}>
@@ -448,68 +434,6 @@ function ModelResults({
                 </InlineNotice>
               </div>
             )}
-<<<<<<< HEAD
-            {models.map(model => {
-              const isCurrent = model === currentModel && catalogProviderMatches(provider, currentProvider)
-              const price = provider.pricing?.[model]
-              const locked = unavailable.has(model)
-              const resetMs = modelResetMs(provider, model)
-              const resetLabel = resetMs === null ? null : formatReset(resetMs)
-              const dimmed = !locked && (accountLimited || resetLabel !== null)
-              // Managed local model loading into memory right now: show the
-              // real load percent inline (keyed by exact model id — remote
-              // providers never match).
-              const loadProgress = loadingModels[model]
-
-              return (
-                <CommandItem
-                  className={cn(
-                    'flex items-center gap-2 pl-6 font-mono',
-                    isCurrent &&
-                      'bg-primary text-primary-foreground data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground',
-                    locked && 'cursor-not-allowed opacity-45'
-                  )}
-                  disabled={locked}
-                  key={`${provider.slug}:${model}`}
-                  onSelect={() => {
-                    if (!locked) {
-                      onSelectModel(provider, model)
-                    }
-                  }}
-                  value={`${provider.slug}:${model}`}
-                >
-                  <span className={cn('min-w-0 flex-1 truncate', dimmed && !isCurrent && 'text-muted-foreground')}>
-                    <HighlightMatches foldSeparators query={search} text={model} />
-                  </span>
-                  {loadProgress && (
-                    <span className="flex shrink-0 items-center gap-1.5" title={copy.loadingIntoMemory}>
-                      <span className="h-1 w-16 overflow-hidden rounded-full bg-(--ui-bg-tertiary)">
-                        <span
-                          className="block h-full rounded-full bg-primary transition-[width] duration-500"
-                          style={{ width: `${Math.max(2, loadProgress.percent)}%` }}
-                        />
-                      </span>
-                      <span className="text-[0.62rem] tabular-nums text-muted-foreground">{loadProgress.percent}%</span>
-                    </span>
-                  )}
-                  {locked && (
-                    <span className="shrink-0 text-[0.62rem] uppercase tracking-wide opacity-80">{copy.pro}</span>
-                  )}
-                  {resetLabel && (
-                    <Badge
-                      className="font-sans tabular-nums"
-                      size="xs"
-                      title={t.shell.modelMenu.modelLimitedTip(resetLabel)}
-                      variant="warn"
-                    >
-                      {t.shell.modelMenu.modelResets(resetLabel)}
-                    </Badge>
-                  )}
-                  <ModelPrice isCurrent={isCurrent} price={price} />
-                </CommandItem>
-              )
-            })}
-=======
             {split ? (
               <>
                 <ModelSectionLabel>{copy.sectionRecommended}</ModelSectionLabel>
@@ -525,7 +449,6 @@ function ModelResults({
                 {copy.largeFootnote}
               </div>
             )}
->>>>>>> origin/main
             {groupDownloads.map(job => (
               <DownloadingModelRow jobId={job.jobId} key={job.jobId} owner={owner} target={job.target} />
             ))}
@@ -622,8 +545,6 @@ function DownloadingModelRow({
   )
 }
 
-<<<<<<< HEAD
-=======
 function gaugeLabel(gauge: PlanUsageGauge, copy: { today: string; week: string; month: string; topTier: string }) {
   return gaugeTitle(gauge, { day: copy.today, month: copy.month, top_tier: copy.topTier, week: copy.week })
 }
@@ -825,7 +746,6 @@ function PlanUsageSummary({ provider, usage }: { provider: ModelOptionProvider; 
   )
 }
 
->>>>>>> origin/main
 // Compact In/Out $/Mtok price tag, mirroring the CLI picker's price columns.
 // Renders nothing when pricing is unavailable for the model.
 function ModelPrice({ price, isCurrent }: { price?: ModelPricing; isCurrent: boolean }) {
@@ -918,10 +838,6 @@ function ProviderHeading({ provider }: { provider: ModelOptionProvider }) {
   // account on the free plan; `free_tier_row` is the no-account route's own
   // row. Either way the user is on free inference, so say so. Never match the
   // route by name — the label is copy.
-<<<<<<< HEAD
-  const tierBadge =
-    provider.free_tier === true || provider.free_tier_row === true ? (
-=======
   const planName = provider.plan_usage?.plan
 
   const tierBadge =
@@ -930,7 +846,6 @@ function ProviderHeading({ provider }: { provider: ModelOptionProvider }) {
         {planName}
       </span>
     ) : provider.free_tier === true || provider.free_tier_row === true ? (
->>>>>>> origin/main
       <span className="rounded-sm bg-emerald-500/15 px-1 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
         {copy.freeTier}
       </span>

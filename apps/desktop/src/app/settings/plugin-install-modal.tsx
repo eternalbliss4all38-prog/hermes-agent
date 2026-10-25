@@ -184,9 +184,6 @@ export function PluginInstallModal() {
   )
 }
 
-<<<<<<< HEAD
-/** Name, Verified/Unverified, the one line on what it does, then who reviewed it and where it lands. */
-=======
 /** The catalog tier as the badge reads it; an unknown tier keeps the generic Verified. */
 function catalogTierLabel(t: ReturnType<typeof useI18n>['t'], tier: string): string {
   const labels = t.catalog.tierLabels
@@ -195,7 +192,6 @@ function catalogTierLabel(t: ReturnType<typeof useI18n>['t'], tier: string): str
 }
 
 /** Name, Official/Verified/Unverified, the one line on what it does, then who reviewed it and where it lands. */
->>>>>>> origin/main
 function InstallHeader({
   line,
   probe,
@@ -218,13 +214,9 @@ function InstallHeader({
         <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
             <DialogTitle>{pluginTitle(request, probe)}</DialogTitle>
-<<<<<<< HEAD
-            <Badge variant={verified ? 'success' : 'warn'}>{verified ? m.verified : m.unverified}</Badge>
-=======
             <Badge variant={!verified ? 'warn' : request.tier === 'community' ? 'muted' : 'success'}>
               {!verified ? m.unverified : request.tier ? catalogTierLabel(t, request.tier) : m.verified}
             </Badge>
->>>>>>> origin/main
           </div>
           <DialogDescription>{request.summary || line}</DialogDescription>
           {request.summary && <p className={cn(CAPTION, 'text-(--ui-text-secondary)')}>{line}</p>}

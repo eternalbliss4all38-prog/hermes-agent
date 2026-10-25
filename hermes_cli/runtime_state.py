@@ -213,8 +213,6 @@ def leases_held(generation: Path) -> bool:
     return _prune_unlocked_leases(generation / ".leases")
 
 
-<<<<<<< HEAD
-=======
 def _open_lease_probe(lease: Path) -> int:
     """Let a Windows pruner unlink while still holding its exclusion lock.
 
@@ -248,7 +246,6 @@ def _open_lease_probe(lease: Path) -> int:
         raise
 
 
->>>>>>> origin/main
 def _prune_unlocked_leases(leases: Path) -> bool:
     """Remove abandoned lease files and report whether any live lock remains.
 
@@ -256,21 +253,12 @@ def _prune_unlocked_leases(leases: Path) -> bool:
     ``atexit``. Cleaning those unlocked files whenever a reader arrives bounds leaks in
     the selected generation too, which generation GC intentionally never visits.
 
-<<<<<<< HEAD
-    Fail closed: a lease this user cannot open (root-owned 0o600 from a ``sudo hermes`` on the
-    same checkout) is held, never a boot failure.
-=======
     Fail closed: a lease this user cannot open or remove is held, never a boot failure.
->>>>>>> origin/main
     """
     held = False
     for lease in leases.glob("*"):
         try:
-<<<<<<< HEAD
-            fd = os.open(lease, os.O_RDWR)
-=======
             fd = _open_lease_probe(lease)
->>>>>>> origin/main
         except FileNotFoundError:
             continue
         except OSError:
@@ -280,17 +268,12 @@ def _prune_unlocked_leases(leases: Path) -> bool:
             if not _lock(fd, wait=False):
                 held = True
             else:
-<<<<<<< HEAD
-                with suppress(OSError):
-                    lease.unlink()
-=======
                 try:
                     lease.unlink()
                 except FileNotFoundError:
                     pass  # A peer already removed it.
                 except OSError:
                     held = True
->>>>>>> origin/main
         finally:
             os.close(fd)
     return held

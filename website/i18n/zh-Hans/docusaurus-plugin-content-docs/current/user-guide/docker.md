@@ -283,11 +283,7 @@ docker run -d \
 - 预构建的 TUI/dashboard 和 Photon sidecar 依赖，以及 s6-overlay。
 
 Chromium 由 PM 准备，不使用 `npx playwright install`。
-<<<<<<< HEAD
-实际可执行路径记录在 `/etc/hermes/agent-browser-executable-path`。
-=======
 实际可执行路径记录在 `/etc/hermes/chromium-executable-path`，Hermes 启动浏览器时读取该文件。
->>>>>>> origin/main
 `PLAYWRIGHT_BROWSERS_PATH` 指向 `/opt/hermes/tools`，不在数据卷内。
 
 所有镜像（包括不带 `-desktop` 后缀的标签）都携带完整 Chromium，而不是 Playwright

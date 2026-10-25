@@ -1,30 +1,20 @@
-<<<<<<< HEAD
-=======
 // health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
->>>>>>> origin/main
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import { deBoot } from './de_boot'
 import { deClarify } from './de_clarify'
 import { deConnectorAccounts } from './de_connector_accounts'
 import { deConnectorCard } from './de_connector_card'
-<<<<<<< HEAD
-=======
 import { deErrorCodes } from './de_error_codes'
 import { deErrorLayers } from './de_error_layers'
->>>>>>> origin/main
 import { deFirstRun } from './de_first_run'
 import { deLocalModels } from './de_local_models'
 import { deModelMenu } from './de_model_menu'
 import { deModelSettings } from './de_model_settings'
 import { deNotices } from './de_notices'
-<<<<<<< HEAD
-import { deOnboarding } from './de_onboarding'
-=======
 import { deNotifications } from './de_notifications'
 import { deOnboarding } from './de_onboarding'
 import { dePluginPreviewAccess } from './de_plugin_preview_access'
->>>>>>> origin/main
 import { dePluginUpdate } from './de_plugin_update'
 import { deProjects } from './de_projects'
 import { deSharedMetrics } from './de_shared_metrics'
@@ -936,57 +926,7 @@ export const deOverrides = {
         masterPasswordPlaceholder: 'Master-Passwort'
       }
     },
-<<<<<<< HEAD
-    notifications: {
-      title: 'Benachrichtigungen',
-      intro: 'OS-Benachrichtigungen (keine In-App-Toasts). Pro Gerät.',
-      enableAll: 'Benachrichtigungen aktivieren',
-      enableAllDesc: 'Aus schaltet jede Benachrichtigung unten stumm.',
-      focusedHint: 'Abschluss-Alerts feuern nur, während Hermes im Hintergrund ist.',
-      kinds: {
-        approval: {
-          label: 'Genehmigung nötig',
-          description: 'Ein Befehl wartet darauf, dass Sie ihn genehmigen oder ablehnen.'
-        },
-        input: {
-          label: 'Eingabe nötig',
-          description: 'Hermes hat eine Frage gestellt oder braucht ein Passwort oder Geheimnis.'
-        },
-        turnDone: {
-          label: 'Antwort bereit',
-          description: 'Ein Turn wurde beendet, während Hermes im Hintergrund war.'
-        },
-        turnError: {
-          label: 'Turn fehlgeschlagen',
-          description: 'Fehler bei Background-Turns.'
-        },
-        backgroundDone: {
-          label: 'Hintergrund-Task fertig',
-          description: 'Ein Terminal-Befehl im Hintergrund wurde abgeschlossen.'
-        },
-        credits: {
-          label: 'Credit-Alerts',
-          description: 'Der Credit-Zugriff wird pausiert oder wiederhergestellt.'
-        },
-        plugin: {
-          label: 'Plugin-Benachrichtigungen',
-          description: 'Ein Desktop-Plugin hat eine Benachrichtigung gesendet, während Hermes im Hintergrund war.'
-        }
-      },
-      test: 'Testbenachrichtigung senden',
-      testTitle: 'Hermes',
-      testBody: 'Benachrichtigungen funktionieren.',
-      testSent:
-        'Test gesendet. Wenn nichts erscheint, überprüfen Sie die Benachrichtigungsberechtigungen Ihres Betriebssystems und Fokus/Nicht stören.',
-      testUnsupported: 'Dieses System unterstützt keine nativen Benachrichtigungen.',
-      completionSoundTitle: 'Abschluss-Sound',
-      completionSoundDesc:
-        'Wird abgespielt, wenn ein Agent-Turn endet. Wählen Sie eine Vorlage aus und hören Sie sie hier an.',
-      completionSoundPreview: 'Vorschau'
-    },
-=======
     notifications: deNotifications,
->>>>>>> origin/main
     sections: {
       model: 'Modell',
       chat: 'Chat',
@@ -2058,8 +1998,6 @@ export const deOverrides = {
         effectScheduled: (targetName: string, effectiveAt: string, creditsDelta?: string) =>
           `Wechsel zu ${targetName} – wirksam ${effectiveAt}. Jetzt keine Abbuchung; bis dahin behalten Sie Ihren aktuellen Tarif.${creditsDelta ? ` Änderung der monatlichen Credits: ${creditsDelta}.` : ''}`
       },
-<<<<<<< HEAD
-=======
       keepGoingOnCredits: {
         title: 'Mit Credits weitermachen',
         description:
@@ -2071,7 +2009,6 @@ export const deOverrides = {
         approvedRetry: 'Remote Spending ist bestätigt, aber die Änderung wurde nicht gespeichert.',
         tryAgain: 'Erneut versuchen'
       },
->>>>>>> origin/main
       autoReload: {
         threshold: 'Schwellenwert',
         thresholdAria: 'Schwellenwert für automatisches Aufladen',
@@ -2151,8 +2088,6 @@ export const deOverrides = {
             captionDefault: 'Standardobergrenze',
             captionSpending: 'Monatliche Remote-Ausgaben',
             valueUsed: (spent: string, limit: string) => `${spent} von ${limit} genutzt`
-<<<<<<< HEAD
-=======
           },
           window: {
             today: 'Heute',
@@ -2168,7 +2103,6 @@ export const deOverrides = {
             captionResetsIn: (duration: string) => `Wird in ${duration} zurückgesetzt`,
             captionIncluded: 'Inklusivvolumen',
             valueUsed: (percent: string) => `${percent} genutzt`
->>>>>>> origin/main
           }
         },
         planCard: {
@@ -2563,10 +2497,7 @@ export const deOverrides = {
         `An Commit ${sha} gepinnt. Updates werden abgelehnt, bis es mit einem neuen Pin neu installiert wird.`,
       pinnedBadge: sha => `gepinnt @ ${sha}`,
       ...dePluginUpdate,
-<<<<<<< HEAD
-=======
       ...dePluginPreviewAccess,
->>>>>>> origin/main
       uninstall: 'Deinstallieren',
       uninstallTip: (name: string, profile: string) => `${name} aus ${profile} deinstallieren`,
       uninstallConfirmTitle: (name: string) => `${name} deinstallieren?`,
@@ -3903,11 +3834,7 @@ export const deOverrides = {
       '/init': 'AGENTS.md-Projektanweisungen aus einem Repo-Scan erzeugen oder aktualisieren',
       '/suggestions': 'Vorgeschlagene Automatisierungen prüfen (annehmen/verwerfen)',
       '/blueprint': 'Eine Automatisierung aus einer Blueprint-Vorlage einrichten',
-<<<<<<< HEAD
-      '/browser': 'Browser des Agenten verwalten [connect|disconnect|status|use]',
-=======
       '/browser': 'Browser des Agenten verwalten [connect|disconnect|status]',
->>>>>>> origin/main
       '/palette': 'Die unscharfe Befehlspalette öffnen (auch Strg+P)',
       '/usage': 'Token-Nutzung und Ratenlimits anzeigen; `reset` löst ein angespartes Codex-Limit-Reset ein',
       '/subscription': 'Ihren Nous-Tarif ansehen und im Browser ändern',
@@ -4419,17 +4346,6 @@ export const deOverrides = {
     signIn: 'Anmelden',
     signInHeading: 'Melden Sie sich mit einem Nous-Konto an, um mehr Modelle und Tools freizuschalten.',
     settingUp: 'Kostenlose Inferenz wird eingerichtet…',
-<<<<<<< HEAD
-    codeBody: 'Geben Sie diesen Code in Ihrem Browser ein, um die Anmeldung abzuschließen.',
-    copyLink: 'Link kopieren',
-    doNotShare: 'Diesen Code nicht weitergeben.',
-    waiting: 'Warten auf Anmeldung…',
-    finishingHeading: 'Anmeldung wird abgeschlossen…',
-    finishingBody: 'Im Browser bestätigt. Ihre Konto-Tokens werden abgerufen.',
-    signedInAs: email => `Angemeldet als ${email}`,
-    signedIn: 'Angemeldet.',
-    completedBody: 'Ihr Konto hat jetzt Zugriff auf Inferenz und Tools.',
-=======
     finishInBrowser: 'Im Browser abschließen',
     doNotShare: 'Diesen Code nicht weitergeben.',
     openPageAgain: 'Seite erneut öffnen',
@@ -4441,26 +4357,14 @@ export const deOverrides = {
     completedBody: 'Ihr Konto hat jetzt Zugriff auf Inferenz und Tools.',
     reconnect: 'Neu verbinden',
     openConnectors: 'Konnektoren öffnen',
->>>>>>> origin/main
     defaultModel: 'Standardmodell',
     change: 'Ändern',
     done: 'Fertig',
     notNow: 'Nicht jetzt',
     tryAgain: 'Erneut versuchen',
-<<<<<<< HEAD
-    startAgain: 'Neu starten',
-    didNotComplete: 'Anmeldung nicht abgeschlossen',
-    rejectedBody: 'Die Anmeldung wurde im Browser abgelehnt. Sie bleiben im kostenlosen Tarif.',
-    supersededBody: 'Ein neuerer Anmeldecode hat diesen ersetzt.',
-    timedOutHeading: 'Anmeldung abgelaufen',
-    timedOutBody: 'Der Code wurde nicht rechtzeitig verwendet. Sie bleiben im kostenlosen Tarif.',
-    retiredBody:
-      'Diese Gratis-Tarif-Identität wurde bereits verwendet oder ist abgelaufen; beim nächsten Start wird eine neue eingerichtet.',
-=======
     didNotComplete: 'Anmeldung nicht abgeschlossen',
     timedOutHeading: 'Anmeldung abgelaufen',
     timedOutBody: 'Der Code wurde nicht rechtzeitig verwendet. Sie bleiben im kostenlosen Tarif.',
->>>>>>> origin/main
     errorBody: 'Die Anmeldung wurde nicht abgeschlossen; starten Sie sie erneut.',
     busyHeading: 'Fast geschafft',
     busyBody: wait =>
@@ -4517,9 +4421,6 @@ export const deOverrides = {
     wasPrice: 'war',
     customModel: 'Eigenes Modell',
     addCustomModelAction: 'Eigenes Modell hinzufügen…',
-<<<<<<< HEAD
-    customModelPlaceholder: 'Modell-ID eingeben, z. B. openai/gpt-5'
-=======
     customModelPlaceholder: 'Modell-ID eingeben, z. B. openai/gpt-5',
     today: 'Heute',
     week: 'Woche',
@@ -4546,7 +4447,6 @@ export const deOverrides = {
     sectionRecommended: 'Empfohlen',
     sectionOther: 'Weitere Modelle',
     largeFootnote: 'Große Modelle zählen auch zu deinem Monatslimit für große Modelle.'
->>>>>>> origin/main
   },
   modelVisibility: {
     title: 'Modelle',
@@ -4983,42 +4883,9 @@ export const deOverrides = {
       react: 'Reagieren',
       dismissError: 'Fehler schließen',
       responseStopped: 'Antwort gestoppt',
-<<<<<<< HEAD
-      errorLayers: {
-        auth: 'Authentifizierungsfehler',
-        billing: 'Keine Credits mehr',
-        disk: 'Festplatte voll',
-        endpoint: 'Benutzerdefinierter Endpunktfehler',
-        gateway: 'Gateway-Fehler',
-        generic: 'Turn fehlgeschlagen',
-        provider: 'Anbieterfehler',
-        runtime: 'Lokaler Laufzeitfehler',
-        streaming: 'Streaming-Verbindungsfehler'
-      },
-      errorLayerBodies: {
-        auth: 'Der KI-Dienst hat Ihre Anmeldung abgelehnt. Prüfen Sie die Zugangsdaten für diesen Anbieter und senden Sie Ihre Nachricht erneut.',
-        billing:
-          'Ihr Konto hat bei diesem Anbieter kein Guthaben mehr. Laden Sie Guthaben auf oder wechseln Sie den Anbieter und senden Sie erneut.',
-        disk: 'Ihre Festplatte ist voll, daher konnte Hermes dieses Gespräch nicht speichern. Geben Sie Speicherplatz frei und versuchen Sie es erneut.',
-        endpoint:
-          'Hermes erreicht Ihren eigenen Modellserver nicht. Prüfen Sie, ob er läuft, und senden Sie Ihre Nachricht erneut.',
-        gateway:
-          'Beim Starten dieser Antwort ist in Hermes ein internes Problem aufgetreten. Senden Sie Ihre Nachricht erneut; wenn es bestehen bleibt, senden Sie Diagnosedaten.',
-        generic:
-          'Beim Antworten ist etwas schiefgelaufen. Versuchen Sie es erneut oder kopieren Sie die Details, wenn es bestehen bleibt.',
-        provider:
-          'Der KI-Dienst konnte diese Anfrage nicht abschließen. Versuchen Sie es gleich erneut oder wechseln Sie den Anbieter.',
-        runtime:
-          'Beim Starten dieser Antwort ist in Hermes ein internes Problem aufgetreten. Senden Sie Ihre Nachricht erneut; wenn es bestehen bleibt, senden Sie Diagnosedaten.',
-        streaming:
-          'Die Verbindung ist abgebrochen, bevor die Antwort fertig war. Versuchen Sie es erneut, um sie noch einmal zu senden.'
-      },
-      errorCodes: {
-=======
       ...deErrorLayers,
       errorCodes: {
         ...deErrorCodes,
->>>>>>> origin/main
         auth: {
           title: provider => `${provider} hat Ihre Anmeldung abgelehnt`,
           body: provider =>
@@ -5122,13 +4989,6 @@ export const deOverrides = {
           title: 'Hermes ist in einer Schleife hängen geblieben',
           body: 'Die Antwort hat dieselben Schritte wiederholt, daher hat Hermes sie gestoppt. Versuchen Sie es erneut oder starten Sie einen neuen Chat, wenn es wieder passiert.'
         },
-<<<<<<< HEAD
-        cron_session_read_only: {
-          title: 'Dieser Chat gehört zu einer geplanten Aufgabe',
-          body: 'Er führt nur diese Aufgabe aus, daher wurde Ihre Nachricht nicht ausgeführt. Starten Sie einen neuen Chat, um sie zu senden.'
-        },
-=======
->>>>>>> origin/main
         SESSION_NOT_OWNED: {
           title: 'Dieser Chat ist woanders offen',
           body: 'Dieser Chat ist gerade in einem anderen Hermes-Fenster oder Terminal geöffnet. Schließen Sie ihn dort und senden Sie Ihre Nachricht erneut, oder starten Sie hier einen neuen Chat.'
@@ -5164,13 +5024,10 @@ export const deOverrides = {
         free_tier_refused: {
           title: 'Hermes konnte das ohne Anmeldung nicht senden',
           body: 'Eine Anmeldung mit einem Nous-Konto ist kostenlos.'
-<<<<<<< HEAD
-=======
         },
         usage_window: {
           title: 'Enthaltene Nutzung aufgebraucht',
           body: 'Die enthaltene Nutzung Ihres Plans ist bis zum Zurücksetzen aufgebraucht. Laden Sie in /topup Credits auf, um weiterzumachen.'
->>>>>>> origin/main
         }
       },
       errorAuthKinds: {
@@ -5187,15 +5044,12 @@ export const deOverrides = {
       errorGenericProvider: 'Der KI-Dienst',
       errorToastTitle: 'Hermes konnte die Antwort nicht fertigstellen',
       errorRetry: 'Erneut versuchen',
-<<<<<<< HEAD
-=======
       errorSwitchToModel: (model, note) => (note ? `Zu ${model} wechseln (${note})` : `Zu ${model} wechseln`),
       errorSwitchModelFailed: 'Modell konnte nicht gewechselt werden',
       errorUseCredits: 'Mit Guthaben weitermachen aktivieren',
       errorUseCreditsFailed: 'Mit Guthaben weitermachen konnte nicht aktiviert werden',
       errorAddCredits: 'Guthaben aufladen',
       errorOpenBillingSettings: 'Abrechnungseinstellungen öffnen',
->>>>>>> origin/main
       errorLimitResets: (time: string) => `Limit wird um ${time} zurückgesetzt`,
       errorRetryAtReset: (time: string) => `Erneut versuchen, wenn das Limit zurückgesetzt wird (${time})`,
       errorRetryScheduled: (time: string, wait: string) => `Neuer Versuch um ${time} – in ${wait}`,

@@ -100,8 +100,6 @@ export const zhHantAssistant = {
         cron_session_read_only: {
           title: '此聊天屬於一個排程工作',
           body: '它只會執行該工作，因此你的訊息未被執行。請開始新的聊天後再傳送。'
-<<<<<<< HEAD
-=======
         },
         usage_window: {
           title: '包含用量已用完',
@@ -114,7 +112,6 @@ export const zhHantAssistant = {
         launch_credentials_unavailable: {
           title: '此聊天的 API 金鑰已變更',
           body: '此聊天開始時使用的 API 金鑰後來已被變更或刪除，因此你的訊息未送出。開啟中的聊天不會自行切換到其他金鑰。請使用「開始新工作階段」以使用目前的金鑰。'
->>>>>>> origin/main
         }
       },
       errorLayers: {
@@ -129,15 +126,12 @@ export const zhHantAssistant = {
         streaming: '串流連線錯誤'
       },
       errorRetry: '重試',
-<<<<<<< HEAD
-=======
       errorSwitchToModel: (model, note) => (note ? `切換到 ${model}（${note}）` : `切換到 ${model}`),
       errorSwitchModelFailed: '無法切換模型',
       errorUseCredits: '開啟用額度繼續',
       errorUseCreditsFailed: '無法開啟用額度繼續',
       errorAddCredits: '新增額度',
       errorOpenBillingSettings: '開啟帳單設定',
->>>>>>> origin/main
       errorLimitResets: time => `限額將於 ${time} 重設`,
       errorRetryAtReset: time => `限額重設後重試（${time}）`,
       errorRetryScheduled: (time, wait) => `將於 ${time} 重試 — 還剩 ${wait}`,

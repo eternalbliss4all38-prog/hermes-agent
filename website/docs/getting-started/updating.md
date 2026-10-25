@@ -223,8 +223,6 @@ If the maintained updater script is missing (for example after antivirus quarant
 
 On Windows, a Desktop reopened during packaging is stopped again immediately before the staged build is promoted. This cleanup is restricted to executables inside that checkout's Desktop release tree; unrelated installations are not stopped. A remaining lock still makes staged promotion fail rather than bypassing the rename error.
 
-<<<<<<< HEAD
-=======
 ### Fetch fails with `not a git repository`
 
 `hermes update` stops with "This Hermes checkout's git data is damaged" when the install's `.git` folder is still there but git no longer accepts it: a lost or empty `HEAD`, or a `.git` file pointing at a folder that is gone. A killed update, a crash mid-write, or a sync or antivirus tool touching `.git` can leave it that way. No update can fetch on such a checkout. Gateways the update paused are started again on the unchanged code, since nothing was written.
@@ -238,7 +236,6 @@ A checkout installed somewhere else needs its directory passed again (`bash -s -
 
 Once Hermes works again you can delete the `.broken-*` folder.
 
->>>>>>> origin/main
 ### Fetch fails with `should_include_obj should only be called on existing objects`
 
 Git 2.53 and newer can crash while fetching into a partial clone when some of its pack files lack a

@@ -43,11 +43,7 @@ from agent.turn_scripted_prelude import Prelude, play_prelude
 from agent.turn_api_call import handle_api_interrupt, nous_rate_limit_guard, perform_api_call
 from agent.turn_api_error import handle_api_error
 from agent.turn_api_request import build_api_request
-<<<<<<< HEAD
-from agent.turn_failure_copy import FAILED_TURN_DISPLAY_KIND, failed_turn_notice, site_copy
-=======
 from agent.turn_failure_copy import FAILED_TURN_DISPLAY_KIND, OPEN_TURN_TAIL_ROLES, failed_turn_notice, site_copy
->>>>>>> origin/main
 from agent.turn_final_response import finish_text_response
 from agent.turn_finalizer import finalize_turn
 from agent.turn_iteration_prep import (
@@ -493,11 +489,8 @@ def _nous_entitlement_message(capability: str, *, billing: bool = False) -> str:
             get_nous_portal_account_info,
         )
         account_info = get_nous_portal_account_info(force_fresh=True)
-<<<<<<< HEAD
-=======
         if billing and (window_guidance := format_usage_window_block_guidance(account_info)):
             return window_guidance
->>>>>>> origin/main
         return format_nous_portal_entitlement_message(
             account_info, capability=capability, in_chat=True
         ) or ""
@@ -618,14 +611,6 @@ def _billing_terminal_label(summary: str, unverified: bool) -> str:
     return f"Billing or credits exhausted: {summary}"
 
 
-<<<<<<< HEAD
-def _billing_failure_result(
-    *, classified, summary: str, messages, api_call_count: int, provider: str, base_url, model: str,
-    guidance: Optional[str] = None,
-) -> dict:
-    """Structured terminal result for a billing-classified failure — the single construction
-    point for the non-retryable abort and max-retries paths (#82154)."""
-=======
 def _usage_window_refusal(agent, classified, api_messages=None) -> tuple[str, Optional[float], Optional[dict]]:
     """A usage-window 402 in the words of the credits limit line ("You've hit your daily limit · resets
     15:56 · /topup to add credits") plus when that allowance frees up (epoch
@@ -683,17 +668,12 @@ def _billing_failure_result(
     """Structured terminal result for a billing-classified failure — the single construction
     point for the non-retryable abort and max-retries paths (#82154). A usage-window refusal
     reads as its one stop-line sentence instead of the generic "billing exhausted" text."""
->>>>>>> origin/main
     unverified = bool(getattr(classified, "billing_unverified", False))
     if guidance is None and not (tuple(usage_window) + ("",))[0]:  # a window refusal is its own message: no portal fetch
         guidance = _billing_or_entitlement_message(
             capability="model access", provider=provider, base_url=str(base_url), model=model,
             unverified=unverified,
         )
-<<<<<<< HEAD
-    final = _billing_terminal_label(summary, unverified) + (f"\n\n{guidance}" if guidance else "")
-    return {
-=======
     usage_window_message, usage_window_resets_at, usage_limit = (tuple(usage_window) + (None, None, None))[:3]
     final = usage_window_message or (
         _billing_terminal_label(summary, unverified) + (f"\n\n{guidance}" if guidance else ""))
@@ -708,7 +688,6 @@ def _billing_failure_result(
             extra["usage_limit"] = usage_limit
     return {
         **extra,
->>>>>>> origin/main
         "final_response": final, "messages": messages, "api_calls": api_call_count,
         "completed": False, "failed": True, "error": summary,
         "failure_reason": classified.reason.value,
@@ -1908,14 +1887,9 @@ def _redact_display_metadata(metadata: dict) -> dict:
 
 
 def _close_durable_failed_turn(agent, result: Any) -> None:
-<<<<<<< HEAD
-    """Append a Hermes-authored assistant boundary when a failed turn left ``user`` as the
-    durable conversation tail (in place, on ``result["messages"]`` and in SessionDB).
-=======
     """Append a Hermes-authored assistant boundary when a failed turn left its durable tail open
     (``OPEN_TURN_TAIL_ROLES``: the accepted ``user`` row, or a ``tool`` row when a call ran before
     the failure), in place on ``result["messages"]`` and in SessionDB.
->>>>>>> origin/main
 
     The terminal-failure paths (content-policy refusal, ``_Trunc.end_turn``, retry exhaustion,
     interrupt before any assistant text) persist the accepted user row and return without
@@ -1942,11 +1916,7 @@ def _close_durable_failed_turn(agent, result: Any) -> None:
         db, session_id = getattr(agent, "_session_db", None), getattr(agent, "session_id", None)
         if not isinstance(messages, list) or not messages or db is None or not session_id:
             return
-<<<<<<< HEAD
-        if getattr(agent, "_persist_disabled", False) or db.latest_conversation_role(session_id) != "user":
-=======
         if getattr(agent, "_persist_disabled", False) or db.latest_conversation_role(session_id) not in OPEN_TURN_TAIL_ROLES:
->>>>>>> origin/main
             return
         # Scope the "did a tool run" scan to this turn when its boundary is proven; otherwise
         # hedge over the whole list rather than under-report a possible side effect.

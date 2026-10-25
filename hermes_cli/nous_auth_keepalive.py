@@ -210,13 +210,10 @@ def start_nous_auth_keepalive(
     min_key_ttl_seconds: int = NOUS_INVOKE_JWT_MIN_TTL_SECONDS, timeout_seconds: Optional[float] = None,
 ) -> Optional[threading.Thread]:
     """Start the process-wide Nous auth keepalive thread (idempotent; None when disabled)."""
-<<<<<<< HEAD
-=======
     # Free-tier handoff retries run in every long-lived Nous process, guest or not and keepalive or
     # not: a CLI sign-in in another process may have left a move this one has to finish.
     from hermes_cli.guest_handoff import start_worker
     start_worker()
->>>>>>> origin/main
     interval_seconds = _interval_seconds(interval_seconds)
     if interval_seconds <= 0:
         return None

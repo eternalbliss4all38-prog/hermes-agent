@@ -132,8 +132,6 @@ export function sandboxProcessesOf(hermesHome: string, exclude = process.pid): P
   return all.filter(proc => members.has(proc.pid) && proc.pid !== exclude)
 }
 
-<<<<<<< HEAD
-=======
 /**
  * Every live process whose executable lives under `dir` (Linux /proc only).
  *
@@ -160,7 +158,6 @@ export function processesRunningFrom(dir: string): ProcInfo[] {
   })
 }
 
->>>>>>> origin/main
 /** True while `pid` is still a live member of the sandbox (a recycled pid never matches). */
 export function isSandboxProcess(pid: number, hermesHome: string): boolean {
   return sandboxProcessesOf(hermesHome).some(proc => proc.pid === pid)

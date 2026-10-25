@@ -827,8 +827,6 @@ class TestUpdateCheckEndpoint:
         assert body["can_apply"] is True
 
 
-<<<<<<< HEAD
-=======
     @pytest.mark.parametrize("version", [None, "", "1.2.3"])
     @pytest.mark.parametrize("held", [True, False], ids=["held", "rollback"])
     def test_release_message_names_only_a_known_version(self, monkeypatch, version, held):
@@ -851,7 +849,6 @@ class TestUpdateCheckEndpoint:
         else:
             assert "Updating moves it back" in body["message"]
 
->>>>>>> origin/main
     def test_managed_runtime_dashboard_is_not_applyable(self, monkeypatch):
 
         monkeypatch.setattr(_web_server_files, "_dashboard_local_update_managed_externally", lambda: True)

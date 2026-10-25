@@ -452,16 +452,11 @@ describe('uninstallDiskPlugin (Plugins hub trash button)', () => {
     try {
       await seedStandalone()
       removeDesktopPlugin.mockResolvedValue({ ok: true })
-<<<<<<< HEAD
-
-      expect(await uninstallDiskPlugin('gone')).toEqual({ ok: true })
-=======
       grantPreviewScript('gone', 'https://mail.example.com')
 
       expect(await uninstallDiskPlugin('gone')).toEqual({ ok: true })
       // A later plugin reusing the id asks again instead of inheriting the grant.
       expect($previewScriptGrants.get().gone).toBeUndefined()
->>>>>>> origin/main
 
       // The folder name, never a path — Electron resolves it under the root.
       expect(removeDesktopPlugin).toHaveBeenCalledWith({ name: 'gone-soon' })

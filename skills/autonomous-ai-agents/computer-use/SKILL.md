@@ -192,14 +192,8 @@ inferring support from the executable's reported version.
 `computer_use` is desktop-only: it does not expose a typed route for browser
 page content (no `cua_browser_*` actions). For reading or acting on a page's
 DOM — navigation, clicking a link by text, typed input into a form field —
-<<<<<<< HEAD
-use the separate `browser_navigate`/`browser_click`/`browser_type`/`browser_snapshot`
-tools (or `browser_exec` when the Browser Use CLI backend is active); their
-own schemas document the current contract. Reserve `computer_use` for browser
-=======
 use the separate `browser_exec` tool (Python CDP helpers driving a headless
 Chromium); its own schema documents the current contract. Reserve `computer_use` for browser
->>>>>>> origin/main
 *chrome* (the address bar, permission prompts, extension popups, native
 dialogs) and anything else on screen that isn't page content.
 

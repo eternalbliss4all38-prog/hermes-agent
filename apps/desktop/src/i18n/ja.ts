@@ -7,35 +7,23 @@ import { jaBoot } from './ja_boot'
 import { jaCatalog, jaSkillDeepLink } from './ja_catalog'
 import { jaClarify } from './ja_clarify'
 import { jaConnectors } from './ja_connectors'
-<<<<<<< HEAD
-=======
 import { jaErrorCodes } from './ja_error_codes'
 import { jaErrorLayers } from './ja_error_layers'
->>>>>>> origin/main
 import { jaFirstRun } from './ja_first_run'
 import { jaLocalModels } from './ja_local_models'
 import { jaModelMenu } from './ja_model_menu'
 import { jaModelSettings } from './ja_model_settings'
 import { jaNotices } from './ja_notices'
-<<<<<<< HEAD
-import { jaOnboarding } from './ja_onboarding'
-import { jaPluginSettings } from './ja_plugins'
-=======
 import { jaNotifications } from './ja_notifications'
 import { jaOnboarding } from './ja_onboarding'
 import { jaPluginPreviewAccess } from './ja_plugin_preview_access'
 import { jaPluginSettings, jaPluginsTab } from './ja_plugins'
->>>>>>> origin/main
 import { jaProjects } from './ja_projects'
 import { jaSharedMetrics } from './ja_shared_metrics'
 import { jaThemePicker } from './ja_theme_picker'
 import { jaUpdateChannel } from './ja_update_channel'
 
 export const jaOverrides = {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
   catalog: jaCatalog,
   connectors: jaConnectors.connectors,
   externalOpenFailed: {
@@ -252,8 +240,6 @@ export const jaOverrides = {
   },
 
   settings: {
-<<<<<<< HEAD
-=======
     // Window plans (Nous subscription with included usage). Other billing strings: overlay-gaps.json.
     billing: {
       keepGoingOnCredits: {
@@ -284,7 +270,6 @@ export const jaOverrides = {
         }
       }
     },
->>>>>>> origin/main
     uninstallSection: {
       dangerZone: '危険ゾーン',
       checkingInstalled: 'インストール内容を確認中…',
@@ -396,85 +381,6 @@ export const jaOverrides = {
       notifications: '通知',
       vault: 'パスワードとログイン',
       plugins: 'プラグイン'
-<<<<<<< HEAD
-    },
-    vault: {
-      title: 'パスワードとログイン',
-      blurb:
-        '「GitHub にログインして」と言えば、エージェントが代わりにサインインします。初めてサインインページに出会ったときにその場でログイン情報を尋ね、以降は自動で処理します。パスワードはこのマシン上で暗号化され、ページに直接入力されます。モデルは一切見ません。',
-      count: n => `${n} 件保存済み`,
-      loadFailed: 'ボールト項目を読み込めませんでした',
-      empty: 'まだ何も保存されていません',
-      emptyDesc:
-        'ここで何かを追加する必要はありません。エージェントにサイトへのサインインを頼むと、その場で一度だけログイン情報を尋ねます。事前に登録したい場合は「追加」を使ってください。',
-      add: '追加',
-      addTitle: 'ログイン情報・カード・住所を追加',
-      addDescription: 'このマシン上に暗号化して保存されます。エージェントがパスワードを見ることはありません。',
-      added: '保存しました。',
-      adding: '保存中…',
-      addConfirm: '保存',
-      kindField: '種類',
-      kinds: { login: 'ログイン', payment: '支払いカード', address: '住所' },
-      labelField: 'ラベル',
-      labelPlaceholder: '例: GitHub 仕事用アカウント',
-      labelRequired: 'ラベルは必須です。',
-      originField: 'サイトのオリジン',
-      originPlaceholder: 'https://github.com',
-      originPlaceholderCheckout: 'https://shop.example.com',
-      originInvalid: 'https://example.com のような有効な URL を入力してください。',
-      identifierTypeField: '識別子の種類',
-      identifierTypes: { email: 'メール', phone: '電話番号', username: 'ユーザー名' },
-      identifierField: '識別子',
-      identifierShown: identifier => identifier,
-      passwordField: 'パスワード',
-      loginFieldsRequired: '識別子とパスワードは必須です。',
-      cardNumberField: 'カード番号',
-      cardNameField: 'カード名義',
-      expMonthField: '有効期限（月）',
-      expYearField: '有効期限（年）',
-      cvcField: 'CVC',
-      postalField: '郵便番号',
-      addressLine1Field: '住所 1 行目',
-      addressLine2Field: '住所 2 行目',
-      cityField: '市区町村',
-      stateField: '都道府県 / 地域',
-      countryField: '国',
-      optional: '（任意）',
-      createdOn: date => `追加日 ${date}`,
-      deleteAction: '保存済み項目を削除',
-      otpField: '認証キー',
-      otpPlaceholder: 'Base32 シークレットまたは otpauth:// リンク',
-      otpHint: '2FA を有効にするときにサイトが表示する「セットアップキー」。保存すると Hermes がコードを生成します。',
-      twoFactorBadge: '2FA 自動',
-      deleteTitle: 'この項目を削除しますか？',
-      deleteDescription: label => `「${label}」は暗号化ボールトから削除されます。元に戻せません。`,
-      deleteConfirm: '削除',
-      sources: {
-        title: 'パスワードマネージャー',
-        blurb:
-          'インストール済みのパスワードマネージャーは自動的に検出されます。エージェントがそこからログイン情報を初めて必要とするときにロック解除を求めます（セッションごとに一度）。メモリに残るのはセッショントークンのみで、エージェントはマスターパスワードやログイン情報を一切見ません。',
-        toggleFailed: 'パスワードマネージャーの設定を更新できませんでした',
-        notInstalled: name =>
-          `未検出です。${name} のコマンドラインツールをインストールしてサインインすると、Hermes が自動的に検出します。`,
-        disabledDesc: '検出済みですが、Hermes では無効になっています。',
-        lockedDesc:
-          '検出済み。エージェントがログイン情報を必要とするときにロック解除を求めます。今すぐ解除することもできます。',
-        unlockedDesc: 'このセッションでロック解除済み。30分間操作がないか Hermes を閉じると自動的にロックされます。',
-        statusLocked: 'ロック中',
-        statusNotDetected: '未検出',
-        statusOff: 'オフ',
-        statusUnlocked: 'ロック解除済み',
-        unlock: 'ロック解除',
-        unlocking: 'ロック解除中…',
-        lock: 'ロック',
-        unlocked: name => `${name} をこのセッションでロック解除しました。`,
-        unlockTitle: name => `${name} のロックを解除`,
-        unlockDescription:
-          'マスターパスワードを入力してください。このマシン上のパスワードマネージャーに渡された後に破棄され、保存・記録されることも、エージェントに表示されることもありません。',
-        masterPasswordPlaceholder: 'マスターパスワード'
-      }
-=======
->>>>>>> origin/main
     },
     vault: {
       title: 'パスワードとログイン',
@@ -1408,14 +1314,7 @@ export const jaOverrides = {
 
   skillDeepLink: jaSkillDeepLink,
   skills: {
-<<<<<<< HEAD
-    plugins: {
-      pageBlurb:
-        'プラグインはこのアプリ、エージェント、または両方を拡張できます。それぞれに独立したスイッチがあります。'
-    },
-=======
     plugins: { ...jaPluginPreviewAccess, ...jaPluginsTab },
->>>>>>> origin/main
     hub: {
       search: '検索',
       searching: '検索中…',
@@ -2467,11 +2366,7 @@ export const jaOverrides = {
       '/init': 'リポジトリを調べて AGENTS.md の指示を作成または更新',
       '/suggestions': '提案された自動化を確認し、採用または却下',
       '/blueprint': 'ブループリントから自動化を設定',
-<<<<<<< HEAD
-      '/browser': 'エージェントのブラウザーを管理 [connect|disconnect|status|use]',
-=======
       '/browser': 'エージェントのブラウザーを管理 [connect|disconnect|status]',
->>>>>>> origin/main
       '/palette': 'コマンドパレットを開く',
       '/usage': 'このセッションのトークン使用量を表示',
       '/subscription': 'Nous のプランを確認し、ブラウザーで変更',
@@ -2957,9 +2852,6 @@ export const jaOverrides = {
     wasPrice: '旧価格',
     customModel: 'カスタムモデル',
     addCustomModelAction: 'カスタムモデルを追加…',
-<<<<<<< HEAD
-    customModelPlaceholder: 'モデル ID を入力（例: openai/gpt-5）'
-=======
     customModelPlaceholder: 'モデル ID を入力（例: openai/gpt-5）',
     today: '今日',
     week: '今週',
@@ -2981,7 +2873,6 @@ export const jaOverrides = {
     sectionRecommended: 'おすすめ',
     sectionOther: 'その他のモデル',
     largeFootnote: '大型モデルは大型モデルの月間上限も消費します。'
->>>>>>> origin/main
   },
 
   modelVisibility: {
@@ -3423,22 +3314,9 @@ export const jaOverrides = {
       react: 'リアクション',
       dismissError: 'エラーを閉じる',
       errorGenericProvider: 'AI サービス',
-<<<<<<< HEAD
-      errorLayerBodies: {
-        generic:
-          'Hermes の返信中に問題が発生しました。再試行してください。問題が続く場合はエラー詳細をコピーしてください。',
-        provider:
-          'AI サービスがリクエストを完了できませんでした。少し待って再試行するか、プロバイダーを切り替えてください。',
-        endpoint:
-          'カスタムモデルサーバーに接続できません。サーバーが起動しているか確認し、メッセージを再送してください。',
-        streaming: '返信が完了する前に接続が切れました。再試行してもう一度送信してください。'
-      },
-      errorCodes: {
-=======
       ...jaErrorLayers,
       errorCodes: {
         ...jaErrorCodes,
->>>>>>> origin/main
         provider_policy_blocked: {
           title: 'アカウント設定によりこのモデルはブロックされています',
           body: provider =>
@@ -3489,25 +3367,6 @@ export const jaOverrides = {
           body: provider =>
             `Hermes は ${provider} との安全な接続を検証できませんでした。ネットワークやプロキシの設定を確認するか、プロバイダーを切り替えて再送してください。`
         },
-<<<<<<< HEAD
-        cron_session_read_only: {
-          title: 'このチャットはスケジュールされたジョブ用です',
-          body: 'このチャットはそのジョブの実行専用のため、メッセージは実行されませんでした。送信するには新しいチャットを開始してください。'
-        }
-      },
-      errorLayers: {
-        auth: '認証エラー',
-        billing: 'クレジット不足',
-        disk: 'ディスク容量不足',
-        endpoint: 'カスタムエンドポイントのエラー',
-        gateway: 'ゲートウェイのエラー',
-        generic: 'ターンが失敗しました',
-        provider: 'プロバイダーのエラー',
-        runtime: 'ローカルランタイムのエラー',
-        streaming: 'ストリーミング接続のエラー'
-      },
-      errorRetry: '再試行',
-=======
         usage_window: {
           title: '含まれる利用量を使い切りました',
           body: 'プランに含まれる利用量はリセットまで使い切りました。続けるには /topup でクレジットを追加してください。'
@@ -3520,7 +3379,6 @@ export const jaOverrides = {
       errorUseCreditsFailed: 'クレジットで続行を有効にできませんでした',
       errorAddCredits: 'クレジットを追加',
       errorOpenBillingSettings: '請求設定を開く',
->>>>>>> origin/main
       errorLimitResets: time => `制限は ${time} にリセットされます`,
       errorRetryAtReset: time => `制限のリセット時に再試行（${time}）`,
       errorRetryScheduled: (time, wait) => `${time} に再試行 — 残り ${wait}`,

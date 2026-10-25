@@ -82,18 +82,10 @@ Claude's `Bash(npm run test:*)` prefix rules become `npm run test*` globs. Non-`
 - **Merges, not replaces.** Memory entries are deduplicated against your existing `MEMORY.md`; allowlist/denylist patterns merge with what's already in `config.yaml`.
 - **Conflicts are skipped by default.** An MCP server or skill that already exists in Hermes is reported as a conflict; pass `--overwrite` to replace it.
 - **Malformed files don't abort the run.** A broken `settings.json` or `config.toml` becomes a per-item error in the report while everything else still imports.
-<<<<<<< HEAD
-- Coming from OpenClaw instead? Use [`hermes claw migrate`](../guides/migrate-from-openclaw.md).
-
-## Keeping imports in sync
-
-Every successful import registers its source (and the digest of everything it read) in `~/.hermes/import-sync.json`. When the other agent's setup changes later — new skills, edited `CLAUDE.md`/`AGENTS.md`, added MCP servers — pull the changes in with:
-=======
 
 ## Keeping imports in sync
 
 Every successful Claude Code, Codex CLI or Cursor import registers its source (and the digest of everything it read) in `~/.hermes/import-sync.json`. When the other agent's setup changes later — new skills, edited `CLAUDE.md`/`AGENTS.md`, added MCP servers — pull the changes in with:
->>>>>>> origin/main
 
 ```bash
 hermes import-agent --sync            # re-import every changed source
@@ -110,8 +102,6 @@ Sync is prompt-free and cheap: sources whose files are unchanged are skipped by 
 This mirrors ChatGPT Work's *Settings > Import* automatic updates, adapted to an explicit, inspectable command instead of a background service.
 
 The manifest is per profile. A profile created with `hermes profile create <name> --clone --sync-imports` carries it over, so `hermes -p <name> import-agent --sync` keeps pulling from the same external trees (see [Profiles](./profiles.md#keep-a-clones-imported-agent-setups-synced---sync-imports)).
-<<<<<<< HEAD
-=======
 
 ## Upgrading from a version with `import-agent` built in
 
@@ -119,4 +109,3 @@ The manifest is per profile. A profile created with `hermes profile create <name
 
 - **Profiles with a registered sync source** (an `import-sync.json`, which scheduled `--sync` runs read) get the plugin installed automatically by `hermes update`, or on the first start after updating (this honours `security.allow_lazy_installs`). If you later remove it (`hermes plugins remove agent-importers`), it stays removed.
 - **Everyone else** installs it when they next need it: a fresh `hermes setup` that finds one of these agents offers it, and running `hermes import-agent` or `hermes claw` without the plugin prints the install command.
->>>>>>> origin/main

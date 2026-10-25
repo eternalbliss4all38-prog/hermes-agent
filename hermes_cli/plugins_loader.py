@@ -197,20 +197,6 @@ def _load_error_text(exc: BaseException) -> str:
     return str(exc)
 
 
-<<<<<<< HEAD
-def _dist_installed(req: str) -> Optional[bool]:
-    """Best-effort presence probe on a requirement's distribution name; ``None`` when unprobeable."""
-    dist = re.split(r"[<>=!~\[;\s]", req, maxsplit=1)[0].strip()
-    if not dist:
-        return None
-    try:
-        importlib.metadata.version(dist)
-        return True
-    except importlib.metadata.PackageNotFoundError:
-        return False
-    except Exception:
-        return None
-=======
 def _dist_name(req: str) -> str:
     return re.split(r"[<>=!~\[;\s]", req, maxsplit=1)[0].strip()
 
@@ -291,7 +277,6 @@ def installed_in_selected_environment(requirements: list[str]) -> bool:
         return bool(requirements) and all(_dist_installed(req, [site]) for req in requirements)
     except (OSError, RuntimeError, ValueError):  # unreadable or invalid selection record
         return False
->>>>>>> origin/main
 
 
 class PluginLoaderMixin:
@@ -513,14 +498,6 @@ class PluginLoaderMixin:
 
         Plugin admission and PM repair own dependency changes.
         """
-<<<<<<< HEAD
-        deps = manifest.python_dependencies
-        if not deps:
-            return
-        key = manifest_key(manifest)
-        missing = [req for req in deps if _dist_installed(req) is False]
-        if missing:
-=======
         missing = missing_python_dependencies(manifest)
         if not missing:
             return
@@ -533,18 +510,12 @@ class PluginLoaderMixin:
                 key, ", ".join(missing),
             )
         else:
->>>>>>> origin/main
             logger.warning(
                 "Plugin %s declares Python dependencies that are not "
                 "installed: %s. For an enabled plugin, run hermes pm repair, "
                 "then restart Hermes. Discovery does not install dependencies.",
                 key, ", ".join(missing),
             )
-<<<<<<< HEAD
-        else:
-            logger.debug("Plugin %s python_dependencies satisfied: %s", key, ", ".join(deps))
-=======
->>>>>>> origin/main
 
     def _validate_plugin_config_schema(self, manifest: PluginManifest) -> None:
         """Warn (never block) on plugins.entries.<id> settings that violate config_schema.
@@ -751,11 +722,7 @@ class PluginLoaderMixin:
         try:
             from hermes_cli.agent_plugins import load_agent_plugin
             package = load_agent_plugin(
-<<<<<<< HEAD
-                Path(manifest.path), get_hermes_home() / "plugin-data" / manifest.skill_namespace)
-=======
                 Path(manifest.path), get_hermes_home() / "plugin-data" / manifest.data_namespace)
->>>>>>> origin/main
             ctx = PluginContext(manifest, self)
             for diagnostic in package.diagnostics:
                 logger.warning("Agent Plugin '%s' [%s]: %s", lookup_key, diagnostic.scope, diagnostic.message)

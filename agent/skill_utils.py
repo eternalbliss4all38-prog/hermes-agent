@@ -836,12 +836,9 @@ def resolve_skill_config_values(config_vars: list[dict[str, Any]]) -> dict[str, 
     return resolved
 
 
-<<<<<<< HEAD
-=======
 # Max description chars shown per row of the system-prompt skill index. skill_manage rejects a new or changed
 # description over it and tests/skills/test_authoring_standards.py holds shipped skills to it, so only legacy or
 # hand-edited skills ever reach clip_skill_description().
->>>>>>> origin/main
 SKILL_PROMPT_DESC_LIMIT = 60
 _LAST_WHITESPACE_RE = re.compile(r"\s\S*$")
 _CLIP_TRAIL_RE = re.compile(r"[\s.,;:\-\u2013\u2014(/]+$")
@@ -853,14 +850,6 @@ def _normalize_skill_description(frontmatter: dict[str, Any]) -> str:
     return str(raw_desc).strip().strip("'\"") if raw_desc else ""
 
 
-<<<<<<< HEAD
-def extract_skill_description(frontmatter: dict[str, Any]) -> str:
-    """Extract a system-prompt-length description from parsed frontmatter."""
-    desc = _normalize_skill_description(frontmatter)
-    return desc[:SKILL_PROMPT_DESC_LIMIT - 3] + "..." if len(desc) > SKILL_PROMPT_DESC_LIMIT else desc
-
-
-=======
 def clip_skill_description(desc: str) -> str:
     """*desc* fitted to SKILL_PROMPT_DESC_LIMIT, cut at a word boundary so the index never shows a half word."""
     if len(desc) <= SKILL_PROMPT_DESC_LIMIT:
@@ -877,7 +866,6 @@ def extract_skill_description(frontmatter: dict[str, Any]) -> str:
     return clip_skill_description(_normalize_skill_description(frontmatter))
 
 
->>>>>>> origin/main
 def is_skill_description_truncated_for_prompt(frontmatter: dict[str, Any]) -> bool:
     """True when the description will be truncated in the system prompt skill index."""
     return len(_normalize_skill_description(frontmatter)) > SKILL_PROMPT_DESC_LIMIT

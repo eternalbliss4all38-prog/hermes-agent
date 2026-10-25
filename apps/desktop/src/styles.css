@@ -1830,11 +1830,7 @@ body.guest-pointer-lock :is(webview, iframe) {
    every block takes the chosen direction (every line of a multi-line draft
    included). Auto stamps no dir, so nothing here matches. Code and KaTeX keep
    their isolated-LTR rules below. */
-<<<<<<< HEAD
-[data-slot='aui_assistant-message-content'] .aui-md[dir] :where(p, h1, h2, h3, h4, h5, h6, li, blockquote),
-=======
 [data-slot='aui_assistant-message-content'] .aui-md[dir] :where(p, [data-tool-media-paragraph], h1, h2, h3, h4, h5, h6, li, blockquote),
->>>>>>> origin/main
 [data-slot='aui_user-inline-text'][dir],
 [data-slot='composer-rich-input'][dir] {
   unicode-bidi: normal;

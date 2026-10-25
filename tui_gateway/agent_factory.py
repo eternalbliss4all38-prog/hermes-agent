@@ -179,8 +179,6 @@ def _stored_session_runtime_overrides(row: dict | None) -> dict:
     return overrides
 
 
-<<<<<<< HEAD
-=======
 def _scoped_session_provider(agent, session: dict) -> str:
     """The entry an agent on the ``custom`` adapter runs, resolved in the session's own profile: clients
     reuse this identity for new chats without the endpoint or key, and callers need not be bound to it."""
@@ -188,7 +186,6 @@ def _scoped_session_provider(agent, session: dict) -> str:
         return _runtime_model_config(agent).get("provider") or "custom"
 
 
->>>>>>> origin/main
 def _runtime_model_config(agent, existing: dict | None = None) -> dict:
     """Merge the agent's CURRENT runtime identity onto the row's persisted ``model_config``. Falsy agent
     attributes DELETE the key rather than skip the write: resume reads provider/endpoint from this JSON
@@ -197,21 +194,9 @@ def _runtime_model_config(agent, existing: dict | None = None) -> dict:
     from agent.voice_turn_route import session_runtime_view
     agent = session_runtime_view(agent)
     attr = lambda k: str(getattr(agent, k, "") or "").strip()
-<<<<<<< HEAD
-    model, provider, base_url = attr("model"), attr("provider"), attr("base_url")
-    if provider.lower() == "custom":
-        # ``agent.provider`` resolves every named custom entry to the literal "custom", losing the entry
-        # identity (api_key is never persisted): recover ``custom:<name>`` from the endpoint URL.
-        try:
-            from hermes_cli.runtime_provider import canonical_custom_identity
-            provider = canonical_custom_identity(base_url=base_url, model=model or None) or provider
-        except Exception:
-            logger.debug("custom provider identity lookup failed", exc_info=True)
-=======
     model, base_url = attr("model"), attr("base_url")
     from hermes_cli.runtime_provider_custom import session_provider_identity
     provider = session_provider_identity(attr("provider"), attr("requested_provider"), base_url, model)
->>>>>>> origin/main
     reasoning_config = getattr(agent, "reasoning_config", None)
     live = {
         "model": model, "provider": provider, "base_url": base_url, "api_mode": attr("api_mode"),
@@ -649,10 +634,7 @@ def _make_agent(
     synthetic = maybe_build_synthetic_agent(session_id or key, model_override)
     if synthetic is not None:
         return synthetic
-<<<<<<< HEAD
-=======
     from agent.onboarding_session import onboarding_toolsets
->>>>>>> origin/main
     from run_agent import AIAgent
     # MCP discovery runs in a daemon thread (a dead server can't freeze the shell); the agent snapshots its tool
     # list once, so briefly wait for in-flight discovery. Dashboard /api/ws uses mcp_startup; TUI stdio uses entry.
@@ -681,12 +663,8 @@ def _make_agent(
         reasoning_config=(
             reasoning_config_override if reasoning_config_override is not None else _load_reasoning_config(str(model or ""))),
         service_tier=service_tier_override if service_tier_override is not None else _load_service_tier(),
-<<<<<<< HEAD
-        enabled_toolsets=_onboarding_toolsets(_load_enabled_toolsets(platform), session_db, session_id or key),
-=======
         enabled_toolsets=onboarding_toolsets(_load_enabled_toolsets(platform),
                                              session_db if session_db is not None else _get_db(), session_id or key),
->>>>>>> origin/main
         disabled_toolsets=_load_disabled_toolsets(),
         # OpenRouter provider_routing prefs (gateway + CLI parity).
         providers_allowed=_pr.get("only"), providers_ignored=_pr.get("ignore"), providers_order=_pr.get("order"),

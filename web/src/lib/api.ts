@@ -7,11 +7,7 @@ import { createDashboardSessionMutations } from "./session-mutations";
 
 const mutateSessionHttp = createDashboardSessionMutations(fetchJSON);
 
-<<<<<<< HEAD
-import type { AuxiliaryModelsResponse } from "./api-aux";
-=======
 import type { AuxiliaryModelsResponse, ModelAssignmentResponse } from "./api-aux";
->>>>>>> origin/main
 import type { AgentPluginUpdateResponse } from "./api-plugins";
 import type {
   WhatsAppOnboardingApplyResponse,

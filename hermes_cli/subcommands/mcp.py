@@ -9,21 +9,6 @@ from typing import Callable
 def build_mcp_parser(subparsers, *, cmd_mcp: Callable) -> None:
     """Attach the ``mcp`` subcommand to ``subparsers``."""
     mcp_parser = subparsers.add_parser(
-<<<<<<< HEAD
-        "mcp", help="Manage MCP servers and run Hermes as an MCP server",
-        description="Manage MCP server connections and run Hermes as an MCP server.\n\n"
-            "MCP servers provide additional tools via the Model Context Protocol.\n"
-            "Use 'hermes mcp add' to connect to a new server, or\n"
-            "'hermes mcp serve' to expose Hermes conversations over MCP.")
-    mcp_sub = mcp_parser.add_subparsers(dest="mcp_action")
-
-    mcp_serve_p = mcp_sub.add_parser(
-        "serve", help="Run Hermes as an MCP server (expose conversations to other agents)")
-    mcp_serve_p.add_argument(
-        "-v", "--verbose", action="store_true", help="Enable verbose logging on stderr")
-    add_accept_hooks_flag(mcp_serve_p)
-
-=======
         "mcp", help="Manage MCP server connections",
         description="Manage MCP server connections.\n\n"
             "MCP servers provide additional tools via the Model Context Protocol.\n"
@@ -31,7 +16,6 @@ def build_mcp_parser(subparsers, *, cmd_mcp: Callable) -> None:
             "MCP server is the mcp-serve plugin: `hermes plugins install mcp-serve`.")
     mcp_sub = mcp_parser.add_subparsers(dest="mcp_action")
 
->>>>>>> origin/main
     mcp_add_p = mcp_sub.add_parser("add", help="Add an MCP server (discovery-first install)")
     mcp_add_p.add_argument("name", help="Server name (used as config key)")
     mcp_add_p.add_argument("--url", help="HTTP/SSE endpoint URL")

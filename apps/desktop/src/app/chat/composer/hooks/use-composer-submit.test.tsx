@@ -13,10 +13,7 @@ import {
 import { $queuedPromptsBySession, clearQueuedPrompts, getQueuedPrompts } from '@/store/composer-queue'
 import { $connectionRequests, type ConnectionRequest } from '@/store/connection-request'
 import { $gateway } from '@/store/gateway'
-<<<<<<< HEAD
-=======
 import { $notifications } from '@/store/notifications'
->>>>>>> origin/main
 import { $onboardingPhase } from '@/store/onboarding-phase'
 import { $onboardingSession } from '@/store/onboarding-session'
 import {
@@ -1028,8 +1025,6 @@ describe('useComposerSubmit with a setup card waiting in the onboarding chat', (
     expect(onSteer).not.toHaveBeenCalled()
     expect(onSubmit).not.toHaveBeenCalled()
   })
-<<<<<<< HEAD
-=======
 
   it('runs no slash command while setup is in progress: the words stay and a note says why', () => {
     $onboardingPhase.set('shown')
@@ -1076,5 +1071,4 @@ describe('useComposerSubmit with a setup card waiting in the onboarding chat', (
 
     expect(onSubmit).toHaveBeenCalledWith('/help', expect.anything())
   })
->>>>>>> origin/main
 })

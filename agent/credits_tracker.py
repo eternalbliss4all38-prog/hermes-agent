@@ -32,11 +32,6 @@ from agent.usage_gauges import (
 logger = logging.getLogger(__name__)
 
 _version_warning_emitted: bool = False  # warn-once latch (per process)
-<<<<<<< HEAD
-_VALID_DENOMINATOR_KINDS = frozenset({"subscription_cap", "none"})
-_USD_RE = re.compile(r"^-?\d+\.\d{2}$")  # optional minus, digits, exactly 2 decimals
-_SENTINEL = object()  # "parse failed"
-=======
 _VALID_DENOMINATOR_KINDS = frozenset({"subscription_cap", "none", "usage_window"})
 _USD_RE = re.compile(r"^-?\d+\.\d{2}$")  # optional minus, digits, exactly 2 decimals
 _SENTINEL = object()  # "parse failed"
@@ -44,7 +39,6 @@ _SENTINEL = object()  # "parse failed"
 # (agent/usage_gauges.py), percents in basis points. Which allowances exist, their
 # order and which models each stops all come from the server.
 _VALID_SPEND_SOURCES = frozenset({"included", "payg"})
->>>>>>> origin/main
 
 
 def _safe_int(value: Any) -> Any:
@@ -125,22 +119,15 @@ class CreditsState:
 
     @property
     def used_fraction(self) -> Optional[float]:
-<<<<<<< HEAD
-        """Fraction of the subscription cap consumed in [0.0, 1.0]; None without a computable
-        denominator. Guarded on the LIMIT FIELD (the real denominator), not ``denominator_kind``."""
-=======
         """Fraction of the cap consumed in [0.0, 1.0]; None without a computable denominator.
         Credit-grant: guarded on the LIMIT FIELD (the real denominator), not ``denominator_kind``.
         Usage window: the binding all-scope allowance (whichever stops every model first)."""
         if self.is_usage_window:
             return self.binding_gauge.used_fraction  # type: ignore[union-attr]
->>>>>>> origin/main
         lim = self.subscription_limit_micros
         if not isinstance(lim, int) or lim <= 0:
             return None
         return max(0.0, min(1.0, (lim - self.subscription_micros) / lim))
-<<<<<<< HEAD
-=======
 
     @property
     def window_resets_at_ms(self) -> Optional[int]:
@@ -168,7 +155,6 @@ class CreditsState:
         """The top-tier allowance is full (a percent, like the others — not a blocked flag)."""
         g = self.top_tier_gauge
         return g is not None and g.full
->>>>>>> origin/main
 
 
 # ── Credits policy constants. Switching notices sticky→TTL later also needs a
@@ -206,9 +192,6 @@ _AUTO_TOP_UP_SUFFIX = " · auto top-up is on"
 
 def new_credits_latch() -> dict:
     """Fresh notice latch for :func:`evaluate_credits_notices`; every producer builds it here so a new gate key lands everywhere."""
-<<<<<<< HEAD
-    return {"active": set(), "seen_below_90": False, "usage_band": None, "seen_grant_unspent": False}
-=======
     return {"active": set(), "seen_below_90": False, "usage_band": None, "seen_grant_unspent": False, "texts": {}}
 
 
@@ -389,7 +372,6 @@ def _evaluate_window_notices(state: CreditsState, latch: dict, *, model_is_free:
                                    ttl_ms=CREDITS_RESTORED_TTL_MS, key=CREDITS_RESTORED_KEY, id=CREDITS_RESTORED_KEY))
     _reconcile_sticky(CREDITS_WINDOW_PAYG_KEY, None if stop else _window_payg_text(state), "warn", latch, to_show, to_clear)
     return (to_show, to_clear)
->>>>>>> origin/main
 
 
 @dataclass
@@ -447,16 +429,6 @@ def is_free_tier_model(model: str, base_url: str = "") -> bool:
         return False
 
 
-<<<<<<< HEAD
-def evaluate_credits_notices(state: CreditsState, latch: dict, *, model_is_free: bool = False) -> tuple[list[AgentNotice], list[str]]:
-    """Reconcile credits notices against the latch (see :func:`new_credits_latch`); mutates ``latch`` IN
-    PLACE. Pure — no I/O, no agent/run_agent imports. ``model_is_free`` suppresses ``credits.depleted`` (a
-    depleted account on a free model keeps inferencing) WITHOUT emitting "restored" — that fires only on a
-    genuine ``paid_access`` flip back to True. Returns ``(to_show, to_clear)``; caller emits to_clear FIRST."""
-    to_show: list[AgentNotice] = []
-    to_clear: list[str] = []
-    uf, active = state.used_fraction, latch["active"]
-=======
 def evaluate_credits_notices(state: CreditsState, latch: dict, *, model_is_free: bool = False,
                              model_is_top_tier: bool = False) -> tuple[list[AgentNotice], list[str]]:
     """Reconcile credits notices against the latch (see :func:`new_credits_latch`); mutates ``latch`` IN
@@ -475,7 +447,6 @@ def evaluate_credits_notices(state: CreditsState, latch: dict, *, model_is_free:
             to_clear.append(window_key)
             active.discard(window_key)
             latch.get("texts", {}).pop(window_key, None)
->>>>>>> origin/main
     # Crossing latch: band notices fire only once uf was observed below the LOWEST
     # band, so a session opening mid-range doesn't fire on its first observation
     # (the cold-start seed primes this when it WANTS an open-high warning).
@@ -548,11 +519,7 @@ def evaluate_credits_notices(state: CreditsState, latch: dict, *, model_is_free:
 
 # Header contract: (field, kind[, default-when-absent]); a field is REQUIRED unless it has a default.
 # Header name = ``x-nous-credits-<field>`` (``x-nous-<field>`` for tool_pool_*), underscores → dashes.
-<<<<<<< HEAD
-# micros: int >= 0 ("signed": may be negative); usd: the server's formatted string ^-?\d+\.\d{2}$
-=======
 # micros: int >= 0 ("signed": may be negative; "bp": 0..10000); usd: the server's formatted string ^-?\d+\.\d{2}$
->>>>>>> origin/main
 # (never re-parsed); bool: "true"/"false" STRING. Handled inline: subscription-limit-* (PAIRED/optional),
 # denominator-kind ("subscription_cap" | "none"), disabled-reason (omitted when null).
 _HEADER_FIELDS: tuple[tuple, ...] = (
@@ -562,10 +529,6 @@ _HEADER_FIELDS: tuple[tuple, ...] = (
     ("paid_access", "bool", True),  # absent → fail-open (assume access)
     ("tool_pool_gated_off", "bool", False),
 )
-<<<<<<< HEAD
-
-
-=======
 # Credit-grant plan fields. Required on a credit note; a usage_window note may omit them (the server can
 # retire them with legacy plans). Malformed is still a miss. The top-up balance (purchased_*) is optional on a
 # window note too: a refused (402) request carries only the window headers; the capture keeps the last balance.
@@ -581,13 +544,10 @@ _WINDOW_OPTIONAL_FIELDS = _GRANT_ONLY_FIELDS | {"purchased_micros", "purchased_u
 _GAUGES_HEADER = "x-nous-credits-window-gauges"
 
 
->>>>>>> origin/main
 def _header_name(field: str) -> str:
     return "x-nous-" + ("" if field.startswith("tool_pool_") else "credits-") + field.replace("_", "-")
 
 
-<<<<<<< HEAD
-=======
 def _parse_window_fields(lowered: Mapping[str, str]) -> Optional[dict[str, Any]]:
     """Usage-window fields from lowercased headers; None when the gauge list is absent or unreadable.
     ``spend_source`` outside its vocabulary reads as absent (fail-open)."""
@@ -604,23 +564,16 @@ def _parse_window_fields(lowered: Mapping[str, str]) -> Optional[dict[str, Any]]
     return out
 
 
->>>>>>> origin/main
 def _parse_field(kind: str, raw: Optional[str], default: Any = _SENTINEL) -> Any:
     """One header value → field value; ``default`` when absent, ``_SENTINEL`` on a contract violation."""
     if raw is None:
         return default
-<<<<<<< HEAD
-    if kind in ("micros", "signed"):
-        val = _safe_int(raw)
-        return _SENTINEL if val is _SENTINEL or (kind == "micros" and val < 0) else val
-=======
     if kind in ("micros", "signed", "bp"):
         val = _safe_int(raw)
         if val is _SENTINEL or (kind != "signed" and val < 0):
             return _SENTINEL
         # bp: basis points of a window, 0..10000 inclusive (anything past is a violation).
         return _SENTINEL if kind == "bp" and val > BP_FULL else val
->>>>>>> origin/main
     if kind == "usd":
         return raw if _USD_RE.match(raw) else _SENTINEL
     flag = raw.strip().lower()
@@ -648,19 +601,6 @@ def parse_credits_headers(headers: Mapping[str, str], provider: str = "") -> Opt
                 _version_warning_emitted = True
                 logger.warning("credits header version %d unsupported, ignoring — update Hermes", version_val)
             return None
-<<<<<<< HEAD
-        fields: dict[str, Any] = {
-            name: _parse_field(kind, lowered.get(_header_name(name)), *default) for name, kind, *default in _HEADER_FIELDS
-        }
-        lim_micros_raw = lowered.get("x-nous-credits-subscription-limit-micros")
-        lim_usd_raw = lowered.get("x-nous-credits-subscription-limit-usd")
-        if lim_micros_raw is not None and lim_usd_raw is not None:
-            fields["subscription_limit_micros"] = _parse_field("micros", lim_micros_raw)
-            fields["subscription_limit_usd"] = _parse_field("usd", lim_usd_raw)
-        denominator_kind = lowered.get("x-nous-credits-denominator-kind", "none")
-        if _SENTINEL in fields.values() or denominator_kind not in _VALID_DENOMINATOR_KINDS:
-            return None
-=======
         denominator_kind = lowered.get("x-nous-credits-denominator-kind", "none")
         window_note = denominator_kind == "usage_window"
         fields: dict[str, Any] = {}
@@ -681,7 +621,6 @@ def parse_credits_headers(headers: Mapping[str, str], provider: str = "") -> Opt
             if window is None:
                 return None
             fields.update(window)
->>>>>>> origin/main
         disabled_reason = lowered.get("x-nous-credits-disabled-reason")  # None if absent (omitted when null)
         return CreditsState(version=version_val, denominator_kind=denominator_kind, disabled_reason=disabled_reason,
                             captured_at=time.time(), from_header=True, **fields)
@@ -690,8 +629,6 @@ def parse_credits_headers(headers: Mapping[str, str], provider: str = "") -> Opt
         return None
 
 
-<<<<<<< HEAD
-=======
 def response_is_usage_window(http_response: Any) -> bool:
     """True iff *http_response* carries complete usage-window ``x-nous-credits-*`` headers (the same
     test as ``CreditsState.is_usage_window``). Lets the window-only header captures leave every other
@@ -707,7 +644,6 @@ def response_is_usage_window(http_response: Any) -> bool:
         return False
 
 
->>>>>>> origin/main
 # ── Dev fixtures (HERMES_DEV_CREDITS_FIXTURE): throwaway scaffolding to trigger any notice state
 # without real spend. Value is a state NAME or a FILE PATH whose contents are a name (re-read every
 # turn → `echo depleted > /tmp/cf` flips live). Drives per-turn notices, the cold-start seed, and /usage.
@@ -773,12 +709,6 @@ def _credits_state_from_account(info) -> Optional[CreditsState]:
         monthly = getattr(sub, "monthly_credits", None)
         cap = _money(monthly) if isinstance(monthly, (int, float)) and monthly > 0 else (None, None)
         paid = getattr(info, "paid_service_access", None)
-<<<<<<< HEAD
-        return CreditsState(
-            **fields, subscription_limit_micros=cap[0], subscription_limit_usd=cap[1], from_header=False, captured_at=time.time(),
-            rollover_micros=_money(getattr(sub, "rollover_credits", None))[0], paid_access=paid if isinstance(paid, bool) else True,
-            denominator_kind="subscription_cap" if cap[0] is not None else "none",
-=======
         window = _window_seed_fields(getattr(info, "usage_window", None))
         if window is not None:
             # A usage-window account: the gauge is the window, the grant fields are meaningless (kept 0).
@@ -789,21 +719,12 @@ def _credits_state_from_account(info) -> Optional[CreditsState]:
             rollover_micros=_money(getattr(sub, "rollover_credits", None))[0], paid_access=paid if isinstance(paid, bool) else True,
             denominator_kind="usage_window" if window is not None else ("subscription_cap" if cap[0] is not None else "none"),
             **(window or {}),
->>>>>>> origin/main
         )
     except Exception:
         logger.debug("credits ▸ seed account→state mapping failed", exc_info=True)
         return None
 
 
-<<<<<<< HEAD
-# Process-lifetime memory of the usage band last shown per session_id: see
-# _remember_shown_band. Bounded MRU so a long-lived gateway cannot grow it without limit.
-_seen_usage_bands: dict = {}
-_SEEN_USAGE_BANDS_MAX = 500
-
-
-=======
 def _window_seed_fields(uw) -> Optional[dict[str, Any]]:
     """Portal ``usage_window`` (NousUsageWindowInfo or dict) → CreditsState window fields; None unless it
     carries a readable gauge list with an all-scope allowance (same requirement as the header parser)."""
@@ -828,7 +749,6 @@ _seen_usage_bands: dict = {}
 _SEEN_USAGE_BANDS_MAX = 500
 
 
->>>>>>> origin/main
 def _remember_shown_band(session_id, band) -> None:
     """Remember the usage band last evaluated for ``session_id`` (process-lifetime).
 
@@ -847,8 +767,6 @@ def _remember_shown_band(session_id, band) -> None:
         _seen_usage_bands.pop(next(iter(_seen_usage_bands)))
 
 
-<<<<<<< HEAD
-=======
 # Window plans: the same per-session memory for the window notices (limit / now-using-credits / paused lines
 # and the 90% heads-ups), so a rebuilt agent does not re-show a line this session already showed.
 _WINDOW_NOTICE_KEYS = (CREDITS_WINDOW_PAYG_KEY, CREDITS_WINDOW_LIMIT_KEY, CREDITS_DEPLETED_KEY)
@@ -913,7 +831,6 @@ def remember_window_notices(session_id, latch: dict) -> None:
         logger.debug("window notice remember failed", exc_info=True)
 
 
->>>>>>> origin/main
 def _hydrate_seed_state(agent, state) -> None:
     """Install a seed CreditsState on the agent and fire the notice policy once. Primes the crossing gate:
     the cold-start snapshot IS the first observation, so a session opening in a band warns immediately."""

@@ -1,7 +1,4 @@
 import type { ModelOptionProvider, ModelOptionsResult, ModelPricing } from '@hermes/shared'
-<<<<<<< HEAD
-import { DEFAULT_REASONING_EFFORT } from '@hermes/shared'
-=======
 import {
   DEFAULT_REASONING_EFFORT,
   planBlocks,
@@ -10,7 +7,6 @@ import {
   usageLevel,
   usageTag
 } from '@hermes/shared'
->>>>>>> origin/main
 import { useStore } from '@nanostores/react'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -25,10 +21,7 @@ import {
   useState
 } from 'react'
 
-<<<<<<< HEAD
-=======
 import { PlanLimitLine, UsageLevelTag } from '@/components/model-picker'
->>>>>>> origin/main
 import { ProviderStatusChip } from '@/components/provider-status-chip'
 import { Badge } from '@/components/ui/badge'
 import { Codicon } from '@/components/ui/codicon'
@@ -287,13 +280,9 @@ export function ModelCatalogMenu({
     // Gateway-first even with no session: a connected (possibly remote)
     // gateway owns the model catalog, including virtual providers the local
     // REST fallback can't know about (#53817).
-<<<<<<< HEAD
-    queryFn: (): Promise<ModelOptionsResult> => requestModelOptions({ gateway, profile, request, sessionId })
-=======
     queryFn: (): Promise<ModelOptionsResult> => requestModelOptions({ gateway, profile, request, sessionId }),
     refetchOnMount: query => nousRefetchOnMount(query.state.data),
     refetchInterval: query => nousPricingPoll(query.state.data, query.state.dataUpdateCount)
->>>>>>> origin/main
   })
 
   const loading = modelOptions.isPending && !modelOptions.data
@@ -684,13 +673,9 @@ export function ModelCatalogMenu({
     })
   }
 
-<<<<<<< HEAD
-  // Keep the selected row in view while arrowing through the scrollable list.
-=======
   // Keep the selected row in view while arrowing through the scrollable list. Window plans open at
   // the top (their Recommended picks); the current row stays highlighted and is scrolled to once the
   // user arrows or searches. Every other account keeps opening on the current model.
->>>>>>> origin/main
   const listRef = useRef<HTMLDivElement>(null)
   const opensAtTop = Boolean(providers?.some(p => p.plan_usage))
   const followKb = !opensAtTop || kbOverride !== null || Boolean(q)
@@ -839,23 +824,6 @@ export function ModelCatalogMenu({
                     or wait for the reset) instead of a note on every row. */}
                 {!collapsed && !search ? <PlanLimitLine className="px-2 pb-1" provider={group.provider} /> : null}
                 {!collapsed &&
-<<<<<<< HEAD
-                  group.families.map(family => (
-                    <ModelFamilyRow
-                      controller={controller}
-                      current={current}
-                      defaultEffort={defaultEffort}
-                      family={family}
-                      favorite={favoriteSet.has(favoriteModelKey(group.provider.slug, family.id))}
-                      kbProps={kbRowProps(`${group.provider.slug}:${family.id}`)}
-                      key={`${group.provider.slug}:${family.id}`}
-                      loadingModels={loadingModels}
-                      onSelect={selectFamily}
-                      onSubOpenChange={handleSubOpenChange}
-                      provider={group.provider}
-                      search={search}
-                    />
-=======
                   group.families.map((family, familyIdx) => (
                     <Fragment key={`${group.provider.slug}:${family.id}`}>
                       {!search && sectionTitle(group, familyIdx, copyPicker) ? (
@@ -877,7 +845,6 @@ export function ModelCatalogMenu({
                         search={search}
                       />
                     </Fragment>
->>>>>>> origin/main
                   ))}
                 {!collapsed &&
                   slug === LOCAL_PROVIDER_SLUG &&
@@ -1045,10 +1012,7 @@ interface ModelFamilyRowProps {
  *  model, plus the hover-revealed options submenu. Shared by the Favorites
  *  section and the provider groups, so the two can never paint a model
  *  differently. */
-<<<<<<< HEAD
-=======
 // health: allow CC -- usage-window plans: the Large/Free tag replaces the price on tagged rows; this row was over target on main
->>>>>>> origin/main
 function ModelFamilyRow({
   controller,
   current,
@@ -1089,12 +1053,9 @@ function ModelFamilyRow({
   // fronts the base, so fall back to it when only the fast variant is unpriced.
   const pricing = provider.pricing?.[family.id] ?? (family.fastId ? provider.pricing?.[family.fastId] : undefined)
 
-<<<<<<< HEAD
-=======
   // Window plans: no price (the plan covers it); the tag shows only for Large / Free.
   const rowLevel = usageLevel(provider, family.id)
 
->>>>>>> origin/main
   // Managed local model loading into memory right now: real load percent,
   // keyed by exact model id (remote providers never collide with GGUF stems).
   const loadProgress = loadingModels[family.id] ?? (family.fastId ? loadingModels[family.fastId] : undefined)
@@ -1223,12 +1184,8 @@ function ModelFamilyRow({
             <span className="text-[0.62rem] tabular-nums text-(--ui-text-tertiary)">{loadProgress.percent}%</span>
           </span>
         ) : null}
-<<<<<<< HEAD
-        {showPricing && pricing ? <ModelPrice pricing={pricing} /> : null}
-=======
         {showPricing && pricing && !rowLevel ? <ModelPrice pricing={pricing} /> : null}
         {rowLevel ? <UsageLevelTag level={usageTag(provider, family.id)} /> : null}
->>>>>>> origin/main
         {settings.map(setting => (
           <ModelChip key={setting} setting>
             {setting}
@@ -1300,12 +1257,8 @@ function familyLimit(
 ): { reset: null | string; tone?: string } {
   const ms = modelResetMs(provider, family.id) ?? (family.fastId ? modelResetMs(provider, family.fastId) : null)
   const reset = ms === null ? null : formatReset(ms)
-<<<<<<< HEAD
-  const dim = !isCurrent && (reset !== null || accountResetMs(provider) !== null)
-=======
   // Window plans: a model a full allowance stops dims too; the limit line under the provider says why.
   const dim = !isCurrent && (reset !== null || accountResetMs(provider) !== null || planBlocks(provider, family.id))
->>>>>>> origin/main
 
   return { reset, tone: dim ? 'text-(--ui-text-tertiary)' : undefined }
 }
@@ -1418,11 +1371,7 @@ function groupModels(
       current.model &&
       !allFamilies.some(family => family.id === current.model || family.fastId === current.model)
     ) {
-<<<<<<< HEAD
-      allFamilies = [{ fastId: null, id: current.model }, ...allFamilies]
-=======
       allFamilies = recommendedFirst(provider, [{ fastId: null, id: current.model }, ...allFamilies])
->>>>>>> origin/main
     }
 
     if (allFamilies.length === 0) {

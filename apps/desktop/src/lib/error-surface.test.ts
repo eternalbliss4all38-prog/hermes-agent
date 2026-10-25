@@ -204,8 +204,6 @@ describe('cron session read-only (#141348)', () => {
   })
 })
 
-<<<<<<< HEAD
-=======
 describe('usage-window refusal', () => {
   it('shows the stop-line sentence, not the out-of-credits copy', () => {
     const message = "You've hit your daily limit · resets 15:56 · turn on Keep going in /topup"
@@ -295,7 +293,6 @@ describe('usage-window refusal', () => {
   })
 })
 
->>>>>>> origin/main
 describe('limit reset (#98852)', () => {
   it('parses resets_at and renders "HH:mm (in Nh MMm)" while the reset is ahead', () => {
     const now = Date.UTC(2026, 0, 1, 12, 0, 0)
@@ -323,8 +320,6 @@ describe('limit reset (#98852)', () => {
     ).toBeUndefined()
   })
 })
-<<<<<<< HEAD
-=======
 
 describe('out of credits (not a window plan)', () => {
   it('keeps the card unchanged for Nous and other providers alike', () => {
@@ -338,4 +333,3 @@ describe('out of credits (not a window plan)', () => {
     }
   })
 })
->>>>>>> origin/main

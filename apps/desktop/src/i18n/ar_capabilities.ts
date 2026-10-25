@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import { arPluginPreviewAccess } from './ar_plugin_preview_access'
->>>>>>> origin/main
 import type { TranslationOverrides } from './define-locale'
 
 export const arCapabilities = {
@@ -18,9 +15,6 @@ export const arCapabilities = {
   },
   skills: {
     plugins: {
-<<<<<<< HEAD
-      pageBlurb: 'يمكن للإضافة توسيع هذا التطبيق أو الوكيل أو كليهما — ولكل جزء مفتاح تشغيل مستقل.'
-=======
       ...arPluginPreviewAccess,
       pageBlurb: 'يمكن للإضافة توسيع هذا التطبيق أو الوكيل أو كليهما — ولكل جزء مفتاح تشغيل مستقل.',
       folderAccess: {
@@ -36,7 +30,6 @@ export const arCapabilities = {
           `لا يمكن لـ ${name} استخدام هذا المجلد: فهو يحتوي على إعدادات Hermes أو مفاتيحه أو بيانات الإضافات. اختر مجلدًا لا يحتويها.`,
         loadFailed: (name: string) => `تعذّر تحميل المجلدات المشتركة مع ${name}.`
       }
->>>>>>> origin/main
     },
     tabSkills: 'المهارات',
     tabToolsets: 'مجموعات الأدوات',

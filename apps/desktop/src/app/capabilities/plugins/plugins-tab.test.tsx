@@ -297,8 +297,6 @@ describe('PluginsTab', () => {
     })
   })
 
-<<<<<<< HEAD
-=======
   it('badges "Install here" with the catalog tier of the package it came from', async () => {
     seedCatalog([{ ...weatherEntry, name: 'hermes-media-studio', tier: 'official' }])
     $pluginRecords.set({
@@ -324,7 +322,6 @@ describe('PluginsTab', () => {
     })
   })
 
->>>>>>> origin/main
   it('disables "Install here" when the package has no known origin (hand-copied folder)', () => {
     $pluginRecords.set({
       media: { id: 'media', name: 'Media Studio', kind: 'disk', status: 'loaded', packageName: 'hermes-media-studio' }
@@ -354,11 +351,7 @@ describe('PluginsTab', () => {
 
     await selectCatalogEntry(weatherEntry.name)
     expect($pluginInstallRequest.get()).toBeNull()
-<<<<<<< HEAD
-    fireEvent.click(screen.getByRole('switch', { name: `Add ${weatherEntry.name}` }))
-=======
     fireEvent.click(screen.getByRole('button', { name: `Install ${weatherEntry.name}` }))
->>>>>>> origin/main
 
     expect($pluginInstallRequest.get()).toMatchObject({
       catalogName: weatherEntry.name,
@@ -503,11 +496,7 @@ describe('PluginsTab', () => {
     renderPlugins({ profile: null })
 
     await selectCatalogEntry(entry.name)
-<<<<<<< HEAD
-    fireEvent.click(screen.getByRole('switch', { name: `Add ${entry.name}` }))
-=======
     fireEvent.click(screen.getByRole('button', { name: `Install ${entry.name}` }))
->>>>>>> origin/main
 
     expect($pluginInstallRequest.get()).toMatchObject({
       catalogName: entry.name,

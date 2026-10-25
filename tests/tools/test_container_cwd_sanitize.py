@@ -192,9 +192,5 @@ class TestFileOpsCwdSanitizedAtCallSite:
 
     def test_host_override_sanitized_on_daytona(self, monkeypatch):
         cwd = self._run_and_capture_cwd(
-<<<<<<< HEAD
-            monkeypatch, "/Users/me/workspace", env_type="singularity")
-=======
             monkeypatch, "/Users/me/workspace", env_type="daytona")
->>>>>>> origin/main
         assert cwd == "/workspace"

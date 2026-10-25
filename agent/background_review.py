@@ -774,16 +774,6 @@ def _snapshot_review_usage(review_agent: Any) -> dict[str, Any]:
     }
 
 
-<<<<<<< HEAD
-def _record_review_usage_to_parent(parent_agent: Any, usage: dict[str, Any]) -> None:
-    """Record a fork's usage against the parent session (best-effort, never raises). The fork has
-    ``_session_db = None`` so conversation_loop's DB-gated accounting never sees its calls; route
-    them through the aux-accounting chokepoint, which writes only ``session_model_usage`` — never
-    the transcript or ``sessions`` row."""
-    try:
-        session_db = getattr(parent_agent, "_session_db", None)
-        session_id = getattr(parent_agent, "session_id", None)
-=======
 def _record_review_usage_to_parent(
     parent_agent: Any, usage: dict[str, Any], *, task: str = "background_review",
     session_id: Optional[str] = None,
@@ -796,16 +786,11 @@ def _record_review_usage_to_parent(
     try:
         session_db = getattr(parent_agent, "_session_db", None)
         session_id = session_id or getattr(parent_agent, "session_id", None)
->>>>>>> origin/main
         counts = {key: int(usage.get(key) or 0) for key in _USAGE_COUNTERS}
         if session_db is None or not session_id or not any(counts.values()):
             return  # no DB, or the fork made no successful API calls (e.g. failed at spawn)
         session_db.record_auxiliary_usage(
-<<<<<<< HEAD
-            session_id, task="background_review", model=usage.get("model"),
-=======
             session_id, task=task, model=usage.get("model"),
->>>>>>> origin/main
             billing_provider=usage.get("provider"), billing_base_url=usage.get("base_url"),
             estimated_cost_usd=usage.get("estimated_cost_usd"),
             api_call_count=counts.pop("api_calls"), **counts,
@@ -1163,8 +1148,6 @@ def _release_fork_clients(review_agent: Any) -> None:
         review_agent.release_clients()
 
 
-<<<<<<< HEAD
-=======
 def release_cache_parity_fork(
     parent_agent: Any, fork: Any, *, task: str, session_id: Optional[str] = None,
 ) -> dict[str, Any]:
@@ -1179,7 +1162,6 @@ def release_cache_parity_fork(
     return usage
 
 
->>>>>>> origin/main
 def _run_review_fork(
     agent: Any, messages_snapshot: list[dict], prompt: str, task_cfg: Optional[dict[str, Any]],
     review_run: Optional[_BackgroundReviewRun], st: _ReviewForkState, review_memory: bool = False,

@@ -10,10 +10,7 @@ from __future__ import annotations
 
 import contextlib
 import dataclasses
-<<<<<<< HEAD
-=======
 import time
->>>>>>> origin/main
 
 _COUNTERS = (("input_tokens", "session_input_tokens"), ("output_tokens", "session_output_tokens"),
              ("cache_read_tokens", "session_cache_read_tokens"),
@@ -61,8 +58,6 @@ def _rate_limit(agent):
     return None
 
 
-<<<<<<< HEAD
-=======
 def plan_gauge(agent) -> dict | None:
     """Window plans only: the allowance the status bar shows at a glance (today's, else the one that binds),
     from the reply headers the agent already tracks — no extra round trip, None for everyone else."""
@@ -80,7 +75,6 @@ def plan_gauge(agent) -> dict | None:
     return None
 
 
->>>>>>> origin/main
 def usage_stats(agent) -> dict:
     """The frozen ``session.usage`` / ``session.stats`` dict; zeros before the first turn built an agent."""
     stats: dict = {key: int(getattr(agent, attr, 0) or 0) for key, attr in _COUNTERS}
@@ -104,11 +98,8 @@ def usage_stats(agent) -> dict:
                  model=str(getattr(agent, "model", "") or ""), provider=str(getattr(agent, "provider", "") or ""),
                  fallback_model=(str(getattr(agent, "model", "") or "") or None)
                  if getattr(agent, "_fallback_activated", False) is True else None)
-<<<<<<< HEAD
-=======
     if (gauge := plan_gauge(agent)) is not None:  # absent off a window plan, as on the embedded path
         stats["plan_gauge"] = gauge
->>>>>>> origin/main
     return stats
 
 
@@ -163,11 +154,8 @@ def tui_usage(stats: dict) -> dict:
             usage[key] = round(float(stats[source_key]), 1)
     if isinstance(stats.get("active_subagents"), int):
         usage["active_subagents"] = stats["active_subagents"]
-<<<<<<< HEAD
-=======
     if isinstance(stats.get("plan_gauge"), dict):
         usage["plan_gauge"] = stats["plan_gauge"]
->>>>>>> origin/main
     return usage
 
 

@@ -64,10 +64,7 @@ class CLIChatTurnMixin:
         set_secret_capture_callback(self._secret_capture_callback)
         # Reset per turn; only a real interrupt flips it, so early returns leave it False.
         self._last_turn_interrupted = False
-<<<<<<< HEAD
-=======
         self._last_turn_failed = False
->>>>>>> origin/main
 
         if not self._ensure_runtime_credentials():
             return None
@@ -612,11 +609,8 @@ class CLIChatTurnMixin:
         _interrupted_this_turn = bool(turn.result and turn.result.get("interrupted"))
         # Post-turn hooks (e.g. goal continuation) skip themselves on a user-cancelled turn.
         self._last_turn_interrupted = _interrupted_this_turn
-<<<<<<< HEAD
-=======
         # ... and on a failed one (a refused turn, a provider error): nothing to judge.
         self._last_turn_failed = bool(turn.result and turn.result.get("failed"))
->>>>>>> origin/main
         if _interrupted_this_turn:
             pending_message = turn.result.get("interrupt_message") or interrupt_msg
             _show_interrupt_marker = bool(response and pending_message)
@@ -722,9 +716,6 @@ class CLIChatTurnMixin:
 
             # Billing CTA pins the single action (Nous → /topup, others → billing page) so it
             # stays visible instead of scrolling away inside the response prose.
-<<<<<<< HEAD
-            if turn.result and turn.result.get("failure_reason") == "billing":
-=======
             _limit = (turn.result or {}).get("usage_limit") if turn.result else None
             if isinstance(_limit, dict):
                 # Usage-window plan: what to do next, in commands that always work here. Hermes never
@@ -742,7 +733,6 @@ class CLIChatTurnMixin:
                   and not turn.result.get("usage_window_message")):
                 # (A window plan's refusal already reads as its own sentence with the way on; an
                 # "Out of credits" box under it would contradict it.)
->>>>>>> origin/main
                 _bb = turn.result.get("billing_block") or {}
                 if _bb.get("is_nous"):
                     _cta_lines = [t("cli.chat.billing_cta_nous")]

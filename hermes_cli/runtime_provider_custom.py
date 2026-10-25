@@ -35,15 +35,12 @@ def _normalize_base_url_for_match(value) -> str:
     return str(value or "").strip().rstrip("/").lower()
 
 
-<<<<<<< HEAD
-=======
 def _route_key(value) -> str:
     """An endpoint compared for identity: scheme and host fold case, the path does not."""
     from hermes_cli.route_identity import normalize_route_base_url
     return normalize_route_base_url(_clean(value))
 
 
->>>>>>> origin/main
 def _clean(value: Any) -> str:
     return str(value or "").strip()
 
@@ -329,17 +326,10 @@ def find_custom_provider_identity(base_url: str) -> Optional[str]:
     """Map an endpoint URL back to its canonical ``custom:<name>`` menu key. Session persistence
     stores the agent's *resolved* provider, which for every named custom endpoint is the literal
     string ``"custom"`` — the entry name is lost, and the api_key is deliberately never persisted."""
-<<<<<<< HEAD
-    target = _normalize_base_url_for_match(base_url)
-    if not target:
-        return None
-    return _find_custom_identity(lambda entry: _normalize_base_url_for_match(_entry_url(entry)) == target)
-=======
     target = _route_key(base_url)
     if not target:
         return None
     return _find_custom_identity(lambda entry: _route_key(_entry_url(entry)) == target)
->>>>>>> origin/main
 
 
 def _model_id_matches(value: Any, target: str) -> bool:
@@ -368,8 +358,6 @@ def find_custom_provider_identity_by_model(model: str) -> Optional[str]:
     return _find_custom_identity(_entry_serves_model)
 
 
-<<<<<<< HEAD
-=======
 def _endpoint_identity(base_url: str) -> Optional[str]:
     """The menu identity that owns ``base_url``: a configured entry, else the managed server."""
     identity = find_custom_provider_identity(base_url)
@@ -384,29 +372,15 @@ def _endpoint_identity(base_url: str) -> Optional[str]:
     return None
 
 
->>>>>>> origin/main
 def canonical_custom_identity(*, base_url: Optional[str] = None, config_provider: Optional[str] = None,
                               model: Optional[str] = None) -> Optional[str]:
     """Recover the durable menu identity for a bare custom provider. Match a configured
     endpoint first, then the ownership-checked managed server, then a configured model or
     provider. Every session persistence/restore path shares this lookup."""
     rp = _rp()
-<<<<<<< HEAD
-    if base_url:
-        identity = find_custom_provider_identity(base_url)
-        if identity:
-            return identity
-        # The managed server has no custom-provider config entry. Recover its menu key
-        # from the ownership-checked endpoint, never from a model name or a fixed port.
-        from hermes_cli.local_runtime.endpoint import _state_endpoint
-        endpoint = _state_endpoint()
-        if endpoint and _normalize_base_url_for_match(base_url) == _normalize_base_url_for_match(endpoint["base_url"]):
-            return "llamacpp"
-=======
     identity = _endpoint_identity(base_url) if base_url else None
     if identity:
         return identity
->>>>>>> origin/main
     identity = find_custom_provider_identity_by_model(model) if model else None
     if identity:
         return identity
@@ -439,8 +413,6 @@ def canonical_custom_identity(*, base_url: Optional[str] = None, config_provider
     return identity or custom_provider_slug(candidate_norm)
 
 
-<<<<<<< HEAD
-=======
 def session_provider_identity(provider: Any, requested_provider: Any, base_url: Any, model: Any = None, *,
                               config: Optional[dict[str, Any]] = None) -> str:
     """A session's identity: the requested entry while it still serves ``base_url``, else the endpoint's
@@ -460,7 +432,6 @@ def session_provider_identity(provider: Any, requested_provider: Any, base_url: 
     return canonical_custom_identity(model=_clean(model) or None) or adapter
 
 
->>>>>>> origin/main
 def is_routable_provider(provider: Optional[str]) -> bool:
     """Whether a provider name currently resolves to a routable route. Empty/None/``auto`` is
     vacuously routable (agent build falls back to the configured default). Bare ``custom`` is the

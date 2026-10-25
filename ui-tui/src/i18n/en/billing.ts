@@ -60,8 +60,6 @@ export const billingEn = {
       payNow: (amount: string) => `Pay ${amount} now`,
       hint: '↑/↓ select · Enter confirm · Y/N quick · Esc back'
     },
-<<<<<<< HEAD
-=======
     // Keep going on credits (window plans only; the portal sends the setting only there).
     keepGoing: {
       title: 'Keep going on credits?',
@@ -75,7 +73,6 @@ export const billingEn = {
       turnedOn: '✅ Keep going on credits: on. Uses your credits when included usage runs out.',
       turnedOff: '✅ Keep going on credits: off. Hermes waits for the reset.'
     },
->>>>>>> origin/main
     stepUp: {
       openingBrowser: 'Opening your browser to allow Remote Spending…',
       notAllowed:

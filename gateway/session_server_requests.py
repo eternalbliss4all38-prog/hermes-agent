@@ -22,13 +22,6 @@ _POLL_S = 0.25
 
 
 class _Pending:
-<<<<<<< HEAD
-    __slots__ = ("event", "events", "locked", "qids", "result", "session_id", "value")
-
-    def __init__(self, session_id, qids=None, events=None):
-        self.event = threading.Event()
-        self.session_id = session_id
-=======
     __slots__ = ("event", "events", "locked", "method", "params", "qids", "replay", "result", "session_id", "value")
 
     def __init__(self, session_id, qids=None, events=None, method=None, params=None, replay=True):
@@ -39,7 +32,6 @@ class _Pending:
         # for an automatic window request (a preview click), which a second delivery would run twice.
         self.params = params or {}
         self.replay = replay
->>>>>>> origin/main
         # The live session's own event stream the request went out on: one per authority (profile) and
         # session mount, so a viewer of another profile's same-named session can never settle it.
         self.events = events
@@ -105,19 +97,12 @@ def resolve(frame, *, session_ok=lambda session_id, events: True) -> bool:
     return True
 
 
-<<<<<<< HEAD
-def ask_viewer(events, session_id, method, params, *, cancelled=lambda: False, timeout=REQUEST_TIMEOUT_S) -> str:
-    """Send one one-string server→client request (``sudo``, ``secret``: ``ValueResult``) to the
-    session's attached viewers and wait for its ``value``; "" on skip, interrupt, timeout or no viewer."""
-    pending = _ask(events, session_id, method, params, cancelled=cancelled, timeout=timeout)
-=======
 def ask_viewer(events, session_id, method, params, *, cancelled=lambda: False, timeout=REQUEST_TIMEOUT_S,
                replay=True) -> str:
     """Send one one-string server→client request (``sudo``, ``secret``: ``ValueResult``) to the
     session's attached viewers and wait for its ``value``; "" on skip, interrupt, timeout or no viewer.
     ``replay=False``: a reconnecting viewer is not handed it again (``open_requests``)."""
     pending = _ask(events, session_id, method, params, cancelled=cancelled, timeout=timeout, replay=replay)
->>>>>>> origin/main
     return pending.value if pending is not None else ""
 
 
@@ -131,8 +116,6 @@ def ask_viewer_result(events, session_id, method, params, *, cancelled=lambda: F
     return pending.result if pending is not None else None
 
 
-<<<<<<< HEAD
-=======
 def waiting(events, session_id, method) -> bool:
     """Whether a *method* request is open on this live session's stream (the card still waits)."""
     with _lock:
@@ -163,7 +146,6 @@ def withdraw(events, session_id, method) -> int:
     return len(settled)
 
 
->>>>>>> origin/main
 def lock_answer(request_id, question_id, answer, *, session_ok=lambda session_id, events: False):
     """Lock one answer of an open batch request (``clarify.lock``; editable until the last lock;
     ``None`` = skipped). Returns the question ids still unanswered; the lock that empties it settles
@@ -186,17 +168,6 @@ def lock_answer(request_id, question_id, answer, *, session_ok=lambda session_id
     return remaining
 
 
-<<<<<<< HEAD
-def _ask(events, session_id, method, params, *, cancelled, timeout, qids=None):
-    if not events.fanout.transports():
-        return None
-    request_id = f"srq-{uuid.uuid4().hex[:12]}"
-    pending = _Pending(session_id, qids, events)
-    with _lock:
-        _open[request_id] = pending
-    events.fanout.write({"jsonrpc": "2.0", "id": request_id, "method": method,
-                         "params": {"session_id": session_id, **params}})
-=======
 def _ask(events, session_id, method, params, *, cancelled, timeout, qids=None, replay=True):
     if not events.fanout.transports():
         return None
@@ -205,7 +176,6 @@ def _ask(events, session_id, method, params, *, cancelled, timeout, qids=None, r
     with _lock:
         _open[request_id] = pending
     events.fanout.write({"jsonrpc": "2.0", "id": request_id, "method": method, "params": pending.params})
->>>>>>> origin/main
     waited = 0.0
     reason = "timeout"
     while not pending.event.wait(_POLL_S):

@@ -81,11 +81,7 @@ def clean_registry():
     registry._reset_for_tests()
 
 
-<<<<<<< HEAD
-@pytest.mark.parametrize("backend", ["modal", "daytona", "singularity"])
-=======
 @pytest.mark.parametrize("backend", ["modal", "daytona"])
->>>>>>> origin/main
 def test_sandbox_session_does_not_register_the_launch_dir(launch_dir, monkeypatch, backend):
     _backend(monkeypatch, backend)
     session = _fresh_session(f"launch-{backend}")

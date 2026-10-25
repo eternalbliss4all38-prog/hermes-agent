@@ -1,10 +1,6 @@
 // @vitest-environment jsdom
-<<<<<<< HEAD
-import { cleanup, render, renderHook, screen } from '@testing-library/react'
-=======
 import { cleanup, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
 import { atom } from 'nanostores'
->>>>>>> origin/main
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { ackComposerInsert } from '@/app/chat/composer/focus'
@@ -152,29 +148,6 @@ describe('TranscriptDirectiveLeaf', () => {
       dispose()
       setActiveSessionId(null)
       $selectedStoredSessionId.set(null)
-    }
-  })
-})
-
-describe('useResolvedParagraph', () => {
-  it('lifts a claimed directive out of the sentence around it', () => {
-    const dispose = registry.register({
-      id: 'test:inline',
-      area: TRANSCRIPT_DIRECTIVE_AREA,
-      source: 'plugin:test',
-      data: { name: 'inline', render: () => null } satisfies TranscriptDirectiveContribution
-    })
-
-    try {
-      const { result } = renderHook(() => useResolvedParagraph('See ::inline{x="1"} and ::other here'))
-
-      expect(result.current).toEqual([
-        { kind: 'prose', text: 'See ' },
-        { kind: 'directive', source: '::inline{x="1"}' },
-        { kind: 'prose', text: ' and ::other here' }
-      ])
-    } finally {
-      dispose()
     }
   })
 })

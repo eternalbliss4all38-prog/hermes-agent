@@ -124,8 +124,6 @@ test('snapshots expose batch question params without losing already locked answe
     id: 'question-1', method: 'clarify', params: { session_id: 'waiting', questions, answers }
   }])
 })
-<<<<<<< HEAD
-=======
 
 test('a snapshot keeps the owner\'s server requests beside the projected prompts', () => {
   const card = { id: 'srq-1', method: 'setup_beat', params: { session_id: 'waiting', beat: 'name', card: {} } }
@@ -139,4 +137,3 @@ test('a snapshot keeps the owner\'s server requests beside the projected prompts
   expect(snapshot.open_requests.map((entry: { id: string }) => entry.id)).toEqual(['srq-1', 'approve-1'])
   expect(snapshot.open_requests[0]).toEqual(card)
 })
->>>>>>> origin/main

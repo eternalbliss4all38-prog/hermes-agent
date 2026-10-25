@@ -577,8 +577,6 @@ def test_interpreter_crash_is_reported_as_a_crash_not_as_no_tests_ran(tmp_path: 
     assert "NO TESTS RAN" not in proc.stdout
 
 
-<<<<<<< HEAD
-=======
 def test_parse_summary_counts_setup_errors() -> None:
     """"41 passed, 7 errors" parses both counts (the input the Summary relies on)."""
     import importlib.util
@@ -693,7 +691,6 @@ def test_named_test_path_that_does_not_exist_fails_the_run(tmp_path: Path) -> No
     assert "=== Summary:" not in proc.stdout
 
 
->>>>>>> origin/main
 # ── --files-from: file-backed explicit file lists ───────────────────────────
 #
 # --files carries the whole list as ONE argv element, and Linux caps a

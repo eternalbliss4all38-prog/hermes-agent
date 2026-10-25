@@ -543,8 +543,6 @@ def _spawn_deferred_launchd_reload(
     return True
 
 
-<<<<<<< HEAD
-=======
 def _bootout_drain_and_rebootstrap(domain, plist_path, label, old_pid, budget: float) -> bool:
     """Boot the job out, wait out the old gateway's drain, then bootstrap until launchd registers it.
 
@@ -564,7 +562,6 @@ def _bootout_drain_and_rebootstrap(domain, plist_path, label, old_pid, budget: f
         domain, plist_path, label, deadline=time.monotonic() + budget)
 
 
->>>>>>> origin/main
 def refresh_launchd_plist_if_needed() -> bool:
     """Rewrite the installed plist when the generated one differs, then bootout/bootstrap so launchd
     re-reads it immediately."""
@@ -608,25 +605,9 @@ def refresh_launchd_plist_if_needed() -> bool:
         )
         return True
 
-<<<<<<< HEAD
-    # Bootout/bootstrap so launchd reads the new definition; bootstrap can fail silently under load
-    # during a drain, and KeepAlive can't revive an unregistered job.
-    # Captured: best-effort (the job may already be unloaded), keep expected noise off the terminal.
-    subprocess.run(["launchctl", "bootout", target], check=False, timeout=90, **_gw()._CAPTURE_TEXT)
-    _reload_budget = _launchd_reload_budget()
-    # Wait out the old gateway's drain first so the budget isn't burned on guaranteed EIO ("already loaded").
-    if gateway_pid is not None and not _gw()._wait_for_pid_exit(gateway_pid, _reload_budget):
-        _gw()._append_launchd_reload_log(
-            f"old gateway pid {gateway_pid} still alive after "
-            f"{int(_reload_budget)}s drain wait — bootstrapping {target} anyway"
-        )
-    _deadline = time.monotonic() + _reload_budget
-    if not _gw()._retry_launchctl_bootstrap_until_registered(domain, plist_path, label, deadline=_deadline):
-=======
     # Bootout/bootstrap so launchd reads the new definition.
     _reload_budget = _launchd_reload_budget()
     if not _bootout_drain_and_rebootstrap(domain, plist_path, label, gateway_pid, _reload_budget):
->>>>>>> origin/main
         _gw()._append_launchd_reload_log(
             f"FAILED launchd reload of {target} — service NOT registered after "
             f"retrying for {int(_reload_budget)}s (in-process fallback path)"
@@ -650,14 +631,11 @@ def launchd_install(force: bool = False, *, start_now: bool = True, force_unit_p
     # Loading the plist starts the gateway (RunAtLoad), so a no-start install writes it without
     # loading it. A gateway that launchd already runs is still reloaded; this install did not start it.
     load = start_now or _gw()._launchctl_label_supervising_process(label)
-<<<<<<< HEAD
-=======
     # A forced reinstall over a live job must remember the incumbent before bootstrap starts.
     # _launchctl_bootstrap() handles EIO by booting the stale label out and retrying once, but
     # that immediate retry races the old gateway's drain (#120629). The install path can wait
     # because it runs outside the supervised gateway process.
     force_old_pid = _gw()._launchctl_supervised_pid(label) if force and load else None
->>>>>>> origin/main
 
     if plist_path.exists() and not (force or force_unit_path):
         if _gw().launchd_plist_is_current():
@@ -701,13 +679,6 @@ def launchd_install(force: bool = False, *, start_now: bool = True, force_unit_p
         print("  hermes gateway status             # Check status")
         return
 
-<<<<<<< HEAD
-    try:
-        _gw()._launchctl_bootstrap(_gw()._launchd_domain(), plist_path, label, timeout=30)
-    except subprocess.CalledProcessError as e:
-        _gw()._launchd_degrade_or_raise(e, "launchctl bootstrap")
-        return
-=======
     if force_old_pid is not None:
         domain = _gw()._launchd_domain()
         target = f"{domain}/{label}"
@@ -728,7 +699,6 @@ def launchd_install(force: bool = False, *, start_now: bool = True, force_unit_p
         except subprocess.CalledProcessError as e:
             _gw()._launchd_degrade_or_raise(e, "launchctl bootstrap")
             return
->>>>>>> origin/main
 
     print()
     print("✓ Service installed and loaded!")

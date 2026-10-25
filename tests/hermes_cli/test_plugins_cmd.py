@@ -25,11 +25,7 @@ from hermes_cli.plugins_cmd import (
 from hermes_cli.plugins_cmd_install import _refuse_unavailable_portable_plugin
 
 
-<<<<<<< HEAD
-def _write_portable_app_plugin(root: Path, app: Path) -> None:
-=======
 def _write_portable_app_plugin(root: Path, app: Path, os_key: str | None = None) -> None:
->>>>>>> origin/main
     from hermes_cli.agent_plugins import MCP_SCHEMA_V1, PLUGIN_SCHEMA_V1
     from hermes_platform.host.facts import os_family
 
@@ -37,11 +33,7 @@ def _write_portable_app_plugin(root: Path, app: Path, os_key: str | None = None)
         "$schema": PLUGIN_SCHEMA_V1,
         "name": "example-plugin",
         "extensions": {"com.nousresearch.hermes": {"servers": {"worker": {
-<<<<<<< HEAD
-            "app": {os_family(): {"presence": "executable", "location": str(app)}},
-=======
             "app": {os_key or os_family(): {"presence": "executable", "location": str(app)}},
->>>>>>> origin/main
             "requires": {"app": True},
         }}}},
     }), encoding="utf-8")
@@ -58,10 +50,6 @@ def test_portable_install_gate_accepts_present_app_and_refuses_missing(tmp_path:
 
     _refuse_unavailable_portable_plugin("example-plugin", tmp_path)
     app.unlink()
-<<<<<<< HEAD
-    with pytest.raises(PluginOperationError, match="example-plugin.*worker.*missing_app"):
-        _refuse_unavailable_portable_plugin("example-plugin", tmp_path)
-=======
     with pytest.raises(PluginOperationError, match="example-plugin.*worker is not installed. Install worker"):
         _refuse_unavailable_portable_plugin("example-plugin", tmp_path)
 
@@ -74,7 +62,6 @@ def test_portable_install_gate_on_undeclared_os_does_not_say_install(tmp_path: P
     with pytest.raises(PluginOperationError, match="Example App is not supported on this operating system") as exc:
         _refuse_unavailable_portable_plugin("example-plugin", tmp_path, "Example App")
     assert "Install" not in str(exc.value)
->>>>>>> origin/main
 
 
 # ── _sanitize_plugin_name ─────────────────────────────────────────────────

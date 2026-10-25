@@ -527,8 +527,6 @@ class TerminalBackendSelect(BaseModel):
     backend: str
     profile: Optional[str] = None
 
-<<<<<<< HEAD
-=======
 class DelegationBackendSelect(BaseModel):
     backend: str
     profile: Optional[str] = None
@@ -543,7 +541,6 @@ class DelegationProfileRoutesUpdate(BaseModel):
     default: Optional[str] = None
     profile: Optional[str] = None
 
->>>>>>> origin/main
 class RawConfigUpdate(BaseModel):
     yaml_text: str
     profile: Optional[str] = None

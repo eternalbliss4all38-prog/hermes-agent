@@ -4,17 +4,11 @@ Downgrading is unsupported (#106742, jquesnelle item 6): the older release canno
 the sessions with runtime history, so the move is refused before the tree changes and the message
 names the pre-update snapshot that predates the cutover.
 """
-<<<<<<< HEAD
-import sqlite3
-import subprocess
-from contextlib import closing
-=======
 import json
 import sqlite3
 import subprocess
 from contextlib import closing
 from unittest.mock import Mock
->>>>>>> origin/main
 
 import pytest
 
@@ -103,8 +97,6 @@ def test_forward_updates_and_stores_without_ledger_rows_are_never_refused(repo, 
     assert guard.downgrade_refusal(["git"], repo, head, home=ledgered) is None
     _git(repo, "checkout", "-q", "--detach", old)  # running the old release: the newer target is forward
     assert guard.downgrade_refusal(["git"], repo, head, home=ledgered) is None
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.parametrize("divergent", [True, False], ids=["beside-history", "in-history"])
@@ -209,4 +201,3 @@ def test_local_schema_decides_without_remote_unless_the_probe_fails(repo, grep_e
     assert not guard.target_predates_runtime(None, repo, runtime, git=git, remote=remote)
     assert not guard.target_predates_runtime(None, repo, "HEAD", git=git, remote=remote)
     assert remote.call_count == (2 if grep_error else 0)
->>>>>>> origin/main

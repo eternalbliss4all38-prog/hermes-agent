@@ -60,11 +60,6 @@ export const arAssistant = {
         cron_session_read_only: {
           title: 'هذه المحادثة تابعة لمهمة مجدولة',
           body: 'إنها تشغّل تلك المهمة فقط، لذا لم تُنفَّذ رسالتك. ابدأ محادثة جديدة لإرسالها.'
-<<<<<<< HEAD
-        }
-      },
-      errorRetry: 'إعادة المحاولة',
-=======
         },
         usage_window: {
           title: 'نفد الاستخدام المضمّن',
@@ -86,7 +81,6 @@ export const arAssistant = {
       errorUseCreditsFailed: 'تعذر تفعيل الاستمرار بالرصيد',
       errorAddCredits: 'إضافة رصيد',
       errorOpenBillingSettings: 'فتح إعدادات الفوترة',
->>>>>>> origin/main
       errorLimitResets: time => `يُعاد ضبط الحد عند ${time}`,
       errorRetryAtReset: time => `إعادة المحاولة عند إعادة ضبط الحد (${time})`,
       errorRetryScheduled: (time, wait) => `ستتم إعادة المحاولة عند ${time} — بعد ${wait}`,

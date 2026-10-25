@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import { arDelegationRouting } from './ar_delegation_routing'
->>>>>>> origin/main
 import { arUpdateChannel } from './ar_update_channel'
 import type { TranslationOverrides } from './define-locale'
 
@@ -16,8 +13,6 @@ export const arSettings = {
     noResults: 'لا توجد لغة مطابقة'
   },
   settings: {
-<<<<<<< HEAD
-=======
     // Window plans (Nous subscription with included usage). Other billing strings: overlay-gaps.json.
     billing: {
       keepGoingOnCredits: {
@@ -48,7 +43,6 @@ export const arSettings = {
         }
       }
     },
->>>>>>> origin/main
     subpages: {
       appearanceTheme: 'السمة',
       appearanceTypography: 'الخطوط والتحجيم',
@@ -266,12 +260,9 @@ export const arSettings = {
       testBody: 'الإشعارات تعمل.',
       testSent: 'تم إرسال التجربة. إذا لم يظهر شيء، تحقق من أذونات الإشعارات في نظام التشغيل ووضع التركيز/عدم الإزعاج.',
       testUnsupported: 'هذا النظام لا يدعم الإشعارات الأصلية.',
-<<<<<<< HEAD
-=======
       muteSoundsTitle: 'كتم أصوات الواجهة',
       muteSoundsDesc:
         'يكتم تنبيهات الاكتمال وكلمة التنبيه والتفكير التلقائية والاستجابة اللمسية وأصوات إشعارات النظام. تظل معاينات الصوت والردود المنطوقة مسموعة.',
->>>>>>> origin/main
       completionSoundTitle: 'صوت الاكتمال',
       completionSoundDesc: 'يُشغّل عند انتهاء دور الوكيل. اختر إعدادا مسبقا وعاينه هنا.',
       completionSoundPreview: 'معاينة'
@@ -864,12 +855,8 @@ export const arSettings = {
           'نقطة نهاية مباشرة مفعّلة ولها الأولوية على الموفّر المحفوظ. يُحتفظ بعنوانها وبيانات اعتمادها ما دام هذا الوضع محددًا.',
         directClear: 'تطبيق هذا المسار يمسح نقطة النهاية المباشرة ومفتاحها المحفوظ. تبقى إعدادات الطلب الأخرى كما هي.',
         catalogFailed: 'كتالوج النماذج غير متاح. أدخل الموفّر والنموذج يدويًا أو أعد المحاولة.',
-<<<<<<< HEAD
-        draftHint: 'تبقى التغييرات محلية حتى تطبيقها.'
-=======
         draftHint: 'تبقى التغييرات محلية حتى تطبيقها.',
         routing: arDelegationRouting
->>>>>>> origin/main
       }
     },
     providers: {
@@ -982,9 +969,6 @@ export const arSettings = {
     priceTitle: 'السعر',
     customModel: 'نموذج مخصص',
     addCustomModelAction: 'إضافة نموذج مخصص…',
-<<<<<<< HEAD
-    customModelPlaceholder: 'اكتب معرّف النموذج، مثل openai/gpt-5'
-=======
     customModelPlaceholder: 'اكتب معرّف النموذج، مثل openai/gpt-5',
     today: 'اليوم',
     week: 'الأسبوع',
@@ -1006,7 +990,6 @@ export const arSettings = {
     sectionRecommended: 'موصى بها',
     sectionOther: 'نماذج أخرى',
     largeFootnote: 'تستهلك النماذج الكبيرة أيضًا حدّك الشهري للنماذج الكبيرة.'
->>>>>>> origin/main
   },
   modelVisibility: {
     title: 'النماذج',

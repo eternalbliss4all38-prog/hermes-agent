@@ -1,10 +1,7 @@
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import type { TranslationOverrides } from './define-locale'
-<<<<<<< HEAD
-=======
 import { zhHantDelegationRouting } from './zh-hant_delegation_routing'
->>>>>>> origin/main
 import { zhHantUpdateChannel } from './zh-hant_update_channel'
 
 export const zhHantSettings = {
@@ -242,11 +239,8 @@ export const zhHantSettings = {
       testBody: '通知運作正常。',
       testSent: '測試已傳送。若沒有出現，請檢查系統通知權限與專注模式／勿擾模式。',
       testUnsupported: '此系統不支援原生通知。',
-<<<<<<< HEAD
-=======
       muteSoundsTitle: '靜音介面提示音',
       muteSoundsDesc: '關閉自動完成、喚醒詞和思考提示音、觸感回饋以及系統通知聲音。聲音預覽和語音回覆仍會播放。',
->>>>>>> origin/main
       completionSoundTitle: '完成提示音',
       completionSoundDesc: '代理回合結束時播放。可在此選擇預設並預覽。',
       completionSoundPreview: '預覽'
@@ -1103,12 +1097,8 @@ export const zhHantSettings = {
         directActive: '直接端點已啟用，優先於已儲存的提供方。選擇此模式時會保留其端點與憑證。',
         directClear: '套用此路由會清除直接端點及其儲存的金鑰。其他請求設定維持不變。',
         catalogFailed: '模型目錄無法使用。請手動輸入提供方與模型，或重試。',
-<<<<<<< HEAD
-        draftHint: '套用前，變更只保留在本機。'
-=======
         draftHint: '套用前，變更只保留在本機。',
         routing: zhHantDelegationRouting
->>>>>>> origin/main
       }
     },
     localModels: {
@@ -1309,8 +1299,6 @@ export const zhHantSettings = {
         effectScheduled: (targetName, effectiveAt, creditsDelta) =>
           `變更為 ${targetName}，於 ${effectiveAt} 生效。現在不扣款；在此之前保留目前方案。${creditsDelta ? `每月額度變化：${creditsDelta}。` : ''}`
       },
-<<<<<<< HEAD
-=======
       keepGoingOnCredits: {
         title: '用額度繼續',
         description: '包含的用量用完後，使用你的額度。關閉時，Hermes 等待重設。',
@@ -1320,7 +1308,6 @@ export const zhHantSettings = {
         approvedRetry: 'Remote Spending 已核准，但變更未儲存。',
         tryAgain: '重試'
       },
->>>>>>> origin/main
       autoReload: {
         threshold: '門檻',
         thresholdAria: '自動儲值門檻',
@@ -1391,8 +1378,6 @@ export const zhHantSettings = {
             captionDefault: '預設上限',
             captionSpending: '每月遠端支出',
             valueUsed: (spent, limit) => `${limit} 中已用 ${spent}`
-<<<<<<< HEAD
-=======
           },
           window: {
             today: '今天',
@@ -1407,7 +1392,6 @@ export const zhHantSettings = {
             captionResetsIn: duration => `${duration}後重設`,
             captionIncluded: '包含用量',
             valueUsed: percent => `已用 ${percent}`
->>>>>>> origin/main
           }
         },
         planCard: {
@@ -1639,9 +1623,6 @@ export const zhHantSettings = {
     wasPrice: '原價',
     customModel: '自訂模型',
     addCustomModelAction: '新增自訂模型…',
-<<<<<<< HEAD
-    customModelPlaceholder: '輸入模型 ID，例如 openai/gpt-5'
-=======
     customModelPlaceholder: '輸入模型 ID，例如 openai/gpt-5',
     today: '今日',
     week: '本週',
@@ -1663,7 +1644,6 @@ export const zhHantSettings = {
     sectionRecommended: '推薦',
     sectionOther: '其他模型',
     largeFootnote: '大型模型也會消耗你的每月大型模型額度。'
->>>>>>> origin/main
   },
 
   modelVisibility: {

@@ -1,19 +1,11 @@
 """Browser Provider ABC: pluggable cloud browser backends (Browserbase, Browser Use, Firecrawl, …).
 
 Providers register via :meth:`PluginContext.register_browser_provider`; the active one (selected by
-<<<<<<< HEAD
-``browser.cloud_provider``) services every cloud-mode ``browser_*`` tool call. They live in
-``<repo>/plugins/browser/<name>/`` (built-in) or ``~/.hermes/plugins/browser/<name>/`` (user).
-
-Session metadata contract (legacy ``CloudBrowserProvider`` shape; ``tools.browser_tool`` needs no
-translation). ``bb_session_id`` is a legacy key name kept verbatim — it holds the provider's session ID
-=======
 ``browser.cloud_provider``) supplies the CDP browser ``browser_exec`` drives in cloud mode. They live in
 ``<repo>/plugins/browser/<name>/`` (built-in) or ``~/.hermes/plugins/browser/<name>/`` (user).
 
 Session metadata contract (legacy ``CloudBrowserProvider`` shape; ``tools.browser_session`` caches it
 as-is). ``bb_session_id`` is a legacy key name kept verbatim — it holds the provider's session ID
->>>>>>> origin/main
 regardless of provider::
 
     {
@@ -39,11 +31,7 @@ class BrowserProvider(ProviderBase):
 
     Subclasses implement :attr:`name` (the ``browser.cloud_provider`` value), :meth:`is_available`, and
     the lifecycle trio :meth:`create_session` / :meth:`close_session` / :meth:`emergency_cleanup`.
-<<<<<<< HEAD
-    ``get_setup_schema`` may add ``"post_setup"`` (e.g. ``"agent_browser"``) to trigger the install hook.
-=======
     ``get_setup_schema`` may add ``"post_setup"`` naming a ``hermes tools`` install hook.
->>>>>>> origin/main
     """
 
     @abc.abstractmethod

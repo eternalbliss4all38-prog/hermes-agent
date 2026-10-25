@@ -11,11 +11,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from .base import JsonValue, Params, Result, WireEnum
-<<<<<<< HEAD
-from .common import MessageReaction, OpenModel, ProfileParams, SessionParams
-=======
 from .common import MessageReaction, OpenModel, PlanUsage, ProfileParams, SessionParams
->>>>>>> origin/main
 from .registry import method
 
 # ── billing envelope ──────────────────────────────────────────────────────────────────────────
@@ -165,11 +161,6 @@ class BillingStateResult(Result):
     payment_method: BillingPaymentMethod | None = None
     monthly_cap: BillingMonthlyCap | None = None
     auto_reload: BillingAutoReload | None = None
-<<<<<<< HEAD
-    portal_url: str | None = None
-    error: str | None = None
-    usage: UsageModel | None = None
-=======
     # Window plans: "Keep going on credits". None = no control (not admin,
     # other plan, or an older portal).
     keep_going_on_credits: bool | None = None
@@ -178,7 +169,6 @@ class BillingStateResult(Result):
     usage: UsageModel | None = None
     # Usage-window gauges (today / week / top-tier); None on credit-grant / free / logged-out.
     plan_usage: PlanUsage | None = None
->>>>>>> origin/main
 
 
 method("billing.state", params=ProfileParams, result=BillingStateResult,
@@ -233,10 +223,7 @@ class SubscriptionStateResult(Result):
     portal_url: str | None = None
     error: str | None = None
     usage: UsageModel | None = None
-<<<<<<< HEAD
-=======
     plan_usage: PlanUsage | None = None
->>>>>>> origin/main
 
 
 method("subscription.state", params=ProfileParams, result=SubscriptionStateResult,
@@ -360,8 +347,6 @@ method("billing.auto_reload", params=BillingAutoReloadParams, result=BillingMuta
        doc="Enable/disable auto top-up with its threshold and reload amount (billing:manage).")
 
 
-<<<<<<< HEAD
-=======
 class BillingKeepGoingOnCreditsParams(ProfileParams):
     enabled: bool = False
 
@@ -370,7 +355,6 @@ method("billing.keep_going_on_credits", params=BillingKeepGoingOnCreditsParams, 
        doc="Window plans: turn 'Keep going on credits' on/off (billing:manage).")
 
 
->>>>>>> origin/main
 class BillingStepUpParams(ProfileParams):
     session_id: str | None = None
 

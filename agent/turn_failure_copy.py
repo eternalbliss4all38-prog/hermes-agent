@@ -22,8 +22,6 @@ SITE_FAILURE_CODES = frozenset({
 })
 
 
-<<<<<<< HEAD
-=======
 def launch_credentials_copy(error: Any) -> str:
     """The refusal for a session whose own launch/route API key changed or is gone (``RuntimeStoreError``
     or an RPC refusal carrying ``field``/``detail``). A session never sends a different key than it
@@ -40,7 +38,6 @@ def launch_credentials_copy(error: Any) -> str:
     return f"{text}\n\nDetails: launch_credentials_unavailable{named}" if field else text
 
 
->>>>>>> origin/main
 def stamp_failure(result: dict[str, Any], reason: str, retryable: bool) -> dict[str, Any]:
     """Stamp the UI verdict fields on a terminal result (in place; returns it)."""
     result["failure_reason"] = reason
@@ -69,12 +66,9 @@ AUTOMATION_INTERRUPTED_NOTICE = (
     "An automated delivery was interrupted and was not run again. Some "
     "actions may already have run; verify their effects."
 )
-<<<<<<< HEAD
-=======
 # Durable tail roles a failed turn leaves open: its accepted ``user`` row, or the ``tool`` row of a
 # call that ran before the failure. An ``assistant`` tail is already closed (a reply or a boundary).
 OPEN_TURN_TAIL_ROLES = frozenset({"user", "tool"})
->>>>>>> origin/main
 # ``messages.display_kind`` of that row: display-only (stripped before every provider request),
 # so renderers show a Hermes notice and room pollers never read it as the model's reply.
 FAILED_TURN_DISPLAY_KIND = "failed_turn"

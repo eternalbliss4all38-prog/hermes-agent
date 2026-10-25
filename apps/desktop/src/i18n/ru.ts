@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // health: allow FILE_LINES -- locale data: translated copy for the usage-window plan UI (allowance gauges, Large/Free tags, the limit card), one key per string
->>>>>>> origin/main
 import { defineFieldCopy } from '@/app/settings/field-copy'
 
 import { defineLocale, type TranslationOverrides } from './define-locale'
@@ -9,23 +6,15 @@ import { ruBoot } from './ru_boot'
 import { ruCatalog, ruSkillDeepLink } from './ru_catalog'
 import { ruClarify } from './ru_clarify'
 import { ruConnectors } from './ru_connectors'
-<<<<<<< HEAD
-=======
 import { ruErrorCodes } from './ru_error_codes'
->>>>>>> origin/main
 import { ruFirstRun } from './ru_first_run'
 import { ruModelMenu } from './ru_model_menu'
 import { ruModelSettings } from './ru_model_settings'
 import { ruNotices } from './ru_notices'
-<<<<<<< HEAD
-import { ruOnboarding } from './ru_onboarding'
-import { ruPluginSettings } from './ru_plugins'
-=======
 import { ruNotifications } from './ru_notifications'
 import { ruOnboarding } from './ru_onboarding'
 import { ruPluginPreviewAccess } from './ru_plugin_preview_access'
 import { ruPluginSettings, ruPluginsTab } from './ru_plugins'
->>>>>>> origin/main
 import { ruProjects } from './ru_projects'
 import { ruSharedMetrics } from './ru_shared_metrics'
 import { ruThemePicker } from './ru_theme_picker'
@@ -53,10 +42,6 @@ const RU_NOUN = (count: number | string, one: string, few: string, many: string)
 }
 
 export const ruOverrides = {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
   catalog: ruCatalog,
   connectors: ruConnectors.connectors,
   sharedMetrics: ruSharedMetrics,
@@ -363,8 +348,6 @@ export const ruOverrides = {
     noResults: 'Языки не найдены'
   },
   settings: {
-<<<<<<< HEAD
-=======
     // Window plans (Nous subscription with included usage). Other billing strings: overlay-gaps.json.
     billing: {
       keepGoingOnCredits: {
@@ -396,7 +379,6 @@ export const ruOverrides = {
         }
       }
     },
->>>>>>> origin/main
     subpages: {
       appearanceTheme: 'Тема',
       appearanceTypography: 'Шрифты и масштаб',
@@ -475,56 +457,7 @@ export const ruOverrides = {
       plugins: 'Плагины'
     },
     plugins: ruPluginSettings.plugins,
-<<<<<<< HEAD
-    notifications: {
-      title: 'Уведомления',
-      intro: 'Системные уведомления (не всплывающие внутри приложения). Настраивается для каждого устройства.',
-      enableAll: 'Включить уведомления',
-      enableAllDesc: 'Если выключено — все уведомления ниже будут заглушены.',
-      focusedHint: 'Оповещения о завершении срабатывают только пока Hermes в фоне.',
-      kinds: {
-        approval: {
-          label: 'Нужно одобрение',
-          description: 'Команда ожидает вашего одобрения или отклонения.'
-        },
-        input: {
-          label: 'Нужен ввод',
-          description: 'Hermes задал вопрос или требует пароль/секрет.'
-        },
-        turnDone: {
-          label: 'Ответ готов',
-          description: 'Ход завершился, пока Hermes был в фоне.'
-        },
-        turnError: {
-          label: 'Ход не удался',
-          description: 'Ошибки фоновых ходов.'
-        },
-        backgroundDone: {
-          label: 'Фоновая задача завершена',
-          description: 'Фоновая команда терминала выполнена.'
-        },
-        credits: {
-          label: 'Оповещения о кредитах',
-          description: 'Доступ к кредитам приостановлен или восстановлен.'
-        },
-        plugin: {
-          label: 'Уведомления плагинов',
-          description: 'Плагин приложения отправил уведомление, пока Hermes был в фоне.'
-        }
-      },
-      test: 'Отправить тестовое уведомление',
-      testTitle: 'Hermes',
-      testBody: 'Уведомления работают.',
-      testSent:
-        'Тест отправлен. Если ничего не появилось, проверьте разрешения на уведомления в системе и режим «Не беспокоить».',
-      testUnsupported: 'Эта система не поддерживает системные уведомления.',
-      completionSoundTitle: 'Звук завершения',
-      completionSoundDesc: 'Воспроизводится, когда ход агента завершён. Выберите пресет и прослушайте здесь.',
-      completionSoundPreview: 'Прослушать'
-    },
-=======
     notifications: ruNotifications,
->>>>>>> origin/main
     sections: {
       model: 'Модель',
       chat: 'Чат',
@@ -1504,13 +1437,7 @@ export const ruOverrides = {
   },
   skillDeepLink: ruSkillDeepLink,
   skills: {
-<<<<<<< HEAD
-    plugins: {
-      pageBlurb: 'Плагин может расширять приложение, агента или оба сразу — у каждой части свой переключатель.'
-    },
-=======
     plugins: { ...ruPluginPreviewAccess, ...ruPluginsTab },
->>>>>>> origin/main
     tabSkills: 'Навыки',
     tabToolsets: 'Инструменты',
     configuringProfile: 'Настраивается:',
@@ -2718,11 +2645,7 @@ export const ruOverrides = {
       '/init': 'Просканировать репозиторий и создать или обновить инструкции AGENTS.md',
       '/suggestions': 'Просмотреть, принять или отклонить предложенные автоматизации',
       '/blueprint': 'Настроить автоматизацию по шаблону',
-<<<<<<< HEAD
-      '/browser': 'Управлять браузером агента [connect|disconnect|status|use]',
-=======
       '/browser': 'Управлять браузером агента [connect|disconnect|status]',
->>>>>>> origin/main
       '/palette': 'Открыть палитру команд',
       '/usage': 'Показать расход токенов и лимиты; reset использует накопленный сброс лимита Codex',
       '/subscription': 'Показать план Nous и изменить его в браузере',
@@ -3193,9 +3116,6 @@ export const ruOverrides = {
     wasPrice: 'было',
     customModel: 'Своя модель',
     addCustomModelAction: 'Добавить свою модель…',
-<<<<<<< HEAD
-    customModelPlaceholder: 'Введите id модели, например openai/gpt-5'
-=======
     customModelPlaceholder: 'Введите id модели, например openai/gpt-5',
     today: 'Сегодня',
     week: 'Неделя',
@@ -3222,7 +3142,6 @@ export const ruOverrides = {
     sectionRecommended: 'Рекомендуемые',
     sectionOther: 'Другие модели',
     largeFootnote: 'Крупные модели также расходуют месячный лимит крупных моделей.'
->>>>>>> origin/main
   },
 
   modelVisibility: {
@@ -3620,8 +3539,6 @@ export const ruOverrides = {
   },
   assistant: {
     thread: {
-<<<<<<< HEAD
-=======
       errorSwitchToModel: (model: string, note?: string) =>
         note ? `Переключиться на ${model} (${note})` : `Переключиться на ${model}`,
       errorSwitchModelFailed: 'Не удалось переключить модель',
@@ -3629,7 +3546,6 @@ export const ruOverrides = {
       errorUseCreditsFailed: 'Не удалось включить «Продолжать за кредиты»',
       errorAddCredits: 'Пополнить кредиты',
       errorOpenBillingSettings: 'Открыть настройки оплаты',
->>>>>>> origin/main
       loadingSession: 'Загрузка сеанса',
       showEarlier: 'Показать ранние сообщения',
       loadingResponse: 'Hermes загружает ответ',
@@ -3650,16 +3566,7 @@ export const ruOverrides = {
       branchNewChat: 'Ветка в новый чат',
       react: 'Реакция',
       dismissError: 'Скрыть ошибку',
-<<<<<<< HEAD
-      errorCodes: {
-        cron_session_read_only: {
-          title: 'Этот чат относится к запланированной задаче',
-          body: 'Он только выполняет эту задачу, поэтому ваше сообщение не было выполнено. Начните новый чат, чтобы отправить его.'
-        }
-      },
-=======
       errorCodes: ruErrorCodes,
->>>>>>> origin/main
       filesChanged: count => `${count} ${RU_PLURAL(count, 'файл изменён', 'файла изменено', 'файлов изменено')}`,
       reviewChanges: 'Проверить',
       readAloudFailed: 'Не удалось зачитать вслух',

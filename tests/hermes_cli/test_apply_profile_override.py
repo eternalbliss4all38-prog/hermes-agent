@@ -396,8 +396,6 @@ class TestS6ContainerGatewayRun:
                 tmp_path, monkeypatch, hermes_home=str(root), active_profile="coder", argv=argv,
             )
             assert result == str(root / "profiles" / "coder"), argv
-<<<<<<< HEAD
-=======
 
 
 def test_module_entry_keeps_an_explicit_default_profile_over_the_sticky_one(tmp_path):
@@ -417,4 +415,3 @@ def test_module_entry_keeps_an_explicit_default_profile_over_the_sticky_one(tmp_
                          env=env, capture_output=True, text=True, timeout=120, check=True).stdout
 
     assert Path(out.strip().splitlines()[-1]).resolve() == (root / "config.yaml").resolve()
->>>>>>> origin/main

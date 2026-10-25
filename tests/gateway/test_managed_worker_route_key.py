@@ -28,11 +28,7 @@ def _minimax_frame(tmp_path, monkeypatch, api_key=None):
     return {**frame, 'policy': policy, 'api_key': api_key}
 
 
-<<<<<<< HEAD
-def _execute(frame, monkeypatch, base=object, built=None):
-=======
 def _execute(frame, monkeypatch, base=object, built=None, result=None, sent=None):
->>>>>>> origin/main
     from agent import managed_worker as worker
     built = {} if built is None else built
 
@@ -43,11 +39,7 @@ def _execute(frame, monkeypatch, base=object, built=None, result=None, sent=None
                 super().__init__(**kwargs)
             self.session_prompt_tokens = self.session_completion_tokens = 0
         def run_conversation(self, text, **kwargs):
-<<<<<<< HEAD
-            return {'final_response': 'ok', 'completed': True}
-=======
             return dict(result or {'final_response': 'ok', 'completed': True})
->>>>>>> origin/main
 
     class Store:
         def __init__(self, *args): pass
@@ -72,12 +64,8 @@ def _execute(frame, monkeypatch, base=object, built=None, result=None, sent=None
     monkeypatch.setattr('tools.process_registry.process_registry.recover_from_checkpoint', lambda: None)
     monkeypatch.setattr('run_agent.AIAgent', Agent)
     monkeypatch.setattr('agent.title_generator.wait_for_title_upgrades', lambda: None)
-<<<<<<< HEAD
-    worker.execute(frame, SimpleNamespace(send=lambda kind, **payload: None))
-=======
     sent = [] if sent is None else sent
     worker.execute(frame, SimpleNamespace(send=lambda kind, **payload: sent.append((kind, payload))))
->>>>>>> origin/main
     return built
 
 

@@ -71,14 +71,9 @@ def test_bundle_stages_git_tree_and_runs_native_children_before_manifest(tmp_pat
         '[project]\nname="fixture"\nversion="1.0.0"\nrequires-python=">=3.11"\n'
         '[project.scripts]\nprobe="entry:main"\n[project.optional-dependencies]\npayloadtest=["bundle-probe==1.0"]\n'
         '[tool.uv]\npackage=false\nno-index=true\nfind-links=["wheels"]\n', encoding="utf-8")
-<<<<<<< HEAD
-    selected = {"agent-browser", "chromium", "uv", "python"}
-    stale = {"chromium-headless-shell", "retired-tool"}
-=======
     selected = {"chromium", "uv", "python"}
     # agent-browser: a retired package a pre-upgrade store still records.
     stale = {"agent-browser", "chromium-headless-shell", "retired-tool"}
->>>>>>> origin/main
     user_store = tmp_path / "user-tools"
     for store in (output / "tools", user_store):
         store.mkdir(parents=True, exist_ok=True)
@@ -105,24 +100,12 @@ def test_bundle_stages_git_tree_and_runs_native_children_before_manifest(tmp_pat
     shutil.copy2(uv, uv_package.binary(uv_entry, target))
     # Browser payloads are inert: this test exercises their real dependency
     # closure, admission and pruning, not browser execution or downloads.
-<<<<<<< HEAD
-    for name in ("agent-browser", "chromium"):
-        package = get_package(name)
-        entry = canonical / package.store_entry(lock.version(name), target)
-        binary = (entry / ("chrome.exe" if os.name == "nt" else "chrome")
-                  if name == "chromium" else package.binary(entry, target))
-        binary.parent.mkdir(parents=True)
-        binary.write_text("inert browser fixture", encoding="utf-8")
-        if name == "chromium":
-            (entry / "INSTALLATION_COMPLETE").touch()
-=======
     chromium = get_package("chromium")
     entry = canonical / chromium.store_entry(lock.version("chromium"), target)
     binary = entry / ("chrome.exe" if os.name == "nt" else "chrome")
     binary.parent.mkdir(parents=True)
     binary.write_text("inert browser fixture", encoding="utf-8")
     (entry / "INSTALLATION_COMPLETE").touch()
->>>>>>> origin/main
     facts = Facts(canonical / "facts.json")
     for name in selected:
         package = get_package(name)
@@ -141,11 +124,7 @@ def test_bundle_stages_git_tree_and_runs_native_children_before_manifest(tmp_pat
     subprocess.run(["git", "-c", "user.name=Fixture", "-c", "user.email=fixture@example.test", "commit", "-m", "fixture"], cwd=repo, check=True, capture_output=True)
     monkeypatch.setattr("pm.paths.repo_root", lambda: repo)
     (repo / "untracked").write_text("must not ship", encoding="utf-8")
-<<<<<<< HEAD
-    monkeypatch.setattr(native, "_bundle_package_names", lambda: ["agent-browser", "uv"])
-=======
     monkeypatch.setattr(native, "_bundle_package_names", lambda: ["chromium", "uv"])
->>>>>>> origin/main
     monkeypatch.setattr(importlib.import_module("pm.install"), "_prepare_artifacts",
                         lambda *args, **kwargs: pytest.fail("prepared tools reached acquisition"))
     monkeypatch.setattr("pm.client.is_runtime", lambda: True)

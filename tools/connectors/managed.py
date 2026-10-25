@@ -51,16 +51,6 @@ DESKTOP_PAGE = "desktop_page"
 CARD_RETRY = "card_retry"
 
 
-<<<<<<< HEAD
-def managed_client(*, initiator: Optional[str] = AGENT_TOOL, call: Optional[Any] = None):
-    """The real gateway client for a user action. The first one creates the guest identity when the
-    user has none: every hosted action is a request for an app. ``initiator`` names who asked, so
-    every link the client mints is attributed."""
-    from tools.connectors.gateway.client import ConnectorClient
-    from tools.connectors.gateway.errors import ToolGatewayError
-
-    if setup_error := ensure_guest_identity():
-=======
 def managed_client(*, creates_guest: bool, initiator: Optional[str] = AGENT_TOOL, call: Optional[Any] = None):
     """The real gateway client for a user action. ``creates_guest`` is the caller's declaration that
     it may create the guest identity when the user has none (a connect, an explicit list); a page
@@ -70,15 +60,11 @@ def managed_client(*, creates_guest: bool, initiator: Optional[str] = AGENT_TOOL
     from tools.connectors.gateway.errors import ToolGatewayError
 
     if creates_guest and (setup_error := ensure_guest_identity()):
->>>>>>> origin/main
         raise ToolGatewayError(setup_error, code=GUEST_SETUP_FAILED, retryable=True)
     return ConnectorClient(initiator=initiator, call=call)
 
 
 def managed_kind(client: Any, action: str, force: bool) -> Kind:
-<<<<<<< HEAD
-    return Kind(prepare=_prepare(client, action, force), observe=lambda operation: _observe(client, operation), note=NOTE)
-=======
     noted: set[str] = set()
 
     def noting(step: Callable[[ConnectionOperation], None]) -> Callable[[ConnectionOperation], None]:
@@ -99,7 +85,6 @@ def _note_connected(operation: ConnectionOperation, noted: set[str]) -> None:
 
         noted.update(fresh)
         note_app_connected()
->>>>>>> origin/main
 
 
 def _status_by_slug(client: Any) -> dict[str, dict[str, Any]]:
@@ -371,12 +356,9 @@ def _no_card_result(client: Any, action: str, targets: list[HostedTarget], force
 
 def _status_result(client: Any, connectors: list[str]) -> str:
     items = client.list_connectors()
-<<<<<<< HEAD
-=======
     from hermes_cli.free_tier_offer import note_connected_apps_seen
 
     note_connected_apps_seen(items)
->>>>>>> origin/main
     known = {str(i.get("connector", "")).lower() for i in items}
     unknown = {name: _unknown_slug(name, known) for name in connectors if name not in known}
     if connectors:
@@ -468,11 +450,7 @@ def run_managed_action(
         if action == "rename":
             return _rename_result(targets[0])
         call = CallRef(turn_id=turn_id, tool_call_id=tool_call_id)
-<<<<<<< HEAD
-        client = client_factory() if client_factory else managed_client(call=call)
-=======
         client = client_factory() if client_factory else managed_client(creates_guest=True, call=call)
->>>>>>> origin/main
         if action == "display":
             return _display_result(client, [t.name for t in targets], session_id=session_id, tool_call_id=tool_call_id,
                                    connection_callback=connection_callback if card_surface else None, call=call)

@@ -27,11 +27,7 @@ def test_snapshot_store_reads_dict_and_tolerates_missing_or_damaged_file(tmp_pat
 class _TestableEnv(BaseEnvironment):
     """Concrete subclass for testing base class methods."""
 
-<<<<<<< HEAD
-    _sudo_nopasswd_probe_supported = True
-=======
     _passwordless_sudo_probe_supported = True
->>>>>>> origin/main
 
     def __init__(self, cwd="/tmp", timeout=10):
         super().__init__(cwd=cwd, timeout=timeout)
@@ -65,11 +61,7 @@ def test_nopasswd_probe_runs_sudo_n_inside_backend_only_when_supported(
     monkeypatch, supported, returncode, expected, probed
 ):
     env = _TestableEnv()
-<<<<<<< HEAD
-    env._sudo_nopasswd_probe_supported = supported
-=======
     env._passwordless_sudo_probe_supported = supported
->>>>>>> origin/main
     run = MagicMock(return_value=object())
     monkeypatch.setattr(env, "_run_bash", run)
     monkeypatch.setattr(env, "_wait_for_process", MagicMock(return_value={"returncode": returncode}))

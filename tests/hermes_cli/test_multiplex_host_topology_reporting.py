@@ -5,10 +5,6 @@ Invariants (all fail on origin/main):
   user to start a second process.
 * ``hermes -p <served> doctor`` reports the single host gateway + its roster, not
   "Per-profile gateways: up/total", and still checks the HOST systemd unit's linger.
-<<<<<<< HEAD
-* ``hermes claw``'s destructive-action warning FIRES for a served profile.
-=======
->>>>>>> origin/main
 * the state.db holder line names the shared host process and the profiles it serves.
 """
 
@@ -58,24 +54,6 @@ def test_cron_status_names_the_host_gateway_for_a_served_profile(served_host, ca
     assert "sudo hermes gateway install --system" not in out
 
 
-<<<<<<< HEAD
-def test_claw_warning_fires_for_a_served_profile(served_host, capsys, monkeypatch):
-    from hermes_cli import claw
-
-    (served_host / "gateway_state.json").write_text(json.dumps(
-        {"served_profiles": ["default", "served"],
-         "platforms": {"served:telegram": {"state": "connected"}, "telegram": {"state": "connected"}}}))
-    fired = []
-    monkeypatch.setattr(claw, "_warn_running", lambda *a, **k: fired.append(a) or True)
-
-    claw._warn_if_gateway_running(auto_yes=True)
-
-    assert fired, "destructive-action warning was silently skipped for a served profile"
-    assert "telegram" in fired[0][1]
-
-
-=======
->>>>>>> origin/main
 def test_doctor_reports_the_single_host_gateway_not_per_profile_slots(served_host, capsys, monkeypatch):
     from hermes_cli import doctor_platform
 

@@ -69,15 +69,10 @@ let
 in
 writeShellApplication {
   name = "sandbox";
-<<<<<<< HEAD
-  text = ''
-    export LD_LIBRARY_PATH=${lib.makeLibraryPath electronRuntime}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-=======
   # darwin's Electron is self-contained, and these libraries are Linux-only.
   text = lib.optionalString stdenv.hostPlatform.isLinux ''
     export LD_LIBRARY_PATH=${lib.makeLibraryPath electronRuntime}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
   '' + ''
->>>>>>> origin/main
     exec ${../scripts/dev-sandbox.sh} "$@"
   '';
 }

@@ -82,8 +82,6 @@ class TestClassifyFetchFailure:
         assert "SSH authentication failed" in msg
         assert "https://github.com/NousResearch/hermes-agent.git" in msg
 
-<<<<<<< HEAD
-=======
     def test_only_a_checkout_git_rejects_gets_the_installer_repair(self, tmp_path, capsys):
         # The updater fetches only when .git exists; git rejecting the checkout itself (here an
         # empty .git) cannot be retried away. A remote with a dangling `.git` file makes git print
@@ -110,7 +108,6 @@ class TestClassifyFetchFailure:
             out = capsys.readouterr().out
             assert "damaged" not in out, out
 
->>>>>>> origin/main
     def test_ssh_host_key_failure_reports_ssh_auth(self):
         msg = update_cmd._classify_fetch_failure(
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"

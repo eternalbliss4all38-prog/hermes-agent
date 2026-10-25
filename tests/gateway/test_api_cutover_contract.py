@@ -142,8 +142,6 @@ def test_compressed_api_conversation_keeps_its_root_queue_and_follows_the_tip(ap
     assert {r['target_session_id'] for r in list_session_admissions(owner.db, session_id=ref.session_id,
                                                                      pending_only=False)} == {ref.session_id}
     assert first['target_session_id'] == ref.session_id
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.asyncio
@@ -178,4 +176,3 @@ async def test_a_turn_queued_with_browser_control_recovers_and_runs_without_it(a
     assert await execute_admission(owner, ref, legacy) == 'ok'
     [(text, execution)] = seen
     assert text == 'hello' and 'browser_control' not in execution
->>>>>>> origin/main

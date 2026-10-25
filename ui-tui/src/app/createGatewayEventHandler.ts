@@ -4,10 +4,7 @@ import { forceRedraw, onTerminalBackground, onTerminalForeground } from '@hermes
 import { stripAnsi } from '@hermes/shared/ansi'
 import { relativeLuminance } from '@hermes/shared/color'
 import type { MessageDeltaPayload, SubagentStatus, Usage } from '@hermes/shared/gateway-events'
-<<<<<<< HEAD
-=======
 import type { UsageLimit } from '@hermes/shared/plan-usage'
->>>>>>> origin/main
 
 import { STARTUP_IMAGE, STARTUP_QUERY } from '../config/env.js'
 import { STREAM_BATCH_MS } from '../config/timing.js'
@@ -21,11 +18,7 @@ import type {
   SessionMostRecentResponse
 } from '../gatewayTypes.js'
 import { t } from '../i18n/runtime.js'
-<<<<<<< HEAD
-import { billingDialogCopy } from '../lib/billingDialog.js'
-=======
 import { billingDialogCopy, usageLimitDialog } from '../lib/billingDialog.js'
->>>>>>> origin/main
 import { type ImageAttachment, stageImagePath } from '../lib/imageAttachments.js'
 import { isTodoDone } from '../lib/liveProgress.js'
 import { openExternalUrl } from '../lib/openExternalUrl.js'
@@ -55,15 +48,11 @@ import { markBubbleShown, newlyStartedRows } from './pendingBubbles.js'
 import { flashGoodVibes, flashPet } from './petFlashStore.js'
 import { forgetServerRequest } from './serverRequestStore.js'
 import { noteCanonicalCompletion } from './slash/canonicalSessionCommands.js'
-<<<<<<< HEAD
-import { mutateCanonicalSession, openModelConfirmation } from './slash/canonicalSessionControls.js'
-=======
 import {
   mutateCanonicalSession,
   openModelConfirmation,
   switchCanonicalModel
 } from './slash/canonicalSessionControls.js'
->>>>>>> origin/main
 import { loadSlashCatalog, refreshSlashCatalogOnSkillsChange } from './slashCatalog.js'
 import { reportStartupLatency } from './startupLatency.js'
 import { markNextSubmitVoice } from './submissionCore.js'
@@ -710,8 +699,6 @@ function applySessionInfo(payload: unknown, { appendMessage, setHistoryItems, se
   setHistoryItems(prev => prev.map(m => (m.kind === 'intro' ? { ...m, info } : m)))
 }
 
-<<<<<<< HEAD
-=======
 /** Billing wall (out of credits / payment required) or a window plan's limit (`error_surface.usage_limit`). */
 function confirmBillingWall(
   payload: Extract<AnyGatewayEvent, { type: 'message.complete' }>['payload'],
@@ -815,7 +802,6 @@ function confirmUsageLimit(usageLimit: UsageLimit, ctx: GatewayEventHandlerConte
   })
 }
 
->>>>>>> origin/main
 export function createGatewayEventHandler(ctx: GatewayEventHandlerContext): (ev: AnyGatewayEvent) => void {
   syncThemeToTerminalBackground()
 

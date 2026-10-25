@@ -1,9 +1,6 @@
 """Exercise the passive checker with real linked worktrees and loopback HTTP."""
 import json
-<<<<<<< HEAD
-=======
 import shutil
->>>>>>> origin/main
 import subprocess
 import threading
 import urllib.request
@@ -93,11 +90,7 @@ def installation(tmp_path, monkeypatch):
 
     def local(request, *args, **kwargs):
         url = urlsplit(request.full_url)
-<<<<<<< HEAD
-        assert url.hostname in {"api.github.com", "hermes-assets.nousresearch.com"}
-=======
         assert url.hostname in {"api.github.com", "hermes-assets.nousresearch.com", "raw.githubusercontent.com"}
->>>>>>> origin/main
         rewritten = urllib.request.Request(
             f"http://127.0.0.1:{server.server_port}{url.path}" + (f"?{url.query}" if url.query else ""),
             headers=dict(request.header_items()))
@@ -597,8 +590,6 @@ def test_stable_release_the_checkout_already_contains_is_a_rollback(installation
     assert status.get("targetSha") == shas[release], status
     assert status["updateAvailable"] is True
     assert status["rollback"] is rollback
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.parametrize("ledgered", [True, False])
@@ -798,4 +789,3 @@ def test_unknown_runtime_verdict_expires_but_definite_verdict_does_not(installat
     clock[0] += 10 * source_check._UPDATE_CHECK_CACHE_SECONDS
     assert check() is not runtime
     assert requests == seen
->>>>>>> origin/main

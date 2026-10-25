@@ -143,15 +143,8 @@ def _validate_category(category: Optional[str]) -> Optional[str]:
     return _check_identifier(category, "Category", invalid)
 
 
-<<<<<<< HEAD
-def _validate_frontmatter(content: str, *, new_skill: bool = False) -> Optional[str]:
-    """Validate frontmatter (name + description) and a non-empty body. ``new_skill`` (create
-    only) also enforces SKILL_PROMPT_DESC_LIMIT so new skills never lose routing signal to
-    index truncation; edit/patch skip it so existing over-limit skills stay maintainable."""
-=======
 def _validate_frontmatter(content: str) -> Optional[str]:
     """Validate frontmatter (name + description) and a non-empty body."""
->>>>>>> origin/main
     if not content.strip():
         return "Content cannot be empty."
     content = content.lstrip("\ufeff")  # tolerate a Windows UTF-8 BOM
@@ -172,16 +165,6 @@ def _validate_frontmatter(content: str) -> Optional[str]:
     desc = str(parsed["description"])
     if len(desc) > MAX_DESCRIPTION_LENGTH:
         return f"Description exceeds {MAX_DESCRIPTION_LENGTH} characters."
-<<<<<<< HEAD
-    if new_skill and len(desc.strip().strip("'\"")) > SKILL_PROMPT_DESC_LIMIT:
-        return (
-            f"Description is {len(desc.strip())} chars — new skills must fit the "
-            f"{SKILL_PROMPT_DESC_LIMIT}-char system-prompt budget (one sentence, trigger first, "
-            f"ends with a period). The skill index truncates longer descriptions to "
-            f"{SKILL_PROMPT_DESC_LIMIT - 3} chars + '...', destroying the routing signal. "
-            f"Move detail into the skill body.")
-=======
->>>>>>> origin/main
     if not content[end_match.end() + 3:].strip():
         return "SKILL.md must have content after the frontmatter (instructions, procedures, etc.)."
     return None
@@ -210,17 +193,6 @@ def _validate_content_size(content: str, label: str = "SKILL.md") -> Optional[st
     return None
 
 
-<<<<<<< HEAD
-def _description_preview(content: str) -> str:
-    """First 120 chars of the frontmatter description; '' on any failure."""
-    with suppress(Exception):
-        fm_end = _FRONTMATTER_END_RE.search(content[3:])
-        if fm_end:
-            return str(yaml.safe_load(content[3:fm_end.start() + 3]).get("description", ""))[:120]
-    return ""
-
-
-=======
 def _description_of(content: Optional[str]) -> Optional[str]:
     """Normalized frontmatter description of a SKILL.md text; None when absent or unparseable."""
     with suppress(Exception):
@@ -237,7 +209,6 @@ def _description_preview(content: str) -> str:
     return ""
 
 
->>>>>>> origin/main
 def _resolve_skill_dir(name: str, category: str | None = None) -> Path:
     """New-skill dir; honors ``skills.create_dir`` (e.g. a shared fleet dir)."""
     base = _skills_dir()
@@ -435,24 +406,16 @@ def _locate_for_write(name: str, action: str, not_found_suffix: str = ""):
 
 def _guarded_write(name: str, skill_dir: Path, target: Path, action: str, label: str,
                    content: str) -> Optional[dict[str, Any]]:
-<<<<<<< HEAD
-    """Read-before-write guard (existing targets only), atomic write, then the security scan;
-    a blocked scan restores the original (or unlinks a new file). Error dict or None."""
-=======
     """Read-before-write guard (existing targets only), the description budget for the root SKILL.md
     (whichever action and file_path reach it), atomic write, then the security scan; a blocked scan
     restores the original (or unlinks a new file). Error dict or None."""
->>>>>>> origin/main
     original = None
     if target.exists():
         if read_guard := _background_review_read_before_write_guard(name, target, action, label):
             return read_guard
         original = target.read_text(encoding="utf-8-sig")
-<<<<<<< HEAD
-=======
     if target == skill_dir / "SKILL.md" and (err := _description_budget_error(content, before=original)):
         return _err(err)
->>>>>>> origin/main
     from hermes_constants import mkdir_under_hermes_home
     mkdir_under_hermes_home(target.parent)
     atomic_write_text(target, content, preserve_mode=True, create_mode=0o644)
@@ -470,13 +433,8 @@ def _add_description_prompt_preview(result: dict[str, Any], content: str) -> dic
     fm, _ = _parse_frontmatter(content)
     if is_skill_description_truncated_for_prompt(fm):
         result["system_prompt_preview"] = (
-<<<<<<< HEAD
-            f"System prompt will show: \"{extract_skill_description(fm)}\" — keep the trigger "
-            f"self-contained in the first {SKILL_PROMPT_DESC_LIMIT - 3} chars.")
-=======
             f"System prompt will show: \"{extract_skill_description(fm)}\" — shorten the "
             f"description to {SKILL_PROMPT_DESC_LIMIT} chars so the index shows all of it.")
->>>>>>> origin/main
     return result
 
 
@@ -509,11 +467,7 @@ def _clip(text: str, n: int, ellipsis: str) -> str:
 
 def _create_skill(name: str, content: str, category: str | None = None) -> dict[str, Any]:
     if err := (_validate_name(name) or _validate_category(category)
-<<<<<<< HEAD
-               or _validate_frontmatter(content, new_skill=True) or _validate_content_size(content)):
-=======
                or _validate_frontmatter(content) or _validate_content_size(content)):
->>>>>>> origin/main
         return _err(err)
     if existing := _find_skill(name):
         return _err(f"A skill named '{name}' already exists at {existing['path']}.")
@@ -882,28 +836,17 @@ def skill_manage(
 
 def _skill_manage_description() -> str:
     return (
-<<<<<<< HEAD
-        "Create, update, or delete skills — your procedural memory for "
-        "recurring task types. The call is an operations array (a single "
-=======
         "Create, update or delete skills: your procedural memory for recurring "
         "tasks. The call is an operations array (a single "
->>>>>>> origin/main
         "edit is a list of one); it applies atomically — any failure rolls "
         "every touched skill back. Ops: create (full SKILL.md; lands in "
         "the profile's skills directory or configured skills.create_dir; must precede that skill's other "
         "ops), patch (targeted old_string/new_string fix — preferred; "
         "content alone REPLACES the whole file, read it via skill_view() "
         "first), write_file/remove_file (supporting files), delete (sole "
-<<<<<<< HEAD
-        "op only). Existing skills are modified wherever they live. Keep "
-        "the description's first 57 chars a self-contained trigger: 'Use "
-        "when <trigger>. <one-line behavior>.' Write lessons, not logs: "
-=======
         "op only). Existing skills are modified wherever they live. "
         f"Description: max {SKILL_PROMPT_DESC_LIMIT} chars, 'Use when <trigger>. <behavior>.', never "
         "the category name (the index shows it). Write lessons, not logs: "
->>>>>>> origin/main
         "imperative rule + why, no PR numbers/dates/incident narration, one "
         "rule per lesson, references/ named by topic (extend before adding). "
         "skill_view() shows format conventions."

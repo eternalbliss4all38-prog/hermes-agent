@@ -2,11 +2,7 @@
 
 Tracks local file changes via mtime+size, detects deletions, and syncs to
 remote environments transactionally.  Used by SSH, Modal, and Daytona.
-<<<<<<< HEAD
-Docker and Singularity use bind mounts (live host FS view) and don't need this.
-=======
 Docker uses bind mounts (live host FS view) and doesn't need this.
->>>>>>> origin/main
 """
 
 import hashlib

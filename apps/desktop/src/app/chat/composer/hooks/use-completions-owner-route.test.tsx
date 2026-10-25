@@ -90,11 +90,7 @@ describe('composer completions route to the session owner', () => {
     const api: { search?: Search } = {}
 
     function Probe() {
-<<<<<<< HEAD
-      api.search = useSlashCompletions({ gateway, sessionId: SESSION }).adapter.search
-=======
       api.search = useSlashCompletions({ gateway, sessionId: SESSION }).adapter?.search
->>>>>>> origin/main
 
       return null
     }
@@ -132,11 +128,7 @@ describe('composer completions route to the session owner', () => {
     const api: { search?: Search } = {}
 
     function Probe() {
-<<<<<<< HEAD
-      api.search = useSlashCompletions({ gateway, sessionId: SESSION }).adapter.search
-=======
       api.search = useSlashCompletions({ gateway, sessionId: SESSION }).adapter?.search
->>>>>>> origin/main
 
       return null
     }
@@ -168,11 +160,7 @@ describe('composer completions route to the session owner', () => {
     const api: { search?: Search } = {}
 
     function Probe() {
-<<<<<<< HEAD
-      api.search = useAtCompletions({ cwd: '/repo', gateway, sessionId: SESSION }).adapter.search
-=======
       api.search = useAtCompletions({ cwd: '/repo', gateway, sessionId: SESSION }).adapter?.search
->>>>>>> origin/main
 
       return null
     }

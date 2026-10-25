@@ -247,8 +247,6 @@ function staleRewindRefusal(error: unknown): 'compacted' | 'stale' | null {
   }
 
   return typeof detail === 'string' && detail.startsWith('compacted:') ? 'compacted' : 'stale'
-<<<<<<< HEAD
-=======
 }
 
 // The owner refuses every model pick and turn on a chat whose launch API key changed or was removed
@@ -262,7 +260,6 @@ function isLaunchCredentialsRefusal(error: unknown): boolean {
   }
 
   return error instanceof Error && error.message.trim() === 'launch_credentials_unavailable'
->>>>>>> origin/main
 }
 
 // Exported so flows that surface errors inline (e.g. ConfirmDialog's onConfirm
@@ -279,8 +276,6 @@ export function readableError(
     return { message: translateNow(`promptNotices.${key}`), category: 'other' }
   }
 
-<<<<<<< HEAD
-=======
   if (isLaunchCredentialsRefusal(error)) {
     // Same sentence and button as the chat's error card: a model pick, retry or option change on
     // this chat repeats the refusal until the user starts a new one.
@@ -294,7 +289,6 @@ export function readableError(
     }
   }
 
->>>>>>> origin/main
   const raw = error instanceof Error ? error.message : typeof error === 'string' ? error : fallback
   const unwrapped = raw.match(/Error invoking remote method '[^']+': Error: (.+)$/)?.[1] ?? raw
   const cleaned = cleanErrorText(unwrapped)

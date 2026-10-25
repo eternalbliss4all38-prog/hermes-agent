@@ -538,8 +538,6 @@ def test_catalog_rows_maps_resolves_the_live_catalog_once(monkeypatch):
 
     monkeypatch.setattr(cat, "load_catalog_live", boom)
     assert cat.catalog_rows_maps() == ({}, {}, {})
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.parametrize("gateway_pid", [None, 4242], ids=["no-gateway", "gateway-running"])
@@ -561,4 +559,3 @@ def test_brief_install_prints_the_pin_and_outcome_and_a_restart_hint_only_for_a_
     assert not any(isinstance(p, Panel) for p in printed)
     assert "maintained by" not in text and "Cloning" not in text
     assert ("Restart the gateway" in text) is bool(gateway_pid)
->>>>>>> origin/main

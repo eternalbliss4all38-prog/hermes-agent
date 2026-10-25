@@ -2,11 +2,7 @@
 
 ``get_catalog()`` returns the parsed manifest: in-process cache (TTL) → disk cache at
 ``~/.hermes/cache/model_catalog.json`` → master URL fetch; any fetch failure keeps the stale copy
-<<<<<<< HEAD
-(or ``{}``). ``get_curated_openrouter_models()`` / ``get_curated_nous_models()`` are thin accessors
-=======
 (or ``{}``, and the URL is not retried for ``FETCH_RETRY_DELAY_SECONDS``). ``get_curated_openrouter_models()`` / ``get_curated_nous_models()`` are thin accessors
->>>>>>> origin/main
 whose callers fall back to the in-repo lists on ``None``.
 """
 
@@ -52,8 +48,6 @@ _HERMES_USER_AGENT = f"hermes-cli/{get_version_info().base_version}"
 _catalog_cache: dict[str, Any] | None = None
 _catalog_cache_source_mtime: float = 0.0
 _catalog_cache_source_path: str = ""
-<<<<<<< HEAD
-=======
 # ``monotonic()`` deadline before which a failed fetch is not retried (see FETCH_RETRY_DELAY_SECONDS),
 # keyed by (profile home key, "manifest" | "override", URL): one gateway process serves many profiles,
 # and a dead override must not skip the manifest's fallback chain when both share a URL. Pickers and
@@ -89,7 +83,6 @@ def clear_fetch_backoff() -> None:
     with _fetch_retry_lock:
         for key in [k for k in _fetch_retry_after if k[0] == home]:
             del _fetch_retry_after[key]
->>>>>>> origin/main
 
 
 def _load_catalog_config() -> dict[str, Any]:
@@ -278,11 +271,8 @@ def get_catalog(*, force_refresh: bool = False) -> dict[str, Any]:
             _spawn_catalog_swr_refresh(cfg["url"])
         return _remember(disk_data, disk_mtime)
 
-<<<<<<< HEAD
-=======
     if not force_refresh and disk_data is None and _backing_off("manifest", cfg["url"]):
         return {}
->>>>>>> origin/main
     fetched = _fetch_manifest_with_fallback(cfg["url"], DEFAULT_FETCH_TIMEOUT)
     _note_fetch_result("manifest", cfg["url"], fetched is not None)
     if fetched is not None:
@@ -307,10 +297,7 @@ def refresh_catalogs() -> bool:
     Blocking; run it off the event loop."""
     if not _load_catalog_config()["enabled"]:
         return False
-<<<<<<< HEAD
-=======
     clear_fetch_backoff()  # provider overrides are re-asked too, not only the forced manifest
->>>>>>> origin/main
     catalog = get_catalog(force_refresh=True)
     try:
         from hermes_cli.models import fetch_nous_recommended_models, fetch_openrouter_models
@@ -333,10 +320,6 @@ def _fetch_provider_override(provider: str) -> dict[str, Any] | None:
     override_url = provider_cfg.get("url")
     if not isinstance(override_url, str) or not override_url.strip():
         return None
-<<<<<<< HEAD
-    # Overrides are usually third-party self-hosted: skip the disk cache, re-request every call.
-    return _fetch_manifest(override_url.strip(), DEFAULT_FETCH_TIMEOUT)
-=======
     # Overrides are usually third-party self-hosted: skip the disk cache, re-request every call
     # (except during a failure backoff; the caller then falls back to the main manifest).
     override_url = override_url.strip()
@@ -345,12 +328,6 @@ def _fetch_provider_override(provider: str) -> dict[str, Any] | None:
     data = _fetch_manifest(override_url, DEFAULT_FETCH_TIMEOUT)
     _note_fetch_result("override", override_url, data is not None)
     return data
-
-
-def _block_of(manifest: dict[str, Any] | None, provider: str) -> dict[str, Any] | None:
-    block = (manifest or {}).get("providers", {}).get(provider)
-    return block if isinstance(block, dict) else None
->>>>>>> origin/main
 
 
 def _block_of(manifest: dict[str, Any] | None, provider: str) -> dict[str, Any] | None:
@@ -416,15 +393,10 @@ def seed_cache_from_checkout(project_root: Path | str) -> bool:
 
 
 def reset_cache() -> None:
-<<<<<<< HEAD
-    """Clear the in-process cache. Used by tests and ``hermes model --refresh``."""
-    global _catalog_cache, _catalog_cache_source_mtime, _catalog_cache_source_path
-=======
     """Clear the in-process cache and fetch-failure backoff. Used by tests and ``hermes model --refresh``."""
     global _catalog_cache, _catalog_cache_source_mtime, _catalog_cache_source_path
     with _fetch_retry_lock:
         _fetch_retry_after.clear()
->>>>>>> origin/main
     _catalog_cache = None
     _catalog_cache_source_mtime = 0.0
     _catalog_cache_source_path = ""

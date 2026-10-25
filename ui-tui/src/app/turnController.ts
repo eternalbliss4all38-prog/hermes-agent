@@ -125,8 +125,6 @@ const finalTail = (finalText: string, segments: Msg[]) => {
   return tail
 }
 
-<<<<<<< HEAD
-=======
 // Whether the streamed tail is a segment of its own: only when the gateway's final text does not
 // already carry it — otherwise the tail IS the answer and flushing would move the tool shelf/trail
 // under it. Never without a final text (`rawText` is then the buffer, #16391), nor when a
@@ -134,7 +132,6 @@ const finalTail = (finalText: string, segments: Msg[]) => {
 const keepsStreamedTail = (tail: string, completionText: null | string | undefined, transformed?: boolean | null) =>
   Boolean(tail && completionText != null && !transformed && !completionText.includes(tail))
 
->>>>>>> origin/main
 const interruptedText = (partial: string) => (partial ? `${partial}\n\n*[interrupted]*` : '*[interrupted]*')
 
 // What interruptTurn sealed into the transcript: `text` is the bubble it
@@ -693,18 +690,8 @@ class TurnController {
     const rawText = (completionText ?? this.bufRef).trimStart()
 
     // Text still in `this.bufRef` streamed after the last segment flush; `idle()`
-<<<<<<< HEAD
-    // below would wipe it (#61520). Flush it as a segment only when the
-    // gateway's final text does not already carry it — otherwise the tail IS
-    // the answer and flushing would move the tool shelf/trail under it. Skipped
-    // when `completionText` is absent: `rawText` is then the buffer (#16391).
-    const tail = this.bufRef.trim()
-
-    if (tail && completionText != null && !completionText.includes(tail)) {
-=======
     // below would wipe it (#61520).
     if (keepsStreamedTail(this.bufRef.trim(), completionText, payload.response_transformed)) {
->>>>>>> origin/main
       this.flushStreamingSegment()
     }
 

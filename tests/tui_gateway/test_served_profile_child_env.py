@@ -19,12 +19,8 @@ from agent.secret_scope import set_multiplex_active
 from hermes_constants import reset_hermes_home_override, set_hermes_home_override
 
 _PROBE = ("import json,os;print(json.dumps({k:os.environ.get(k) for k in "
-<<<<<<< HEAD
-          "('HERMES_HOME','A_MARKER','B_MARKER','TERMINAL_ENV','HERMES_MODEL','FIRECRAWL_API_KEY')}))")
-=======
           "('HERMES_HOME','A_MARKER','B_MARKER','TERMINAL_ENV','HERMES_MODEL','FIRECRAWL_API_KEY',"
           "'BROWSER_USE_API_KEY')}))")
->>>>>>> origin/main
 
 
 @pytest.fixture
@@ -33,20 +29,12 @@ def mux_homes(tmp_path, monkeypatch):
     a = tmp_path / ".hermes"
     b = a / "profiles" / "b"
     b.mkdir(parents=True)
-<<<<<<< HEAD
-    (a / ".env").write_text("A_MARKER=a\nHERMES_MODEL=a-model\nTERMINAL_ENV=docker\nFIRECRAWL_API_KEY=a-fc\n", encoding="utf-8")
-    (b / ".env").write_text("B_MARKER=b\nFIRECRAWL_API_KEY=b-fc\n", encoding="utf-8")
-    monkeypatch.setenv("HERMES_HOME", str(a))
-    for key, val in (("A_MARKER", "a"), ("HERMES_MODEL", "a-model"), ("TERMINAL_ENV", "docker"),
-                     ("FIRECRAWL_API_KEY", "a-fc")):
-=======
     (a / ".env").write_text("A_MARKER=a\nHERMES_MODEL=a-model\nTERMINAL_ENV=docker\nFIRECRAWL_API_KEY=a-fc\n"
                             "BROWSER_USE_API_KEY=a-bu\n", encoding="utf-8")
     (b / ".env").write_text("B_MARKER=b\nFIRECRAWL_API_KEY=b-fc\nBROWSER_USE_API_KEY=b-bu\n", encoding="utf-8")
     monkeypatch.setenv("HERMES_HOME", str(a))
     for key, val in (("A_MARKER", "a"), ("HERMES_MODEL", "a-model"), ("TERMINAL_ENV", "docker"),
                      ("FIRECRAWL_API_KEY", "a-fc"), ("BROWSER_USE_API_KEY", "a-bu")):
->>>>>>> origin/main
         monkeypatch.setenv(key, val)
     monkeypatch.delenv("B_MARKER", raising=False)
     set_multiplex_active(True)
@@ -132,25 +120,14 @@ def test_helper_children_resolve_secrets_through_the_served_profile(mux_homes):
     """``key_cmd`` helpers and the browser driver spawned during B's turn see B's key, never A's."""
     from agent.command_token_source import _mint
     from gateway.run import _profile_runtime_scope
-<<<<<<< HEAD
-    from tools.browser_tool import _build_browser_env
-=======
     from tools.browser_session import build_browser_env
     from tools.browser_use_cli import _base_subprocess_env
->>>>>>> origin/main
 
     _a, b = mux_homes
     helper = (f"{sys.executable} -c \"import os;print(os.environ.get('B_MARKER','-')+'|'"
               f"+os.environ.get('A_MARKER','-')+'|'+os.environ.get('HERMES_HOME',''))\"")
     with _profile_runtime_scope(b, hydrate_secrets=False):
         token, _ttl = _mint(helper, "b-provider")
-<<<<<<< HEAD
-        browser_env = _build_browser_env()
-    assert token == f"b|-|{b}"
-    seen = _child_view(browser_env)
-    _assert_is_b_env(seen, b, with_secrets=False)  # provider tier stays scrubbed for the browser
-    assert seen["FIRECRAWL_API_KEY"] == "b-fc"  # the passthrough key is B's, not the launch profile's
-=======
         browser_env = build_browser_env()
         harness_env = _base_subprocess_env()
     assert token == f"b|-|{b}"
@@ -161,4 +138,3 @@ def test_helper_children_resolve_secrets_through_the_served_profile(mux_homes):
     seen = _child_view(harness_env)
     _assert_is_b_env(seen, b, with_secrets=False)
     assert seen["BROWSER_USE_API_KEY"] == "b-bu" and seen["FIRECRAWL_API_KEY"] is None
->>>>>>> origin/main

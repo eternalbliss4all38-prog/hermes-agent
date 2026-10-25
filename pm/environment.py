@@ -8,11 +8,7 @@ from __future__ import annotations
 import codecs
 from collections.abc import Iterator, Mapping, Sequence
 from contextlib import contextmanager
-<<<<<<< HEAD
-from dataclasses import dataclass
-=======
 from dataclasses import dataclass, replace
->>>>>>> origin/main
 import io
 import os
 from pathlib import Path
@@ -276,11 +272,7 @@ def managed_environment(destination: Path, *, python: Path | None = None,
 
 
 @contextmanager
-<<<<<<< HEAD
-def _fresh_build(environment: PythonEnvironment, *, sealed: bool) -> Iterator[None]:
-=======
 def _fresh_build(environment: PythonEnvironment, *, sealed: bool, lock: Path | None = None) -> Iterator[None]:
->>>>>>> origin/main
     """Own only the output claimed by this build, including failed validation."""
     out = environment.destination
     # A concurrent creator wins intact: never enter cleanup before mkdir succeeds.
@@ -288,11 +280,7 @@ def _fresh_build(environment: PythonEnvironment, *, sealed: bool, lock: Path | N
     try:
         environment.create()
         yield
-<<<<<<< HEAD
-        environment.check()
-=======
         environment.check(lock)
->>>>>>> origin/main
         if sealed:
             prune_site_pth(out)
     except BaseException:
@@ -463,26 +451,14 @@ class PythonEnvironment:
         if result.returncode:
             raise classify_uv_failure("export", result.returncode, result.stderr or result.stdout)
 
-<<<<<<< HEAD
-    def install_requirements(self, requirements: Sequence[str], *, wheelhouse: Path | None = None) -> None:
-=======
     def install_requirements(self, requirements: Sequence[str], *, wheelhouse: Path | None = None,
                              lock: Path | None = None) -> None:
->>>>>>> origin/main
         if not requirements:
             return
         # A file avoids command-line length limits and shell/marker quoting.
         with tempfile.TemporaryDirectory(prefix="pm-requirements-") as temporary:
             requirements_file = Path(temporary) / "requirements.txt"
             requirements_file.write_text("\n".join(requirements) + "\n", encoding="utf-8")
-<<<<<<< HEAD
-            self._install_requirements_file(requirements_file, wheelhouse=wheelhouse)
-
-    def _install_requirements_file(self, requirements: Path, *, wheelhouse: Path | None = None,
-                                   timeout: int = 1800) -> None:
-        command = ["pip", "install", "--no-config", "--python", str(self.executable),
-                   "--requirements", str(requirements)]
-=======
             self._install_requirements_file(requirements_file, wheelhouse=wheelhouse, lock=lock)
 
     def _install_requirements_file(self, requirements: Path, *, wheelhouse: Path | None = None,
@@ -502,7 +478,6 @@ class PythonEnvironment:
                 overrides_file = requirements.with_name("overrides.txt")
                 overrides_file.write_text("\n".join(overrides) + "\n", encoding="utf-8")
                 command += ["--overrides", str(overrides_file)]
->>>>>>> origin/main
         if wheelhouse is not None:
             command += ["--no-index", "--only-binary", ":all:",
                         "--find-links", str(wheelhouse.absolute())]
@@ -514,14 +489,9 @@ class PythonEnvironment:
         """Install rebuilt wheels whose hashes the bundle manifest owns, not uv.lock."""
         requirements = source / "requirements.txt"
         self.export_requirements(source, requirements, timeout=timeout)
-<<<<<<< HEAD
-        self._install_requirements_file(requirements, wheelhouse=wheelhouse, timeout=timeout)
-        self.check()
-=======
         self._install_requirements_file(requirements, wheelhouse=wheelhouse, lock=source / "uv.lock",
                                         timeout=timeout)
         self.check(source / "uv.lock")
->>>>>>> origin/main
 
     def prune_cache(self, *, ci: bool = False) -> None:
         command = ["cache", "prune", "--no-config"]
@@ -531,15 +501,6 @@ class PythonEnvironment:
         if result.returncode:
             raise InstallError("uv", f"cache pruning failed: {result.stderr[-600:]}")
 
-<<<<<<< HEAD
-    def check(self) -> None:
-        result = self._run(
-            ["pip", "check", "--no-config", "--python", str(self.executable)],
-            cwd=self.destination.parent, timeout=60,
-        )
-        if result.returncode:
-            raise InstallError("venv", f"dependency validation failed: {result.stderr[-600:]}")
-=======
     def check(self, lock: Path | None = None) -> None:
         """`uv pip check` the environment; *lock* is the uv.lock it was installed from.
 
@@ -560,4 +521,3 @@ class PythonEnvironment:
             raise InstallError("venv", f"dependency validation failed: {result.stderr[-600:]}")
         if unexpected:
             raise InstallError("venv", "dependency validation failed: " + "\n".join(unexpected)[-600:])
->>>>>>> origin/main

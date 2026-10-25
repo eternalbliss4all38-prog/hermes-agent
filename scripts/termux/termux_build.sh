@@ -137,10 +137,7 @@ if [ "${1:-}" = "--in-container" ]; then
     log "Building the android wheel set from sdist (bionic, payload ABI)"
     "$BUILD_VENV/bin/python" -u "$HERE/build_wheels.py" \
         --resolved "$RESOLVED" --build-set "$BUILD_SET" \
-<<<<<<< HEAD
-=======
         --lock "$PAYLOAD_ROOT/.work/tree/uv.lock" \
->>>>>>> origin/main
         --wheelhouse "$WHEELHOUSE" --retag "$HERE/retag_wheel.py" \
         --platform-tag "$PLATFORM_TAG" \
         || fail "wheel building failed"

@@ -49,21 +49,11 @@ def test_wake_dependencies_and_runtime_gate_agree_on_supported_targets():
 
 def test_direct_overrides_preserve_the_declared_exact_version():
     from packaging.requirements import Requirement
-<<<<<<< HEAD
-=======
     from packaging.utils import canonicalize_name
->>>>>>> origin/main
 
     root = Path(__file__).resolve().parents[1]
     metadata = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8-sig"))
     locked = tomllib.loads((root / "uv.lock").read_text(encoding="utf-8-sig"))
-<<<<<<< HEAD
-    direct = {req.name: req for spec in metadata["project"]["dependencies"]
-              if (req := Requirement(spec)).specifier}
-    for spec in metadata["tool"]["uv"].get("override-dependencies", []):
-        override = Requirement(spec)
-        requirement = direct.get(override.name)
-=======
     # uv.lock records normalized names; pyproject keeps the declared spelling (Pillow).
     direct = {canonicalize_name(req.name): req for spec in metadata["project"]["dependencies"]
               if (req := Requirement(spec)).specifier}
@@ -71,17 +61,12 @@ def test_direct_overrides_preserve_the_declared_exact_version():
         override = Requirement(spec)
         name = canonicalize_name(override.name)
         requirement = direct.get(name)
->>>>>>> origin/main
         if requirement is None or not any(s.operator == "==" for s in requirement.specifier):
             continue
         assert override.specifier == requirement.specifier, (
             f"{override.name}: override {override.specifier} contradicts exact requirement {requirement.specifier}"
         )
-<<<<<<< HEAD
-        versions = {row["version"] for row in locked["package"] if row["name"] == override.name}
-=======
         versions = {row["version"] for row in locked["package"] if canonicalize_name(row["name"]) == name}
->>>>>>> origin/main
         assert versions and all(version in requirement.specifier for version in versions)
 
 

@@ -20,11 +20,7 @@ vi.mock('@/store/gateway', async importOriginal => ({
   requestGatewayForAgent: vi.fn()
 }))
 
-<<<<<<< HEAD
-describe('usePromptActions /browser connect|disconnect', () => {
-=======
 describe('usePromptActions /browser connect|disconnect|status', () => {
->>>>>>> origin/main
   beforeEach(() => {
     clearSingleFlightSessionResumeState()
     setSessions(() => [sessionInfo()])
@@ -59,8 +55,6 @@ describe('usePromptActions /browser connect|disconnect|status', () => {
     expect(requestGateway).toHaveBeenCalledWith('browser.manage', expect.objectContaining(params))
     expect(requestGateway).not.toHaveBeenCalledWith('slash.exec', expect.anything())
   })
-<<<<<<< HEAD
-=======
 
   // `status` only reads the gateway's CDP state, so unlike connect/disconnect it runs on
   // remote backends too.
@@ -85,5 +79,4 @@ describe('usePromptActions /browser connect|disconnect|status', () => {
     })
     expect(requestGateway).not.toHaveBeenCalledWith('slash.exec', expect.anything())
   })
->>>>>>> origin/main
 })

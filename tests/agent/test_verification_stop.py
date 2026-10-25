@@ -148,8 +148,6 @@ def test_nudge_attempts_are_bounded(tmp_path, monkeypatch):
         max_attempts=2,
     ) is None
 
-<<<<<<< HEAD
-=======
 
 def test_piped_verification_run_satisfies_the_guard(tmp_path, monkeypatch):
     """A piped run counts once the shell's PIPESTATUS is recorded with it."""
@@ -210,7 +208,6 @@ def test_nudge_drops_the_unscored_run_warning_once_hermes_verify_records(tmp_pat
     assert nudge is not None
     assert "hermes verify" in nudge and "did not count" not in nudge
 
->>>>>>> origin/main
 # ---------------------------------------------------------------------------
 # Fix C: documentation/prose edits carry no verifiable behavior and must never
 # trip the nudge, even on an unverified workspace.

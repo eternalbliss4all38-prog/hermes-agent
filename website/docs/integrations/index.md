@@ -56,11 +56,8 @@ Hermes includes full browser automation through `browser_exec` (Python over CDP)
 - **Local Chromium-family CDP** — Connect to your running Chrome, Brave, Chromium, or Edge browser using `/browser connect`
 - **Local Chromium** — Headless local Chromium that Hermes launches itself (the default)
 
-<<<<<<< HEAD
-=======
 The Camofox anti-detection browser is a catalog plugin: `hermes plugins install camofox`.
 
->>>>>>> origin/main
 See [Browser Automation](../user-guide/features/browser.md) for setup and usage.
 
 ## Voice & TTS Providers

@@ -113,11 +113,8 @@ class _AuxCallHooks:
             started_at=self.started_at,
             message_count=len(kwargs.get("messages") or kwargs.get("input") or []),
         )
-<<<<<<< HEAD
-=======
         if metadata.get("plugin_id"):  # a call a plugin asked for (ctx.side_question)
             self.base["plugin_id"] = str(metadata["plugin_id"])
->>>>>>> origin/main
 
     def pre(self) -> None:
         if not _has_hook(PRE_AUXILIARY_CALL):
@@ -143,16 +140,12 @@ class _AuxCallHooks:
             request=_Sanitize._sanitize_hook_payload({"method": "POST", "body": body}),
         )
 
-<<<<<<< HEAD
-    def post(self, response: Any = None, error: Optional[BaseException] = None) -> None:
-=======
     def post(
         self, response: Any = None, error: Optional[BaseException] = None, *,
         normalized: Optional[tuple[Any, Any, Optional[dict[str, Any]]]] = None,
     ) -> None:
         """``normalized`` = ``(assistant_message, finish_reason, usage_summary)`` for a response
         that is not chat.completions-shaped (an agent transport's native reply)."""
->>>>>>> origin/main
         if not _has_hook(POST_AUXILIARY_CALL):
             return
         from agent.api_request_hooks import ApiRequestHooksMixin as _Sanitize
@@ -169,21 +162,13 @@ class _AuxCallHooks:
             payload.update(finish_reason=None, response_model=None, usage=None, response=None,
                            assistant_content_chars=0, assistant_tool_call_count=0)
         else:
-<<<<<<< HEAD
-            message, finish_reason = _first_choice_message(response)
-=======
             message, finish_reason, usage = normalized or (*_first_choice_message(response), _usage_summary(response))
->>>>>>> origin/main
             content = _field(message, "content") if message is not None else None
             tool_calls = (_field(message, "tool_calls") if message is not None else None) or []
             payload.update(
                 finish_reason=finish_reason,
                 response_model=_field(response, "model"),
-<<<<<<< HEAD
-                usage=_usage_summary(response),
-=======
                 usage=usage,
->>>>>>> origin/main
                 response=_Sanitize._sanitize_hook_payload({
                     "model": _field(response, "model"),
                     "finish_reason": finish_reason,
@@ -221,13 +206,9 @@ def _fire(name: str, **payload: Any) -> None:
                        name, payload.get("aux_task"), exc_info=True)
 
 
-<<<<<<< HEAD
-def _hooks_or_none(**kw: Any) -> Optional[_AuxCallHooks]:
-=======
 def start_aux_call_hooks(**kw: Any) -> Optional[_AuxCallHooks]:
     """Fire ``pre_auxiliary_call`` for one attempt; the handle for :func:`finish_aux_call_hooks`,
     or None when nothing subscribes. For callers that drive the provider call themselves."""
->>>>>>> origin/main
     if not (_has_hook(PRE_AUXILIARY_CALL) or _has_hook(POST_AUXILIARY_CALL)):
         return None
     try:
@@ -239,13 +220,6 @@ def start_aux_call_hooks(**kw: Any) -> Optional[_AuxCallHooks]:
     return hooks
 
 
-<<<<<<< HEAD
-def _post_safely(hooks: Optional[_AuxCallHooks], response: Any = None, error: Any = None) -> None:
-    if hooks is None:
-        return
-    try:
-        hooks.post(response, error)
-=======
 def finish_aux_call_hooks(
     hooks: Optional[_AuxCallHooks], response: Any = None, error: Any = None, *,
     normalized: Optional[tuple[Any, Any, Optional[dict[str, Any]]]] = None,
@@ -255,7 +229,6 @@ def finish_aux_call_hooks(
         return
     try:
         hooks.post(response, error, normalized=normalized)
->>>>>>> origin/main
     except Exception:
         logger.warning("post_auxiliary_call payload build failed; continuing", exc_info=True)
 
@@ -266,24 +239,14 @@ def run_with_aux_hooks(
 ) -> Any:
     """Run one synchronous provider attempt between ``pre_auxiliary_call`` and
     ``post_auxiliary_call``; the exception (if any) is reported in ``post`` and re-raised."""
-<<<<<<< HEAD
-    hooks = _hooks_or_none(aux_task=aux_task, metadata=metadata, client=client, kwargs=kwargs,
-=======
     hooks = start_aux_call_hooks(aux_task=aux_task, metadata=metadata, client=client, kwargs=kwargs,
->>>>>>> origin/main
                            provider=provider, model=model, api_mode=api_mode, streaming=streaming)
     try:
         response = call()
     except BaseException as exc:
-<<<<<<< HEAD
-        _post_safely(hooks, error=exc)
-        raise
-    _post_safely(hooks, response=response)
-=======
         finish_aux_call_hooks(hooks, error=exc)
         raise
     finish_aux_call_hooks(hooks, response=response)
->>>>>>> origin/main
     return response
 
 
@@ -292,22 +255,12 @@ async def arun_with_aux_hooks(
     kwargs: dict[str, Any], provider: str, model: str, api_mode: str,
 ) -> Any:
     """Async twin of :func:`run_with_aux_hooks`."""
-<<<<<<< HEAD
-    hooks = _hooks_or_none(aux_task=aux_task, metadata=metadata, client=client, kwargs=kwargs,
-=======
     hooks = start_aux_call_hooks(aux_task=aux_task, metadata=metadata, client=client, kwargs=kwargs,
->>>>>>> origin/main
                            provider=provider, model=model, api_mode=api_mode, streaming=False)
     try:
         response = await call()
     except BaseException as exc:
-<<<<<<< HEAD
-        _post_safely(hooks, error=exc)
-        raise
-    _post_safely(hooks, response=response)
-=======
         finish_aux_call_hooks(hooks, error=exc)
         raise
     finish_aux_call_hooks(hooks, response=response)
->>>>>>> origin/main
     return response

@@ -22,13 +22,9 @@ import type { FirstRunCopy } from './types_first_run'
 import type { ModelMenuTranslations } from './types_model_menu'
 import type { ModelSettingsTranslations } from './types_model_settings'
 import type { NoticeTranslations } from './types_notices'
-<<<<<<< HEAD
-import type { OnboardingTranslations } from './types_onboarding'
-=======
 import type { NotificationSettingsTranslations } from './types_notifications'
 import type { OnboardingTranslations } from './types_onboarding'
 import type { PluginPreviewAccessTranslations } from './types_plugin_preview_access'
->>>>>>> origin/main
 import type { PluginUpdateTranslations } from './types_plugin_update'
 import type { SidebarProjectsTranslations } from './types_projects'
 import type { SharedMetricsTranslations } from './types_shared_metrics'
@@ -691,79 +687,6 @@ catalog: CatalogTranslations
         installUncertain: string
         desktopFailed: string
         missingEnv: (name: string, vars: string) => string
-<<<<<<< HEAD
-      }
-    }
-    vault: {
-      title: string
-      blurb: string
-      count: (n: number) => string
-      loadFailed: string
-      empty: string
-      emptyDesc: string
-      add: string
-      addTitle: string
-      addDescription: string
-      added: string
-      adding: string
-      addConfirm: string
-      kindField: string
-      kinds: Record<'address' | 'login' | 'payment', string>
-      labelField: string
-      labelPlaceholder: string
-      labelRequired: string
-      originField: string
-      originPlaceholder: string
-      originPlaceholderCheckout: string
-      originInvalid: string
-      identifierTypeField: string
-      identifierTypes: Record<'email' | 'phone' | 'username', string>
-      identifierField: string
-      identifierShown: (identifier: string) => string
-      passwordField: string
-      loginFieldsRequired: string
-      cardNumberField: string
-      cardNameField: string
-      expMonthField: string
-      expYearField: string
-      cvcField: string
-      postalField: string
-      addressLine1Field: string
-      addressLine2Field: string
-      cityField: string
-      stateField: string
-      countryField: string
-      optional: string
-      createdOn: (date: string) => string
-      deleteAction: string
-      otpField: string
-      otpPlaceholder: string
-      otpHint: string
-      twoFactorBadge: string
-      deleteTitle: string
-      deleteDescription: (label: string) => string
-      deleteConfirm: string
-      sources: {
-        title: string
-        blurb: string
-        toggleFailed: string
-        notInstalled: (name: string) => string
-        disabledDesc: string
-        lockedDesc: string
-        unlockedDesc: string
-        statusLocked: string
-        statusNotDetected: string
-        statusOff: string
-        statusUnlocked: string
-        unlock: string
-        unlocking: string
-        lock: string
-        unlocked: (name: string) => string
-        unlockTitle: (name: string) => string
-        unlockDescription: string
-        masterPasswordPlaceholder: string
-=======
->>>>>>> origin/main
       }
     }
     vault: {
@@ -1607,8 +1530,6 @@ catalog: CatalogTranslations
         cancel: string
         effectScheduled: (targetName: string, effectiveAt: string, creditsDelta: string) => string
       }
-<<<<<<< HEAD
-=======
       keepGoingOnCredits: {
         title: string
         description: string
@@ -1620,7 +1541,6 @@ catalog: CatalogTranslations
         approvedRetry: string
         tryAgain: string
       }
->>>>>>> origin/main
       autoReload: {
         threshold: string
         thresholdAria: string
@@ -1689,8 +1609,6 @@ catalog: CatalogTranslations
             captionSpending: string
             valueUsed: (spent: string, limit: string) => string
           }
-<<<<<<< HEAD
-=======
           window: {
             today: string
             week: string
@@ -1705,7 +1623,6 @@ catalog: CatalogTranslations
             captionIncluded: string
             valueUsed: (percent: string) => string
           }
->>>>>>> origin/main
         }
         planCard: {
           freeTier: string
@@ -1972,12 +1889,8 @@ catalog: CatalogTranslations
     skillArchivedTitle: string
     skillArchivedMessage: string
     tabPlugins: string
-<<<<<<< HEAD
-    plugins: PluginUpdateTranslations & {
-=======
     plugins: PluginUpdateTranslations &
       PluginPreviewAccessTranslations & {
->>>>>>> origin/main
       agentTitle: string
       agentBlurb: string
       pageBlurb: string
@@ -3467,17 +3380,6 @@ catalog: CatalogTranslations
     signIn: string
     signInHeading: string
     settingUp: string
-<<<<<<< HEAD
-    codeBody: string
-    copyLink: string
-    doNotShare: string
-    waiting: string
-    finishingHeading: string
-    finishingBody: string
-    signedInAs: (email: string) => string
-    signedIn: string
-    completedBody: string
-=======
     finishInBrowser: string
     doNotShare: string
     openPageAgain: string
@@ -3491,25 +3393,14 @@ catalog: CatalogTranslations
     /** The free tier's apps: reconnect the ones that did not move; open Connectors to check. */
     reconnect: string
     openConnectors: string
->>>>>>> origin/main
     defaultModel: string
     change: string
     done: string
     notNow: string
     tryAgain: string
-<<<<<<< HEAD
-    startAgain: string
-    didNotComplete: string
-    rejectedBody: string
-    supersededBody: string
-    timedOutHeading: string
-    timedOutBody: string
-    retiredBody: string
-=======
     didNotComplete: string
     timedOutHeading: string
     timedOutBody: string
->>>>>>> origin/main
     errorBody: string
     /** The account service asked for a short wait mid sign-in (a busy account, a rate limit, the ops pause). */
     busyHeading: string
@@ -3565,8 +3456,6 @@ catalog: CatalogTranslations
     customModel: string
     addCustomModelAction: string
     customModelPlaceholder: string
-<<<<<<< HEAD
-=======
     today: string
     week: string
     month: string
@@ -3590,7 +3479,6 @@ catalog: CatalogTranslations
     sectionRecommended: string
     sectionOther: string
     largeFootnote: string
->>>>>>> origin/main
   }
 
   modelVisibility: {
@@ -3709,11 +3597,8 @@ catalog: CatalogTranslations
       toggleWorkspace: string
       cacheHitRateTitle: string
       tokensPerSecondTitle: string
-<<<<<<< HEAD
-=======
       togglePlanUsage: string
       planUsageTitle: (used: string, resetsIn: string) => string
->>>>>>> origin/main
       agents: string
       closeAgents: string
       openAgents: string
@@ -4082,8 +3967,6 @@ catalog: CatalogTranslations
       errorStartNewSession: string
       errorSwitchProvider: string
       errorChooseModel: string
-<<<<<<< HEAD
-=======
       /** usage_window: one click to the plan's recommended model; `note` is "free" / "included". */
       errorSwitchToModel: (model: string, note: string) => string
       errorSwitchModelFailed: string
@@ -4095,7 +3978,6 @@ catalog: CatalogTranslations
       /** Error card button: opens Settings → Billing in-app (Keep going, buy credits). */
       errorOpenBillingSettings: string
       /** Error card body when a Nous account is out of credits (its button opens Settings → Billing). */
->>>>>>> origin/main
       errorCompressConversation: string
       errorCompressFailed: string
       errorOpenHermesFolder: string

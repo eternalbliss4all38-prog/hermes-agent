@@ -55,17 +55,11 @@ export interface BillingStateResult {
   payment_method?: BillingPaymentMethod | null
   monthly_cap?: BillingMonthlyCap | null
   auto_reload?: BillingAutoReload | null
-<<<<<<< HEAD
-  portal_url?: string | null
-  error?: string | null
-  usage?: UsageModel | null
-=======
   keep_going_on_credits?: boolean | null
   portal_url?: string | null
   error?: string | null
   usage?: UsageModel | null
   plan_usage?: PlanUsage | null
->>>>>>> origin/main
 }
 export interface BillingCardInfo {
   brand: string
@@ -108,8 +102,6 @@ export interface BillingAutoReloadCard {
   last4?: string | null
 }
 export type AutoReloadCardKind = 'canonical' | 'distinct' | 'none'
-<<<<<<< HEAD
-=======
 /** ``hermes_cli/model_picker_usage.py::PickerUsage.to_payload`` — usage-window plan chrome. */
 export interface PlanUsage {
   kind: string
@@ -129,7 +121,6 @@ export interface PlanUsageGauge {
   scope?: string
   title?: string
 }
->>>>>>> origin/main
 /** ``_serialize_subscription_state``; the view's fallback emits only ``ok / logged_in / error``. */
 export interface SubscriptionStateResult {
   ok: boolean
@@ -145,10 +136,7 @@ export interface SubscriptionStateResult {
   portal_url?: string | null
   error?: string | null
   usage?: UsageModel | null
-<<<<<<< HEAD
-=======
   plan_usage?: PlanUsage | null
->>>>>>> origin/main
 }
 export type SubscriptionContext = 'personal' | 'team'
 export interface CurrentSubscription {
@@ -296,13 +284,10 @@ export interface BillingMutationResult {
   code?: string | null
   recovery?: string | null
 }
-<<<<<<< HEAD
-=======
 export interface BillingKeepGoingOnCreditsParams {
   profile?: string | null
   enabled?: boolean
 }
->>>>>>> origin/main
 export interface BillingStepUpParams {
   profile?: string | null
   session_id?: string | null
@@ -620,10 +605,6 @@ export interface Usage {
   dev_credits_spent_micros?: number | null
   cost_usd?: number | null
   cost_status?: string | null
-<<<<<<< HEAD
-  [key: string]: unknown
-}
-=======
   plan_gauge?: PlanGauge | null
   [key: string]: unknown
 }
@@ -634,7 +615,6 @@ export interface PlanGauge {
   used_bp: number
   resets_at_ms?: number | null
 }
->>>>>>> origin/main
 export interface McpServerStatus {
   name?: string
   status?: string | null
@@ -698,10 +678,7 @@ export interface FreeTierStatusResult {
   retry_after?: number | null
   challenge?: FreeTierChallengePayload | null
   nudge_due_in?: number | null
-<<<<<<< HEAD
-=======
   connector_nudge_due_in?: number | null
->>>>>>> origin/main
 }
 /** ``hermes_cli/anon_challenge.py::BrowserChallenge.as_payload``: the ``free_tier.challenge`` event, and ``free_tier.status``'s ``challenge`` field for a client that connected after it. */
 export interface FreeTierChallengePayload {
@@ -733,13 +710,10 @@ export interface FreeTierProvisionResult {
 export interface FreeTierAckNoticeResult {
   acked: boolean
 }
-<<<<<<< HEAD
-=======
 export interface FreeTierClaimNudgeParams {
   profile?: string | null
   kind?: 'trial' | 'connector'
 }
->>>>>>> origin/main
 export interface FreeTierClaimNudgeResult {
   claimed: boolean
 }
@@ -871,11 +845,8 @@ export interface ModelOptionProvider {
   free_tier_pending?: boolean | null
   free_tier_row?: boolean | null
   unavailable_models?: string[] | null
-<<<<<<< HEAD
-=======
   plan_usage?: PlanUsage | null
   usage_levels?: Record<string, string> | null
->>>>>>> origin/main
   limit?: ProviderLimit | null
   usage?: ProviderUsage | null
   [key: string]: unknown
@@ -1655,21 +1626,13 @@ export interface GroupsStateResult {
   room: Room
   driver_status?: RoomDriverStatus | null
 }
-<<<<<<< HEAD
-/** ``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}`` or the driver's approval action (``kind: approval`` + run/session/approval context). */
-=======
 /** ``HostedRoomService.status(room_id)``; ``pending_actions`` rows are ``{kind: retry, task_id}`` or the driver's approval action (``kind: approval`` + run/session/approval context). ``member_activity`` lists live tasks in admission order (absent from older gateways). */
->>>>>>> origin/main
 export interface RoomDriverStatus {
   running: boolean
   working: boolean
   blocked: boolean
   counts: Record<string, number>
   pending_actions: Record<string, unknown>[]
-<<<<<<< HEAD
-  peer_routes: PeerRouteStatus[]
-}
-=======
   member_activity?: RoomMemberActivity[]
   peer_routes: PeerRouteStatus[]
 }
@@ -1678,7 +1641,6 @@ export interface RoomMemberActivity {
   member_id: string
   status: string
 }
->>>>>>> origin/main
 export interface PeerRouteStatus {
   room_id: string
   member_id: string
@@ -1931,46 +1893,6 @@ export interface BotRelayReplyParams {
   error?: string | null
   reason?: string | null
 }
-<<<<<<< HEAD
-export interface BrowserControllerRegisterParams {
-  session_id: string
-  controller_id: string
-  browser_profile_id: string
-  capabilities?: string[] | null
-  protocol_version?: unknown | null
-  principal_id?: string | null
-}
-export interface BrowserControllerRegisterResult {
-  scope: ControllerScope
-}
-export interface ControllerScope {
-  principal_id: string
-  profile_id: string
-  session_id: string
-  controller_id: string
-  browser_profile_id: string
-  transport_family: string
-  capabilities: string[]
-}
-export interface BrowserControllerResultParams {
-  session_id: string
-  command_id: string
-  ok?: unknown | null
-  result?: unknown | null
-  error?: unknown | null
-}
-export interface BrowserControllerResultResult {
-  accepted: boolean
-}
-/** Every controller call names the session the controller is attached to. */
-export interface BrowserControllerParams {
-  session_id: string
-}
-export interface BrowserControllerDetachResult {
-  detached?: boolean
-}
-=======
->>>>>>> origin/main
 export interface I18nLanguagesResult {
   languages: LanguageOption[]
 }
@@ -2002,10 +1924,7 @@ export interface GatewayCapabilitiesResult {
 }
 export interface ClientCapabilitiesParams {
   server_requests?: boolean
-<<<<<<< HEAD
-=======
   desktop_local?: boolean
->>>>>>> origin/main
 }
 export interface ClientCapabilitiesResult {
   server_requests: string[]
@@ -3567,13 +3486,9 @@ export interface SessionUsageResult {
   dev_credits_spent_micros?: number | null
   cost_usd?: number | null
   cost_status?: string | null
-<<<<<<< HEAD
-  credits_lines?: string[] | null
-=======
   plan_gauge?: PlanGauge | null
   credits_lines?: string[] | null
   credits_usage_window?: boolean | null
->>>>>>> origin/main
   [key: string]: unknown
 }
 export interface SessionContextBreakdownParams {
@@ -4076,26 +3991,14 @@ export interface CronRemovedJob {
 export interface BrowserManageParams {
   action?: BrowserAction
   url?: string | null
-<<<<<<< HEAD
-  enabled?: boolean | null
-  session_id?: string | null
-  profile?: string | null
-}
-export type BrowserAction = 'status' | 'connect' | 'disconnect' | 'use'
-=======
   session_id?: string | null
   profile?: string | null
 }
 export type BrowserAction = 'status' | 'connect' | 'disconnect'
->>>>>>> origin/main
 export interface BrowserManageResult {
   connected: boolean
   url?: string | null
   messages?: string[] | null
-<<<<<<< HEAD
-  browser_use?: boolean | null
-=======
->>>>>>> origin/main
 }
 /** Handlers that look a live session up with ``_sessions.get(params.get("session_id"))``: an absent / unknown id falls back to the launch profile's config, so it is never required. */
 export interface _SessionScoped {
@@ -4487,11 +4390,7 @@ export interface PluginsManageParams {
   names?: string[] | null
 }
 export type PluginsAction = 'list' | 'toggle' | 'install' | 'update' | 'remove' | 'settings' | 'onboarding' | 'presence'
-<<<<<<< HEAD
-/** ``list`` → ``plugins`` + counts; ``toggle`` → ``ok``/``unchanged``/``restart_required``/``name`` (the canonical key written)/``plugin``; ``install`` → ``hermes_cli.plugins_cmd.dashboard_install_plugin``'s ok payload; ``toggle``/``install``/``update`` that loaded a plugin also carry ``gateway_reloaded`` (the running gateway picked it up and re-wired its handlers) and ``activation`` — the honest split of what is live now vs deferred, so ``restart_required`` is True only when no gateway answered; ``update`` → ``ok``/``unchanged``/``sha``, or ``ok=false`` + ``consent_required`` with the ``delta`` (``{surface: [added...]}``) / ``delta_lines`` a widened pin adds — nothing changed until the client retries with ``accept_capabilities`` — or ``ok=false`` + ``scan_blocked`` with ``scan_verdict`` / ``scan_findings`` (retry a caution verdict with ``force``); ``remove`` → ``ok``/``name`` plus ``cleared_memory_provider`` when the removed plugin was the live ``memory.provider``. */
-=======
 /** ``list`` → ``plugins`` + counts; ``toggle`` → ``ok``/``unchanged``/``restart_required``/``name`` (the canonical key written)/``plugin``; ``install`` → ``hermes_cli.plugins_cmd.dashboard_install_plugin``'s ok payload; ``toggle``/``install``/``update`` that loaded a plugin also carry ``gateway_reloaded`` (the running gateway picked it up and re-wired its handlers) and ``activation`` — the honest split of what is live now vs deferred, so ``restart_required`` is True only when no gateway answered or the running gateway/backend cannot import the plugin's Python dependencies (``activation.missing_dependencies``); ``update`` → ``ok``/``unchanged``/``sha``, or ``ok=false`` + ``consent_required`` with the ``delta`` (``{surface: [added...]}``) / ``delta_lines`` a widened pin adds — nothing changed until the client retries with ``accept_capabilities`` — or ``ok=false`` + ``scan_blocked`` with ``scan_verdict`` / ``scan_findings`` (retry a caution verdict with ``force``); ``remove`` → ``ok``/``name`` plus ``cleared_memory_provider`` when the removed plugin was the live ``memory.provider``. */
->>>>>>> origin/main
 export interface PluginsManageResult {
   plugins?: AgentPluginRow[] | null
   user_count?: number | null
@@ -4544,10 +4443,7 @@ export interface AgentPluginRow {
   update_target?: string | null
   pinned_sha?: string | null
   settings_schema?: PluginSettingField[] | null
-<<<<<<< HEAD
-=======
   tools?: string[]
->>>>>>> origin/main
 }
 export interface PluginServerRow {
   name: string
@@ -4569,22 +4465,15 @@ export interface PluginSettingField {
   has_value?: boolean | null
 }
 export type PluginSettingFieldType = 'string' | 'number' | 'boolean' | 'enum' | 'secret' | 'json'
-<<<<<<< HEAD
-/** What a plugin loaded mid-run does NOW vs later (``hermes_cli.plugins_activation``). ``activated_now`` kinds (``{kind: [names]}``): ``gateway_commands`` (slash names), ``locales`` (``<lang>.<surface>`` language-pack layers), ``gateway_transforms`` / ``hooks`` (hook names), ``callbacks`` (platforms / ``slack:<action_id>``) — live in the running gateway once it reloaded (``gateway_reloaded``). ``live_now``: the plugin's MCP servers (connected, with their tools, or the error) and skills, usable in every open chat of the profile from its next turn — the chats also get a note listing them. ``deferred`` kinds: ``tools`` (Python tool names) and ``prompt`` (section ids) apply from the next session. */
-=======
 /** What a plugin loaded mid-run does NOW vs later (``hermes_cli.plugins_activation``). ``activated_now`` kinds (``{kind: [names]}``): ``gateway_commands`` (slash names), ``locales`` (``<lang>.<surface>`` language-pack layers), ``gateway_transforms`` / ``hooks`` (hook names), ``callbacks`` (platforms / ``slack:<action_id>``) — live in the running gateway once it reloaded (``gateway_reloaded``). ``live_now``: the plugin's MCP servers (connected, with their tools, or the error) and skills, usable in every open chat of the profile from its next turn — the chats also get a note listing them. ``deferred`` kinds: ``tools`` (Python tool names) and ``prompt`` (section ids) apply from the next session. ``missing_dependencies``: the plugin's declared Python requirements a running process cannot import (installed after it booted, or never); ``missing_in`` names which processes (``gateway``, ``backend`` = the Desktop / dashboard process) — only restarting them loads them. */
->>>>>>> origin/main
 export interface PluginActivation {
   name: string
   key: string
   activated_now?: Record<string, string[]>
   live_now?: PluginLiveNow | null
   deferred?: Record<string, string[]>
-<<<<<<< HEAD
-=======
   missing_dependencies?: string[]
   missing_in?: PluginRestartTarget[]
->>>>>>> origin/main
 }
 export interface PluginLiveNow {
   mcp_servers?: PluginLiveServer[]
@@ -4602,10 +4491,7 @@ export interface PluginLiveSkill {
   name: string
   description?: string
 }
-<<<<<<< HEAD
-=======
 export type PluginRestartTarget = 'gateway' | 'backend'
->>>>>>> origin/main
 /** One security-scan finding (``tools.plugin_guard``) on a plugin tree the scan blocked. */
 export interface PluginScanFinding {
   pattern_id: string
@@ -4649,10 +4535,7 @@ export interface PluginCatalogLookupEntry {
   repo: string
   sha: string
   subdir: string
-<<<<<<< HEAD
-=======
   tier?: string
->>>>>>> origin/main
 }
 export interface CanonicalShellExecParams {
   session_id: string
@@ -4754,10 +4637,6 @@ export interface CanonicalSessionInfo {
   enabled_toolsets?: string[] | null
   tool_availability?: Record<string, unknown> | null
   tool_availability_warnings?: string[] | null
-<<<<<<< HEAD
-  browser_backend_notice?: string | null
-=======
->>>>>>> origin/main
   unknown_toolsets?: string[] | null
   source: string
   model?: string | null
@@ -4810,10 +4689,7 @@ export interface SessionStats {
   model: string
   provider: string
   fallback_model?: string | null
-<<<<<<< HEAD
-=======
   plan_gauge?: PlanGauge | null
->>>>>>> origin/main
 }
 export interface RollbackSessionDiffParams {
   session_id: string
@@ -5104,10 +4980,7 @@ export interface CanonicalSnapshot {
   info: CanonicalSnapshotInfo
   pending_connection?: ConnectionRequestPayload | null
   todo_state?: TodoState | null
-<<<<<<< HEAD
-=======
   open_requests?: OpenRequestEntry[] | null
->>>>>>> origin/main
 }
 export interface CanonicalPendingAdmission {
   admission_id: string
@@ -5150,10 +5023,6 @@ export interface CanonicalSnapshotInfo {
   enabled_toolsets?: string[] | null
   tool_availability?: Record<string, unknown> | null
   tool_availability_warnings?: string[] | null
-<<<<<<< HEAD
-  browser_backend_notice?: string | null
-=======
->>>>>>> origin/main
   unknown_toolsets?: string[] | null
   desktop_protocol: 'hermes-gateway-v1'
   source?: string | null
@@ -5262,10 +5131,7 @@ export interface CanonicalEventsResult {
   truncated: boolean
   snapshot_required: boolean
   count: number
-<<<<<<< HEAD
-=======
   open_requests?: OpenRequestEntry[] | null
->>>>>>> origin/main
 }
 export interface CanonicalReplayEvent {
   type: string
@@ -5796,11 +5662,7 @@ export interface BillingBlock {
   message: string
   unverified?: boolean | null
 }
-<<<<<<< HEAD
-/** ``agent/error_surface.py::_surface`` — advisory {layer, code, retryable} (+ identity, + auth hint, + ``resets_at`` epoch seconds when the provider named when its limit lifts). */
-=======
 /** ``agent/error_surface.py::_surface`` — advisory {layer, code, retryable} (+ identity, + auth hint, + ``resets_at`` epoch seconds when the provider named when its limit lifts, + ``usage_limit`` on a usage-window plan's limit). */
->>>>>>> origin/main
 export interface ErrorSurface {
   layer: string
   code: string
@@ -5808,10 +5670,6 @@ export interface ErrorSurface {
   provider?: string | null
   model?: string | null
   resets_at?: number | null
-<<<<<<< HEAD
-  [key: string]: unknown
-}
-=======
   usage_limit?: UsageLimit | null
   [key: string]: unknown
 }
@@ -5837,7 +5695,6 @@ export interface UsageLimitSuggestion {
 export interface UsageLimitCredits {
   action: string
 }
->>>>>>> origin/main
 /** Committed SQLite row addresses for the agent's current-turn suffix. Missing ids are unproven, never negative acknowledgements. ``complete`` permits retiring the whole local turn only when the original turn boundary, every row and final body are still accounted for; compaction, redirects and partial writes conservatively leave it false. Row ids are scoped to the owning profile's store, as in ``SessionMessage.row_id``. */
 export interface PersistedTurn {
   row_ids: number[]
@@ -5878,10 +5735,7 @@ export interface SessionUsagePayload {
   model?: string | null
   provider?: string | null
   fallback_model?: string | null
-<<<<<<< HEAD
-=======
   plan_gauge?: PlanGauge | null
->>>>>>> origin/main
 }
 /** ``prompt_turn._invoke_agent`` ``_on_session_title`` hook. */
 export interface SessionTitlePayload {
@@ -6099,23 +5953,6 @@ export interface BrowserProgressPayload {
   message: string
   level: string
 }
-<<<<<<< HEAD
-/** ``gateway/browser_control_broker.py`` FRAME_COMMAND params. */
-export interface BrowserControllerCommandPayload {
-  command_id: string
-  action: string
-  arguments: Record<string, unknown>
-  controller_id?: string | null
-  browser_profile_id?: string | null
-  tool_call_id?: string | null
-}
-/** ``gateway/browser_control_broker.py::_cancel_frame``. */
-export interface BrowserControllerCancelPayload {
-  command_id: string
-  tool_call_id?: string | null
-}
-=======
->>>>>>> origin/main
 /** ``methods_voice._vr_on_status``; states come from the recorder (idle / listening / transcribing …). */
 export interface VoiceStatusPayload {
   state: string
@@ -6183,11 +6020,8 @@ export interface RpcMethods {
   'billing.charge': { params: BillingChargeParams; result: BillingChargeResult }
   /** Poll one charge by id. */
   'billing.charge_status': { params: BillingChargeStatusParams; result: BillingChargeStatusResult }
-<<<<<<< HEAD
-=======
   /** Window plans: turn 'Keep going on credits' on/off (billing:manage). */
   'billing.keep_going_on_credits': { params: BillingKeepGoingOnCreditsParams; result: BillingMutationResult }
->>>>>>> origin/main
   /** Read-only billing view (no scope); the Nous free tier is answered locally without a portal call. */
   'billing.state': { params: ProfileParams; result: BillingStateResult }
   /** Run the billing:manage device flow; the URL/code arrive via billing.step_up.verification. */
@@ -6200,19 +6034,7 @@ export interface RpcMethods {
   'bot_relay.reply': { params: BotRelayReplyParams; result: OkResult }
   /** Replace this gateway's view of agents on other connections; answers the accepted row count. */
   'bot_relay.roster.sync': { params: BotRelayRosterSyncParams; result: BotRelayRosterSyncResult }
-<<<<<<< HEAD
-  /** Hard-detach only the controller owned by this authenticated transport. */
-  'browser.controller.detach': { params: BrowserControllerParams; result: BrowserControllerDetachResult }
-  /** Acknowledge a heartbeat only for this transport's own attached controller. */
-  'browser.controller.heartbeat': { params: BrowserControllerParams; result: OkResult }
-  /** Attach this connection as the browser controller for one session; fails closed (4403). */
-  'browser.controller.register': { params: BrowserControllerRegisterParams; result: BrowserControllerRegisterResult }
-  /** Deliver one command result to the broker; accepted is false for unknown or settled command ids. */
-  'browser.controller.result': { params: BrowserControllerResultParams; result: BrowserControllerResultResult }
-  /** Inspect, attach to, or drop the CDP browser the tools use, or switch Browser Use mode (``use``, applies to new sessions); ``messages`` narrate a connect. */
-=======
   /** Inspect, attach to, or drop the CDP browser the tools use; ``messages`` narrate a connect. */
->>>>>>> origin/main
   'browser.manage': { params: BrowserManageParams; result: BrowserManageResult }
   /** Lock one answer of a batch clarify request (editable until every question is locked). */
   'clarify.lock': { params: ClarifyLockParams; result: ClarifyLockResult }
@@ -6295,11 +6117,7 @@ export interface RpcMethods {
   /** Report a browser window outcome for the matching pending attempt; mint remains authoritative. */
   'free_tier.challenge_result': { params: FreeTierChallengeResultParams; result: FreeTierChallengeResult }
   /** Claim the due sign-in offer; true for exactly one caller each time an offer comes due. */
-<<<<<<< HEAD
-  'free_tier.claim_nudge': { params: ProfileParams; result: FreeTierClaimNudgeResult }
-=======
   'free_tier.claim_nudge': { params: FreeTierClaimNudgeParams; result: FreeTierClaimNudgeResult }
->>>>>>> origin/main
   /** Explicit retry of the free-tier identity mint when the boot bootstrap could not create it. */
   'free_tier.provision': { params: ProfileParams; result: FreeTierProvisionResult }
   /** Pure read of the focused profile's free-tier identity state (no network, no side effects). */
@@ -6706,23 +6524,13 @@ export const RPC_METHODS = [
   'billing.auto_reload',
   'billing.charge',
   'billing.charge_status',
-<<<<<<< HEAD
-=======
   'billing.keep_going_on_credits',
->>>>>>> origin/main
   'billing.state',
   'billing.step_up',
   'bot_relay.deliver',
   'bot_relay.outbox.drain',
   'bot_relay.reply',
   'bot_relay.roster.sync',
-<<<<<<< HEAD
-  'browser.controller.detach',
-  'browser.controller.heartbeat',
-  'browser.controller.register',
-  'browser.controller.result',
-=======
->>>>>>> origin/main
   'browser.manage',
   'clarify.lock',
   'cli.exec',
@@ -7167,13 +6975,6 @@ export interface BackendGatewayEventMap {
   'billing.step_up.verification': BillingStepUpVerificationPayload
   /** A bot-relay outbox envelope is queued; drain it. */
   'bot_relay.outbox.pending': ChangeSignalPayload
-<<<<<<< HEAD
-  /** Withdraw a pending controller command. */
-  'browser.controller.cancel': BrowserControllerCancelPayload
-  /** Dispatch one browser action to the attached controller. */
-  'browser.controller.command': BrowserControllerCommandPayload
-=======
->>>>>>> origin/main
   /** Browser (CDP) connect / install progress line. */
   'browser.progress': BrowserProgressPayload
   /** A /btw side question was answered. */
@@ -7327,11 +7128,6 @@ export const GATEWAY_EVENT_TYPES = [
   'background.complete',
   'billing.step_up.verification',
   'bot_relay.outbox.pending',
-<<<<<<< HEAD
-  'browser.controller.cancel',
-  'browser.controller.command',
-=======
->>>>>>> origin/main
   'browser.progress',
   'btw.complete',
   'connection.request',

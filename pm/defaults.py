@@ -21,8 +21,6 @@ from pathlib import Path
 
 DECLINED_FILENAME = "declined-packages.json"
 
-<<<<<<< HEAD
-=======
 # A retired default whose opt-out carries over to the package that took its
 # place: `--without agent-browser` declined the browser, which is Chromium now.
 # Read through on every load, so a record written by an older installer keeps
@@ -34,7 +32,6 @@ RETIRED_DEFAULTS = {"agent-browser": "chromium"}
 def canonical_default_name(name: str) -> str:
     return RETIRED_DEFAULTS.get(name, name)
 
->>>>>>> origin/main
 
 def declined_path(project_root: Path | None = None) -> Path:
     from pm.environments import install_state_dir
@@ -56,11 +53,7 @@ def declined(project_root: Path | None = None) -> frozenset[str]:
         raise InstallError("defaults", f"cannot read {declined_path(project_root)}: {exc}",
                            "fix or delete the file, then retry") from exc
     names = data.get("declined") if isinstance(data, dict) else None
-<<<<<<< HEAD
-    return frozenset(name for name in names or () if isinstance(name, str))
-=======
     return frozenset(canonical_default_name(name) for name in names or () if isinstance(name, str))
->>>>>>> origin/main
 
 
 def record_declined(*, add: Iterable[str] = (), remove: Iterable[str] = (),
@@ -69,11 +62,7 @@ def record_declined(*, add: Iterable[str] = (), remove: Iterable[str] = (),
     from pm.filesystem import durable_write_bytes
 
     current = declined(project_root)
-<<<<<<< HEAD
-    updated = (current | set(add)) - set(remove)
-=======
     updated = (current | {canonical_default_name(name) for name in add}) - set(remove)
->>>>>>> origin/main
     if updated != current:
         body = json.dumps({"schema": 1, "declined": sorted(updated)}, indent=2) + "\n"
         durable_write_bytes(declined_path(project_root), body.encode("utf-8"))

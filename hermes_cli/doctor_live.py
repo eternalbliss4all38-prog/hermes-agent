@@ -53,33 +53,6 @@ def _http_get(url: str, headers: Optional[dict] = None, timeout: Optional[float]
 
 
 def _browser_available() -> bool:
-<<<<<<< HEAD
-    """Is the local browser automation backend (agent-browser) installed?"""
-    try:
-        from tools.browser_tool_install import _find_agent_browser
-        return bool(_find_agent_browser(validate=False))
-    except Exception:
-        return False
-
-
-def _launch_browser_probe(timeout: float) -> tuple:
-    """Launch a browser, open about:blank, close. Returns (ok, detail). Uses Playwright directly (what
-    agent-browser drives underneath) so the probe owns the full lifecycle and always cleans up."""
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        return (False, "playwright not installed")
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            channel="chromium", executable_path=chromium_executable(),
-            headless=True, timeout=timeout * 1000,
-        )
-        try:
-            browser.new_page().goto("about:blank", timeout=timeout * 1000)
-        finally:
-            browser.close()
-    return (True, "launched + about:blank + closed")
-=======
     """Is there a Chromium for browser_exec's local launcher?"""
     return chromium_executable() is not None
 
@@ -97,7 +70,6 @@ def _launch_browser_probe(timeout: float) -> tuple:
     if browser is None:
         return (False, error or "launch failed")
     return (True, "launched + CDP ready + stopped")
->>>>>>> origin/main
 
 
 def _probe_mcp_server(name: str, config: dict, timeout: float):

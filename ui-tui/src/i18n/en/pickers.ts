@@ -63,8 +63,6 @@ export const pickersEn = {
         noMatches: 'no providers match',
         hint: '↑/↓ select · Enter choose · ^d disconnect · Esc clear/back · q close'
       },
-<<<<<<< HEAD
-=======
       // Window plans (Nous subscription with included usage): the per-model word, section titles and limit
       // notes. Same words as the desktop picker (`modelPicker`).
       plan: {
@@ -82,7 +80,6 @@ export const pickersEn = {
         limitThenWait: 'only Free models until then',
         limitThenWaitLarge: 'Large models paused until then'
       },
->>>>>>> origin/main
       persist: {
         // {0} = one of `scopeGlobal` / `scopeSession`.
         label: (scope: string) => `persist: ${scope}`,

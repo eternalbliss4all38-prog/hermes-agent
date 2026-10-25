@@ -91,8 +91,6 @@ def test_plugin_workspace_trusts_core_lock_instead_of_rechecking_release_age(lay
     assert "member-dep" in locked
 
 
-<<<<<<< HEAD
-=======
 def test_plugin_workspace_solves_only_for_the_installing_interpreter(layout):
     """A platform the install never runs on must not fail its solve.
 
@@ -121,7 +119,6 @@ def test_plugin_workspace_solves_only_for_the_installing_interpreter(layout):
         assert Marker(solved).evaluate(environment) is expected, environment
 
 
->>>>>>> origin/main
 
 
 
@@ -143,11 +140,7 @@ def test_core_only_generation_carries_no_release_age_cutoff(layout):
     manifest = core / "pyproject.toml"
     manifest.write_text(manifest.read_text().replace("[tool.uv]\n", '[tool.uv]\nexclude-newer = "3 days"\n', 1))
     root = tmp / "workspace"
-<<<<<<< HEAD
-    ws._generate_pyproject([], root, source=core)
-=======
     ws._generate_pyproject([], root, source=core, python=Path(sys.executable))
->>>>>>> origin/main
     generated = (root / "pyproject.toml").read_text(encoding="utf-8")
     assert "exclude-newer" not in generated and "[tool.uv]" in generated
 

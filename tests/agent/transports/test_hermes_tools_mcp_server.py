@@ -94,8 +94,6 @@ class TestModuleSurface:
         )
 
 
-<<<<<<< HEAD
-=======
     def test_every_exposed_tool_is_a_core_registered_tool(self):
         """Each exposed name must dispatch through handle_function_call in a plain Hermes process:
         a name only a plugin registers (the camofox plugin's browser_navigate & co.) is not core."""
@@ -105,7 +103,6 @@ class TestModuleSurface:
         assert not missing, f"EXPOSED_TOOLS names no core tool registers: {sorted(missing)}"
 
 
->>>>>>> origin/main
 class TestMain:
     def test_main_returns_2_when_mcp_unavailable(self, monkeypatch):
         """When the mcp package isn't installed, main() should exit

@@ -537,12 +537,8 @@ The image uses Debian 13.4 and includes:
 - s6-overlay for supervision and zombie-process cleanup.
 
 Chromium is staged through PM, not `npx playwright install`. The build records
-<<<<<<< HEAD
-its resolved executable in `/etc/hermes/agent-browser-executable-path`.
-=======
 its resolved executable in `/etc/hermes/chromium-executable-path`, which Hermes
 reads when it launches the browser.
->>>>>>> origin/main
 `PLAYWRIGHT_BROWSERS_PATH` names `/opt/hermes/tools`, outside the data mount.
 
 Every image, including the unsuffixed (non-`-desktop`) tags, carries the full

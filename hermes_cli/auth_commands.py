@@ -312,12 +312,6 @@ def _add_nous_oauth_credential(args, provider: str) -> PooledCredential:
     def _persist(creds: dict, what: str) -> PooledCredential:
         # `--label` is embedded into providers.nous so label_from_token doesn't overwrite it on every
         # subsequent load_pool("nous").
-<<<<<<< HEAD
-        entry = auth_mod.persist_nous_credentials(creds, label=custom_label)
-        shown_label = entry.label if entry is not None else label_from_token(
-            creds.get("access_token", ""), f"{provider}-oauth-1")
-        print(f'{what} {provider} OAuth {"device-code " if what == "Saved" else ""}credentials: "{shown_label}"')
-=======
         from hermes_cli.anon_auth import settle_after_upgrade
         from hermes_cli.guest_handoff import drain, result_lines
         entry = auth_mod.persist_nous_credentials(creds, label=custom_label)
@@ -328,7 +322,6 @@ def _add_nous_oauth_credential(args, provider: str) -> PooledCredential:
         print(f'{what} {provider} OAuth {"device-code " if what == "Saved" else ""}credentials: "{shown_label}"')
         for line in (line for view in handoff for line in result_lines(view)):
             print(f"  {line}")
->>>>>>> origin/main
         return entry
 
     # Codex-style auto-import: a shared Nous credential at <hermes-root>/shared/nous_auth.json

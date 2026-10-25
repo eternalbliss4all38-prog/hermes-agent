@@ -30,11 +30,7 @@ async function walk(...states: FreeTierSignInState[]): Promise<string[]> {
 }
 
 const CLOSED: FreeTierSignInState = { status: 'closed' }
-<<<<<<< HEAD
-const OFFER: FreeTierSignInState = { status: 'offer' }
-=======
 const OFFER: FreeTierSignInState = { kind: 'trial', status: 'offer' }
->>>>>>> origin/main
 const SETTING_UP: FreeTierSignInState = { minting: false, status: 'setting_up' }
 
 beforeEach(() => {

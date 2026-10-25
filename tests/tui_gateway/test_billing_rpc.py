@@ -70,8 +70,6 @@ def test_billing_state_serializes_decimals_as_strings(monkeypatch):
     }
     assert res["monthly_cap"]["is_default_ceiling"] is True
     assert res["is_admin"] is True and res["can_charge"] is True
-<<<<<<< HEAD
-=======
     # Not a window plan (or an older portal): no Keep going on credits control.
     assert res["keep_going_on_credits"] is None
 
@@ -111,4 +109,3 @@ def test_keep_going_on_credits_scope_denial_is_an_envelope(monkeypatch):
     monkeypatch.setattr(nb, "patch_keep_going_on_credits", deny)
     res = _call("billing.keep_going_on_credits", {"enabled": True})
     assert res["ok"] is False and res["error"] == "insufficient_scope"
->>>>>>> origin/main

@@ -268,24 +268,14 @@ def _memory_tool(action, target, content, old_text, new_text, operations, store)
         if gate_result is not None:
             return "rejected", gate_result
         return _applied(store.apply_batch(target, operations))
-<<<<<<< HEAD
-    # Reject calls that provide neither action (single-op) nor operations
-    # (batch).  Without this guard the dispatch falls through to the generic
-=======
     # Reject calls with neither operations[] nor the legacy top-level action.
     # Without this guard the dispatch falls through to the generic
->>>>>>> origin/main
     # "Unknown action 'None'" error, which gives the model no signal about
     # *why* the call was malformed and can trigger repeated retries. (#64291)
     if not action and not operations:
         return _invalid(
-<<<<<<< HEAD
-            "Missing required parameter: provide 'action' (add/patch/remove) "
-            "or 'operations' (batch list). Got neither."
-=======
             "Missing required parameter: 'operations', a list of {action: add/patch/remove, "
             "content?, old_text?} changes; a single change is a one-item list."
->>>>>>> origin/main
         )
     if action == "replace":
         return _invalid(_REPLACE_REMOVED)
@@ -390,12 +380,7 @@ MEMORY_SCHEMA = {
         "checked only on the FINAL result — so a single call can remove/patch stale entries "
         "to free room AND add new ones, even when an add alone would overflow. The response "
         "reports current/limit chars and confirms completion; one batch call finishes the "
-<<<<<<< HEAD
-        "update, so don't repeat it. Use the bare action/content/old_text fields only for a "
-        "single lone change.\n\n"
-=======
         "update, so don't repeat it.\n\n"
->>>>>>> origin/main
         "WHEN: only for facts that apply to EVERY session regardless of task: who the user "
         "is, stable environment facts, standing conventions with no task home. Anything "
         "learned while doing a task (procedures, pitfalls, and the user's preferences and "
@@ -416,34 +401,11 @@ MEMORY_SCHEMA = {
     "parameters": {
         "type": "object",
         "properties": {
-<<<<<<< HEAD
-            "action": {
-                "type": "string",
-                "enum": ["add", "patch", "remove"],
-                "description": "The action to perform (single-op shape). Omit when using 'operations'."
-            },
-=======
->>>>>>> origin/main
             "target": {
                 "type": "string",
                 "enum": ["memory", "user"],
                 "description": "Which memory store: 'memory' for personal notes, 'user' for user profile."
             },
-<<<<<<< HEAD
-            "content": {
-                "type": "string",
-                "description": "Required for 'add' and 'patch'. For 'add', the new entry. For 'patch', the text that replaces old_text; the rest of the entry is kept. Alias: 'new_text'."
-            },
-            "old_text": {
-                "type": "string",
-                "description": "REQUIRED for 'patch' and 'remove': text from one entry. 'patch' replaces exactly this span (it must occur once in the entry); 'remove' deletes the whole entry. Omit for 'add'."
-            },
-            "new_text": {
-                "type": "string",
-                "description": "Alias for 'content'. If both are set, 'content' wins."
-            },
-=======
->>>>>>> origin/main
             "operations": {
                 "type": "array",
                 "description": (
@@ -454,11 +416,6 @@ MEMORY_SCHEMA = {
                     "type": "object",
                     "properties": {
                         "action": {"type": "string", "enum": ["add", "patch", "remove"]},
-<<<<<<< HEAD
-                        "content": {"type": "string", "description": "Required for add and patch, as 'content' above."},
-                        "new_text": {"type": "string", "description": "Alias for 'content' in a batch op."},
-                        "old_text": {"type": "string", "description": "As 'old_text' above."},
-=======
                         "content": {
                             "type": "string",
                             "description": ("Required for 'add' and 'patch'. For 'add', the new entry. For 'patch', "
@@ -470,7 +427,6 @@ MEMORY_SCHEMA = {
                                             "exactly this span (it must occur once in the entry); 'remove' deletes the "
                                             "whole entry. Omit for 'add'."),
                         },
->>>>>>> origin/main
                     },
                     "required": ["action"],
                     "additionalProperties": False,

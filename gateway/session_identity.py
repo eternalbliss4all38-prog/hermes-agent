@@ -15,10 +15,7 @@ receiving bot's own profile — so nothing here changes the wire format or any h
 from __future__ import annotations
 
 import dataclasses
-<<<<<<< HEAD
-=======
 import hashlib
->>>>>>> origin/main
 import json
 import logging
 from contextlib import suppress
@@ -311,8 +308,6 @@ def authenticated_subject(identity):
     return AUTH_SUBJECT_PREFIX + json.dumps(
         [identity.get('provider') or '', identity.get('issuer') or '', subject],
         separators=(',', ':'), ensure_ascii=True)
-<<<<<<< HEAD
-=======
 
 
 def is_authenticated_identity(identity: object) -> bool:
@@ -332,4 +327,3 @@ def authenticated_principal_digest(identity: dict) -> str:
     """Server-derived principal id: stable per login, unspoofable without the minted identity."""
     raw = authenticated_subject(identity)
     return f"principal:dashboard:{hashlib.sha256(raw.encode('utf-8')).hexdigest()[:32]}"
->>>>>>> origin/main

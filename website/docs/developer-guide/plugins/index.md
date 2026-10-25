@@ -25,10 +25,7 @@ Hermes has several distinct pluggable interfaces — some use Python `register_*
 | A **video-generation backend** | [Video Generation Provider Plugins](../video-gen-provider-plugin.md) |
 | A **web-search / extract backend** | [Web Search Provider Plugins](../web-search-provider-plugin.md) |
 | A **cloud browser backend** (Browserbase-style CDP session provider) | [Browser Provider Plugins](../browser-provider-plugin.md) |
-<<<<<<< HEAD
-=======
 | A **delegation strategy** (pick a profile or a named model per subagent) | [Delegation Provider Plugins](../delegation-provider-plugin.md) — `ctx.register_delegation_provider()` |
->>>>>>> origin/main
 | A **computer-use driver** (desktop control behind the `computer_use` tool) | [Computer-use backend plugins](#computer-use-backend-plugins) — `ctx.register_computer_use_provider()` |
 | A **secret-manager backend** (vault / password manager / OS keystore) | [Secret Source Plugins](../secret-source-plugin.md) |
 | A **dashboard OIDC/auth provider** | [Web Dashboard — custom providers](../../user-guide/features/web-dashboard.md#custom-providers) — `ctx.register_dashboard_auth_provider()` |
@@ -89,18 +86,12 @@ them. An enabled package may provide immediate `skills/*/SKILL.md` directories
 and stdio MCP servers from root `mcp.json`. Skills are read-only, namespaced,
 and loaded through `skills_list` plus `skill_view`. MCP commands are passed as
 one executable token with a separate argument list, never through a shell.
-<<<<<<< HEAD
-Use `skills_list` to discover the full qualified skill name. Portable skill
-namespaces have the deterministic form `agent-plugin-<slug>-<hash>`, derived
-from the discovered plugin key so sanitized names cannot collide. A portable
-=======
 A portable package's skills are named after the plugin, `<plugin-name>:<skill>`
 (`blender:blender`), the same form as a native plugin's; when two loaded plugins
 would register the same qualified name, the second one's skill is skipped with a
 warning naming both. Its data directory, `plugin-data/agent-plugin-<slug>-<hash>`,
 keeps a name derived from the discovered plugin key so sanitized names cannot
 collide on disk. A portable
->>>>>>> origin/main
 package's MCP servers keep the names their `mcp.json` gives them, the same rule
 as a user's own `mcp_servers` block, so the model-facing `mcp__<server>__<tool>`
 name keeps the tool verb inside the 64-character provider cap. A duplicate server
@@ -153,11 +144,7 @@ write-capable call instead of relying on the skill's instructions alone:
 
 The server name must match an `mcp.json` entry. With `untrusted`, every tool
 call to that server that is not annotated `readOnlyHint: true` asks the user
-<<<<<<< HEAD
-first, and fails closed where nobody can answer (cron, unattended runs). The
-=======
 first (Once, Session or Always, per tool), and fails closed where nobody can answer (cron, unattended runs). The
->>>>>>> origin/main
 only other accepted value is `full`, the default, so a package can narrow
 access but never widen it. A `config.yaml` server with the same name replaces
 the package's entry, including its trust, but keeps the package's declared costs
@@ -226,14 +213,10 @@ A server entry key this Hermes does not know (one a newer release added) is
 ignored with a warning, which `hermes plugins validate` lists, and the package
 still installs. Releases from before this rule reject the package instead, and a
 release that ignores a key may behave less safely than intended, so declare a new
-<<<<<<< HEAD
-key together with a catalog `requires_hermes` floor.
-=======
 key together with a catalog `requires_hermes` floor. `plugin.json` has no
 `requires_hermes` field, so that catalog floor is a portable package's only one: an install by
 catalog name refuses on an older Hermes, and `hermes plugins update` keeps the
 installed pin until Hermes is updated.
->>>>>>> origin/main
 
 An explicit per-server MCP call budget also reaches Hermes' outer tool executor. A call
 whose budget exceeds the shared concurrent-batch deadline becomes a sequential
@@ -710,12 +693,9 @@ When both exist the `pyproject.toml` wins. What Hermes does with them:
 - **`--yes-deps`** answers the dependency question up front, so a headless install (CI, SSH
   automation, a container entrypoint) prepares the declared dependencies instead of being refused.
   It is mutually exclusive with `--no-deps`.
-<<<<<<< HEAD
-=======
 - **A `pyproject.toml` that installs nothing** (`dependencies = []`, no `[build-system]`, extras
   or dependency groups) counts as no declaration: no dependency question, and enabling or updating
   the plugin leaves the dependency environment as it is.
->>>>>>> origin/main
 - **`python_runtime: external`** keeps a sidecar's dependencies out of the shared union.
   Hermes does not install that Python runtime or modify its declaration.
 - **Nothing to load is an error** — `hermes plugins validate` rejects `plugin.yaml` without
@@ -1388,13 +1368,9 @@ legacy `pip_dependencies` and `python_dependencies` lists from `plugin.yaml` or
 Consent, workspace membership, and currency checks use the same declaration.
 PM prepares their dependencies together with core requirements before enabling
 the plugin. The generated workspace does not rewrite the plugin directory or
-<<<<<<< HEAD
-the shipped lockfile. Dependency conflicts refuse admission and preserve the
-=======
 the shipped lockfile, and it is solved only for the installing interpreter's
 platform: a dependency that ships no wheels for another platform does not
 block the plugin. Dependency conflicts refuse admission and preserve the
->>>>>>> origin/main
 previous selection. PM does not automatically disable other plugins.
 
 Dependencies installed manually with pip are not durable PM declarations.
@@ -1830,8 +1806,6 @@ from agent.runtime_cwd import resolve_agent_cwd
 def _handle_todo(raw_args: str) -> str:
     todo = resolve_agent_cwd() / "TODO.md"  # the session's folder, not the gateway's
     return todo.read_text() if todo.exists() else "No TODO.md here."
-<<<<<<< HEAD
-=======
 ```
 
 ### Ask the user to pick an option
@@ -1863,7 +1837,6 @@ def register(ctx):
 
     ctx.register_command("delegation", delegation, description="Switch the delegation mode",
                          args_hint="[mode]")
->>>>>>> origin/main
 ```
 
 ### Dispatch tools from slash commands

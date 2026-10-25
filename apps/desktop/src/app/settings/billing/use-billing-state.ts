@@ -5,10 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Translations } from '@/i18n'
 import { en } from '@/i18n/en'
 import { fmtDate } from '@/lib/time'
-<<<<<<< HEAD
-=======
 import { formatPercentUsed, formatResetsIn } from '@/lib/usage-percent'
->>>>>>> origin/main
 import { FREE_TIER_MODEL } from '@/store/free-tier'
 import { openFreeTierSignIn } from '@/store/free-tier-sign-in'
 
@@ -287,10 +284,7 @@ export function deriveBillingView(
     ],
     tiers,
     topupRow: buyCreditsRow(billing, b),
-<<<<<<< HEAD
-=======
     usagePlanName: windowPlanName(billing, subscription),
->>>>>>> origin/main
     usageRows: deriveUsageRows(billing, subscription, b)
   }
 }
@@ -784,20 +778,6 @@ function deriveUsageRows(
   const usage = subscription?.usage ?? billing.usage
   const planUsage = subscription?.plan_usage ?? billing.plan_usage
 
-<<<<<<< HEAD
-  // Remaining can go slightly negative (usage settles after credits hit zero).
-  // A raw "-$0.79 left" reads as broken — clamp to $0 and name the overage.
-  const subscriptionValue =
-    remaining != null && monthly != null
-      ? remaining < 0
-        ? b.state.usage.subscriptionCredits.valueOver(
-            formatMoney(0),
-            formatMoney(monthly),
-            formatMoney(Math.abs(remaining))
-          )
-        : b.state.usage.subscriptionCredits.valueOf(formatMoney(remaining), formatMoney(monthly))
-      : (usage?.subscription_remaining_display ?? usage?.plan_bar?.remaining_display ?? EMPTY_BILLING_VALUE)
-=======
   // A usage-window plan shows each allowance as percent used. Those gauges replace
   // the subscription-credits row; the top-up balance still follows below.
   if (planUsage?.kind === 'usage_window') {
@@ -805,7 +785,6 @@ function deriveUsageRows(
   } else {
     const remaining = parseAmount(current?.credits_remaining)
     const monthly = parseAmount(current?.monthly_credits)
->>>>>>> origin/main
 
     // Remaining can go slightly negative (usage settles after credits hit zero).
     // A raw "-$0.79 left" reads as broken — clamp to $0 and name the overage.
@@ -820,26 +799,6 @@ function deriveUsageRows(
           : b.state.usage.subscriptionCredits.valueOf(formatMoney(remaining), formatMoney(monthly))
         : (usage?.subscription_remaining_display ?? usage?.plan_bar?.remaining_display ?? EMPTY_BILLING_VALUE)
 
-<<<<<<< HEAD
-  rows.push({
-    bar:
-      remainingFraction != null
-        ? {
-            label: b.state.usage.subscriptionCredits.barLabel,
-            state: remainingFraction <= 0.1 ? 'danger' : 'ok',
-            tone: 'subscription',
-            track: remaining != null && remaining <= 0 ? 'danger' : undefined,
-            value: clamp01(remainingFraction)
-          }
-        : undefined,
-    caption: b.state.usage.subscriptionCredits.captionResets(
-      formatBillingDate(current?.cycle_ends_at ?? usage?.renews_at)
-    ),
-    id: 'subscription_credits',
-    title: b.state.usage.subscriptionCredits.title,
-    value: subscriptionValue
-  })
-=======
     const remainingFraction = remaining != null && monthly != null && monthly > 0 ? remaining / monthly : null
 
     rows.push({
@@ -861,7 +820,6 @@ function deriveUsageRows(
       value: subscriptionValue
     })
   }
->>>>>>> origin/main
 
   const topupValue = topupCreditsValue(billing, usage)
 

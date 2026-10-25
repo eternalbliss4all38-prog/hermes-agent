@@ -3,12 +3,9 @@
   stdenv,
   fetchurl,
   unzip,
-<<<<<<< HEAD
-=======
   autoPatchelfHook,
   patchelf,
   fetchpatch,
->>>>>>> origin/main
 }:
 # The thin translation layer: pm/lock.json -> one fetched, unpacked
 # derivation per package for this nix system. Nothing here knows versions,
@@ -47,8 +44,6 @@ let
   isArchive = artifact:
     lib.any (suffix: lib.hasSuffix suffix artifact.url) [ ".tar.gz" ".tgz" ".tar.xz" ".txz" ".tar.bz2" ".zip" ];
 
-<<<<<<< HEAD
-=======
   # python-build-standalone finds its own libpython through an $ORIGIN/../lib
   # RPATH. autoPatchelf rewrites that into a literal path and leaves the
   # interpreter unable to load its own stdlib, so for it the ELF interpreter
@@ -73,7 +68,6 @@ let
     ];
   });
 
->>>>>>> origin/main
   derive = name: pin: artifacts:
     stdenv.mkDerivation {
       pname = name;
@@ -89,9 +83,6 @@ let
       # pm merges them into one store entry.
       sourceRoot = ".";
       nativeBuildInputs =
-<<<<<<< HEAD
-        lib.optional (lib.any (a: lib.hasSuffix ".zip" a.url) artifacts) unzip;
-=======
         # patchelfFixed precedes the hook so its `patchelf` wins on PATH.
         lib.optionals (originRpath name || patchElf name) [ patchelfFixed ]
         ++ lib.optional (patchElf name) autoPatchelfHook
@@ -116,15 +107,12 @@ let
           fi
         done
       '';
->>>>>>> origin/main
       dontBuild = true;
       dontConfigure = true;
 
       installPhase = ''
         mkdir -p $out
         cp -r . $out/
-<<<<<<< HEAD
-=======
         # Nix's build-environment dump, not artifact content.
         rm -f $out/env-vars
 
@@ -152,7 +140,6 @@ let
           [ -f "$exe" ] && [ -x "$exe" ] || continue
           ln -sf "../$(basename "$exe")" "$out/bin/$(basename "$exe")"
         done
->>>>>>> origin/main
       '';
     };
 in

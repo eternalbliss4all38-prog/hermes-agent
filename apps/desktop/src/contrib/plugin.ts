@@ -29,21 +29,14 @@ import { $petActive } from '@/store/pet'
 import { clearPetMessages, type PetSayOptions, sayPetMessage } from '@/store/pet-plugin-messages'
 
 import { type GatewayEventListener, onGatewayEvent } from './events'
-<<<<<<< HEAD
-=======
 import { createPluginFiles, type PluginFiles } from './plugin-files'
 import { createPluginPreview, type PluginPreview } from './plugin-preview'
->>>>>>> origin/main
 import { $pluginRecords } from './plugins-store'
 import { registry } from './registry'
 import { type PluginSettingsPage, settingsPageContribution } from './settings-pages'
 
-<<<<<<< HEAD
-export type { PluginSettingsPage, PluginSettingsSubpage } from './settings-pages'
-=======
 export type { PluginFileEntry, PluginFiles, PluginFilesResult, PluginFolder } from './plugin-files'
 export type { PluginPreview } from './plugin-preview'
->>>>>>> origin/main
 import type { Contribution } from './types'
 
 export type { PluginSettingsPage, PluginSettingsSubpage } from './settings-pages'
@@ -182,14 +175,11 @@ export interface PluginContext {
   runAction: (id: PluginAppActionId) => PluginRunActionResult
   /** The actions `runAction` accepts, with their localized labels. */
   listActions: () => PluginAppActionInfo[]
-<<<<<<< HEAD
-=======
   /** Run JavaScript in the preview Browser page. Closed unless the plugin
    *  declares `capabilities: ['preview.executeJavaScript']`, and even then
    *  the app asks the user once per page origin before anything runs.
    *  Feature-detect on older hosts: `ctx.preview?.executeJavaScript`. */
   preview: PluginPreview
->>>>>>> origin/main
   /** Plugin-scoped persistence. */
   storage: PluginStorage
   /** Folder-scoped file access: this plugin's own data folder plus folders
@@ -371,8 +361,6 @@ function createPluginLifetime(track: (dispose: () => void) => () => void) {
   }
 }
 
-<<<<<<< HEAD
-=======
 /** The declared capabilities of a plugin export, strings only. */
 export function declaredCapabilities(plugin: Pick<HermesPlugin, 'capabilities'>): string[] {
   return Array.isArray(plugin.capabilities)
@@ -380,7 +368,6 @@ export function declaredCapabilities(plugin: Pick<HermesPlugin, 'capabilities'>)
     : []
 }
 
->>>>>>> origin/main
 /** Build the scoped context handed to a plugin's `register`. `onDispose`
  *  receives every registration's disposer (the loader's unload/reload hook);
  *  `capabilities` is what the plugin declared (`declaredCapabilities`). */
@@ -412,10 +399,7 @@ export function createPluginContext(
     pet: createPluginPet(pluginId, track),
     runAction: id => runPluginAppAction(pluginId, id),
     listActions: listPluginAppActions,
-<<<<<<< HEAD
-=======
     preview: createPluginPreview(pluginId, capabilities),
->>>>>>> origin/main
     storage: createPluginStorage(pluginId),
     files: createPluginFiles(pluginId),
     i18n: createPluginI18n(pluginId, track)

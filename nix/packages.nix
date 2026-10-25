@@ -41,10 +41,7 @@
         # defaultDependencyGroups, and an argument default never lands in `prev`.
         extraDependencyGroups = [ ];
         npm-lockfile-fix = inputs'.npm-lockfile-fix.packages.default;
-<<<<<<< HEAD
-=======
         inherit pmPackages;
->>>>>>> origin/main
         inherit
           rev
           branch

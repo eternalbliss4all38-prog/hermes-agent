@@ -37,10 +37,7 @@ import hermes_yaml as yaml
 
 import pm.workspace as ws
 from pm.plugin_inputs import Members
-<<<<<<< HEAD
-=======
 from tests.pm import _fixtures
->>>>>>> origin/main
 
 
 def _write_enabled(home: Path, enabled: list, provider: str | None = None) -> None:
@@ -285,16 +282,7 @@ def test_malformed_secondary_cannot_evict_recorded_member(admission_env, monkeyp
     profile = home_a / "profiles" / "work"
     profile.mkdir(parents=True)
     _write_enabled(profile, ["profile-dep"])
-<<<<<<< HEAD
-    member = profile / "plugins" / "profile-dep"
-    member.mkdir(parents=True)
-    (member / "pyproject.toml").write_text(
-        '[project]\nname="profile-dep"\nversion="1"\nrequires-python=">=3.11"\n'
-        'dependencies=[]\n[tool.uv]\npackage=false\n', encoding="utf-8",
-    )
-=======
     _fixtures.installing_member(profile / "plugins" / "profile-dep", "profile-dep", tmp_path / "wheels")
->>>>>>> origin/main
     sync_venv(explicit=True)
     recorded = Facts(runtime_facts_path(core), strict=True).get("venv")
     selected = selected_venv(core)
@@ -303,16 +291,7 @@ def test_malformed_secondary_cannot_evict_recorded_member(admission_env, monkeyp
 
     bad = profile / "config.yaml"
     bad.write_text("plugins: [broken]\n", encoding="utf-8")
-<<<<<<< HEAD
-    candidate = home_a / "plugins" / "new-dep"
-    candidate.mkdir(parents=True)
-    (candidate / "pyproject.toml").write_text(
-        '[project]\nname="new-dep"\nversion="1"\nrequires-python=">=3.11"\n'
-        'dependencies=[]\n[tool.uv]\npackage=false\n', encoding="utf-8",
-    )
-=======
     _fixtures.installing_member(home_a / "plugins" / "new-dep", "new-dep", tmp_path / "wheels")
->>>>>>> origin/main
     _write_enabled(home_a, ["new-dep"])
     assert venv_is_current(project_root=core) is False
     assert str(bad) in caplog.text
@@ -345,8 +324,6 @@ def test_malformed_secondary_cannot_evict_recorded_member(admission_env, monkeyp
 
 
 @pytest.mark.skipif(not _uv_available(), reason="uv not on PATH")
-<<<<<<< HEAD
-=======
 def test_plugin_whose_pyproject_installs_nothing_keeps_the_environment(admission_env):
     """``dependencies = []`` (the official agent-importers plugin) puts nothing in the environment:
     enabling that plugin, and each later change to its files, keeps the selected generation instead
@@ -390,7 +367,6 @@ def test_plugin_whose_pyproject_installs_nothing_keeps_the_environment(admission
 
 
 @pytest.mark.skipif(not _uv_available(), reason="uv not on PATH")
->>>>>>> origin/main
 def test_update_sync_disables_plugin_excluded_by_requires_python(admission_env):
     """An update never fails because of a plugin: a member whose requires-python excludes the
     interpreter core now runs on is disabled in every home that enables it (plugins.enabled in
@@ -403,16 +379,7 @@ def test_update_sync_disables_plugin_excluded_by_requires_python(admission_env):
     tmp_path, home = admission_env
     core = tmp_path / "core"
     for name, requires in (("fits", ">=3.11"), ("too-old", f"<{sys.version_info[0]}.{sys.version_info[1]}")):
-<<<<<<< HEAD
-        plugin = home / "plugins" / name
-        plugin.mkdir(parents=True)
-        (plugin / "pyproject.toml").write_text(
-            f'[project]\nname="{name}"\nversion="1"\nrequires-python="{requires}"\n'
-            'dependencies=[]\n[tool.uv]\npackage=false\n', encoding="utf-8",
-        )
-=======
         _fixtures.installing_member(home / "plugins" / name, name, tmp_path / "wheels", requires_python=requires)
->>>>>>> origin/main
     (home / "config.yaml").write_text("# operator note\nplugins:\n  enabled: [fits, too-old]\n", encoding="utf-8")
     profile = home / "profiles" / "work"
     _write_enabled(profile, [], provider="too-old")
@@ -464,16 +431,7 @@ def test_update_sync_survives_unreadable_secondary_profile(admission_env):
 
     tmp_path, home = admission_env
     core = tmp_path / "core"
-<<<<<<< HEAD
-    member = home / "plugins" / "primary-dep"
-    member.mkdir(parents=True)
-    (member / "pyproject.toml").write_text(
-        '[project]\nname="primary-dep"\nversion="1"\nrequires-python=">=3.11"\n'
-        'dependencies=[]\n[tool.uv]\npackage=false\n', encoding="utf-8",
-    )
-=======
     _fixtures.installing_member(home / "plugins" / "primary-dep", "primary-dep", tmp_path / "wheels")
->>>>>>> origin/main
     _write_enabled(home, ["primary-dep"])
     broken = home / "profiles" / "work" / "config.yaml"
     broken.parent.mkdir(parents=True)
@@ -507,16 +465,7 @@ def test_plugin_our_version_rejects_sits_out_without_being_disabled(admission_en
     # A tagless checkout (CI's) has no parseable version, which makes requires_hermes permissive.
     monkeypatch.setattr(plugins_manifest, "running_hermes_version", lambda: "1.0.0")
     for name in ("fits", "needs-newer"):
-<<<<<<< HEAD
-        plugin = home / "plugins" / name
-        plugin.mkdir(parents=True)
-        (plugin / "pyproject.toml").write_text(
-            f'[project]\nname="{name}"\nversion="1"\nrequires-python=">=3.11"\n'
-            'dependencies=[]\n[tool.uv]\npackage=false\n', encoding="utf-8",
-        )
-=======
         _fixtures.installing_member(home / "plugins" / name, name, tmp_path / "wheels")
->>>>>>> origin/main
     manifest = home / "plugins" / "needs-newer" / "plugin.yaml"
     manifest.write_text("name: needs-newer\nrequires_hermes: '>=999'\n", encoding="utf-8")
     _write_enabled(home, ["fits", "needs-newer"])

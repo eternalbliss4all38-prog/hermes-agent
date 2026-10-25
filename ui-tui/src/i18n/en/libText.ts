@@ -79,9 +79,6 @@ export const libTextEn = {
       /** {0} = provider label */
       providerDetail: (label: string) => `${label} reports your credits or billing are exhausted.`,
       /** {0} = provider label */
-<<<<<<< HEAD
-      providerTitle: (label: string) => `Out of credits · ${label}`
-=======
       providerTitle: (label: string) => `Out of credits · ${label}`,
       // A usage-window plan's limit (usageLimitDialog).
       limitTitle: 'Limit reached',
@@ -91,7 +88,6 @@ export const libTextEn = {
       limitCreditsAdd: 'Or add credits with /topup.',
       limitCreditsBoth: 'Or add credits and turn on Keep going in /topup.',
       limitCreditsUse: 'Or turn on Keep going in /topup to use your credits.'
->>>>>>> origin/main
     },
 
     // lib/subagentTree.ts — the `d2 · 7 agents · 124 tools · 2m 14s` summary chip.

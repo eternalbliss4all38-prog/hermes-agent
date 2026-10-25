@@ -391,8 +391,6 @@ describe('scheduled retry at the usage-limit reset (#98852)', () => {
   })
 })
 
-<<<<<<< HEAD
-=======
 describe("a window plan's limit: one-click switch and credits (no silent switch)", () => {
   const limitMessage = (credits: 'add_credits' | 'use_credits', suggestions = true) =>
     failedMessage(
@@ -485,7 +483,6 @@ describe("a window plan's limit: one-click switch and credits (no silent switch)
   })
 })
 
->>>>>>> origin/main
 describe('rejected API key recovery', () => {
   it('names the key as the problem and deep-links Settings → Keys to that env var', async () => {
     render(

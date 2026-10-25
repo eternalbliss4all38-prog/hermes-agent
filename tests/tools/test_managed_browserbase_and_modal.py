@@ -221,18 +221,10 @@ def test_browser_use_explicit_local_mode_stays_local_even_when_managed_gateway_i
     })
 
     with patch.dict(os.environ, env, clear=True):
-<<<<<<< HEAD
-        _load_tool_module("tools.browser_tool", "browser_tool.py")
-        browser_tool_cloud = sys.modules["tools.browser_tool_cloud"]
-
-        local_mode = browser_tool_cloud._is_local_mode()
-        provider = browser_tool_cloud._get_cloud_provider()
-=======
         browser_session_cloud = _load_tool_module("tools.browser_session_cloud", "browser_session_cloud.py")
 
         provider = browser_session_cloud.get_cloud_provider()
         local_backend = browser_session_cloud.is_local_backend()
->>>>>>> origin/main
 
     assert provider is None
     assert local_backend is True  # no SSRF guard: the browser really is this host's

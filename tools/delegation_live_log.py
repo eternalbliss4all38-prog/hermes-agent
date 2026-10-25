@@ -286,14 +286,9 @@ def _write_manifest(delegation_id: str, task_list: list[dict[str, Any]],
 
 def update_manifest_statuses(delegation_id: Optional[str],
                              results: list[dict[str, Any]],
-<<<<<<< HEAD
-                             home: Optional[Path] = None) -> None:
-    """Best-effort per-task status update once the batch has aggregated."""
-=======
                              home: Optional[Path] = None, *, completed: bool = True) -> None:
     """Best-effort per-task status update once the batch has aggregated (``completed=False``: tasks settled
     before the batch ran, e.g. ones their backend refused, while the rest still run)."""
->>>>>>> origin/main
     if not delegation_id:
         return
     with _best_effort("manifest update"):
@@ -311,12 +306,8 @@ def update_manifest_statuses(delegation_id: Optional[str],
         # The dispatch-time model is only the delegation.model override (None when children inherit the parent's).
         if not manifest.get("model"):
             manifest["model"] = next((t["model"] for t in manifest.get("tasks", []) if t.get("model")), None)
-<<<<<<< HEAD
-        manifest["completed"] = time.strftime(_TIME_FMT)
-=======
         if completed:
             manifest["completed"] = time.strftime(_TIME_FMT)
->>>>>>> origin/main
         _dump_json(mp, manifest)
 
 

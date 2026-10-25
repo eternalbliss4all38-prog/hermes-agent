@@ -109,14 +109,10 @@ describe('a row click lands on the canonical chat, never a remembered side tab',
 
     await expect(openRosterBot(canonicalBot)).resolves.toBe(true)
 
-<<<<<<< HEAD
-    expect(openBotCanonicalChat).toHaveBeenCalledWith(canonicalBot, { openingStillCurrent: expect.any(Function) })
-=======
     expect(openBotCanonicalChat).toHaveBeenCalledWith(canonicalBot, {
       intent: 'in-place',
       openingStillCurrent: expect.any(Function)
     })
->>>>>>> origin/main
     expect($openBotChat.get()?.openedSessionId).toBe('bot-chat-tip')
   })
 
@@ -179,8 +175,6 @@ describe('the open Bot Chat follows its session on the gateway', () => {
     }
   })
 })
-<<<<<<< HEAD
-=======
 
 describe('opening a Bot Chat as a stacked tab (⌘-click / "Open Bot Chat in new tab")', () => {
   // Two Bot Chats could never be open at once: every row click spent main, so
@@ -199,4 +193,3 @@ describe('opening a Bot Chat as a stacked tab (⌘-click / "Open Bot Chat in new
     expect(openBotCanonicalChat).toHaveBeenCalledWith(bot, expect.objectContaining({ intent: 'in-place' }))
   })
 })
->>>>>>> origin/main

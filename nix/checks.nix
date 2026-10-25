@@ -165,8 +165,6 @@ json.dump(sorted(leaf_paths(DEFAULT_CONFIG)), sys.stdout, indent=2)
           echo "ok" > $out/result
         '';
 
-<<<<<<< HEAD
-=======
         # The pm artifacts are upstream glibc binaries. autoPatchelf rewrites
         # their interpreter at build time, and this sandbox has no
         # /lib64/ld-linux-x86-64.so.2 (that is host nix-ld), so exec'ing them
@@ -202,7 +200,6 @@ json.dump(sorted(leaf_paths(DEFAULT_CONFIG)), sys.stdout, indent=2)
           echo ok > $out/result
         '';
 
->>>>>>> origin/main
         # Verify the default package builds successfully (cross-platform).
         # On Linux the runtime checks below already depend on the package,
         # but this ensures darwin builders also build it during flake check.
@@ -457,14 +454,9 @@ json.dump(sorted(leaf_paths(DEFAULT_CONFIG)), sys.stdout, indent=2)
                 # An override on purpose. Without one the effective package
                 # IS the default package, so a launcher that pinned the plain
                 # default would look correct while it shipped a second
-<<<<<<< HEAD
-                # runtime to anyone who customises theirs.
-                extraDependencyGroups = [ "exa" ];
-=======
                 # runtime to anyone who customises theirs. The group must be
                 # one the default package does not already ship.
                 extraDependencyGroups = [ "google-meet" ];
->>>>>>> origin/main
                 backend = {
                   mode = "serve";
                   port = 9231;
@@ -1343,8 +1335,6 @@ json.dump(sorted(leaf_paths(DEFAULT_CONFIG)), sys.stdout, indent=2)
           echo "ok" > $out/result
         '';
 
-<<<<<<< HEAD
-=======
         # Extras ADD to what a package ships, through both entry points:
         # `pkgs.hermes-agent.override { ... }` (the documented overlay path)
         # and the modules' extraPythonPackages / extraDependencyGroups.
@@ -1435,7 +1425,6 @@ json.dump(sorted(leaf_paths(DEFAULT_CONFIG)), sys.stdout, indent=2)
           echo "ok" > $out/result
         '';
 
->>>>>>> origin/main
         # Exercise the actual uv2nix environment, not only the selector.
         python-lock-derived = pkgs.runCommand "hermes-python-lock-derived" { } ''
           set -e

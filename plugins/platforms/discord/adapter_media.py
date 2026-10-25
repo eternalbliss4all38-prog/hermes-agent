@@ -2,11 +2,8 @@
 from __future__ import annotations
 
 import asyncio
-<<<<<<< HEAD
-=======
 import base64
 import contextlib
->>>>>>> origin/main
 import json
 import logging
 import os
@@ -27,8 +24,6 @@ logger = logging.getLogger("plugins.platforms.discord.adapter")
 _DISCORD_DEFAULT_UPLOAD_LIMIT_BYTES = 20 * 1024 * 1024
 
 
-<<<<<<< HEAD
-=======
 _OPUS_GRANULE_RATE = 48000  # Ogg/Opus granule positions always count 48 kHz samples (RFC 7845 §4)
 
 
@@ -58,7 +53,6 @@ def _ogg_opus_duration(data: bytes) -> Optional[float]:
     return secs if secs > 0 else None
 
 
->>>>>>> origin/main
 class DiscordMediaMixin:
     @staticmethod
     def _discord_upload_limit_bytes(channel: Any) -> int:
@@ -314,11 +308,6 @@ class DiscordMediaMixin:
 
     async def send_voice(
         self, chat_id: str, audio_path: str, caption: Optional[str] = None,
-<<<<<<< HEAD
-        reply_to: Optional[str] = None, metadata: Optional[dict[str, Any]] = None, **kwargs,
-    ) -> SendResult:
-        """Send audio as a Discord file attachment."""
-=======
         reply_to: Optional[str] = None, metadata: Optional[dict[str, Any]] = None,
         is_voice: Optional[bool] = None, **kwargs,
     ) -> SendResult:
@@ -332,7 +321,6 @@ class DiscordMediaMixin:
                 chat_id, audio_path, caption, not_found="Audio file not found", kind="audio",
                 metadata=metadata,
             )
->>>>>>> origin/main
         from plugins.platforms.discord.adapter import _prompt_target_id, discord
 
         try:
@@ -347,61 +335,13 @@ class DiscordMediaMixin:
             if rejected is not None:
                 return rejected
             reference = self._reply_reference_for_send(reply_to, channel)
-<<<<<<< HEAD
-            file_data = await asyncio.to_thread(Path(audio_path).read_bytes)
-            # Forum channels reject POST /messages (native voice path too); create a thread post instead.
-            if self._is_forum_parent(channel):
-=======
             # Forum channels reject POST /messages (native voice path too); create a thread post instead.
             if self._is_forum_parent(channel):
                 file_data = await asyncio.to_thread(Path(audio_path).read_bytes)
->>>>>>> origin/main
                 forum_file = discord.File(io.BytesIO(file_data), filename=filename)
                 return await self._forum_post_file(
                     channel, content=(caption or "").strip(), file=forum_file,
                 )
-<<<<<<< HEAD
-            # Try sending as a native voice message via raw API (flags=8192).
-            try:
-                import base64
-                try:
-                    from mutagen.oggopus import OggOpus
-                    duration_secs = OggOpus(audio_path).info.length
-                except Exception:
-                    duration_secs = max(1.0, len(file_data) / 2000.0)
-                payload_data = {
-                    "flags": 8192,
-                    "attachments": [{
-                        "id": "0", "filename": "voice-message.ogg", "duration_secs": round(duration_secs, 2),
-                        "waveform": base64.b64encode(bytes([128] * 256)).decode(),
-                    }],
-                }
-                if reference is not None:
-                    payload_data["message_reference"] = {"message_id": str(reply_to), "fail_if_not_exists": False}
-                form = [
-                    {"name": "payload_json", "value": json.dumps(payload_data)},
-                    {
-                        "name": "files[0]", "value": file_data, "filename": "voice-message.ogg",
-                        "content_type": "audio/ogg",
-                    },
-                ]
-                msg_data = await self._client.http.request(
-                    discord.http.Route("POST", "/channels/{channel_id}/messages", channel_id=channel.id),
-                    form=form,
-                )
-                return SendResult(success=True, message_id=str(msg_data["id"]))
-            except Exception as voice_err:
-                logger.debug("Voice message flag failed, falling back to file: %s", voice_err)
-                file = discord.File(io.BytesIO(file_data), filename=filename)
-                try:
-                    msg = await channel.send(file=file, reference=reference)
-                except Exception as send_err:
-                    if reference is not None and self._is_reply_reference_rejected(send_err):
-                        msg = await channel.send(file=file, reference=None)
-                    else:
-                        raise
-                return SendResult(success=True, message_id=str(msg.id))
-=======
             voice = await self._ogg_opus_voice_payload(audio_path)
             if voice is not None:
                 try:
@@ -422,13 +362,10 @@ class DiscordMediaMixin:
                 else:
                     raise
             return SendResult(success=True, message_id=str(msg.id))
->>>>>>> origin/main
         except Exception as e:  # pragma: no cover - defensive logging
             logger.error("[%s] Failed to send audio: %s", self.name, e, exc_info=True)
             return SendResult(success=False, error=str(e))
 
-<<<<<<< HEAD
-=======
     @staticmethod
     async def _ogg_opus_voice_payload(audio_path: str) -> Optional[tuple[bytes, float]]:
         """``(ogg_opus_bytes, duration_secs)`` for a voice message: the file itself when it already
@@ -475,7 +412,6 @@ class DiscordMediaMixin:
         )
         return SendResult(success=True, message_id=str(msg_data["id"]))
 
->>>>>>> origin/main
 
     async def _send_local_file(self, chat_id, path, caption, *, file_name=None, not_found: str, kind: str, metadata=None):
         """A failed attachment is a failed delivery, never a successful text notice."""

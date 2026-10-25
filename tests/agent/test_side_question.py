@@ -193,9 +193,6 @@ class TestForkPath:
         assert calls["history"] == history  # full snapshot replayed verbatim
         assert "which file?" in calls["user_message"]
         assert calls["write_origin"] == "side_question"
-<<<<<<< HEAD
-        assert calls.get("shutdown") and calls.get("closed")
-=======
 
     def test_fork_teardown_leaves_the_sessions_terminal_environment(self):
         """The /btw fork shares the live session's id, which keys its terminal sandbox: a real
@@ -226,4 +223,3 @@ class TestForkPath:
             finally:
                 terminal_tool._active_environments.pop("sess-btw", None)
 
->>>>>>> origin/main

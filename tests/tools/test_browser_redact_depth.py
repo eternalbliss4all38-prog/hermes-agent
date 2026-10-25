@@ -5,16 +5,9 @@ import json
 import pytest
 
 from tools.browser_cdp_tool import _redact_cdp_output
-<<<<<<< HEAD
-from tools.browser_tool_snapshot import _redact_browser_output
-
-SECRET = "sk-" + "a" * 30
-WALKERS = [_redact_browser_output, _redact_cdp_output]
-=======
 
 SECRET = "sk-" + "a" * 30
 WALKERS = [_redact_cdp_output]
->>>>>>> origin/main
 
 
 def _nest(leaf, levels: int, *, as_dict: bool):

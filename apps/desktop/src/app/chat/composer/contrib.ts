@@ -39,12 +39,8 @@ export const COMPOSER_AREAS = {
   attachments: 'composer.attachments',
   microActions: 'composer.microActions',
   atCompletions: 'composer.atCompletions',
-<<<<<<< HEAD
-  modelPill: 'composer.modelPill'
-=======
   modelPill: 'composer.modelPill',
   contextMenu: 'composer.contextMenu'
->>>>>>> origin/main
 } as const
 
 /** What a `composer.contextMenu` provider sees when the user right-clicks the

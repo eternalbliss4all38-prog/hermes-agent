@@ -73,8 +73,6 @@ def check_config_version(*, raise_on_parse_error: bool = False) -> tuple[int, in
     be mistaken for an up-to-date config. A file with no version key reads as 0."""
     stamp, latest = read_config_version_stamp(raise_on_parse_error=raise_on_parse_error)
     return (0 if stamp is None else stamp), latest
-<<<<<<< HEAD
-=======
 
 
 def note_first_stamp(home, on_disk: dict, to_write: dict) -> list[str]:
@@ -112,4 +110,3 @@ def stamp_missing_config() -> bool:
     atomic_config_write(path, config)
     _secure_file(path)
     return True
->>>>>>> origin/main

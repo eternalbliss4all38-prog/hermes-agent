@@ -1136,11 +1136,7 @@ class GatewayAgent:
                                     owner={"type": "session", "session_id": self.session_id})
 
     def _answer_request(self, frame):
-<<<<<<< HEAD
-        """A gateway server→client request (``sudo``, ``secret``, ``clarify``): main's own modal
-=======
         """A gateway server→client request (``sudo``, ``secret``, the ``vault.*`` prompts, ``clarify``): main's own modal
->>>>>>> origin/main
         answers it on this (agent) thread, through the callback HermesCLI registered for the turn; the
         answer travels only in the JSON-RPC response frame."""
         method = frame["method"]
@@ -1171,25 +1167,7 @@ class GatewayAgent:
             logger.debug("modal withdraw for %s failed", current[1], exc_info=True)
 
     def _ask_clarify(self, params):
-<<<<<<< HEAD
-        """Main's batch clarify panel (``clarify_callback(questions)``) for the whole question set."""
-        questions = [{"qid": q.get("qid"), "question": q.get("question") or "",
-                      "choices": list(q.get("choices") or []), "multi_select": bool(q.get("multi_select"))}
-                     for q in params.get("questions") or [] if isinstance(q, dict) and q.get("qid")]
-        if self.clarify_callback is None or not questions:
-            return {"outcome": "cancelled"}
-        reply = self.clarify_callback(questions)
-        if not isinstance(reply, dict):
-            return {"outcome": "cancelled"}
-        answers = {qid: (value if isinstance(value, str) or value is None else json.dumps(value))
-                   for qid, value in (reply.get("answers") or {}).items()}
-        out = {"answers": answers}
-        if reply.get("outcome") in ("submitted", "timed_out", "cancelled"):
-            out["outcome"] = reply["outcome"]
-        return out
-=======
         return clarify_reply(self.clarify_callback, params)
->>>>>>> origin/main
 
     def _ask_sudo(self, params):
         from tools.terminal_tool import _get_sudo_password_callback
@@ -1218,8 +1196,6 @@ class GatewayAgent:
                 callbacks.save_env_value_secure = saver
         return captured[0] if captured else ""
 
-<<<<<<< HEAD
-=======
     def _ask_vault_unlock(self, params):
         """Main's masked password-manager unlock panel, through the callback HermesCLI registered."""
         from agent.vault_backends.unlock import get_unlock_prompt_callback
@@ -1251,7 +1227,6 @@ class GatewayAgent:
             return ""
         return callback(str(params.get("site") or ""), str(params.get("hint") or "")) or ""
 
->>>>>>> origin/main
     # -- result --------------------------------------------------------------------------------
     def _user_row(self, user_message):
         staged = self._pending_cli_user_message
@@ -1455,8 +1430,6 @@ def _moa_handler(kind):
     return handler
 
 
-<<<<<<< HEAD
-=======
 def clarify_reply(callback, params) -> dict:
     """Main's batch clarify panel (``callback(questions)``, ``HermesCLI._clarify_callback``) answering a
     ``clarify`` server request's whole question set: its ``ClarifyResult``."""
@@ -1476,17 +1449,13 @@ def clarify_reply(callback, params) -> dict:
     return out
 
 
->>>>>>> origin/main
 _SECRET_LOCK = threading.Lock()
 _SERVER_REQUESTS = {
     "sudo": GatewayAgent._ask_sudo,
     "secret": GatewayAgent._ask_secret,
-<<<<<<< HEAD
-=======
     "vault.unlock_prompt": GatewayAgent._ask_vault_unlock,
     "vault.save_login": GatewayAgent._ask_vault_save_login,
     "vault.code": GatewayAgent._ask_vault_code,
->>>>>>> origin/main
     "clarify": GatewayAgent._ask_clarify,
 }
 

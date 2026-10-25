@@ -21,10 +21,7 @@
  * `/topup`), while third-party providers deep-link to `billing_url`.
  */
 export type { BillingBlock } from './gateway-contract.generated.js'
-<<<<<<< HEAD
-=======
 import type { PlanUsage } from './gateway-contract.generated.js'
->>>>>>> origin/main
 
 // ── Remote Spending (Phase 2b) ───────────────────────────────────────
 

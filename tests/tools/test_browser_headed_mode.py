@@ -8,7 +8,6 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
-from tools import browser_tool_session as bt_session
 
 from tools import browser_launcher as launcher
 from tools import browser_session as bs
@@ -22,11 +21,7 @@ def _clean_headed_cache(monkeypatch, tmp_path):
     monkeypatch.setattr(Path, "home", lambda: tmp_path)
     monkeypatch.setenv("HERMES_HOME", str(tmp_path / ".hermes"))
     monkeypatch.setenv("HERMES_RUNTIME_DIR", str(tmp_path / "tools"))
-<<<<<<< HEAD
-    _reset_headed_cache()
-=======
     bs_cloud.reset_caches()
->>>>>>> origin/main
     yield
     bs_cloud.reset_caches()
 
@@ -38,10 +33,6 @@ def _clean_headed_cache(monkeypatch, tmp_path):
 class TestIsHeadedMode:
 
     def test_config_true(self):
-<<<<<<< HEAD
-        from tools.browser_tool_cloud import _is_headed_mode
-=======
->>>>>>> origin/main
         cfg = {"browser": {"headed": True}}
         with patch("hermes_cli.config_effective.load_user_config_effective", return_value=cfg):
             assert bs_cloud.is_headed_mode() is True
@@ -61,11 +52,7 @@ class TestCleanupTaskResourcesHeadedSkip:
     def test_headless_still_cleans_browser(self):
         from agent.chat_completion_helpers import cleanup_task_resources
         with (
-<<<<<<< HEAD
-            patch("tools.browser_tool_cloud._is_headed_mode", return_value=False),
-=======
             patch("tools.browser_session_cloud.is_headed_mode", return_value=False),
->>>>>>> origin/main
             patch("run_agent.cleanup_vm"),
             patch("run_agent.cleanup_browser") as mock_cb,
             patch(
@@ -97,11 +84,7 @@ class TestCleanupTaskResourcesHeadedSkip:
         """Headed mode only affects the browser; VM teardown is untouched."""
         from agent.chat_completion_helpers import cleanup_task_resources
         with (
-<<<<<<< HEAD
-            patch("tools.browser_tool_cloud._is_headed_mode", return_value=True),
-=======
             patch("tools.browser_session_cloud.is_headed_mode", return_value=True),
->>>>>>> origin/main
             patch("run_agent.cleanup_vm") as mock_vm,
             patch("run_agent.cleanup_browser"),
             patch(
@@ -129,41 +112,6 @@ class TestHeadedLaunch:
         class _Proc:
             pid = 4321
 
-<<<<<<< HEAD
-        mock_stdout = (
-            '{"success": true, "data": {"snapshot": '
-            '"- heading \\"Hi\\" [ref=e1]", "refs": {"e1": {}}}}'
-        )
-        with patch("subprocess.Popen", side_effect=capture_popen), \
-             patch("os.open", return_value=99), \
-             patch("os.close"), \
-             patch("os.unlink"), \
-             patch("os.makedirs"), \
-             patch("builtins.open", MagicMock(return_value=MagicMock(
-                 __enter__=MagicMock(return_value=MagicMock(
-                     read=MagicMock(return_value=mock_stdout))),
-                 __exit__=MagicMock(return_value=False),
-             ))), \
-             patch("tools.interrupt.is_interrupted", return_value=False), \
-             patch("tools.browser_tool_lifecycle._write_owner_pid"):
-            bt_session._run_browser_command("task1", "snapshot", [], _engine_override="auto")
-        return captured_cmds
-
-    @patch("tools.browser_tool_session._get_session_info")
-    @patch("tools.browser_tool_install._find_agent_browser", return_value="/usr/bin/agent-browser")
-    @patch("tools.browser_tool_cloud._is_local_mode", return_value=True)
-    @patch("tools.browser_tool_install._chromium_installed", return_value=True)
-    @patch("tools.browser_tool_cloud._get_cloud_provider", return_value=None)
-    @patch("tools.browser_tool_cdp._get_cdp_override", return_value="")
-    @patch("tools.browser_tool._is_camofox_mode", return_value=False)
-    def test_headed_flag_added_in_local_mode(
-        self, _camofox, _cdp, _cloud, _chromium, _local, _find, _session
-    ):
-        import tools.browser_tool as bt
-        bt._cached_headed_mode = True
-        bt._headed_mode_resolved = True
-        _session.return_value = {"session_name": "test-sess"}
-=======
             def poll(self):
                 return 1
 
@@ -176,32 +124,11 @@ class TestHeadedLaunch:
         monkeypatch.setattr(launcher, "_terminate", lambda pid, start_time, proc: None)
         launcher.launch_chromium("headed", executable="chromium", user_data_dir=str(tmp_path / "udd"),
                                  env={"DISPLAY": ":1"}, timeout=1)
->>>>>>> origin/main
 
         assert len(captured) == 1
         assert not any(arg.startswith("--headless") for arg in captured[0])
 
 
-<<<<<<< HEAD
-    @patch("tools.browser_tool_session._get_session_info")
-    @patch("tools.browser_tool_install._find_agent_browser", return_value="/usr/bin/agent-browser")
-    @patch("tools.browser_tool_cloud._is_local_mode", return_value=True)
-    @patch("tools.browser_tool_install._chromium_installed", return_value=True)
-    @patch("tools.browser_tool_cloud._get_cloud_provider", return_value=None)
-    @patch("tools.browser_tool_cdp._get_cdp_override", return_value="")
-    @patch("tools.browser_tool._is_camofox_mode", return_value=False)
-    def test_headed_flag_not_added_in_cloud_mode(
-        self, _camofox, _cdp, _cloud, _chromium, _local, _find, _session
-    ):
-        """Cloud (CDP) sessions never get --headed — it's a local-only flag."""
-        import tools.browser_tool as bt
-        bt._cached_headed_mode = True
-        bt._headed_mode_resolved = True
-        _session.return_value = {
-            "session_name": "test-sess",
-            "cdp_url": "wss://example.invalid/cdp",
-        }
-=======
     def test_auto_started_screen_is_up_before_the_profile_is_chosen(self, monkeypatch):
         """browser.headed + bot_desktop.auto_start on a headless host: the first local launch brings the screen
         up and then uses the Bot Desktop profile (the dock Browser's cookie jar), not a throwaway one."""
@@ -214,7 +141,6 @@ class TestHeadedLaunch:
         monkeypatch.setattr(bd_browser, "profile_dir", lambda: "/bot-desktop/browser-profile")
         monkeypatch.setattr(bd_browser, "executable", lambda: "/usr/bin/chromium")
         launches = []
->>>>>>> origin/main
 
         def launch(key, **kwargs):
             launches.append((key, kwargs))

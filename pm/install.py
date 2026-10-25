@@ -69,11 +69,7 @@ def _store() -> Store:
 
 
 def _heal_exec_bit(binary: Path) -> bool:
-<<<<<<< HEAD
-    """agent-browser entries staged before stage() set the exec bit sit at 0644 and fail every
-=======
     """Store entries staged from archives that drop the exec bit sit at 0644 and fail every
->>>>>>> origin/main
     launch with PermissionError. Modes are not part of the pinned digest, so restore it in place;
     an entry we cannot chmod (sealed store) is treated as not installed."""
     if os.name == "nt" or os.access(binary, os.X_OK):
@@ -367,8 +363,6 @@ def _entry_current(package, lockfile, facts, store, entry, previous, version, pi
     return recorded == pin and not package.verify(entry, target)
 
 
-<<<<<<< HEAD
-=======
 def _refresh_recorded_env(package, facts, store, entry, previous, target) -> None:
     """An entry's env is derived from the package code, not its bytes: when the code changes it (a
     variable renamed or retired), re-record it so stores installed earlier match what admission
@@ -396,7 +390,6 @@ def _refresh_found_env(package, location, target, operation) -> None:
             _refresh_recorded_env(package, facts, store, entry, previous, target)
 
 
->>>>>>> origin/main
 def _copy_verified_source(package, lockfile, copy_from, staged, version, target) -> None:
     source_facts, source_store = copy_from
     source = source_facts.get(package.name)
@@ -463,11 +456,8 @@ def _install(
         _reclaim_set_aside(store)
         if (_entry_current(package, lockfile, facts, store, entry, previous, version, pin, target)
                 and not _fresh_copy):
-<<<<<<< HEAD
-=======
             if facts is not None:
                 _refresh_recorded_env(package, facts, store, entry, previous, target)
->>>>>>> origin/main
             _remove_downloads(store, artifacts)
             return entry
         if not artifacts:
@@ -596,17 +586,11 @@ def ensure(
                     json.dumps(_identity(lockfile, package.name, target), sort_keys=True))
         if identity in checked:
             continue
-<<<<<<< HEAD
-        if _installed_location(package, lockfile, target, verify=explicit and verify) is None:
-            missing.append(package)
-        else:
-=======
         location = _installed_location(package, lockfile, target, verify=explicit and verify)
         if location is None:
             missing.append(package)
         else:
             _refresh_found_env(package, location, target, _operation)
->>>>>>> origin/main
             checked.add(identity)
     if missing and not explicit and not lazy_installs_allowed():
         raise _refuse_lazy(name, ", ".join(p.name for p in missing))

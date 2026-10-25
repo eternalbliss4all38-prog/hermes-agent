@@ -337,27 +337,6 @@ TOOL_CATEGORIES = {
         # Cloud provider rows (Browserbase, Browser Use, Firecrawl) come from plugins.browser.<vendor> via
         # _plugin_browser_providers(); only non-provider setup-flow rows live here. "Local Browser" MUST stay
         # first so a fresh install's Enter lands on the free local backend (index 0), never on the paid Nous row.
-<<<<<<< HEAD
-        # Lightpanda is local too (cloud_provider: local, browser.engine: lightpanda — Browser Use mode spawns
-        # ``lightpanda serve``, built-in tools use ``agent-browser --engine lightpanda``; no Chromium).
-        # Camofox short-circuits the cloud dispatch via _is_camofox_mode().
-        "providers": [
-            _row("Local Browser", "★ recommended · free", "Headless Chromium, no API key needed", browser_provider="local",
-                 browser_engine="auto", post_setup="agent_browser"),
-            _row("Lightpanda", "free · local · no Chromium", "Zig headless browser spawned by Hermes, text-only (no screenshots)",
-                 browser_provider="local", browser_engine="lightpanda", post_setup="lightpanda"),
-            # Cloud hook installs only the agent-browser CLI: Browser Use hosts its own Chromium, so the
-            # local-Chromium install and readiness gate must not apply (with "agent_browser" this row read
-            # "needs setup" forever on machines without a local Chromium build).
-            _row("Nous Subscription (Browser Use cloud)", "subscription", "Managed Browser Use billed to your subscription",
-                 browser_provider="browser-use", **_NOUS, managed_nous_feature="browser",
-                 override_env_vars=["BROWSER_USE_API_KEY"], post_setup="browserbase"),
-            _row("Camofox", "free · local", "Anti-detection browser (Firefox/Camoufox)",
-                 [_key("CAMOFOX_URL", "Camofox server URL", "https://github.com/jo-inc/camofox-browser", default="http://localhost:9377")],
-                 browser_provider="camofox", post_setup="camofox"),
-            _row("Browser Use", "free · local · cloud", "New SOTA web harness (CLI 3.0)", browser_backend="browser-use",
-                 post_setup="browser_use_cli"),
-=======
         # Lightpanda is local too (cloud_provider: local, browser.engine: lightpanda — browser_exec spawns
         # ``lightpanda serve``; no Chromium).
         "providers": [
@@ -370,7 +349,6 @@ TOOL_CATEGORIES = {
             _row("Nous Subscription (Browser Use cloud)", "subscription", "Managed Browser Use billed to your subscription",
                  browser_provider="browser-use", **_NOUS, managed_nous_feature="browser",
                  override_env_vars=["BROWSER_USE_API_KEY"], post_setup="browserbase"),
->>>>>>> origin/main
         ],
     },
     "computer_use": {
@@ -687,8 +665,6 @@ def _prune_toolsets_stripped_by_disabled(enabled_toolsets: set[str], disabled_na
     return {name for name, tools in resolved.items() if not tools or tools & surviving}
 
 
-<<<<<<< HEAD
-=======
 def _disabled_entry_tools(name: str) -> set[str]:
     """Tools one ``agent.disabled_toolsets`` entry removes at runtime: legacy names (``terminal_tools``)
     and the bundle/posture non-core delta included, which ``resolve_toolset`` alone gets wrong."""
@@ -730,7 +706,6 @@ def toolsets_partially_stripped(config: dict, enabled_toolsets: set[str]) -> dic
     return report
 
 
->>>>>>> origin/main
 def _recover_platform_native_toolsets(enabled_toolsets: set[str], platform: str, *, skip: set[str]) -> None:
     """Add non-configurable platform toolsets (discord, feishu_*) in place: in the default composite but not in
     CONFIGURABLE_TOOLSETS, so never in a checklist or saved list. Runs for BOTH ``_get_platform_tools`` branches."""
@@ -828,9 +803,6 @@ def _save_platform_tools(config: dict, platform: str, enabled_toolset_keys: set[
     if isinstance(agent_cfg, dict) and agent_cfg.get("disabled_toolsets") and newly_enabled:
         from agent.skill_utils import parse_config_string_list
         parsed_disabled = parse_config_string_list(agent_cfg["disabled_toolsets"])
-<<<<<<< HEAD
-        remaining = [ts for ts in parsed_disabled if ts not in newly_enabled]
-=======
         # Also clear entries whose tools are entirely covered by a newly enabled toolset: Blank Slate writes
         # subset toolsets like `search` (only web_search), which have no checklist row, so enabling `web`
         # left web_search stripped with no supported way to undo it (#134593).
@@ -844,7 +816,6 @@ def _save_platform_tools(config: dict, platform: str, enabled_toolset_keys: set[
             return bool(tools) and tools <= covered
 
         remaining = [ts for ts in parsed_disabled if ts not in newly_enabled and not _covered(ts)]
->>>>>>> origin/main
         if remaining != parsed_disabled:
             agent_cfg["disabled_toolsets"] = remaining
     save_config(config)

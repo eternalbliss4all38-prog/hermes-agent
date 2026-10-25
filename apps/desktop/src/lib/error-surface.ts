@@ -53,15 +53,12 @@ export const ERROR_CODE_KEYS = [
   'SESSION_OWNER_BUSY',
   // The chat is a scheduled job's session: it only runs that job, so a typed message never runs there.
   'cron_session_read_only',
-<<<<<<< HEAD
-=======
   // The chat's working folder was moved or deleted: nothing ran, and nothing will until it is back
   // or the chat moves to another folder.
   'workspace_unavailable',
   // The API key this chat started with changed or was removed (gateway: a chat never switches keys
   // on its own): Retry repeats it; a new chat runs on the current key.
   'launch_credentials_unavailable',
->>>>>>> origin/main
   // The owner did not confirm a forwarded send in time; it may already be queued: no Retry.
   'SESSION_OWNER_UNCONFIRMED',
   'disk_full',
@@ -76,14 +73,10 @@ export const ERROR_CODE_KEYS = [
   'free_tier_model_not_free',
   'free_tier_route',
   'free_tier_outage',
-<<<<<<< HEAD
-  'free_tier_refused'
-=======
   'free_tier_refused',
   // A usage-window plan limit ran out and credits won't pay. The backend's
   // stop-line sentence (which limit, the reset, the way on) rides in `message`.
   'usage_window'
->>>>>>> origin/main
 ] as const
 
 export type ErrorCodeKey = (typeof ERROR_CODE_KEYS)[number]
@@ -116,8 +109,6 @@ export interface ErrorSurface {
    *  `resets_at` body field on a 429). Rendered as "Limit resets at HH:mm" next
    *  to Retry. Absent when the provider named no reset or on older backends. */
   resetsAt?: number
-<<<<<<< HEAD
-=======
   /** usage_window only: the plan's recommended models that still work past the
    *  limit (best first) and the credits option — the card's one-click buttons
    *  (agent/plan_limits.py). Absent on older backends. */
@@ -167,7 +158,6 @@ function parseUsageLimit(value: unknown): UsageLimitSurface | undefined {
     action === 'use_credits' || action === 'add_credits' || action === 'add_credits_and_keep_going' ? action : undefined
 
   return suggestions.length || credits ? { suggestions, ...(credits ? { credits } : {}) } : undefined
->>>>>>> origin/main
 }
 
 /** Validate a wire payload into an ErrorSurface, or null when absent/garbled. */
@@ -188,10 +178,7 @@ export function parseErrorSurface(value: unknown): ErrorSurface | null {
     provider_label?: unknown
     resets_at?: unknown
     retryable?: unknown
-<<<<<<< HEAD
-=======
     usage_limit?: unknown
->>>>>>> origin/main
   }
 
   const layer = typeof raw.layer === 'string' ? (raw.layer as ErrorSurfaceLayer) : null
@@ -214,12 +201,8 @@ export function parseErrorSurface(value: unknown): ErrorSurface | null {
     ...(typeof raw.message === 'string' && raw.message.trim() ? { message: raw.message.trim() } : {}),
     ...(typeof raw.resets_at === 'number' && Number.isFinite(raw.resets_at) && raw.resets_at > 0
       ? { resetsAt: raw.resets_at }
-<<<<<<< HEAD
-      : {})
-=======
       : {}),
     ...(usageLimit ? { usageLimit } : {})
->>>>>>> origin/main
   }
 }
 
@@ -342,8 +325,6 @@ export interface ErrorRecoveryPlan {
    *  model.switch); Settings → Models deep link fallback when no chat surface
    *  is on screen. */
   switchProvider: boolean
-<<<<<<< HEAD
-=======
   /** Settings → Billing (usage_window: turn on Keep going, add credits). */
   openBilling: boolean
   /** usage_window: one-click "Switch to <recommended model>" (this session),
@@ -354,7 +335,6 @@ export interface ErrorRecoveryPlan {
   /** Open logs / Send diagnostics / Copy details. Off for a plan limit: it is
    *  not a fault, and those buttons would bury the two that fix it. */
   diagnostics: boolean
->>>>>>> origin/main
 }
 
 // Layers where the fix is provider/endpoint/auth config, not a retry.
@@ -369,27 +349,20 @@ const CODE_PLANS: Partial<Record<ErrorCodeKey, Partial<ErrorRecoveryPlan>>> = {
   SESSION_OWNER_BUSY: { retry: true, startNewSession: false },
   SESSION_OWNER_UNCONFIRMED: { retry: false, startNewSession: false },
   cron_session_read_only: { retry: false, startNewSession: true },
-<<<<<<< HEAD
-=======
   // Retry is the next click once the folder is back or the chat was moved (Move to project).
   workspace_unavailable: { retry: true, startNewSession: true },
   launch_credentials_unavailable: { retry: false, startNewSession: true },
->>>>>>> origin/main
   content_policy_blocked: { editMessage: true, retry: false },
   context_overflow: { compress: true, retry: false, startNewSession: true },
   disk_full: { openHermesFolder: true, retry: true },
   loop_error: { startNewSession: true },
   model_not_found: { chooseModel: true, retry: false },
-<<<<<<< HEAD
-  payload_too_large: { compress: true, retry: false, startNewSession: true }
-=======
   payload_too_large: { compress: true, retry: false, startNewSession: true },
   // A window plan's limit: the two ways on, one click each — switch to the
   // plan's recommended model, or spend credits (Use credits when Keep going is
   // off and there is a balance, else Add credits via Billing). Retry at the
   // reset stays. Switch provider is not the fix (the provider is fine).
   usage_window: { diagnostics: false, openBilling: true, retry: true, switchProvider: false }
->>>>>>> origin/main
 }
 
 export function errorRecoveryPlan(surface: ErrorSurface | null | undefined): ErrorRecoveryPlan {
@@ -410,21 +383,14 @@ export function errorRecoveryPlan(surface: ErrorSurface | null | undefined): Err
     signInFreeTier: isFreeTierSurface(surface),
     startNewSession: false,
     switchProvider: surface != null && SWITCH_PROVIDER_LAYERS.includes(surface.layer),
-<<<<<<< HEAD
-=======
     openBilling: false,
     switchToModel: false,
     useCredits: false,
     diagnostics: true,
->>>>>>> origin/main
     updateApiKey: apiKeyRejected
   }
 
   const key = errorCardKey(surface)
-<<<<<<< HEAD
-
-  return { ...base, ...('code' in key ? CODE_PLANS[key.code] : undefined) }
-=======
   const plan = { ...base, ...('code' in key ? CODE_PLANS[key.code] : undefined) }
 
   if (surface?.code === 'usage_window') {
@@ -438,7 +404,6 @@ export function errorRecoveryPlan(surface: ErrorSurface | null | undefined): Err
   }
 
   return plan
->>>>>>> origin/main
 }
 
 /** Plain-text error-details blob for the error card's "Copy error details". */

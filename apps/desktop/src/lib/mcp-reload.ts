@@ -4,10 +4,7 @@ import { translateNow } from '@/i18n'
 import { notify } from '@/store/notifications'
 import { ambientRequestFor } from '@/store/session-gone-latch'
 import { requestForOwnedSession } from '@/store/session-states'
-<<<<<<< HEAD
-=======
 import { refreshToolMediaOwners } from '@/store/tool-media-owners'
->>>>>>> origin/main
 
 /**
  * What `reload.mcp` did for the chat that asked. The gateway decides and commits; Desktop only reads its
@@ -34,12 +31,9 @@ export async function reloadMcp(
     session_id: sessionId ?? undefined
   })
 
-<<<<<<< HEAD
-=======
   // Reconnected servers can register tools a package's renderer was waiting on.
   refreshToolMediaOwners()
 
->>>>>>> origin/main
   return {
     deferred: result?.session === 'busy',
     sessionServers: result?.session_servers ?? null,

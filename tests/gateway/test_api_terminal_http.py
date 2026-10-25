@@ -1,8 +1,5 @@
 """Transport projections never report a non-successful result as completion."""
-<<<<<<< HEAD
-=======
 import json
->>>>>>> origin/main
 from unittest.mock import AsyncMock
 
 import pytest
@@ -40,8 +37,6 @@ def test_chat_interruption_is_not_stop():
     from gateway.platforms.api_server_openai_routes import _result_flags, _finish_reason
     assert _finish_reason(*_result_flags({'completed': False, 'interrupted': True})) != 'stop'
 
-<<<<<<< HEAD
-=======
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize('stream', [False, True])
@@ -77,7 +72,6 @@ async def test_chat_budget_exhausted_turn_is_length_not_cancelled(stream, result
         adapter._response_store.close()
         adapter._run_idempotency_store.close()
 
->>>>>>> origin/main
 @pytest.mark.asyncio
 @pytest.mark.parametrize('flag,status', [('failed', 'failed'), ('interrupted', 'cancelled')])
 async def test_session_chat_terminal_result_is_not_success(flag, status):

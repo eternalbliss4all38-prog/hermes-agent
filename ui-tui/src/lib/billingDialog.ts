@@ -3,8 +3,6 @@ import type { UsageLimit } from '@hermes/shared/plan-usage'
 
 import { t } from '../i18n/runtime.js'
 
-import { t } from '../i18n/runtime.js'
-
 export interface BillingDialogCopy {
   cancelLabel: string
   confirmLabel: string
@@ -39,8 +37,6 @@ export function billingDialogCopy(block: BillingBlock): BillingDialogCopy {
       : t('libText.billingDialog.switchProvider'),
     detail: t('libText.billingDialog.providerDetail', label),
     title: t('libText.billingDialog.providerTitle', label)
-<<<<<<< HEAD
-=======
   }
 }
 
@@ -87,6 +83,5 @@ export function usageLimitDialog(limit: UsageLimit): UsageLimitDialog {
     detail: [sentence, credits].filter(Boolean).join('\n'),
     switchValue: `${suggestion.model} --provider ${suggestion.provider || 'nous'} --session`,
     title: t('libText.billingDialog.limitTitle')
->>>>>>> origin/main
   }
 }

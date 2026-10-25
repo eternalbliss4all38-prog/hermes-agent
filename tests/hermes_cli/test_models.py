@@ -159,8 +159,6 @@ class TestPartitionNousModelsByTier:
         del pricing["free/model"]
         assert m.recommended_nous_default_model()["model"] == "openai/gpt-5.4"
 
-<<<<<<< HEAD
-=======
     def test_window_plan_default_is_the_plans_first_listed_recommendation(self, monkeypatch):
         import hermes_cli.models as m
         from hermes_cli import model_picker_usage as mpu
@@ -184,7 +182,6 @@ class TestPartitionNousModelsByTier:
         monkeypatch.setattr(mpu, "nous_picker_usage", lambda **kw: None)
         assert m.recommended_nous_default_model()["model"] == "example/model-b"
 
->>>>>>> origin/main
     def test_all_paid_models(self):
         """When all models are paid, free-tier users have none selectable."""
         models = ["anthropic/claude-opus-4.6", "openai/gpt-5.4"]

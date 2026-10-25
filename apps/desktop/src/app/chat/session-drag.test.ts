@@ -3,10 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { group } from '@/components/pane-shell/tree/model'
 import { $layoutTree, closeTreePane } from '@/components/pane-shell/tree/store'
-<<<<<<< HEAD
-=======
 import { $pinnedSessionIds } from '@/store/layout'
->>>>>>> origin/main
 import { requestFreshSession } from '@/store/profile'
 import { moveSessionToProject, projectIdForCwd } from '@/store/projects'
 import { $selectedStoredSessionId, $sessions } from '@/store/session'
@@ -109,10 +106,7 @@ afterEach(() => {
   $selectedStoredSessionId.set(null)
   $sessionTiles.set([])
   $sessions.set([])
-<<<<<<< HEAD
-=======
   $pinnedSessionIds.set([])
->>>>>>> origin/main
 })
 
 describe('session drop targeting across stacked tabs', () => {
@@ -238,8 +232,6 @@ describe('session drop targeting onto a sidebar project row', () => {
 
     expect(moveSessionToProject).not.toHaveBeenCalled()
   })
-<<<<<<< HEAD
-=======
 })
 
 /** The sidebar Pinned section, exactly as `SidebarSessionsSection` tags it. */
@@ -353,5 +345,4 @@ describe('session drop targeting from Pinned back onto a session list', () => {
 
     expect($pinnedSessionIds.get()).toEqual(['root-1'])
   })
->>>>>>> origin/main
 })

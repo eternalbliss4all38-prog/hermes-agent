@@ -48,13 +48,6 @@ def _confirm_selection_guards(
     return response in {"y", "yes"}
 
 
-<<<<<<< HEAD
-class _ModelPickerRows:
-    """Column-aligned picker rows (name + $/Mtok + Nous sale chrome).
-
-    Sale chrome is emitted as styled segments, not ANSI baked into one string — curses addnstr
-    would render escape bytes literally.
-=======
 # Usage column on a window plan: "Large" / "Free" (other levels carry no tag).
 _COST_COL = len("Large")
 _GAUGE_GAP = "  "
@@ -70,24 +63,17 @@ class _ModelPickerRows:
 
     Chrome is emitted as styled segments, not ANSI baked into one string — curses addnstr would
     render escape bytes literally.
->>>>>>> origin/main
     """
 
     def __init__(
         self, all_models: list[str], pricing: Optional[dict[str, dict[str, str]]], *,
-<<<<<<< HEAD
-        current_model: str, sale_chrome: bool, notes: Optional[dict[str, str]] = None,
-=======
         current_model: str, sale_chrome: bool, usage=None,
         notes: Optional[dict[str, str]] = None,
->>>>>>> origin/main
     ) -> None:
         from hermes_cli.models_pricing import _format_price_per_mtok, compute_sale_discount
         self.current_model = current_model
         # Per-model dim annotation (e.g. "usage credits"); the row stays selectable.
         self.notes = notes or {}
-<<<<<<< HEAD
-=======
         self.window_mode = usage is not None
         if self.window_mode:
             # The gateway's ``top_tier`` marks decide which rows a full large-model limit dims.
@@ -106,7 +92,6 @@ class _ModelPickerRows:
             return
         self.levels = {}
         self.has_top_tier = False
->>>>>>> origin/main
         self.has_pricing = bool(pricing and any(pricing.get(m) for m in all_models))
         # Leave room for a leading "★ " on sale rows (Nous only).
         name_pad = 3 if sale_chrome else 2
@@ -149,12 +134,6 @@ class _ModelPickerRows:
         if self.has_cache:
             self.cache_col = max(self.cache_col, 5)  # minimum: "Cache" header
 
-<<<<<<< HEAD
-    def segments(self, mid: str) -> list[tuple[str, str | None]]:
-        """Build a rich radiolist row: yellow ★/% , dim was, plain prices."""
-        current = [(_CURRENT_SUFFIX, None)] if mid == self.current_model else []
-        note = [(f"  · {self.notes[mid]}", "dim")] if self.notes.get(mid) else []
-=======
     def _cost_segments(self, mid: str) -> list[tuple[str, str | None]]:
         """Window row: padded name (dim when a full allowance stops it) + Large / Free."""
         segs: list[tuple[str, str | None]] = [(f"{mid:<{self.name_col}}", "dim" if self.usage.blocks(mid) else None)]
@@ -170,7 +149,6 @@ class _ModelPickerRows:
         note = [(f"  · {self.notes[mid]}", "dim")] if self.notes.get(mid) else []
         if self.window_mode:
             return self._cost_segments(mid) + current
->>>>>>> origin/main
         if not self.has_pricing:
             return [(mid, None), *note, *current]
 
@@ -195,23 +173,6 @@ class _ModelPickerRows:
     def label(self, mid: str) -> str:
         return "".join(text for text, _style in self.segments(mid))
 
-<<<<<<< HEAD
-    def menu_title(self) -> str:
-        """``Select default model:`` plus an aligned pricing header hint when priced."""
-        title = "Select default model:"
-        if self.has_pricing:
-            # Each choice is "  {label}" (2 spaces) plus a 3-char cursor region ("-> " or "   "),
-            # so content starts at col 5.
-            pad = " " * 5
-            header = f"\n{pad}{'':>{self.name_col}} {'In':>{self.price_col}}  {'Out':>{self.price_col}}"
-            if self.has_cache:
-                header += f"  {'Cache':>{self.cache_col}}"
-            # Legend lives on the column-header line so it reads as a key, not a fake menu row.
-            title += header + "  $/Mtok"
-            if self.any_on_sale:
-                title += "  ★ = on sale"
-        return title
-=======
     def description_lines(self) -> list[str]:
         """Lines between the title and the list: plan gauges (window plan), column headers, legend.
         Each choice is "  {label}" (2 spaces) plus a 3-char cursor region ("-> " or "   "), so column
@@ -290,7 +251,6 @@ def _print_numbered_rows(rows: _ModelPickerRows, menu_title: str, ordered: list[
     if footnote := rows.footnote():
         print(f"  {_DIM}{footnote}{_RESET}")
     return num_width
->>>>>>> origin/main
 
 
 def _prompt_model_selection(
@@ -298,14 +258,6 @@ def _prompt_model_selection(
     pricing: Optional[dict[str, dict[str, str]]] = None,
     unavailable_models: Optional[list[str]] = None, portal_url: str = "",
     unavailable_message: str = "", confirm_provider: str = "", confirm_base_url: str = "",
-<<<<<<< HEAD
-    confirm_api_key: str = "", notes: Optional[dict[str, str]] = None,
-) -> Optional[str]:
-    """Interactive model picker; current_model listed first. Returns the chosen model ID or None.
-
-    With *pricing* (``{model_id: {prompt, completion}}``) a compact price column is shown; models in
-    *unavailable_models* render grayed out and unselectable with an upgrade link to *portal_url*.
-=======
     confirm_api_key: str = "", usage=None,
     notes: Optional[dict[str, str]] = None, title: str = "Select default model:",
 ) -> Optional[str]:
@@ -316,7 +268,6 @@ def _prompt_model_selection(
     *unavailable_models* render grayed out and unselectable with an upgrade link to *portal_url*.
     *usage* (``model_picker_usage.PickerUsage``, Nous only) swaps ``$/Mtok`` for plan gauges and the
     gateway's per-model usage word on a usage-window plan.
->>>>>>> origin/main
     """
     from hermes_cli.cli_output import line_input
     _unavailable = unavailable_models or []
@@ -340,19 +291,6 @@ def _prompt_model_selection(
             return None
         return _confirmed_selection(custom) if custom else None
 
-<<<<<<< HEAD
-    # Reorder: current model first, then the rest (deduplicated)
-    ordered = list(dict.fromkeys(
-        ([current_model] if current_model and current_model in model_ids else []) + list(model_ids)
-    ))
-
-    # All models for column-width computation (selectable + unavailable)
-    rows = _ModelPickerRows(ordered + list(_unavailable), pricing, current_model=current_model, sale_chrome=sale_chrome, notes=notes)
-    _DIM = "\033[2m"
-    _RESET = "\033[0m"
-
-    menu_title = rows.menu_title()
-=======
     # All models for column-width computation (selectable + unavailable). Plan usage is Nous-only chrome.
     window_usage = usage if sale_chrome else None
     ordered, sections, start = _picker_order(model_ids, current_model, window_usage)
@@ -364,7 +302,6 @@ def _prompt_model_selection(
     _RESET = "\033[0m"
 
     menu_title = rows.menu_title(title)
->>>>>>> origin/main
     _upgrade_url = (portal_url or DEFAULT_NOUS_PORTAL_URL).rstrip("/")
     n = len(ordered)
 
@@ -377,13 +314,6 @@ def _prompt_model_selection(
         if not unavailable_footer and _unavailable:
             unavailable_footer = f"Upgrade at {_upgrade_url} for paid models"
 
-<<<<<<< HEAD
-        # Header/legend + unavailable block go in the description so they survive the curses clear.
-        desc_lines: list[str] = menu_title.split("\n", 1)[1].splitlines() if rows.has_pricing else []
-        if _unavailable:
-            desc_lines.extend(f"   {rows.label(mid)}" for mid in _unavailable)
-            desc_lines.append(f"  ── {unavailable_footer} ──")
-=======
         # Header/legend/gauges + unavailable block go in the description so they survive the curses clear.
         desc_lines: list[str] = rows.description_lines()
         if _unavailable:
@@ -391,7 +321,6 @@ def _prompt_model_selection(
             desc_lines.append(f"  ── {unavailable_footer} ──")
         if footnote := rows.footnote():
             desc_lines.append(f"     {footnote}")
->>>>>>> origin/main
 
         # Search haystack = label + aliases for brand-less wire ids (Kimi `k3` ↔ "kimi"); skip when
         # model_search_text adds nothing beyond the bare id.
@@ -403,23 +332,14 @@ def _prompt_model_selection(
         model_search_labels += [_CUSTOM_LABEL, _SKIP_LABEL]
 
         idx = curses_radiolist(
-<<<<<<< HEAD
-            "Select default model:",
-            choices,
-            selected=0,  # cursor on the current model (index 0 if it was reordered to top)
-=======
             title,
             choices,
             selected=start,  # cursor on the current model
->>>>>>> origin/main
             cancel_returns=-1,
             description="\n".join(desc_lines) if desc_lines else None,
             searchable=True,
             search_labels=model_search_labels,
-<<<<<<< HEAD
-=======
             headings=sections or None,
->>>>>>> origin/main
         )
         if idx < 0:
             return None
@@ -432,21 +352,8 @@ def _prompt_model_selection(
     except (ImportError, NotImplementedError, OSError, subprocess.SubprocessError):
         pass
 
-<<<<<<< HEAD
-    # Fallback: numbered list (ANSI colors for sale chrome)
-    from hermes_cli.curses_ui import format_radio_item_ansi
-    from hermes_cli.colors import Colors, color
-    for line in menu_title.splitlines():
-        print(line.replace("★", color("★", Colors.YELLOW), 1) if "★" in line else line)
-    num_width = len(str(n + 2))
-    for i, mid in enumerate(ordered, 1):
-        print(f"  {i:>{num_width}}. {format_radio_item_ansi(rows.segments(mid))}")
-    print(f"  {n + 1:>{num_width}}. {_CUSTOM_LABEL}")
-    print(f"  {n + 2:>{num_width}}. {_SKIP_LABEL}")
-=======
     # Fallback: numbered list (ANSI colors for sale chrome / usage gauges)
     num_width = _print_numbered_rows(rows, menu_title, ordered, sections)
->>>>>>> origin/main
 
     if _unavailable:
         unavailable_footer = unavailable_message.strip() or (
@@ -499,10 +406,7 @@ def _save_model_choice(model_id: str) -> None:
     from hermes_cli.observability.shared_metrics_setup import note_provider_setup_saved
 
     note_provider_setup_saved()
-<<<<<<< HEAD
-=======
 
 
 # Public for plugins (catalog rule 9): the interactive model picker under a caller's title.
 prompt_model_selection = _prompt_model_selection
->>>>>>> origin/main

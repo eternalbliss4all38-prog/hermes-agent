@@ -610,8 +610,6 @@ class TestCatalogListing:
         assert description_tokens < 4500
         assert result.listing_form in {"names", "groups", "mixed"}
 
-<<<<<<< HEAD
-=======
     def test_builtin_catalog_lines_are_whole_first_sentences(self):
         """A catalog line is the first sentence; a clipped one hides what the tool does."""
         from tools.registry import discover_builtin_tools, registry
@@ -647,7 +645,6 @@ class TestCatalogListing:
         for phrase in ("edit", "reference image", "configured model"):
             assert phrase in line
 
->>>>>>> origin/main
 
 
     @staticmethod

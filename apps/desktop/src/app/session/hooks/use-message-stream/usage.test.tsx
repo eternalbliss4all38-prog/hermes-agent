@@ -312,8 +312,6 @@ describe('useMessageStream status-bar usage scoping', () => {
     )
 
     expect($currentUsage.get()).toEqual({ calls: 3, compressions: 3, input: 1500, output: 90, total: 1590 })
-<<<<<<< HEAD
-=======
   })
 
   it('drops the plan gauge once a complete usage payload omits it, but keeps it across partial ticks', () => {
@@ -337,7 +335,6 @@ describe('useMessageStream status-bar usage scoping', () => {
     $currentUsage.set({ ...BASELINE, plan_gauge: gauge })
     act(() => stream.handleEvent({ payload: GATEWAY_FRAME, session_id: SID, type: 'session.usage' }))
     expect($currentUsage.get().plan_gauge).toBeUndefined()
->>>>>>> origin/main
   })
 
   it('ignores message.complete usage from a background session', () => {

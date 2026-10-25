@@ -114,10 +114,6 @@ function OverviewScreen({ ctx, onClose, onPatch, s, t }: ScreenProps) {
   const { line: hermesLine, offOnly, row: hermesRow } = keepGoingChrome(s, B, full)
 
   const items = full
-<<<<<<< HEAD
-    ? [B.overview.addFunds, B.overview.autoReload, B.overview.monthlyLimit, B.common.manageOnPortal, B.common.cancel]
-    : [B.common.manageOnPortal, B.common.cancel]
-=======
     ? [
         B.overview.addFunds,
         B.overview.autoReload,
@@ -127,7 +123,6 @@ function OverviewScreen({ ctx, onClose, onPatch, s, t }: ScreenProps) {
         B.common.cancel
       ]
     : [...(offOnly && hermesRow ? [hermesRow] : []), B.common.manageOnPortal, B.common.cancel]
->>>>>>> origin/main
 
   const choose = (i: number) => {
     const label = items[i]
@@ -968,8 +963,6 @@ function LimitScreen({ ctx, onClose, onPatch, s, t }: ScreenProps) {
       ))}
       <Text />
       {footer(B.limit.hint(labels.length), t)}
-<<<<<<< HEAD
-=======
     </Box>
   )
 }
@@ -1032,7 +1025,6 @@ function KeepGoingOnCreditsScreen({ ctx, onClose, onPatch, t }: ScreenProps) {
       ))}
       <Text />
       {footer(B.buy.hint(labels.length), t)}
->>>>>>> origin/main
     </Box>
   )
 }

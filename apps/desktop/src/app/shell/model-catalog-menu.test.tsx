@@ -148,8 +148,6 @@ describe('the current row effort', () => {
   })
 })
 
-<<<<<<< HEAD
-=======
 describe('usage-window plan rows', () => {
   it('says a spent all-model allowance once, never as a note on every row', async () => {
     getGlobalModelOptions.mockResolvedValue({
@@ -240,7 +238,6 @@ describe('usage-window plan sections', () => {
   })
 })
 
->>>>>>> origin/main
 describe('the reasoning-effort badge (#51833)', () => {
   it('renders the effort as its own Badge chip beside the name, never inside it', async () => {
     renderMenu({ effort: 'high', model: 'gemini-2.5-flash', provider: 'google' })

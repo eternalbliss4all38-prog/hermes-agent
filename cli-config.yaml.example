@@ -7,11 +7,7 @@
 # Schema version of this file. The installers copy it to seed config.yaml, and
 # `hermes update` uses it to know which one-time migrations the file already
 # has. Hermes manages it: do not copy it into another config.
-<<<<<<< HEAD
-_config_version: 51
-=======
 _config_version: 52
->>>>>>> origin/main
 
 # =============================================================================
 # Database Configuration
@@ -626,14 +622,6 @@ browser:
   # executable_path: ""
   # user_data_dir: ""
   # chromium_args: ["--lang=de"]
-
-  # JavaScript evaluation guardrails (both default false). restrict_evaluate
-  # opts into a denylist that blocks sensitive primitives (cookies, storage,
-  # clipboard, network, form values) in browser_console(expression=...) — use
-  # it when the agent drives a logged-in profile. allow_unsafe_evaluate is the
-  # legacy override that switches the denylist back off even when restrict is on.
-  # restrict_evaluate: false
-  # allow_unsafe_evaluate: false
 
 # =============================================================================
 # Tool Loop Guardrails

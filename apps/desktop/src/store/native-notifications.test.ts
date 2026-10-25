@@ -383,8 +383,6 @@ describe('respondToApprovalAction', () => {
 
     expect(request).not.toHaveBeenCalled()
   })
-<<<<<<< HEAD
-=======
 })
 
 describe('app sounds mute', () => {
@@ -407,5 +405,4 @@ describe('app sounds mute', () => {
   it('leaves OS notification sound alone when not muted', () => {
     expect(fire()).toEqual([undefined, undefined])
   })
->>>>>>> origin/main
 })

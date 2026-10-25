@@ -93,11 +93,7 @@ The install also ships `hermes-agent`, a minimal runner that sends one query and
 | `hermes journey` (aliases `learning`, `memory-graph`) | Timeline of learned skills + memories over time. |
 | `hermes memory` | Configure external memory provider. Plugin-specific subcommands (e.g. `hermes honcho`) register automatically when their provider is active. |
 | `hermes acp` | Run Hermes as an ACP server for editor integration. |
-<<<<<<< HEAD
-| `hermes mcp` | Manage MCP server configurations and run Hermes as an MCP server. |
-=======
 | `hermes mcp` | Manage MCP server configurations. Running Hermes as an MCP server is the [mcp-serve plugin](../user-guide/features/mcp.md#running-hermes-as-an-mcp-server). |
->>>>>>> origin/main
 | `hermes connectors` | List, connect, rename and disconnect hosted connector accounts. |
 | `hermes plugins` | Manage Hermes Agent plugins (install, enable, disable, remove). |
 | `hermes portal` | Nous Portal status, subscription link, and Tool Gateway routing. See [Tool Gateway](../user-guide/features/tool-gateway.md). |
@@ -619,20 +615,6 @@ Common flags for migration subcommands:
 | `--no-backup` | Skip the timestamped backup of `config.yaml` when applying. |
 
 > Not to be confused with `hermes import-agent openclaw` (one-shot import of OpenClaw configuration into Hermes) — `hermes migrate` is the top-level config-rewrite command.
-
-
-## `hermes codex-runtime`
-
-```bash
-hermes codex-runtime migrate [--dry-run] [--json]
-```
-
-Runs the `~/.codex/config.toml` migration that `/codex-runtime codex_app_server` triggers, without a chat session: Hermes' `mcp_servers` (plus installed codex plugins and the `default_permissions` default) are projected into the managed block for the selected profile (`hermes -p <name> codex-runtime migrate`). User text outside the block is kept verbatim; a user-owned `[mcp_servers.<name>]` with the same name as a Hermes server is preserved and the Hermes projection for that name skipped (reported as `preserved_user_servers`). The result is validated as TOML before an atomic write; exit code is 1 when the report contains errors.
-
-| Flag | Description |
-|------|-------------|
-| `--dry-run` | Compute and report the migration without writing `config.toml`. |
-| `--json` | Print the full migration report as JSON (`migrated`, `preserved_user_servers`, `skipped_keys_per_server`, `errors`, `target_path`, `written`). |
 
 
 ## `hermes codex-runtime`
@@ -1641,10 +1623,6 @@ Manage MCP (Model Context Protocol) server configurations. Running Hermes itself
 | *(none)* or `picker` | Interactive catalog picker — browse Nous-approved MCPs and install/enable/disable. |
 | `catalog` | List Nous-approved MCPs (plain text, scriptable). |
 | `install <name>` | Install a catalog entry (e.g. `hermes mcp install deepwiki`). |
-<<<<<<< HEAD
-| `serve [-v\|--verbose]` | Run Hermes as an MCP server — expose conversations to other agents. |
-=======
->>>>>>> origin/main
 | `add <name> [--url URL] [--command CMD] [--auth oauth\|header] [--args ...]` | Add a custom MCP server with automatic tool discovery. `--args` passes the remaining argv to the stdio command, so put it last. |
 | `remove <name>` (alias: `rm`) | Remove an MCP server from config. |
 | `list` (alias: `ls`) | List configured MCP servers. |
@@ -1893,28 +1871,6 @@ hermes import-agent openclaw --preset user-data --overwrite
 hermes import-agent openclaw --source /home/user/old-openclaw
 ```
 
-<<<<<<< HEAD
-## `hermes import-agent`
-
-```bash
-hermes import-agent [claude-code|codex] [options]
-```
-
-Import a **Claude Code** (`~/.claude`) or **OpenAI Codex CLI** (`~/.codex`) setup into Hermes. Maps `CLAUDE.md`/`AGENTS.md` instructions to memory entries, `Bash(...)` permission allow/deny rules to `command_allowlist`/`approvals.deny`, MCP servers to `mcp_servers` in `config.yaml`, and skill directories into `~/.hermes/skills/`. Always previews before applying; API keys and credentials are never imported.
-
-| Option | Description |
-| --- | --- |
-| `agent` | `claude-code` or `codex` (default: auto-detect). |
-| `--source <path>` | Custom source directory (default: `~/.claude` or `~/.codex`). |
-| `--dry-run` | Preview only — write nothing. |
-| `--overwrite` | Replace conflicting MCP servers / skills (default: skip). |
-| `--yes`, `-y` | Skip confirmation prompts. |
-| `--sync` | Re-import every previously imported source whose files changed since the last import. Prompt-free; combine with `--dry-run` to preview. |
-
-Every successful import registers its source in `~/.hermes/import-sync.json`; `hermes import-agent --sync` then re-imports any registered source whose files changed (a cron-friendly way to keep an imported Claude Code / Codex setup current). See the **[import guide](../user-guide/import-from-other-agents.md)** for the full mapping tables.
-
-=======
->>>>>>> origin/main
 ## `hermes serve`
 
 ```bash

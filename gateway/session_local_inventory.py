@@ -43,30 +43,16 @@ def _grouped(tools):
 
 def _policy_tools(policy, config):
     """The tool list the session's next agent build loads (``agent/agent_init.py`` tool snapshot):
-<<<<<<< HEAD
-    the policy's toolsets minus the configured and platform-gated disabled ones, one-shot pruned."""
-    import model_tools
-    from agent.oneshot_footprint import ONESHOT_HIDDEN_TOOLS
-=======
     the policy's toolsets minus the configured, platform-gated and one-shot disabled ones."""
     import model_tools
->>>>>>> origin/main
     from agent.skill_utils import parse_config_string_list
     from toolsets import session_disabled_toolsets, session_platform_tool_drops
     enabled = list(policy.current_toolsets(config))
     disabled = session_disabled_toolsets(
-<<<<<<< HEAD
-        parse_config_string_list((config.get("agent") or {}).get("disabled_toolsets")) or None, policy.platform)
-    tools = model_tools.get_tool_definitions(enabled_toolsets=enabled, disabled_toolsets=disabled, quiet_mode=True)
-    drops = set(session_platform_tool_drops(policy.platform))
-    if policy.source == "oneshot":
-        drops |= ONESHOT_HIDDEN_TOOLS
-=======
         parse_config_string_list((config.get("agent") or {}).get("disabled_toolsets")) or None, policy.platform,
         oneshot=policy.source == "oneshot")
     tools = model_tools.get_tool_definitions(enabled_toolsets=enabled, disabled_toolsets=disabled, quiet_mode=True)
     drops = set(session_platform_tool_drops(policy.platform))
->>>>>>> origin/main
     return enabled, [tool for tool in tools or [] if tool["function"]["name"] not in drops]
 
 
@@ -87,15 +73,9 @@ def _project(cwd):
 
 def _cli_startup_notices(enabled):
     """The lines main's HermesCLI printed under its banner, computed where the tools run: the toolset
-<<<<<<< HEAD
-    availability warning (``cli.py::_show_tool_availability_warnings``) and the Browser Use downgrade
-    notice (``_show_browser_backend_notice``). The classic CLI renders them with its own console."""
-    notices: dict = {"tool_availability_warnings": [], "browser_backend_notice": None}
-=======
     availability warning (``cli.py::_show_tool_availability_warnings``). The classic CLI renders them
     with its own console."""
     notices: dict = {"tool_availability_warnings": []}
->>>>>>> origin/main
     with contextlib.suppress(Exception):
         from hermes_cli.tool_availability_notices import (
             current_terminal_backend, filter_to_enabled_toolsets, tool_availability_warning_lines)
@@ -107,12 +87,6 @@ def _cli_startup_notices(enabled):
         notices["tool_availability_warnings"] = tool_availability_warning_lines(
             unavailable, terminal_reason=terminal_backend_unavailable_reason(),
             terminal_backend=current_terminal_backend())
-<<<<<<< HEAD
-    with contextlib.suppress(Exception):
-        from tools.browser_use_cli import default_downgrade_notice
-        notices["browser_backend_notice"] = default_downgrade_notice()
-=======
->>>>>>> origin/main
     return notices
 
 
@@ -151,15 +125,12 @@ def _cli_skills():
     return grouped
 
 
-<<<<<<< HEAD
-=======
 def _session_provider(view, config=None):
     from hermes_cli.runtime_provider_custom import session_provider_identity
     return session_provider_identity(getattr(view, "provider", None), getattr(view, "requested_provider", None),
                                      getattr(view, "base_url", None), getattr(view, "model", None), config=config)
 
 
->>>>>>> origin/main
 def session_inventory(authority, policy, agent, cwd):
     """Main's banner/status fields for one session. Each section degrades to main's empty value on
     its own, so one failing builder never blanks the others (main wrapped each in ``suppress``)."""
@@ -172,12 +143,7 @@ def session_inventory(authority, policy, agent, cwd):
         config = policy.config(authority, secrets=False) if policy is not None else {}
         if agent is not None:
             from agent.voice_turn_route import session_runtime_view
-<<<<<<< HEAD
-            view = session_runtime_view(agent)
-            info["provider"] = getattr(view, "provider", "") or ""
-=======
             info["provider"] = _session_provider(session_runtime_view(agent), config if policy is not None else None)
->>>>>>> origin/main
             info["tools"] = _grouped(getattr(agent, "tools", None))
             info["system_prompt"] = getattr(agent, "_cached_system_prompt", "") or ""
             compressor = getattr(agent, "context_compressor", None)
@@ -244,11 +210,7 @@ def agent_inventory(agent) -> dict:
     info: dict = {}
     with contextlib.suppress(Exception):
         from agent.voice_turn_route import session_runtime_view
-<<<<<<< HEAD
-        info["provider"] = getattr(session_runtime_view(agent), "provider", "") or ""
-=======
         info["provider"] = _session_provider(session_runtime_view(agent))
->>>>>>> origin/main
     with contextlib.suppress(Exception):
         info["tools"] = _grouped(getattr(agent, "tools", None))
     info["system_prompt"] = getattr(agent, "_cached_system_prompt", "") or ""

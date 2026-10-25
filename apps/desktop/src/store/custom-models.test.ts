@@ -47,8 +47,6 @@ describe('custom models', () => {
     expect(merged[1]).toBe(providers[1])
     expect(withCustomModels(providers, [])).toBe(providers)
   })
-<<<<<<< HEAD
-=======
 
   it('merges custom models into a usage-window Nous row too (window plans allow any model)', () => {
     const nous: ModelOptionProvider = {
@@ -60,7 +58,6 @@ describe('custom models', () => {
 
     expect(merged[0]?.models).toEqual(['example/model-b', 'acme/model-x'])
   })
->>>>>>> origin/main
 })
 
 describe('resetModelVisibilityKeepingCustoms', () => {

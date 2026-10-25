@@ -1576,11 +1576,7 @@ browser:
 
 完整对话框工作流请参阅[浏览器功能页面](./features/browser.md#browser_dialog)。
 
-<<<<<<< HEAD
-浏览器工具集支持多个 provider。有关 Browserbase、Browser Use 和本地 Chromium 系 CDP 设置的详细信息，请参阅[浏览器功能页面](./features/browser.md)。
-=======
 **已移除的键（自动迁移）。** `browser.backend` 已移除——`browser_exec` 是唯一的浏览器路径。旧的 `backend: "off"` 会在更新时被删除，并一次性提示改为禁用 `browser` 工具集；其他值会被静默删除。`snapshot_threshold`、`record_sessions`、`allow_unsafe_evaluate` 和 `restrict_evaluate` 属于已移除的内置浏览器工具，不再生效。`browser.camofox.*` 键由 Camofox 插件（`hermes plugins install camofox`）读取，而非核心。旧的 `AGENT_BROWSER_*` 环境变量不再被读取；更新时，若对应键未设置，会把 profile 的 `.env` 中的值复制过去（`AGENT_BROWSER_EXECUTABLE_PATH` → `executable_path`、`AGENT_BROWSER_PROFILE` → `user_data_dir`、`AGENT_BROWSER_ARGS` → `chromium_args`、`AGENT_BROWSER_HEADED` → `headed`、`AGENT_BROWSER_ENGINE` → `engine`）。
->>>>>>> origin/main
 
 ## 时区
 

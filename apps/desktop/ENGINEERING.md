@@ -157,11 +157,6 @@ notice_pending, model, label) read from local auth state with zero network, and
 first-launch ready screen and the own-key strip are the SAME state rendered for two situations,
 keyed on `notice_pending`; there is no localStorage latch, so the CLI and the desktop cannot
 disagree about whether the notice was shown. Sign-in goes through the existing
-<<<<<<< HEAD
-`POST /api/providers/oauth/nous/start` + poll route, which over a free-tier identity registers the
-connector transfer and reports `reason`, `account_email` and `model` on completion; every entry
-point (Billing, status chip, ready screen) opens the one free-tier sign-in dialog. Never branch on
-=======
 `POST /api/providers/oauth/nous/start` + poll route, which the dialog long-polls (`?wait=`: the
 backend answers once the session leaves `pending`; the loop never asks again sooner than 2 s, so an
 older backend that answers at once is not hammered). On completion it reports `reason`,
@@ -171,5 +166,4 @@ backend's own copy in `lines`); a move still retrying is followed through the
 point (Billing, status chip, ready screen) opens the one free-tier sign-in dialog, and a Nous sign-in
 from the onboarding picker that moved apps shows the same result screen once onboarding leaves the
 screen (onboarding paints above every dialog). Never branch on
->>>>>>> origin/main
 provider display names: the picker row carries `free_tier_row`, status cards carry `free_tier`.

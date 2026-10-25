@@ -27,10 +27,7 @@ export const jaCatalog = {
   installComplete: (name: string) => `「${name}」をインストールしました`,
   destinationChanged:
     'インストール先が変更されました。このダイアログを閉じ、インストールリンクを開き直してください。',
-<<<<<<< HEAD
-=======
   install: 'インストール',
->>>>>>> origin/main
   installed: 'インストール済み',
   searchSkills: 'スキルを検索',
   searchPlugins: 'プラグインを検索',

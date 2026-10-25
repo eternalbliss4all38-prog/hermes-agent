@@ -39,11 +39,8 @@ import { PanelEmpty } from '../overlays/panel'
 import { ConfigField } from './config-field'
 import { configSubpageForField } from './config-subpages'
 import { DELEGATION_ROUTE_COMPANION_KEY, DelegationRouteRow } from './delegation-route-row'
-<<<<<<< HEAD
-=======
 import { DelegationRoutingSlot } from './delegation/routing-section'
 import { SubagentModelGate } from './delegation/subagent-model-gate'
->>>>>>> origin/main
 import {
   clearsEnabledToolsets,
   configFieldValue,
@@ -507,8 +504,6 @@ function ConfigSettingsInner({
       {/* Shared metrics are two coupled opt-ins with a consent side effect, so they
           go through their own RPC rather than the generic field autosave. */}
       {showSharedMetrics ? <SharedMetricsSettings /> : null}
-<<<<<<< HEAD
-=======
       {/* Routing picks the strategy and owns its routes; the subagent model row below is the
           Default strategy's route and goes inert while another strategy decides. */}
       <DelegationRoutingSlot
@@ -517,7 +512,6 @@ function ConfigSettingsInner({
         subpage={subpage}
         writeScope={writeScope}
       />
->>>>>>> origin/main
       {activeSectionId === 'voice' ? (
         <ListRow description={c.voiceShortcutHintDesc} title={c.voiceShortcutHintTitle} />
       ) : null}
@@ -528,13 +522,9 @@ function ConfigSettingsInner({
           {visibleFields.map(([key, field]) => (
             <div className="scroll-mt-6 rounded-lg" id={`setting-field-${key}`} key={key}>
               {key === 'delegation.model' ? (
-<<<<<<< HEAD
-                <DelegationRouteRow config={config} onConfigChange={updateConfig} scope={writeScope ?? scopeProfile} />
-=======
                 <SubagentModelGate scope={writeScope ?? scopeProfile}>
                   <DelegationRouteRow config={config} onConfigChange={updateConfig} scope={writeScope ?? scopeProfile} />
                 </SubagentModelGate>
->>>>>>> origin/main
               ) : (
                 <ConfigField
                   descriptionExtra={

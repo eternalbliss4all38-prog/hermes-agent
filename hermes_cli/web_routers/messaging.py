@@ -104,17 +104,10 @@ def _env_value_rules(platform_id: str) -> dict[str, tuple[Any, str]]:
     """``{env key: (accepts(value), 400 detail)}`` declared on the platform plugin's PlatformEntry
     (``env_value_rules``; e.g. Telegram/Slack reject credentials clearly in the wrong field).
 
-<<<<<<< HEAD
-    Resolve this in the request's own scope, right after :func:`_require_platform`: the catalog build
-    there has just materialized every plugin entry, so the lookup imports nothing, whereas inside
-    ``_profile_scope`` the registry's profile overlay may not hold the entry and every rule would
-    silently stop applying. Without rules on the entry (the dashboard's own profile disabled the
-=======
     Resolve this in the target profile's scope, right after :func:`_require_platform`: the catalog build
     there has just materialized that profile's plugin entries, so the lookup imports nothing, whereas in
     a scope whose catalog was never built the registry's overlay may not hold the entry and every rule
     would silently stop applying. Without rules on the entry (the dashboard's own profile disabled the
->>>>>>> origin/main
     plugin, a user plugin overrides it) a bundled platform's ``dashboard_card.py`` answers, read from
     its file: the rules guard the edited profile's values whatever the dashboard's profile loads."""
     from gateway.platform_env import bundled_sibling
@@ -981,12 +974,6 @@ def _multiplex_port_binding_conflict(platform_id: str, requested_profile: Option
 
 @router.put("/api/messaging/platforms/{platform_id}")
 async def update_messaging_platform(platform_id: str, body: MessagingPlatformUpdate, profile: Optional[str] = None):
-<<<<<<< HEAD
-    entry = _require_platform(platform_id)
-    env_value_rules = _env_value_rules(platform_id)
-
-    target_profile = body.profile or profile
-=======
     target_profile = body.profile or profile
 
     def _resolve():
@@ -996,7 +983,6 @@ async def update_messaging_platform(platform_id: str, body: MessagingPlatformUpd
             return _require_platform(platform_id), _env_value_rules(platform_id)
 
     entry, env_value_rules = await asyncio.to_thread(_resolve)
->>>>>>> origin/main
     if body.enabled:
         conflict = await asyncio.to_thread(_multiplex_port_binding_conflict, platform_id, target_profile)
         if conflict:
@@ -1194,18 +1180,10 @@ def _messaging_platform_posture(
 
 @router.post("/api/messaging/platforms/{platform_id}/test")
 async def test_messaging_platform(platform_id: str, profile: Optional[str] = None):
-<<<<<<< HEAD
-    entry = _require_platform(platform_id)
-    authz_env = _platform_authz_env_names(platform_id)
-
-    def _run():
-        with _profile_scope(profile) as scoped_dir:
-=======
     def _run():
         with _profile_scope(profile) as scoped_dir:
             entry = _require_platform(platform_id)
             authz_env = _platform_authz_env_names(platform_id)
->>>>>>> origin/main
             payload = _platform_payloads(scoped_dir, [entry])[0]
             posture = None
             if payload["state"] == "connected":
@@ -1213,15 +1191,9 @@ async def test_messaging_platform(platform_id: str, profile: Optional[str] = Non
                 # must resolve the ACTIVE profile's env/config/pairing store, not the
                 # dashboard process's root home.
                 posture = _messaging_platform_posture(platform_id, entry, scoped_dir is not None, authz_env)
-<<<<<<< HEAD
-            return payload, posture
-
-    payload, posture = await asyncio.to_thread(_run)
-=======
             return entry, payload, posture
 
     entry, payload, posture = await asyncio.to_thread(_run)
->>>>>>> origin/main
 
     def result(ok: bool, message: str) -> dict[str, Any]:
         return {"ok": ok, "state": payload["state"], "message": message}

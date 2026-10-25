@@ -148,11 +148,6 @@ def install_portal(monkeypatch, tmp_path, fake: FakePortal | None = None) -> Fak
 
 
 def as_local_desktop_backend(monkeypatch) -> None:
-<<<<<<< HEAD
-    """This process is the backend the desktop spawned on this machine (the local spawn's credential)."""
-    monkeypatch.setenv("HERMES_DESKTOP", "1")
-    monkeypatch.setenv("HERMES_DASHBOARD_SESSION_TOKEN", "test-spawn-token")
-=======
     """Every activity in this test is work for the local Desktop (``process_identity.serving_local_desktop``),
     threads included."""
     from contextvars import ContextVar
@@ -165,7 +160,6 @@ def off_local_desktop(monkeypatch) -> None:
     from contextvars import ContextVar
     from hermes_cli import process_identity
     monkeypatch.setattr(process_identity, "_SERVING_LOCAL_DESKTOP", ContextVar("serving_local_desktop_test", default=False))
->>>>>>> origin/main
 
 
 def claimed_trial(monkeypatch) -> dict:

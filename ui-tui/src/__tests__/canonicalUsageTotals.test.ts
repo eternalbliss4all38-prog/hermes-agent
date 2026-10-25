@@ -82,8 +82,6 @@ it('/usage before any API call says so, as main did', async () => {
   expect(panel).not.toHaveBeenCalled()
   expect(sys.mock.calls[0]?.[0]).toMatch(/no API calls/i)
 })
-<<<<<<< HEAD
-=======
 
 it('/usage on a usage-window plan adds the allowance bars after the totals', async () => {
   const request = vi.fn(async (method: string) => {
@@ -152,4 +150,3 @@ it('/usage on any other account adds nothing (the billing state carries no plan_
     'Run /subscription to change plan · /topup to add to your balance'
   ])
 })
->>>>>>> origin/main

@@ -15,10 +15,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
-<<<<<<< HEAD
-=======
 import threading
->>>>>>> origin/main
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional
 
@@ -93,11 +90,7 @@ def reload_plugins_verb(runner: Any, loop: asyncio.AbstractEventLoop) -> Callabl
     def _handler(params: Optional[dict] = None) -> dict:
         from hermes_constants import get_hermes_home, hermes_home_key
         from hermes_cli.plugins import discover_plugins, get_plugin_manager
-<<<<<<< HEAD
-        from hermes_cli.plugins_activation import activation_summaries
-=======
         from hermes_cli.plugins_activation import activation_summaries, dependency_blocked_summaries
->>>>>>> origin/main
         from gateway.run import _profile_runtime_scope
         params = params or {}
         gateway_home = Path(get_hermes_home())
@@ -116,15 +109,11 @@ def reload_plugins_verb(runner: Any, loop: asyncio.AbstractEventLoop) -> Callabl
         with scope:
             discover_plugins(force=True)
             manager = get_plugin_manager()
-<<<<<<< HEAD
-            names, activations = sorted(manager._plugins), activation_summaries(manager)
-=======
             # A plugin that failed on a dependency this gateway booted without rides along, so the
             # enabling caller asks for the restart that loads it.
             names = sorted(manager._plugins)
             activations = activation_summaries(manager) + dependency_blocked_summaries(manager)
         _reconcile_plugin_mcp_servers(runner, requested)
->>>>>>> origin/main
         try:
             rewired = asyncio.run_coroutine_threadsafe(_count_adapters(runner, profile_name), loop).result(timeout=5.0)
         except Exception:
@@ -135,8 +124,6 @@ def reload_plugins_verb(runner: Any, loop: asyncio.AbstractEventLoop) -> Callabl
     return _handler
 
 
-<<<<<<< HEAD
-=======
 # Long enough for a local stdio server to connect, short enough to stay well inside the caller's
 # 30 s socket timeout: a slow server keeps connecting in the background after the answer goes out.
 _MCP_CONNECT_WAIT_S = 10.0
@@ -172,7 +159,6 @@ def _reconcile_plugin_mcp_servers(runner: Any, home: Path) -> None:
     thread.join(timeout=_MCP_CONNECT_WAIT_S)
 
 
->>>>>>> origin/main
 async def _count_adapters(runner: Any, profile_name: Optional[str]) -> int:
     """Live adapters for the profile; scheduled after the loaded-event callback, so they are re-wired."""
     if profile_name is None:

@@ -35,10 +35,6 @@ export const enNotices = {
     message:
       'Hermes can keep your computer awake while a task runs. The screen still turns off, and on battery your computer may still sleep.',
     action: 'Keep awake while working'
-<<<<<<< HEAD
-  }
-} satisfies Pick<Translations, 'remoteDisplayBanner' | 'butterbar' | 'promptNotices' | 'keepAwakeOffer'>
-=======
   },
   connectorOffer: {
     heading: 'Keep your connected apps',
@@ -48,4 +44,3 @@ export const enNotices = {
   Translations,
   'remoteDisplayBanner' | 'butterbar' | 'promptNotices' | 'keepAwakeOffer' | 'connectorOffer'
 >
->>>>>>> origin/main

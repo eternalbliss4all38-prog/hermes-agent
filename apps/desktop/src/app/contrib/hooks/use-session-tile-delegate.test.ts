@@ -687,8 +687,6 @@ describe('useSessionTileDelegate resumeTile', () => {
   })
 })
 
-<<<<<<< HEAD
-=======
 describe('useSessionTileDelegate switchSessionModel', () => {
   it('answers applied only after a guarded target is confirmed, and never on "keep current model"', async () => {
     const asked = { key: 'model', session_id: 'rt-1', value: 'example/model-a --provider nous --session' }
@@ -711,7 +709,6 @@ describe('useSessionTileDelegate switchSessionModel', () => {
   })
 })
 
->>>>>>> origin/main
 describe('useSessionTileDelegate retireBusyClaim', () => {
   it('retires a stale busy claim through the session-state write path (#93059)', () => {
     const busyState = {

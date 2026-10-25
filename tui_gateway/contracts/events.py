@@ -18,11 +18,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from .base import JsonValue, Payload, WireEnum
-<<<<<<< HEAD
-from .common import MessageReaction, SessionLiveInfo, SubagentStatus, ToolLabel, ToolLabelKind, Usage
-=======
 from .common import MessageReaction, PlanGauge, SessionLiveInfo, SubagentStatus, ToolLabel, ToolLabelKind, Usage
->>>>>>> origin/main
 from .config_free_tier_control import FreeTierChallengePayload, SessionControlSnapshot
 from .registry import event
 
@@ -195,11 +191,6 @@ class TurnStatus(WireEnum):
     interrupted = "interrupted"
 
 
-<<<<<<< HEAD
-class ErrorSurface(Payload):
-    """``agent/error_surface.py::_surface`` — advisory {layer, code, retryable} (+ identity, + auth hint,
-    + ``resets_at`` epoch seconds when the provider named when its limit lifts)."""
-=======
 class UsageLimitSuggestion(Payload):
     """``agent/plan_limits.py::ModelSuggestion`` — a recommended model that still works past the limit."""
 
@@ -234,7 +225,6 @@ class ErrorSurface(Payload):
     """``agent/error_surface.py::_surface`` — advisory {layer, code, retryable} (+ identity, + auth hint,
     + ``resets_at`` epoch seconds when the provider named when its limit lifts, + ``usage_limit`` on a
     usage-window plan's limit)."""
->>>>>>> origin/main
 
     layer: str
     code: str
@@ -242,10 +232,7 @@ class ErrorSurface(Payload):
     provider: str | None = None
     model: str | None = None
     resets_at: float | None = None
-<<<<<<< HEAD
-=======
     usage_limit: UsageLimit | None = None
->>>>>>> origin/main
     model_config = Payload.model_config | {"extra": "allow"}
 
 
@@ -349,10 +336,7 @@ class SessionUsagePayload(Payload):
     model: str | None = None
     provider: str | None = None
     fallback_model: str | None = None
-<<<<<<< HEAD
-=======
     plan_gauge: PlanGauge | None = None
->>>>>>> origin/main
 
 
 event("session.usage", SessionUsagePayload, doc="Mid-turn usage tick; message.complete carries the authoritative final usage.")
@@ -776,34 +760,6 @@ class BrowserProgressPayload(Payload):
 event("browser.progress", BrowserProgressPayload, doc="Browser (CDP) connect / install progress line.")
 
 
-<<<<<<< HEAD
-# ── browser controller (gateway/browser_control_broker frames re-enveloped as events) ─────────
-
-
-class BrowserControllerCommandPayload(Payload):
-    """``gateway/browser_control_broker.py`` FRAME_COMMAND params."""
-
-    command_id: str
-    action: str
-    arguments: dict[str, JsonValue]
-    controller_id: str | None = None
-    browser_profile_id: str | None = None
-    tool_call_id: str | None = None
-
-
-class BrowserControllerCancelPayload(Payload):
-    """``gateway/browser_control_broker.py::_cancel_frame``."""
-
-    command_id: str
-    tool_call_id: str | None = None
-
-
-event("browser.controller.command", BrowserControllerCommandPayload, doc="Dispatch one browser action to the attached controller.")
-event("browser.controller.cancel", BrowserControllerCancelPayload, doc="Withdraw a pending controller command.")
-
-
-=======
->>>>>>> origin/main
 # ── voice ─────────────────────────────────────────────────────────────────────────────────────
 
 
@@ -900,12 +856,7 @@ event("bot_relay.outbox.pending", ChangeSignalPayload, doc="A bot-relay outbox e
 
 
 __all__ = [
-<<<<<<< HEAD
-    "BillingBlock", "BillingStepUpVerificationPayload", "BrowserControllerCancelPayload",
-    "BrowserControllerCommandPayload", "BrowserProgressPayload", "ChangeSignalPayload", "ErrorPayload",
-=======
     "BillingBlock", "BillingStepUpVerificationPayload", "BrowserProgressPayload", "ChangeSignalPayload", "ErrorPayload",
->>>>>>> origin/main
     "ErrorSurface", "FreeTierChallengePayload", "GatewayReadyPayload",
     "MessageCompletePayload", "MessageInterimPayload", "MessageReaction", "MessageReactionPayload", "MoaAggregatingPayload",
     "MoaPhasePayload", "MoaProgressPayload", "MoaReferencePayload", "NoticePayload",

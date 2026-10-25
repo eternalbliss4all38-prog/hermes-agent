@@ -103,11 +103,7 @@ _oneshot_cleanup_done = False
 _ONESHOT_CLEANUPS = (
     ("tools.terminal_tool", "cleanup_all_environments", {}, Exception),
     ("tools.async_delegation", "interrupt_all", {"reason": "oneshot shutdown"}, Exception),
-<<<<<<< HEAD
-    ("tools.browser_tool_lifecycle", "_emergency_cleanup_all_sessions", {}, Exception),
-=======
     ("tools.browser_session_lifecycle", "emergency_cleanup_all_sessions", {}, Exception),
->>>>>>> origin/main
     ("tools.mcp_tool_lifecycle", "shutdown_mcp_servers", {}, BaseException),
     ("agent.auxiliary_client", "shutdown_cached_clients", {}, Exception),
     # A no-op unless this run booted the managed llama-server (atexit's hook is skipped here).
@@ -393,10 +389,6 @@ from hermes_cli.subcommands.pairing import build_pairing_parser
 from hermes_cli.subcommands.plugins import build_plugins_parser
 from hermes_cli.subcommands.mcp import build_mcp_parser
 from hermes_cli.subcommands.connectors import build_connectors_parser
-<<<<<<< HEAD
-from hermes_cli.subcommands.claw import build_claw_parser
-=======
->>>>>>> origin/main
 from hermes_cli.subcommands.vault import build_vault_parser
 from hermes_cli.subcommands.moa import build_moa_parser
 from hermes_cli.subcommands.fallback import build_fallback_parser
@@ -1853,11 +1845,6 @@ cmd_prompt_size = _forward_command("cmd_prompt_size", "hermes_cli.prompt_size", 
 cmd_pairing = _forward_command("cmd_pairing", "hermes_cli.pairing", "pairing_command")
 cmd_plugins = _forward_command("cmd_plugins", "hermes_cli.plugins_cmd", "plugins_command")
 cmd_mcp = _forward_command("cmd_mcp", "hermes_cli.mcp_config", "mcp_command", forward_return=True)
-<<<<<<< HEAD
-cmd_claw = _forward_command("cmd_claw", "hermes_cli.claw", "claw_command")
-cmd_import_agent = _forward_command("cmd_import_agent", "hermes_cli.agent_import", "import_agent_command")
-=======
->>>>>>> origin/main
 
 
 def cmd_model(args):
@@ -2773,11 +2760,7 @@ def cmd_console(args):
 # entry would let a plugin command silently fail to parse.
 _BUILTIN_SUBCOMMANDS = frozenset(
     {
-<<<<<<< HEAD
-        "acp", "approvals", "auth", "backup", "bundles", "checkpoints", "claw", "codex-runtime", "completion",
-=======
         "acp", "approvals", "auth", "backup", "bundles", "checkpoints", "codex-runtime", "completion",
->>>>>>> origin/main
         "computer-use", "connectors",
         "config", "console", "cron", "curator", "dashboard", "serve", "debug", "doctor",
         "dump", "egress", "fallback", "gateway", "hooks", "import", "insights",
@@ -2867,37 +2850,17 @@ def _is_tui_chat_launch(args) -> bool:
     # here, so the wrapper pre-warmed its own MCP discovery while the TUI
     # gateway (spawned moments later) ran a second one — an idle stdio MCP
     # server copy held dead for the whole session. Only chat commands can
-<<<<<<< HEAD
-    # launch the TUI; other commands (mcp serve, gateway, acp, cron) keep
-=======
     # launch the TUI; other commands (gateway, acp, cron) keep
->>>>>>> origin/main
     # their own discovery behavior untouched.
     if getattr(args, "command", None) not in {None, "chat"}:
         return False
     return _resolve_use_tui(args)
-<<<<<<< HEAD
-
-
-def _agent_subcommand_selected(args) -> bool:
-    """True for ``cron run/tick``, ``gateway run``, ``mcp serve`` (see _AGENT_SUBCOMMANDS)."""
-    _sub_attr, _sub_set = _AGENT_SUBCOMMANDS.get(args.command, (None, None))
-    return bool(_sub_attr and getattr(args, _sub_attr, None) in _sub_set)
-
-
-def _command_has_dedicated_mcp_startup(args) -> bool:
-    """acp / gateway run / cron run|tick own their MCP startup on the runtime path."""
-    return args.command == "acp" or (
-        args.command != "mcp" and _agent_subcommand_selected(args)
-    )
-=======
 
 
 def _agent_subcommand_selected(args) -> bool:
     """True for ``cron run/tick``, ``gateway run`` (see _AGENT_SUBCOMMANDS)."""
     _sub_attr, _sub_set = _AGENT_SUBCOMMANDS.get(args.command, (None, None))
     return bool(_sub_attr and getattr(args, _sub_attr, None) in _sub_set)
->>>>>>> origin/main
 
 
 def _should_background_mcp_startup(args) -> bool:
@@ -2949,11 +2912,7 @@ def _prepare_agent_startup(args) -> None:
                 exc_info=True,
             )
     # -t/--toolsets narrows which configured MCP servers get spawned, on
-<<<<<<< HEAD
-    # every discovery path (inline below, background thread, TUI/desktop
-=======
     # every discovery path (background thread, TUI/desktop
->>>>>>> origin/main
     # deferred start). Built-in toolset names never match a server key, so
     # `-t terminal` simply spawns nothing; `-t all` keeps the full set.
     try:
@@ -2968,12 +2927,7 @@ def _prepare_agent_startup(args) -> None:
         if _accept_hooks:  # rides session.create (env_launch_flags) and the classic CLI's consent check
             os.environ["HERMES_ACCEPT_HOOKS"] = "1"
         return
-<<<<<<< HEAD
-    _run_inline_mcp_discovery = not (_is_tui_chat_launch(args) or _command_has_dedicated_mcp_startup(args))
-    if _run_inline_mcp_discovery and _should_background_mcp_startup(args):
-=======
     if _should_background_mcp_startup(args):
->>>>>>> origin/main
         try:
             from hermes_cli.mcp_startup import start_background_mcp_discovery
 
@@ -2986,25 +2940,6 @@ def _prepare_agent_startup(args) -> None:
                 "Background MCP tool discovery failed at CLI startup",
                 exc_info=True,
             )
-<<<<<<< HEAD
-        _run_inline_mcp_discovery = False
-    if _run_inline_mcp_discovery:
-        try:  # synchronous for entrypoints without a later bounded startup path
-            from hermes_cli.mcp_startup import get_mcp_server_filter
-            from tools.mcp_tool_discovery import discover_mcp_tools
-
-            _mcp_filter = get_mcp_server_filter()
-            if _mcp_filter is None:
-                discover_mcp_tools()
-            else:
-                discover_mcp_tools(allowed_mcp_names=_mcp_filter)
-        except Exception:
-            logger.debug(
-                "MCP tool discovery failed at CLI startup",
-                exc_info=True,
-            )
-=======
->>>>>>> origin/main
     try:
         from hermes_cli.config import load_config
         from agent.shell_hooks import register_from_config
@@ -3328,13 +3263,9 @@ def _register_plugin_cli_commands(subparsers) -> None:
     try:
         from plugins.memory import discover_plugin_cli_commands
         from hermes_cli.plugins import discover_plugins, get_plugin_manager
-<<<<<<< HEAD
-
-=======
         from hermes_cli.left_core_migration import recover_for_command
 
         recover_for_command(_first_positional_argv())
->>>>>>> origin/main
         seen_plugin_commands = set()
         for cmd_info in discover_plugin_cli_commands():
             _attach_plugin_cli_command(subparsers, cmd_info)
@@ -3423,10 +3354,6 @@ def _build_cli_parser():
     build_backup_parser(subparsers, cmd_backup=cmd_backup)
     build_checkpoints_parser(subparsers)
     build_import_cmd_parser(subparsers, cmd_import=cmd_import)
-<<<<<<< HEAD
-    build_import_agent_parser(subparsers, cmd_import_agent=cmd_import_agent)
-=======
->>>>>>> origin/main
     build_config_parser(subparsers, cmd_config=cmd_config)
     build_skin_parser(subparsers, cmd_skin=cmd_skin)
     build_console_parser(subparsers, cmd_console=cmd_console)
@@ -3449,10 +3376,6 @@ def _build_cli_parser():
     build_insights_parser(subparsers, cmd_insights=cmd_insights)
     build_usage_parser(subparsers)
     build_monitoring_parser(subparsers, cmd_monitoring=cmd_monitoring)
-<<<<<<< HEAD
-    build_claw_parser(subparsers, cmd_claw=cmd_claw)
-=======
->>>>>>> origin/main
     build_vault_parser(subparsers)
     build_update_parser(subparsers, cmd_update=cmd_update)
     build_uninstall_parser(subparsers, cmd_uninstall=cmd_uninstall)

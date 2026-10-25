@@ -1,34 +1,15 @@
-<<<<<<< HEAD
-"""Browser resolution uses installed PM facts without provisioning a browser."""
-=======
 """Browser resolution uses installed PM facts and config without provisioning a browser."""
->>>>>>> origin/main
 
 import os
 
 import pytest
 
 import pm
-<<<<<<< HEAD
-from pm import paths
-
-
-@pytest.mark.parametrize("record_executable", [False, True])
-def test_chromium_resolves_installed_binary_without_mutation(tmp_path, monkeypatch, record_executable):
-    from hermes_cli.browser_runtime import chromium_executable
-
-    home = tmp_path / "home"
-    store = home / "tools"
-    monkeypatch.setenv("HERMES_HOME", str(home))
-    monkeypatch.setenv("HERMES_RUNTIME_DIR", str(store))
-    monkeypatch.delenv("AGENT_BROWSER_EXECUTABLE_PATH", raising=False)
-=======
 from hermes_cli import browser_runtime
 from pm import paths
 
 
 def _fake_pm_chromium(store):
->>>>>>> origin/main
     lock = pm.Lockfile(paths.lockfile_path())
     target = pm.current_target()
     package = pm.get_package("chromium")
@@ -39,20 +20,6 @@ def _fake_pm_chromium(store):
     binary.parent.mkdir(parents=True)
     binary.write_bytes(b"browser-fixture")
     binary.chmod(0o755)
-<<<<<<< HEAD
-    env = {"PLAYWRIGHT_BROWSERS_PATH": str(store)}
-    if record_executable:
-        env["AGENT_BROWSER_EXECUTABLE_PATH"] = str(binary)
-    facts = pm.Facts(store / "facts.json")
-    facts.record(
-        "chromium", version, entry.name, env, store,
-        target=target, artifacts=[a["sha256"] for a in lock.artifacts("chromium", target)],
-    )
-    before = facts.path.read_bytes()
-    environment = dict(os.environ)
-
-    assert chromium_executable() == str(binary)
-=======
     facts = pm.Facts(store / "facts.json")
     facts.record(
         "chromium", version, entry.name, {"PLAYWRIGHT_BROWSERS_PATH": str(store)}, store,
@@ -81,25 +48,13 @@ def test_chromium_resolves_installed_binary_without_mutation(homes):
     environment = dict(os.environ)
 
     assert browser_runtime.chromium_executable() == str(binary)
->>>>>>> origin/main
     assert facts.path.read_bytes() == before
     assert dict(os.environ) == environment
 
 
-<<<<<<< HEAD
-def test_chromium_override_wins_without_installing(tmp_path, monkeypatch):
-    from hermes_cli.browser_runtime import chromium_executable
-
-    store = tmp_path / "missing-store"
-    monkeypatch.setenv("HERMES_HOME", str(tmp_path / "home"))
-    monkeypatch.setenv("HERMES_RUNTIME_DIR", str(store))
-    override = str(tmp_path / "external browser")
-    monkeypatch.setenv("AGENT_BROWSER_EXECUTABLE_PATH", override)
-=======
 def test_configured_executable_wins_without_installing(homes, monkeypatch):
     override = homes / "external browser"
     _write_config(homes / "home", f"browser:\n  executable_path: '{override}'\n")
->>>>>>> origin/main
 
     def forbidden(*args, **kwargs):
         pytest.fail("browser resolution must not provision or activate packages")
@@ -108,13 +63,6 @@ def test_configured_executable_wins_without_installing(homes, monkeypatch):
     monkeypatch.setattr(pm, "activate", forbidden)
     with monkeypatch.context() as scoped:
         scoped.setattr(pm, "installed_package", forbidden)
-<<<<<<< HEAD
-        assert chromium_executable() == override
-    monkeypatch.delenv("AGENT_BROWSER_EXECUTABLE_PATH")
-    assert chromium_executable() is None
-    assert not store.exists()
-    assert "AGENT_BROWSER_EXECUTABLE_PATH" not in os.environ
-=======
         assert browser_runtime.chromium_executable() == str(override)
     # allow_override=False asks for pm's own build only.
     assert browser_runtime.chromium_executable(allow_override=False) is None
@@ -182,4 +130,3 @@ def test_termux_hint_never_mentions_npm(homes, monkeypatch):
     monkeypatch.setattr(runtime, "is_termux", lambda: True)
     hint = browser_runtime.chromium_missing_hint()
     assert "pkg install" in hint and "npm" not in hint and "npx" not in hint
->>>>>>> origin/main

@@ -32,10 +32,7 @@ from agent.error_classifier import (
 from agent.sdk_transform_bypass import bypass_chat_sdk_request_transform
 from agent.errors import EmptyStreamError
 from agent.chat_completion_local import _streams_llamacpp, stale_giveup
-<<<<<<< HEAD
-=======
 from agent.chat_completion_headers import _chat_completion_capturing_headers
->>>>>>> origin/main
 from agent.chat_completion_stream_monitor import StreamingWaitMonitor
 from agent.transports.chat_completions import is_router_timeout_shim, router_timeout_shim_may_follow
 from agent.fast_mode import effective_request_overrides
@@ -52,13 +49,7 @@ from agent.message_sanitization import (
     normalize_finish_reason as _normalize_finish_reason, sanitize_outbound_kwargs, strip_images_for_rejecting_model,
 )
 from agent.reasoning_summaries import (
-<<<<<<< HEAD
-    append_streamed_reasoning_detail, separate_glued_reasoning_blocks,
-    streamed_reasoning_detail_text,
-)
-=======
     append_streamed_reasoning_detail, separate_glued_reasoning_blocks, streamed_reasoning_detail_text)
->>>>>>> origin/main
 from agent.local_prompt_progress import prompt_progress, with_prompt_progress
 from agent.repetition_guard import RunawayStreamWatch, is_repetition_dominated
 from agent.stream_single_writer import claim_stream_writer, stream_writer_is_current
@@ -799,12 +790,8 @@ def _dispatch_nonstreaming_api_request(agent, api_kwargs: dict, *, make_client):
     # request transform. No-op unless this really is the OpenAI SDK, so the
     # MoA facade above and the suite's stand-in clients are unaffected.
     api_kwargs = bypass_chat_sdk_request_transform(api_kwargs, request_client)
-<<<<<<< HEAD
-    return request_client.chat.completions.create(**api_kwargs)
-=======
     return _chat_completion_capturing_headers(agent, request_client, api_kwargs)
 
->>>>>>> origin/main
 
 
 def should_use_direct_api_call(agent) -> bool:
@@ -2350,19 +2337,6 @@ def cleanup_task_resources(agent, task_id: str) -> None:
     terminal envs (``_cleanup_inactive_envs`` reaps them after ``terminal.lifetime_seconds``)
     and ``cleanup_browser`` in headed mode (the inactivity reaper handles idle sessions)."""
     def _headed() -> bool:
-<<<<<<< HEAD
-        try:
-            from tools.browser_tool_cloud import _is_headed_mode
-            return _is_headed_mode()
-        except Exception:
-            return bool(os.environ.get("AGENT_BROWSER_HEADED"))
-
-    for label, skip, skip_what, cleanup in (
-        ("VM", is_persistent_env, "cleanup_vm for persistent env", lambda: _ra().cleanup_vm(task_id)),
-        ("browser", lambda _tid: _headed(), "cleanup_browser for headed session", lambda: _ra().cleanup_browser(task_id)),
-    ):
-        try:
-=======
         from tools.browser_session_cloud import is_headed_mode
         return is_headed_mode()
 
@@ -2371,7 +2345,6 @@ def cleanup_task_resources(agent, task_id: str) -> None:
         ("browser", lambda _tid: _headed(), "cleanup_browser for headed session", lambda: _ra().cleanup_browser(task_id)),
     ):
         try:
->>>>>>> origin/main
             if skip(task_id):
                 if agent.verbose_logging:
                     logging.debug(f"Skipping per-turn {skip_what} {task_id}; idle reaper will handle it.")

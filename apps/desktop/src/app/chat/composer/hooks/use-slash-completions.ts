@@ -77,14 +77,7 @@ export function useSlashCompletions(options: {
    *  come from here, not the backend (whose skin list is CLI/TUI-only). */
   skinThemes?: DesktopThemeCommandOption[]
   activeSkin?: string
-<<<<<<< HEAD
-}): {
-  adapter: Unstable_TriggerAdapter
-  loading: boolean
-} {
-=======
 }): SlashCompletions {
->>>>>>> origin/main
   const { gateway, sessionId, profile, skinThemes, activeSkin } = options
   const { locale } = useI18n()
   const enabled = Boolean(gateway)
@@ -361,13 +354,9 @@ export function useSlashCompletions(options: {
     [skinThemes, keysFor]
   )
 
-<<<<<<< HEAD
-  return useLiveCompletionAdapter({ enabled, epoch: `${epoch}:${locale}`, fetcher, isCached, toItem })
-=======
   const live = useLiveCompletionAdapter({ enabled, epoch: `${epoch}:${locale}`, fetcher, isCached, toItem })
   // Slash commands come after setup: none in the onboarding chat until its run ends.
   const off = useStore(useMemo(() => onboardingChatStore(sessionId ?? null), [sessionId]))
 
   return off ? { adapter: null, loading: false } : live
->>>>>>> origin/main
 }

@@ -63,51 +63,6 @@ export const BackgroundResult: FC<BackgroundResultProps> = ({ text, report, proc
   )
 }
 
-interface BackgroundResultProps {
-  text: string
-  report: string
-  process?: boolean
-}
-
-export const BackgroundResult: FC<BackgroundResultProps> = ({ text, report, process }) => {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <div
-      className="flex w-full min-w-0 flex-col self-start py-1 pl-(--message-text-indent)"
-      data-slot="aui_background-result"
-    >
-      <div data-conversation-scaffold="">
-        <ScaffoldRow
-          onToggle={report ? () => setOpen(!open) : undefined}
-          open={open}
-          trailing={
-            <>
-              {' '}
-              <MessageTimelineTimestamp />
-            </>
-          }
-        >
-          {process && (
-            <span className={SCAFFOLD_GLYPH_CLASS}>
-              <ToolIcon className="text-(--ui-text-tertiary)" name="terminal" size="0.875rem" />
-            </span>
-          )}
-          <span className={cn(SCAFFOLD_LABEL_CLASS, 'min-w-0 truncate')}>{text}</span>
-        </ScaffoldRow>
-      </div>
-      {open &&
-        (process ? (
-          <LogView className="mt-2 max-h-80 overscroll-x-contain overscroll-y-auto">{report}</LogView>
-        ) : (
-          <div className="mt-2 max-h-80 min-w-0 max-w-full overflow-auto overscroll-x-contain overscroll-y-auto wrap-anywhere">
-            <MarkdownTextContent isRunning={false} text={report} />
-          </div>
-        ))}
-    </div>
-  )
-}
-
 export const SystemMessage: FC = () => {
   const text = useAuiState(s => messageContentText(s.message.content))
   const asyncResult = useAuiState(s => s.message.metadata.custom?.asyncResult)

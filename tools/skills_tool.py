@@ -317,8 +317,6 @@ def skills_list(category: str | None = None, task_id: str | None = None) -> str:
         return tool_error(str(e), success=False)
 
 
-<<<<<<< HEAD
-=======
 def _legacy_portable_skill_name(pm, namespace, bare):
     """Portable plugin skills were named ``agent-plugin-<slug>-<sha8>:<skill>`` before they took the
     plugin's own name; prompts and cron jobs saved since then may still carry that form. Resolved
@@ -331,7 +329,6 @@ def _legacy_portable_skill_name(pm, namespace, bare):
                  if entry.get("plugin_key") in keys and entry.get("bare_name") == bare), None)
 
 
->>>>>>> origin/main
 def _resolve_plugin_skill(name, file_path, task_id, preprocess):
     """``plugin:skill`` dispatch: ``(result_json, None)`` when answered, else ``(None,
     local_category_name)`` to fall through to the flat-tree scan — categorized local skills also use
@@ -339,25 +336,19 @@ def _resolve_plugin_skill(name, file_path, task_id, preprocess):
     from agent.skill_utils import is_valid_namespace, parse_qualified_name
     from hermes_cli.plugins import discover_plugins, get_plugin_manager
     namespace, bare = parse_qualified_name(name)
-<<<<<<< HEAD
-=======
     if namespace == "plugin" and ":" in bare:
         # The skills index lists plugin skills under a "plugin" heading, and models write that
         # heading as a prefix ("plugin:agent-plugin-blender-5a80e4ba:blender"). A bare skill name
         # never holds a colon, so the remainder is the real qualified name.
         name = bare
         namespace, bare = parse_qualified_name(name)
->>>>>>> origin/main
     if not is_valid_namespace(namespace):
         return _fail(f"Invalid namespace '{namespace}' in '{name}'. Namespaces must match [a-zA-Z0-9_-]+."), None
     discover_plugins()  # idempotent
     pm = get_plugin_manager()
-<<<<<<< HEAD
-=======
     if legacy := _legacy_portable_skill_name(pm, namespace, bare):
         name = legacy
         namespace = legacy.partition(":")[0]
->>>>>>> origin/main
     active_memory_provider = None
     try:
         from plugins.memory import _get_active_memory_provider, _prune_inactive_memory_provider_skills
@@ -622,11 +613,7 @@ def _log_security_warnings(name: str, skill_md: Path, content: str, all_dirs, ac
 def skill_view(
     name: str, file_path: str | None = None, task_id: str | None = None, preprocess: bool = True) -> str:
     """View a skill (SKILL.md) or a file within its directory, as JSON. ``name`` is a skill name
-<<<<<<< HEAD
-    or path ("axolotl", "03-fine-tuning/axolotl"); "plugin:skill" resolves plugin-provided
-=======
     or path ("axolotl", "03-fine-tuning/axolotl"); "<plugin>:<skill>" resolves plugin-provided
->>>>>>> origin/main
     skills. ``preprocess`` applies the configured SKILL.md template / inline shell rendering;
     slash/preload callers render the message themselves."""
     try:

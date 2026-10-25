@@ -58,8 +58,6 @@ def _plugin_server_rows(
     return rows
 
 
-<<<<<<< HEAD
-=======
 def _server_identity(cfg: object) -> tuple:
     """What a server config runs: a same-name native entry that runs the same thing is the user
     widening the package server's trust; anything else is the user's own, different server. Both
@@ -118,6 +116,5 @@ def _plugin_tool_ownership() -> dict[str, list[str]]:
     return {key: sorted(n for n in names if seen[n] == 1) for key, names in listed.items()}
 
 
->>>>>>> origin/main
 def register(server) -> None:
     bind_module(globals(), server)

@@ -60,11 +60,6 @@ class NousPaidServiceAccessInfo:
 
 
 @dataclass(frozen=True)
-<<<<<<< HEAD
-class NousToolAccessInfo:
-    """Free tool-pool entitlement (Portal ``tool_access``), decoupled from paid/billing access.
-
-=======
 class NousUsageWindowInfo:
     """Portal ``usage_window`` block: a usage-window plan's allowances (``gauges``, the server's list in
     display order; see agent/usage_gauges.py), auto top-up, a paused reason while the plan's renewal is
@@ -86,7 +81,6 @@ class NousUsageWindowInfo:
 class NousToolAccessInfo:
     """Free tool-pool entitlement (Portal ``tool_access``), decoupled from paid/billing access.
 
->>>>>>> origin/main
     ``enabled``: a positive pool balance is live and not gated off; ``coverage``: tool category ->
     whether the pool funds it (FAL video is excluded).
     """
@@ -407,8 +401,6 @@ def nous_policy_present() -> Optional[bool]:
         return None
 
 
-<<<<<<< HEAD
-=======
 def cached_nous_portal_account_info(*, any_age: bool = False) -> Optional[NousPortalAccountInfo]:
     """The account snapshot in the 60s cache, or None when empty/expired. Never a fresh fetch, never raises —
     for UI chrome that must not add a round trip (the pickers) after a flow has already fetched the account.
@@ -457,7 +449,6 @@ def _current_account_identity() -> Optional[str]:
     return _account_identity(access_token, _portal_base_url(state))
 
 
->>>>>>> origin/main
 def nous_policy_notice(*, removed: bool) -> str:
     """One-line notice for a list the org's policy narrowed, else ``""``.
 
@@ -474,11 +465,7 @@ def nous_policy_notice(*, removed: bool) -> str:
 
 
 def _fresh_account_info(state: dict[str, Any], force_fresh: bool, portal_base_url: Optional[str]) -> NousPortalAccountInfo:
-<<<<<<< HEAD
-    global _account_info_cache
-=======
     global _account_info_cache, _account_info_identity
->>>>>>> origin/main
 
     try:
         from hermes_cli.auth import get_provider_auth_state, resolve_nous_access_token
@@ -497,15 +484,10 @@ def _fresh_account_info(state: dict[str, Any], force_fresh: bool, portal_base_ur
 
         info = _info_from_fetched_account(access_token, refreshed_state, portal_base_url)
         if info.source != "error":
-<<<<<<< HEAD
-            with _ACCOUNT_INFO_CACHE_LOCK:
-                _account_info_cache = (cache_key, time.monotonic(), info)
-=======
             identity = _account_identity(access_token, portal_base_url)
             with _ACCOUNT_INFO_CACHE_LOCK:
                 _account_info_cache = (cache_key, time.monotonic(), info)
                 _account_info_identity = identity
->>>>>>> origin/main
         return info
     except Exception as exc:
         return _error_info(error=exc, logged_in=bool(state.get("access_token")),
@@ -769,8 +751,6 @@ def _coerce_num(value: Any, cast):
         return None
 
 
-<<<<<<< HEAD
-=======
 def _coerce_str_tuple(value: Any) -> Optional[tuple[str, ...]]:
     """A JSON array of non-empty strings → tuple (order kept, non-strings dropped); anything else → None."""
     if not isinstance(value, list):
@@ -778,16 +758,12 @@ def _coerce_str_tuple(value: Any) -> Optional[tuple[str, ...]]:
     return tuple(v for v in value if isinstance(v, str) and v)
 
 
->>>>>>> origin/main
 # Annotations are strings (``from __future__ import annotations``).
 _COERCERS = {
     "Optional[str]": _coerce_str,
     "Optional[bool]": _coerce_bool,
     "Optional[int]": lambda v: _coerce_num(v, int),
     "Optional[float]": lambda v: _coerce_num(v, float),
-<<<<<<< HEAD
-}
-=======
     "Optional[tuple[str, ...]]": _coerce_str_tuple,
     "Optional[tuple[Any, ...]]": lambda v: _parse_gauges(v),
 }
@@ -796,4 +772,3 @@ _COERCERS = {
 def _parse_gauges(value: Any):
     from agent.usage_gauges import parse_gauges
     return parse_gauges(value)
->>>>>>> origin/main

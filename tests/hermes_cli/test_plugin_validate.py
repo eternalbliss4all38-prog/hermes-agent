@@ -330,8 +330,6 @@ class TestDesktopSurface:
             "app DOM reach (desktop/plugin.js:3)",
         ]
 
-<<<<<<< HEAD
-=======
     def test_preview_guest_reach_fails_and_the_sdk_door_stays_clean(self, tmp_path):
         """Grabbing or minting a ``<webview>`` to script the preview page skips the declared
         capability and the user's per-origin consent behind ``ctx.preview``; the SDK door is clean."""
@@ -348,7 +346,6 @@ class TestDesktopSurface:
             "preview guest reach (desktop/plugin.js:4)",
         ]
 
->>>>>>> origin/main
     def test_chunk_import_fails_and_prototype_writes_are_left_to_review(self, tmp_path):
         d = self._desktop_plugin(tmp_path, (
             "const raw = Storage.prototype.setItem\n"

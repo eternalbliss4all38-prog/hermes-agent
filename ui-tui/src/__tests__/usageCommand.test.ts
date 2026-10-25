@@ -3,17 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { sessionCommands } from '../app/slash/commands/session.js'
 import type { SessionUsageResponse } from '../gatewayTypes.js'
 import { applyLocale, resetLocale, t } from '../i18n/runtime.js'
-<<<<<<< HEAD
-
-const usageCommand = sessionCommands.find(cmd => cmd.name === 'usage')!
-
-=======
 
 const USAGE_CTA = 'Run /subscription to change plan · /topup to add to your balance'
 
 const usageCommand = sessionCommands.find(cmd => cmd.name === 'usage')!
 
->>>>>>> origin/main
 const guarded =
   <T>(fn: (r: T) => void) =>
   (r: null | T) => {
@@ -90,8 +84,6 @@ describe('/usage slash command', () => {
     const withBalance = buildCtx({ 'session.usage': baseUsage({ calls: 0, credits_lines: ['$50.00 remaining'] }) })
     await withBalance.run('')
     expect(printed(withBalance.sys)).not.toContain(t('slashCmd.session.usage.noCalls'))
-<<<<<<< HEAD
-=======
   })
 
   it('prints window usage one stripped line at a time', async () => {
@@ -121,7 +113,6 @@ describe('/usage slash command', () => {
     const { panel, run } = buildCtx({ 'session.usage': baseUsage({ calls: 0, credits_lines: lines }) })
     await run('')
     expect(panel).toHaveBeenCalledWith('Nous balance', [{ text: lines.join('\n') }])
->>>>>>> origin/main
   })
 
   it('renders the dollar two-bar model (no "credits" wording) when available', async () => {

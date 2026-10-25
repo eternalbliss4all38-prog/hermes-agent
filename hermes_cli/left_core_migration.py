@@ -27,11 +27,8 @@ to deliver it.
 from __future__ import annotations
 
 import logging
-<<<<<<< HEAD
-=======
 import os
 import sys
->>>>>>> origin/main
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Optional
@@ -43,15 +40,12 @@ from hermes_cli.memory_provider_migration import (
 
 logger = logging.getLogger(__name__)
 
-<<<<<<< HEAD
-=======
 # ``terminal.*`` keys a left-core plugin still reads -> the ``.env`` copy core's ``hermes config set`` also
 # wrote. Not in DEFAULT_CONFIG (a seeded default would hide the plugin's env fallback), so ``config
 # set/get`` recognise them here, and ``config unset`` removes that copy too: the plugin falls back to it,
 # and the old value would return instead of the default.
 LEFT_CORE_TERMINAL_KEYS = {"terminal.singularity_image": "TERMINAL_SINGULARITY_IMAGE"}
 
->>>>>>> origin/main
 
 def _read_config(home: Path) -> dict:
     import utils
@@ -161,8 +155,6 @@ def langfuse_in_use(home: Path, *, process_env: bool = False) -> bool:
     return _bundled_plugin_selected(home, "langfuse")
 
 
-<<<<<<< HEAD
-=======
 def singularity_in_use(home: Path, *, process_env: bool = False) -> bool:
     """What made core run its Singularity backend for *home*: ``terminal.backend`` (or the legacy
     ``terminal.env_type``) set to ``singularity`` in its config (managed overlay applied, as the bridge
@@ -233,7 +225,6 @@ def camofox_in_use(home: Path, *, process_env: bool = False) -> bool:
     return bool(_home_env(home, "CAMOFOX_URL", process_env=process_env))
 
 
->>>>>>> origin/main
 @dataclass(frozen=True)
 class LeftCoreFeature:
     plugin: str                               # catalog entry name == installed plugin name
@@ -253,15 +244,12 @@ class LeftCoreFeature:
     toolsets: tuple[str, ...] = ()
     # Platforms whose core default composite (``hermes-<platform>``) never carried those toolsets.
     off_platforms: tuple[str, ...] = ()
-<<<<<<< HEAD
-=======
     # Core-era toolsets the plugin's toolsets replace while core keeps the name for something else
     # (core's ``browser`` is browser_exec now; Camofox's tools live in the plugin's ``camofox``). The
     # one-time scope conversion treats them as the plugin's toolsets for "did core carry it" and turns
     # them off in the home: a saved platform list naming one names the plugin's toolsets instead, and
     # ``agent.disabled_toolsets`` takes them for platforms on a default composite.
     replaces_toolsets: tuple[str, ...] = ()
->>>>>>> origin/main
     # Gateway platform the plugin ships: a running gateway serves it only after a restart.
     platform: str = ""
     # Channel ownership core declared for that platform, kept while the plugin is absent (migration
@@ -273,8 +261,6 @@ class LeftCoreFeature:
     # Top-level command the plugin registers in place of core's ``hermes auth <cli>`` login
     # (``hermes <cli> login|status|logout``); :func:`moved_command_hint` points the old spelling at it.
     cli: str = ""
-<<<<<<< HEAD
-=======
     # Top-level command the plugin registers: core's own command kept under its name (``hermes
     # import-agent``), or in place of core's nested ``old_command`` (``hermes mcp serve`` -> ``hermes
     # mcp-serve``); :func:`moved_command_hint` points the old spelling at it.
@@ -283,13 +269,10 @@ class LeftCoreFeature:
     # Other top-level commands core shipped that the same plugin now registers (``hermes claw``, the
     # OpenClaw migration's spelling before ``hermes import-agent openclaw``); hinted like *command*.
     old_cli: tuple[str, ...] = ()
->>>>>>> origin/main
     # Key of the bundled plugin core shipped (``observability/langfuse``). It stays an alias of the
     # catalog plugin in ``plugins.enabled`` / ``plugins.disabled`` (the loader's gate, an
     # administrator's pinned list) and for every `hermes plugins <verb>` (:func:`legacy_plugin_alias`).
     plugin_key: str = ""
-<<<<<<< HEAD
-=======
     # ``terminal.backend`` value the plugin registers: unknown-backend errors name the install command.
     terminal_backend: str = ""
     # Config schema version that shipped without the feature, for a row whose conversion changes what a
@@ -297,7 +280,6 @@ class LeftCoreFeature:
     # only while the home's config is below it or when that version's config step found the feature in
     # use (:func:`record_core_use`). A newer home that sets the plugin up itself keeps core's toolsets.
     left_at: int = 0
->>>>>>> origin/main
 
 
 LEFT_CORE: tuple[LeftCoreFeature, ...] = (
@@ -322,8 +304,6 @@ LEFT_CORE: tuple[LeftCoreFeature, ...] = (
         private_env=("HERMES_LANGFUSE_PUBLIC_KEY", "HERMES_LANGFUSE_BASE_URL"),
         plugin_key="observability/langfuse",
     ),
-<<<<<<< HEAD
-=======
     LeftCoreFeature(
         # MCP clients that launch `hermes mcp serve` are configured outside Hermes, so no home shows the
         # feature in use: nothing installs automatically, and the old spelling prints where it went.
@@ -353,7 +333,6 @@ LEFT_CORE: tuple[LeftCoreFeature, ...] = (
         unchanged="`hermes import-agent`, its flags and your import-sync.json sync sources are unchanged",
         command="import-agent", old_cli=("claw",),
     ),
->>>>>>> origin/main
 )
 
 def _install_sentence(feature: LeftCoreFeature) -> str:
@@ -369,8 +348,6 @@ def platform_install_hint(platform: str) -> str:
     return f". {_install_sentence(feature)}" if feature else ""
 
 
-<<<<<<< HEAD
-=======
 def terminal_backend_install_hint(backend: str) -> str:
     """For a ``terminal.backend`` value that left core: the sentence that names its install command for
     the active home, else ``""``. Appended to "unknown terminal backend" errors."""
@@ -378,7 +355,6 @@ def terminal_backend_install_hint(backend: str) -> str:
     return f". {_install_sentence(feature)}" if feature else ""
 
 
->>>>>>> origin/main
 def legacy_plugin_alias(name: str) -> str:
     """The catalog plugin a bundled key that left core now names (``observability/langfuse`` ->
     ``langfuse``), else ``""``."""
@@ -392,15 +368,6 @@ def legacy_plugin_keys(plugin: str) -> set[str]:
 
 def moved_command_hint(prog: str, value: str, action: str = "") -> str:
     """For a command a left-core plugin took over: ``hermes auth [<action>] <cli>`` (core's old login
-<<<<<<< HEAD
-    spelling) or ``hermes <cli>`` while the plugin is not loaded, the line saying where it went and
-    how to get it for the active home, else ``""``."""
-    from hermes_constants import get_hermes_home
-    feature = next((f for f in LEFT_CORE if f.cli and f.cli == value), None)
-    if feature is None or prog not in {"hermes", "hermes auth"}:
-        return ""
-    home = Path(get_hermes_home())
-=======
     spelling), core's old nested spelling (``hermes mcp serve``), or the plugin's own ``hermes <cli>`` /
     ``hermes <command>`` / ``hermes <old_cli>`` while the plugin is not loaded, the line saying where it
     went and how to get it for the active home, else ``""``."""
@@ -420,7 +387,6 @@ def moved_command_hint(prog: str, value: str, action: str = "") -> str:
         feature = None
     if feature is None:
         return ""
->>>>>>> origin/main
     install = _install_command(feature.plugin, home)
     if not plugin_present(feature.plugin, home):
         get = f" Install it with: `{install}`."
@@ -430,12 +396,8 @@ def moved_command_hint(prog: str, value: str, action: str = "") -> str:
         old = " ".join(p for p in ("hermes auth", action, value) if p)
         return (f"{feature.label} moved out of core into the '{feature.plugin}' plugin: `{old}` is now "
                 f"`hermes {value} {action or 'login'}`.{get}")
-<<<<<<< HEAD
-    return f"{feature.label} moved out of core into the '{feature.plugin}' plugin, which is not loaded.{get}"
-=======
     label = f"`hermes {value}`" if value in feature.old_cli else feature.label
     return f"{label} moved out of core into the '{feature.plugin}' plugin, which is not loaded.{get}"
->>>>>>> origin/main
 
 
 def moved_plugin_hint(name: str) -> str:
@@ -450,8 +412,6 @@ _attempted: set[str] = set()
 _undelivered: dict[str, list[str]] = {}
 
 
-<<<<<<< HEAD
-=======
 def defer_startup_notice(message: str) -> None:
     """Hand *message* to the active home's first agent (its startup-warning sink, through
     :func:`recover_at_startup`), once. For boot-path work that runs before any agent exists."""
@@ -460,7 +420,6 @@ def defer_startup_notice(message: str) -> None:
     _undelivered.setdefault(hermes_home_key(Path(get_hermes_home())), []).append(message)
 
 
->>>>>>> origin/main
 def plugin_present(plugin: str, home: Path) -> bool:
     """Installed in *home* (enabled or not: a user who disabled it chose to). Read-only."""
     return (home / "plugins" / plugin).is_dir()
@@ -470,11 +429,7 @@ def _core_carried(feature: LeftCoreFeature, selection: list) -> bool:
     """Whether core resolved *feature*'s toolsets on for a platform selecting *selection*: named
     directly, or through a ``hermes`` / ``hermes-<platform>`` composite that included them."""
     def carries(name: str) -> bool:
-<<<<<<< HEAD
-        if name in feature.toolsets or name == "hermes":
-=======
         if name in feature.toolsets or name in feature.replaces_toolsets or name == "hermes":
->>>>>>> origin/main
             return True
         return name.startswith("hermes-") and name[len("hermes-"):].replace("-", "_") not in feature.off_platforms
     return any(carries(str(name)) for name in selection)
@@ -486,8 +441,6 @@ _SCOPED_KEY = "_left_core_scoped"  # config.yaml: rows whose toolset scope this 
 _INSTALLED_KEY = "_left_core_installed"
 
 
-<<<<<<< HEAD
-=======
 # config.yaml: rows whose ``left_at`` config step found the core feature in use in this home.
 _USED_KEY = "_left_core_used"
 
@@ -520,7 +473,6 @@ def _predates_split(home: Path, feature: LeftCoreFeature) -> bool:
         return False
 
 
->>>>>>> origin/main
 def _marked(config: dict, key: str, feature: LeftCoreFeature) -> bool:
     done = config.get(key)
     return isinstance(done, list) and feature.plugin in map(str, done)
@@ -535,8 +487,6 @@ def _mark(config: dict, key: str, feature: LeftCoreFeature) -> None:
     config[key] = sorted({*(map(str, done) if isinstance(done, list) else ()), feature.plugin})
 
 
-<<<<<<< HEAD
-=======
 def _turn_off_replaced(config: dict, feature: LeftCoreFeature) -> None:
     """Turn *feature*'s ``replaces_toolsets`` off in *config*: every saved platform list naming one names
     the plugin's toolsets instead (so turning core's toolset back on later stays that platform's choice),
@@ -558,19 +508,14 @@ def _turn_off_replaced(config: dict, feature: LeftCoreFeature) -> None:
     config["agent"] = agent
 
 
->>>>>>> origin/main
 def _record_migration(home: Path, feature: LeftCoreFeature) -> None:
     """Keep *feature*'s core-era toolset scope, and mark it installed once its plugin is in *home*,
     in one config write.
 
     Scope: record the toolsets in ``known_plugin_toolsets[platform]`` (= off) for every platform
     where core had them off: a saved ``platform_toolsets`` list that does not carry them, or no list
-<<<<<<< HEAD
-    on an ``off_platforms`` platform. Platforms core resolved them on for are left alone. A one-time
-=======
     on an ``off_platforms`` platform. Platforms core resolved them on for are left alone, except that
     a row's ``replaces_toolsets`` go off everywhere (:func:`_turn_off_replaced`). A one-time
->>>>>>> origin/main
     conversion per home and row, independent of installation: a plugin installed before the update
     (it stays inert on a core that still ships the feature) still needs it. Completion is marked
     under ``_left_core_scoped`` so a later run never undoes a choice the user made since
@@ -578,10 +523,7 @@ def _record_migration(home: Path, feature: LeftCoreFeature) -> None:
     from hermes_cli.config import atomic_config_write, read_user_config_raw
     from hermes_cli.toolset_validation import parse_platform_toolsets_value
     path = home / "config.yaml"
-<<<<<<< HEAD
-=======
     created = not path.exists()
->>>>>>> origin/main
     config = read_user_config_raw(path)
     installed = plugin_present(feature.plugin, home) and not _marked(config, _INSTALLED_KEY, feature)
     if _scope_kept(config, feature) and not installed:
@@ -606,12 +548,6 @@ def _record_migration(home: Path, feature: LeftCoreFeature) -> None:
                 known[platform] = sorted({*map(str, current), *missing})
         if known:
             config["known_plugin_toolsets"] = known
-<<<<<<< HEAD
-        _mark(config, _SCOPED_KEY, feature)
-    atomic_config_write(path, config)
-
-
-=======
         if feature.replaces_toolsets:
             _turn_off_replaced(config, feature)
         _mark(config, _SCOPED_KEY, feature)
@@ -630,7 +566,6 @@ def _stamp_created(home: Path, config: dict) -> None:
     note_first_stamp(home, {}, config)
 
 
->>>>>>> origin/main
 def _pending(home: Path, *, say: Callable[[str], None], process_env: bool = False,
              backoff: bool = False) -> list[LeftCoreFeature]:
     """Rows *home* uses whose plugin it never had and that the catalog ships (a catalog miss is
@@ -645,12 +580,9 @@ def _pending(home: Path, *, say: Callable[[str], None], process_env: bool = Fals
             continue
         if not feature.in_use(home, process_env=process_env):
             continue
-<<<<<<< HEAD
-=======
         if not _predates_split(home, feature):
             _say_post_split(home, feature, say=say, backoff=backoff)
             continue
->>>>>>> origin/main
         present = plugin_present(feature.plugin, home)
         try:
             _record_migration(home, feature)
@@ -675,8 +607,6 @@ def _pending(home: Path, *, say: Callable[[str], None], process_env: bool = Fals
     return out
 
 
-<<<<<<< HEAD
-=======
 def _say_post_split(home: Path, feature: LeftCoreFeature, *, say: Callable[[str], None], backoff: bool) -> None:
     """*home* uses *feature* while its stamp says it never ran it in core (a newer home, or a Nix-managed
     config.yaml stamped at activation): nothing is converted or installed, but a home without the plugin is
@@ -688,7 +618,6 @@ def _say_post_split(home: Path, feature: LeftCoreFeature, *, say: Callable[[str]
         f"have, so it is off. Run `{_install_command(feature.plugin, home)}`.")
 
 
->>>>>>> origin/main
 def _install_into(home: Path, *, consent: Optional[bool] = None) -> Callable[[str], dict]:
     def _install(name: str) -> dict:
         from hermes_cli.plugins_cmd import dashboard_install_plugin
@@ -799,12 +728,8 @@ def _gateway_serves(home: Path) -> bool:
 def recover_at_startup(*, say: Optional[Callable[[str], None]] = None) -> list[str]:
     """Agent/gateway start hook for the active home: one attempt per process per home. With *say*
     (an agent's startup-warning sink) outcomes are delivered now, together with any a gateway-start
-<<<<<<< HEAD
-    attempt queued for this home; without it they are logged and queued for the home's first agent.
-=======
     attempt or boot maintenance (:func:`defer_startup_notice`) queued for this home; without it they are
     logged and queued for the home's first agent.
->>>>>>> origin/main
     Returns installed plugin names."""
     from agent.safe_worker_policy import worker_config_snapshot
     if worker_config_snapshot() is not None:
@@ -861,8 +786,6 @@ def recover_at_startup(*, say: Optional[Callable[[str], None]] = None) -> list[s
     except Exception as exc:  # never take agent/gateway start down
         logger.warning("left-core plugin migration failed: %s", exc, exc_info=True)
         return []
-<<<<<<< HEAD
-=======
 
 
 def recover_for_command(name: Optional[str]) -> None:
@@ -876,4 +799,3 @@ def recover_for_command(name: Optional[str]) -> None:
     if any(name and name in (f.cli, f.command, *f.old_cli) and not plugin_present(f.plugin, home)
            and f.in_use(home) for f in LEFT_CORE):
         recover_at_startup(say=lambda message: print(message, file=sys.stderr))
->>>>>>> origin/main

@@ -286,11 +286,7 @@ hermes-agent/
 │   ├── delegate_tool.py          # Subagent spawning and parallel task execution
 │   ├── code_execution_tool.py    # Sandboxed Python with RPC tool access (env allowlists in code_execution_env.py)
 │   ├── mcp_tool.py               # MCP client (facade + mcp_tool_*.py siblings: config, discovery, transport, ...)
-<<<<<<< HEAD
-│   ├── browser_tool.py           # Browser automation (facade + browser_tool_*.py siblings)
-=======
 │   ├── browser_use_cli.py        # browser_exec (Python over CDP); sessions in browser_session*.py, launcher in browser_launcher.py
->>>>>>> origin/main
 │   ├── session_search_tool.py    # Search past conversations with FTS5 + anchored windows
 │   ├── cronjob_tools.py          # Scheduled task management
 │   ├── skill_tools.py            # Skill search, load, manage

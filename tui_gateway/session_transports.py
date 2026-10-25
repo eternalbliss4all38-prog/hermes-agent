@@ -39,14 +39,9 @@ def _transport_auth_user_id(transport) -> str | None:
     """``<provider>:<user id>`` the WS-upgrade credential authenticated for ``transport``, or None for the legacy
     token, stdio and the PTY child's server-internal credential. The prefix keeps a basic-auth ``alice`` and an
     OIDC ``alice`` apart."""
-<<<<<<< HEAD
-    identity = getattr(transport, "auth_identity", None)
-    if _methods_browser_control._is_authenticated_identity(identity):
-=======
     from gateway.session_identity import is_authenticated_identity
     identity = getattr(transport, "auth_identity", None)
     if is_authenticated_identity(identity):
->>>>>>> origin/main
         return f"{str(identity['provider']).strip()}:{str(identity['user_id']).strip()}"
     return None
 

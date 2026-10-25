@@ -23,9 +23,6 @@ export interface StepUpMessage {
   title: string
 }
 
-<<<<<<< HEAD
-export function useStepUpFlow() {
-=======
 /**
  * True while a Remote Spending approval is in flight. The device flow swaps this terminal's login when it
  * lands, so Billing pauses its focus/interval refetches meanwhile: a refetch on the old login mid-swap can
@@ -50,7 +47,6 @@ function holdStepUp(holder: object, held: boolean) {
 }
 
 export function useStepUpFlow({ autoOpen = false }: { autoOpen?: boolean } = {}) {
->>>>>>> origin/main
   const { t } = useI18n()
   const b = t.settings.billing
   const api = useBillingApi()
@@ -153,11 +149,7 @@ export function useStepUpFlow({ autoOpen = false }: { autoOpen?: boolean } = {})
     if (!result.ok) {
       setMessage({ status: 'refusal', refusal: result.refusal })
 
-<<<<<<< HEAD
-      return
-=======
       return false
->>>>>>> origin/main
     }
 
     if (!result.data.granted) {
@@ -171,15 +163,10 @@ export function useStepUpFlow({ autoOpen = false }: { autoOpen?: boolean } = {})
       queryClient.invalidateQueries({ queryKey: ['billing', 'subscription'] })
     ])
     setMessage({ status: 'success' })
-<<<<<<< HEAD
-  }, [api, gateway, queryClient, unsubscribe])
-
-=======
 
     return true
   }, [api, autoOpen, gateway, queryClient, unsubscribe])
 
->>>>>>> origin/main
   let displayMessage: StepUpMessage | null = null
 
   if (message?.status === 'refusal') {

@@ -28,13 +28,6 @@ def _run_migrate_config_fresh(*, interactive: bool = False, quiet: bool = False)
     stop_for_relaunch(incomplete=True)
 
 
-<<<<<<< HEAD
-def _migrate_sibling_profile_configs() -> list[tuple[str, int, int]]:
-    """Migrate every SIBLING profile's config.yaml (the shared checkout serves all profiles). Per
-    sibling (active skipped): scope via the context-local HERMES_HOME override (never ``os.environ``)
-    and run the NON-INTERACTIVE quiet migration — prompt-requiring settings wait for that profile's
-    own session. Returns ``[(name, from_version, to_version), ...]``; never raises.
-=======
 def _migrate_sibling_profile_configs(notes: dict[str, list[str]] | None = None) -> list[tuple[str, int, int]]:
     """Migrate every SIBLING profile's config.yaml (the shared checkout serves all profiles). Per
     sibling (active skipped): scope via the context-local HERMES_HOME override (never ``os.environ``)
@@ -42,7 +35,6 @@ def _migrate_sibling_profile_configs(notes: dict[str, list[str]] | None = None) 
     own session. Returns ``[(name, from_version, to_version), ...]``; never raises. *notes* receives
     each migrated sibling's display lines for what quiet mode muted (a reset/removed setting, a
     warning), as the active profile's quiet path re-prints them; the tuple shape stays for old updaters.
->>>>>>> origin/main
 
     91277 Phase 2 (fleet-wide config migration; #20438/#54926/#79048): the shared checkout serves every
     profile, but ``hermes update`` historically migrated only the active profile's config — siblings drifted
@@ -52,11 +44,7 @@ def _migrate_sibling_profile_configs(notes: dict[str, list[str]] | None = None) 
     ``_get_default_hermes_home()``, not under ``profiles/``, so a named-profile
     ``hermes update`` still migrates it.
     """
-<<<<<<< HEAD
-    from hermes_cli.config import check_config_version, migrate_config
-=======
     from hermes_cli.config import check_config_version, get_missing_config_fields, migrate_config
->>>>>>> origin/main
     migrated: list[tuple[str, int, int]] = []
     with _best_effort('Sibling profile enumeration failed: %s'):
         from hermes_constants import (
@@ -71,12 +59,6 @@ def _migrate_sibling_profile_configs(notes: dict[str, list[str]] | None = None) 
                 current_ver, latest_ver = check_config_version(raise_on_parse_error=True)
                 if current_ver >= latest_ver:
                     continue
-<<<<<<< HEAD
-                migrate_config(interactive=False, quiet=True)
-                after_ver, _ = check_config_version(raise_on_parse_error=True)
-                if after_ver > current_ver:
-                    migrated.append((name, current_ver, after_ver))
-=======
                 results = migrate_config(interactive=False, quiet=True)
                 after_ver, _ = check_config_version(raise_on_parse_error=True)
                 if after_ver > current_ver:
@@ -86,7 +68,6 @@ def _migrate_sibling_profile_configs(notes: dict[str, list[str]] | None = None) 
                         new_keys = {field["key"] for field in get_missing_config_fields()}
                         notes[name] = [f"ℹ {note}" for note in results["config_added"] if note not in new_keys]
                         notes[name] += [f"⚠️  {warning}" for warning in results["warnings"]]
->>>>>>> origin/main
             except Exception as exc:
                 logger.debug("Config migration for profile %s failed: %s", name, exc)
             finally:
@@ -269,16 +250,11 @@ def _check_and_apply_config_migration(
     # The migration above touched only the active profile; run the same NON-INTERACTIVE
     # migration per sibling home via the context-local HERMES_HOME override (never os.environ).
     with _best_effort('Sibling config migration failed: %s'):
-<<<<<<< HEAD
-        for _name, _from_ver, _to_ver in _migrate_sibling_profile_configs():
-            print(f"  ✓ Profile '{_name}': config format updated (v{_from_ver} → v{_to_ver})")
-=======
         sibling_notes: dict[str, list[str]] = {}
         for _name, _from_ver, _to_ver in _migrate_sibling_profile_configs(sibling_notes):
             print(f"  ✓ Profile '{_name}': config format updated (v{_from_ver} → v{_to_ver})")
             for _note in sibling_notes.get(_name, ()):
                 print(f"      {_note}")
->>>>>>> origin/main
 
     _restore_snapshot_safety_nets(pre_update_snapshot_id)
     if owed_error is not None:

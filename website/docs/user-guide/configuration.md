@@ -235,10 +235,6 @@ terminal:
   env_passthrough: []  # Env var names to forward to sandboxed execution (terminal + execute_code)
   client_env_passthrough: []  # Extra non-secret toolchain names (e.g. GEM_HOME) a local CLI/TUI session's tools take from its launching shell
   sync_back_max_bytes: 2147483648  # Remote backends: refuse to extract a state archive larger than this (bytes)
-<<<<<<< HEAD
-  singularity_image: "docker://nousresearch/hermes-sandbox:desktop"  # Container image for Singularity backend
-=======
->>>>>>> origin/main
   modal_image: "nousresearch/hermes-sandbox:desktop"                 # Container image for Modal backend
   daytona_image: "nousresearch/hermes-sandbox:desktop"               # Container image for Daytona backend
 ```
@@ -793,11 +789,7 @@ export TERMINAL_LOCAL_PERSISTENT=false              # local
 | SSH | `TERMINAL_SSH_PERSISTENT`, else `terminal.persistent_shell` (`TERMINAL_PERSISTENT_SHELL`) | `true` |
 | Local | `TERMINAL_LOCAL_PERSISTENT` | `true` |
 
-<<<<<<< HEAD
-Docker, Singularity, Modal, Daytona, Vercel Sandbox and plugin backends ignore these settings.
-=======
 Docker, Modal, Daytona, Vercel Sandbox and plugin backends (Singularity included) ignore these settings.
->>>>>>> origin/main
 
 See [Code Execution](features/code-execution.md) and the [Terminal section of the README](features/tools.md) for details on each backend.
 
@@ -2160,11 +2152,7 @@ tool_loop_guardrails:
 Hard stops are designed to catch **replays** — the same call, unchanged, with nothing happening in between — not legitimate iteration:
 
 - **Edit → re-run is never a loop.** Any successful mutating call (`write_file`, `patch`, a green `terminal`/`execute_code`, a browser action, a job/message/cron mutation) marks progress for every failing call still being counted. The next identical retry (re-running a red test after a fix, re-snapshotting after a click) starts a fresh streak instead of accumulating toward a block.
-<<<<<<< HEAD
-- **Distinct red commands are diagnosis, not a loop.** For tools whose non-zero exit is ordinary output (`terminal`, `execute_code`, process pollers, `browser_navigate`, `web_extract`) the `same_tool_failure` threshold only warns and never halts. Only an exact-args replay with no intervening change, or an identical-result streak, can stop them.
-=======
 - **Distinct red commands are diagnosis, not a loop.** For tools whose non-zero exit is ordinary output (`terminal`, `execute_code`, process pollers, `browser_exec`, `web_extract`) the `same_tool_failure` threshold only warns and never halts. Only an exact-args replay with no intervening change, or an identical-result streak, can stop them.
->>>>>>> origin/main
 - **A halt ends the turn, not the session.** The agent replies with which guardrail fired and why; replying "continue" resumes with fresh per-turn counters.
 
 ### Per-turn runaway-loop caps
@@ -2879,9 +2867,6 @@ toolset with `hermes tools` (or `hermes tools disable browser [--platform NAME]`
 
 See the [browser feature page](./features/browser.md#browser_dialog) for the full dialog workflow.
 
-<<<<<<< HEAD
-The browser toolset supports multiple providers. See the [Browser feature page](./features/browser.md) for details on Browserbase, Browser Use, and local Chromium-family CDP setup.
-=======
 **Removed keys (migrated automatically).** `browser.backend` is gone — `browser_exec` is the
 only browser path. An old `backend: off` (quoted or not) is removed with a one-time notice to
 disable the `browser` toolset instead, shown by `hermes update` or, when Hermes migrated the config as it
@@ -2899,7 +2884,6 @@ are copied from the profile's `.env` into the matching keys when those keys are 
 before. A relative `AGENT_BROWSER_PROFILE` was resolved against the working directory, so it is
 written as that absolute path (the working directory of the process that migrated the config), with a
 notice, shown the same way, naming the path it pinned so you can check your browser logins are there.
->>>>>>> origin/main
 
 ## Timezone
 
@@ -3095,11 +3079,7 @@ The delegation provider uses the same credential resolution as CLI/gateway start
 
 **Precedence:** `delegation.base_url` in config → `delegation.provider` in config → parent provider (inherited). `delegation.model` in config → parent model (inherited). Setting just `model` without `provider` changes only the model name while keeping the parent's credentials (useful for switching models within the same provider like OpenRouter).
 
-<<<<<<< HEAD
-**One-shot runs:** a finite `hermes chat -q` / `--oneshot` session has no later turn to consume delegated results and no later session to learn for, so it runs a smaller footprint: `skill_manage` is not offered (skills are still listed and loadable with `skill_view`), the skills prompt asks for domain skills only rather than process skills, and `oneshot_max_children` caps the total subagents the run may spawn (default `2`, `0` = unlimited). Past the cap `delegate_task` returns a tool error telling the agent to finish inline.
-=======
 **One-shot runs:** a finite `hermes chat -q` / `--oneshot` session has no later turn to consume delegated results and no later session to learn for, so it runs a smaller footprint: the skills prompt asks for domain skills only rather than process skills (`skill_manage` stays available, so the run can still author skills), and `oneshot_max_children` caps the total subagents the run may spawn (default `2`, `0` = unlimited). Past the cap `delegate_task` returns a tool error telling the agent to finish inline. Nobody can answer or steer a one-shot either, so it also runs without the `clarify` tool, without the system prompt's mid-turn steering note, and with a `delegate_task` schema that omits the live-control parameters (`action` list/steer/stop, `subagent_id`, `message`): its children are joined inside the call, so there is never a running child to control.
->>>>>>> origin/main
 
 **Width and depth:** `max_concurrent_children` caps how many subagents run in parallel per batch (default `3`, floor of 1, no ceiling). Can also be set via the `DELEGATION_MAX_CONCURRENT_CHILDREN` env var. When the model submits a `tasks` array longer than the cap, `delegate_task` returns a tool error explaining the limit rather than silently truncating. `max_spawn_depth` controls the delegation tree depth (clamped to 1-3). At the default `1`, delegation is flat: children cannot spawn grandchildren, and passing `role="orchestrator"` silently degrades to `leaf`. Raise to `2` so orchestrator children can spawn leaf grandchildren; `3` for three-level trees. The agent opts into orchestration per call via `role="orchestrator"`; `orchestrator_enabled: false` forces every child back to leaf regardless. Cost scales multiplicatively — at `max_spawn_depth: 3` with `max_concurrent_children: 3`, the tree can reach 3×3×3 = 27 concurrent leaf agents. See [Subagent Delegation → Depth Limit and Nested Orchestration](features/delegation.md#depth-limit-and-nested-orchestration) for usage patterns.
 

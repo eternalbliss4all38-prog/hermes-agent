@@ -96,8 +96,6 @@ it('moves compression queues across cached successors without changing attempted
   }
 })
 
-<<<<<<< HEAD
-=======
 it('keeps queue order when inputs queued in the same millisecond on two sessions merge', () => {
   const home = mkdtempSync(join(tmpdir(), 'ink-order-'))
   vi.stubEnv('HERMES_HOME', home)
@@ -138,7 +136,6 @@ it('keeps queue order when inputs queued in the same millisecond on two sessions
   }
 })
 
->>>>>>> origin/main
 it('uses the canonical profile home through symlinks, including a missing descendant', () => {
   const root = mkdtempSync(join(tmpdir(), 'ink-home-'))
   const real = join(root, 'real')

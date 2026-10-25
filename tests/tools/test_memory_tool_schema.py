@@ -17,14 +17,10 @@ These tests guard the schema against regressing back to a shape strict
 backends reject.
 """
 
-<<<<<<< HEAD
-from tools.memory_tool import MEMORY_SCHEMA
-=======
 import json
 
 from tools.memory_tool import MEMORY_SCHEMA, MemoryStore
 from tools.registry import registry
->>>>>>> origin/main
 
 _FORBIDDEN_TOP_LEVEL_KEYS = ("allOf", "anyOf", "oneOf", "enum", "not")
 
@@ -37,8 +33,6 @@ def test_memory_schema_has_no_forbidden_top_level_combinators():
             "Codex backend (chatgpt.com/backend-api/codex). Per-action "
             "required-field checks belong in the runtime handler, not the schema."
         )
-<<<<<<< HEAD
-=======
 
 
 def test_each_memory_field_is_advertised_once_and_legacy_shapes_still_write(tmp_path, monkeypatch):
@@ -123,4 +117,3 @@ def test_background_review_one_item_remove_of_the_last_entry_is_staged_not_appli
         reset_current_write_origin(token)
     assert result["staged"] is True
     assert store.user_entries == ["Name: Alice"]
->>>>>>> origin/main

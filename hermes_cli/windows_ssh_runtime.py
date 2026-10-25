@@ -327,15 +327,9 @@ def process_state(pid: int, creation_time_ns: int, hermes_path: str, spawn_nonce
     # layout — so match "a python running our module" (`-c` bootstrap or plain `-m`). Identity
     # is anchored by the unforgeable creation-time + secret owner-nonce below.
     is_python = os.path.basename(arg0).startswith("python")
-<<<<<<< HEAD
-    launches_module = (
-        argv[1:3] == ["-m", "hermes_cli.main"]
-        or (len(argv) > 2 and argv[1] == "-c" and "hermes_cli.main" in argv[2]))
-=======
     from gateway.status_inline_source import inline_bootstrap_argv
     logical_argv = inline_bootstrap_argv(argv) or argv
     launches_module = logical_argv[1:3] == ["-m", "hermes_cli.main"]
->>>>>>> origin/main
     executable_match = arg0 == expected or (is_python and launches_module)
     try:
         serve = logical_argv.index("serve")
@@ -432,10 +426,7 @@ def inspect_hermes(hermes_path: str) -> dict[str, Any]:
     return {
         "path": path,
         "version": (version.stdout + version.stderr).splitlines()[0] if version.returncode == 0 else "",
-<<<<<<< HEAD
-=======
         "runtimeBootstrapOwnership": 1,
->>>>>>> origin/main
         "supported": "--ssh-session-token-file" in help_text and "--ssh-owner-nonce" in help_text}
 
 
@@ -444,8 +435,6 @@ def _probe(*_: str) -> dict[str, Any]:
     return {"os": "Windows", "arch": platform.machine(), "hermesHome": str(get_default_hermes_root()), "python": sys.executable}
 
 
-<<<<<<< HEAD
-=======
 def _inventory(*_: str) -> dict[str, Any]:
     """Desktop's read-only roster: the canonical root and profile predicate; never mints an identity."""
     from hermes_cli.install_identity import _INSTALL_ID_FILENAME, _read_existing
@@ -454,7 +443,6 @@ def _inventory(*_: str) -> dict[str, Any]:
     return {"profiles": ["default", *[p.name for p in _iter_named_profile_dirs()]], "installId": install_id}
 
 
->>>>>>> origin/main
 def _read_log(ownership_id: str, spawn_nonce: str) -> dict[str, Any]:
     win32con = _win32().win32con
     data = _read_shared(_log_path(ownership_id, spawn_nonce), _MAX_LOG,
@@ -470,10 +458,7 @@ def _write_lock_op(ownership_id: str) -> dict[str, Any]:
 # operation -> (argument count or None for "any", handler(*args)).
 _OPERATIONS: dict[str, tuple[int | None, Any]] = {
     "probe": (None, _probe),
-<<<<<<< HEAD
-=======
     "inventory": (None, _inventory),
->>>>>>> origin/main
     "upload-token": (2, lambda o, n: upload_token(o, n, sys.stdin.buffer.read(65))),
     "read-lock": (1, read_lock),
     "write-lock": (1, _write_lock_op),

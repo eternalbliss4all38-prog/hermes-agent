@@ -78,15 +78,9 @@ while [ $# -gt 0 ]; do
             echo "  --channel       stable (default): the latest published release, then release"
             echo "                  to release. main: every commit. Also HERMES_INSTALL_CHANNEL;"
             echo "                  an explicit choice is saved like 'hermes update --set-channel'."
-<<<<<<< HEAD
-            echo "  --skip-browser  Do not install the browser tools (agent-browser + Chromium)."
-            echo "                  Alias: --no-playwright. Remembered by later"
-            echo "                  installs and 'hermes update'; undo with 'hermes pm install agent-browser'."
-=======
             echo "  --skip-browser  Do not install the browser (Chromium). Alias: --no-playwright."
             echo "                  Remembered by later installs and 'hermes update';"
             echo "                  undo with 'hermes pm install chromium'."
->>>>>>> origin/main
             echo "  --skip-computer-use"
             echo "                  Do not install the computer-use driver (cua-driver). Remembered"
             echo "                  the same way; undo with 'hermes pm install cua-driver'."
@@ -274,46 +268,12 @@ run_logged() {
 # --- BEGIN GENERATED: bootstrap pins (scripts/gen-bootstrap-pins.py) ---
 # Derived from pm/lock.json. DO NOT EDIT BY HAND:
 # run scripts/gen-bootstrap-pins.py after a pin bump.
-<<<<<<< HEAD
-UV_PIN_VERSION="0.12.3"
-=======
 UV_PIN_VERSION="0.13.5"
->>>>>>> origin/main
 
 # Sets UV_PIN_URL + UV_PIN_SHA256 for a <os>-<arch> target key.
 uv_bootstrap_pin() {
     case "$1" in
         linux-x64)
-<<<<<<< HEAD
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-x86_64-unknown-linux-gnu.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/600cf9a742aca00d292673b16b5acffaa7b8c269a364ad0c2e79498dcb1fe101"
-            UV_PIN_SHA256="600cf9a742aca00d292673b16b5acffaa7b8c269a364ad0c2e79498dcb1fe101"
-            ;;
-        linux-arm64)
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-aarch64-unknown-linux-gnu.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/bb66cb52e7b1823aed1183630d8d8e5c958840d584a4c55ec10a4cfc168dcca2"
-            UV_PIN_SHA256="bb66cb52e7b1823aed1183630d8d8e5c958840d584a4c55ec10a4cfc168dcca2"
-            ;;
-        linux-x64-musl)
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-x86_64-unknown-linux-musl.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/0643b9fb8c9fb27458e709ce6ff939695013c41975ff7b02d3f3b138d8d4bdb3"
-            UV_PIN_SHA256="0643b9fb8c9fb27458e709ce6ff939695013c41975ff7b02d3f3b138d8d4bdb3"
-            ;;
-        linux-arm64-musl)
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-aarch64-unknown-linux-musl.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/fa513fca1eb2913334c944fe9adbdd410274a1cbe8dd05d03699a9eb85311d4e"
-            UV_PIN_SHA256="fa513fca1eb2913334c944fe9adbdd410274a1cbe8dd05d03699a9eb85311d4e"
-            ;;
-        darwin-x64)
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-x86_64-apple-darwin.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/4c9f52262a14da336e4a42ed24992d12d0c956acde87619e4611d321dffa602b"
-            UV_PIN_SHA256="4c9f52262a14da336e4a42ed24992d12d0c956acde87619e4611d321dffa602b"
-            ;;
-        darwin-arm64)
-            UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.12.3/uv-aarch64-apple-darwin.tar.gz"
-            UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/546f7f8a6c70ff13a3a9d2bc958db3427298cebf3e0cb756f9177133b7068843"
-            UV_PIN_SHA256="546f7f8a6c70ff13a3a9d2bc958db3427298cebf3e0cb756f9177133b7068843"
-=======
             UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-unknown-linux-gnu.tar.gz"
             UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f"
             UV_PIN_SHA256="f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f"
@@ -342,7 +302,6 @@ uv_bootstrap_pin() {
             UV_PIN_URL="https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-apple-darwin.tar.gz"
             UV_PIN_MIRROR="https://hermes-assets.nousresearch.com/upstream/sha256/743f85035a1996ecb350659e01cd9faea9709829be09b1b4b03c73eaf3c9cd73"
             UV_PIN_SHA256="743f85035a1996ecb350659e01cd9faea9709829be09b1b4b03c73eaf3c9cd73"
->>>>>>> origin/main
             ;;
         *)
             UV_PIN_URL=""
@@ -752,14 +711,6 @@ stage_repository() {
     local pinned=false channel="" release="" origin
     # An interrupted clone from an older installer can leave a .git with no
     # initial commit, where stash/checkout abort ("You do not have the
-<<<<<<< HEAD
-    # initial commit yet", #40998). Move it aside -- never delete it, it may
-    # hold something the user wants -- and clone fresh below.
-    if [ -d "$INSTALL_DIR/.git" ] && ! git -C "$INSTALL_DIR" rev-parse --verify HEAD >/dev/null 2>&1; then
-        local broken
-        broken="${INSTALL_DIR}.broken-$(date -u +%Y%m%d-%H%M%S)"
-        log_warn "$INSTALL_DIR has no commits (interrupted clone); moving it aside to $broken"
-=======
     # initial commit yet", #40998); a killed update or a sync tool can leave
     # one git rejects outright (empty HEAD, a gitdir: file pointing nowhere),
     # where `hermes update` cannot fetch. Move it aside -- never delete it, it
@@ -768,7 +719,6 @@ stage_repository() {
         local broken
         broken="${INSTALL_DIR}.broken-$(date -u +%Y%m%d-%H%M%S)"
         log_warn "$INSTALL_DIR is not a usable git checkout (interrupted clone or damaged .git); moving it aside to $broken"
->>>>>>> origin/main
         mv "$INSTALL_DIR" "$broken" || fail "cannot move $INSTALL_DIR aside" filesystem_error
     fi
     if [ -d "$INSTALL_DIR/.git" ]; then
@@ -1030,8 +980,6 @@ stage_repository() {
             || fail "commit $INSTALL_COMMIT is not on branch $BRANCH" commit_not_on_branch
         run_logged "Pinning $INSTALL_COMMIT" git -C "$INSTALL_DIR" checkout "$INSTALL_COMMIT" \
             || fail "could not pin commit $INSTALL_COMMIT$(native_detail)" git_checkout_failed
-<<<<<<< HEAD
-=======
     fi
 }
 
@@ -1193,168 +1141,6 @@ stage_config() {
     chmod 600 "$HERMES_HOME/.env"
     if [ ! -f "$HERMES_HOME/config.yaml" ] && [ -f "$INSTALL_DIR/cli-config.yaml.example" ]; then
         cp "$INSTALL_DIR/cli-config.yaml.example" "$HERMES_HOME/config.yaml"
->>>>>>> origin/main
-    fi
-    log_success "config prepared in $HERMES_HOME"
-}
-
-<<<<<<< HEAD
-stage_venv() {
-    # Keep the installer stage protocol; PM alone creates dependency environments.
-    local boot_py
-    bootstrap_python
-    log_success "bootstrap Python ready; PM prepares the dependency environment"
-}
-
-# Tool-only bootstrap: acquire uv and Python before PM's own dependencies exist.
-# The application dependency graph is never installed in this interpreter.
-bootstrap_python() {
-    ensure_uv
-    local _py
-    # Read packages.python.version by following object names and braces, not
-    # indentation — same pre-Python reader contract as setup-hermes.sh's pin().
-    _py="$(awk -F '"' '
-        /^[[:space:]]*("[^"]+"[[:space:]]*:[[:space:]]*)?\{/ { path[++depth] = $2; next }
-        /^[[:space:]]*\}[[:space:]]*,?[[:space:]]*$/ { delete path[depth--]; next }
-        path[2] == "packages" && path[3] == "python" && $2 == "version" && depth == 3 { print $4; exit }
-    ' "$INSTALL_DIR/pm/lock.json" | cut -d+ -f1 | cut -d. -f1,2)"
-    [ -n "$_py" ] || _py="3.14"
-    # Only base interpreters qualify: an activated app venv must not become
-    # PM's bootstrap parent. Prefer the existing managed Python, then a host
-    # Python of the same supported minor before attempting a download (#10778).
-    # This interpreter only boots PM; PM still owns the exact runtime pin.
-    if ! boot_py="$(UV_SYSTEM_PYTHON=1 UV_NO_PROJECT=1 "$UV_CMD" python find --managed-python "$_py" 2>/dev/null)" \
-        && ! boot_py="$("$UV_CMD" python find --system --no-project "$_py" 2>/dev/null)"; then
-        run_logged "Downloading Python $_py" "$UV_CMD" python install --no-bin --no-registry "$_py" \
-            || fail "bootstrap Python installation failed" python_install_failed
-        boot_py="$(UV_SYSTEM_PYTHON=1 UV_NO_PROJECT=1 "$UV_CMD" python find --managed-python "$_py")" || fail "bootstrap Python lookup failed" python_install_failed
-    fi
-    boot_py="${boot_py%$'\r'}"
-    [ -x "$boot_py" ] && "$boot_py" --version >/dev/null 2>&1 || fail "bootstrap Python is not executable: $boot_py" python_install_failed
-}
-
-# uv exits before PM can replace its tool entry. pm.cli then prepares and
-# enters its independently locked runtime before mutating application deps.
-bootstrap_pm() {
-    local boot_py
-    local pm_args=(install)
-    # PM records the opt-outs, so later installs and `hermes update` keep the
-    # tools off until `hermes pm install <name>` opts back in.
-    [ "$SKIP_BROWSER" = true ] && pm_args+=(--without agent-browser)
-    [ "$SKIP_COMPUTER_USE" = true ] && pm_args+=(--without cua-driver)
-    bootstrap_python
-    # Refresh the sudo ticket cached in prerequisites (never prompts): the
-    # clone and downloads can outlast sudo's timestamp_timeout.
-    if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1; then sudo -n -v 2>/dev/null || :; fi
-    (cd "$INSTALL_DIR" && run_logged "Installing dependencies (hash-verified via uv.lock)" \
-        "$boot_py" -m pm.cli "${pm_args[@]}") \
-        || fail "pm install failed" deps_install_failed
-    log_success "dependencies installed"
-}
-
-stage_python_deps() {
-    bootstrap_pm
-}
-
-desktop_product_present() {
-    # Does this checkout already carry a built desktop app? A plain repair or
-    # upgrade rerun on a desktop install must REBUILD it rather than leave a
-    # bundle built from the previous code: the app is part of that install, and
-    # the artifacts live inside the tree (gitignored), so an update makes them
-    # stale instead of removing them.
-    # electron-builder suffixes the output dir with the arch on every non-x64
-    # target (linux-arm64-unpacked, mac-arm64, win-arm64-unpacked), so the x64
-    # names alone miss a desktop build on ARM64 Linux/Windows (#94703).
-    local release="$INSTALL_DIR/apps/desktop/release" dir
-    for dir in linux-unpacked linux-arm64-unpacked mac mac-arm64 \
-               win-unpacked win-ia32-unpacked win-arm64-unpacked; do
-        [ -d "$release/$dir" ] && return 0
-    done
-    return 1
-}
-
-# Guarded: a login shell whose ~/.bash_profile sources ~/.bashrc (Fedora, RHEL)
-# reads both files, so an unconditional prepend would put ~/.local/bin on PATH twice.
-SHELL_PATH_LINE='case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac'
-SHELL_PATH_SETUP_RE='^[[:space:]]*([^#[:space:]].*)?PATH=.*\.local/bin'
-
-append_shell_path() {
-    local rc="$1" line="$2" pattern="$3"
-    # Existing user PATH setup wins; never append another line on a repair run.
-    if [ -f "$rc" ] && grep -E "$pattern" "$rc" >/dev/null 2>&1; then
-        return 0
-    fi
-    mkdir -p "$(dirname "$rc")"
-    printf '\n# Hermes Agent command\n%s\n' "$line" >> "$rc" || fail "cannot update PATH in $rc" filesystem_error
-    log_success "added ~/.local/bin to PATH in $rc"
-}
-
-wire_shell_path() {
-    # The launcher is published by source_completion; shell rc files belong to
-    # the installer, not to PM (updates must not modify a user's shell setup).
-    # Never use the installer's inherited PATH as a proxy for a *new* shell.
-    local login_shell="${SHELL:-/bin/bash}"
-    case "${login_shell##*/}" in
-        zsh)
-            append_shell_path "$HOME/.zshrc" "$SHELL_PATH_LINE" "$SHELL_PATH_SETUP_RE"
-            append_shell_path "$HOME/.zprofile" "$SHELL_PATH_LINE" "$SHELL_PATH_SETUP_RE"
-            ;;
-        fish)
-            append_shell_path "$HOME/.config/fish/config.fish" 'fish_add_path "$HOME/.local/bin"' '^[[:space:]]*fish_add_path.*\.local/bin'
-            ;;
-        *)
-            append_shell_path "$HOME/.bashrc" "$SHELL_PATH_LINE" "$SHELL_PATH_SETUP_RE"
-            append_shell_path "$HOME/.profile" "$SHELL_PATH_LINE" "$SHELL_PATH_SETUP_RE"
-            # A login bash reads only the first of .bash_profile, .bash_login, .profile,
-            # so an existing earlier file hides the .profile line above.
-            local rc
-            for rc in "$HOME/.bash_profile" "$HOME/.bash_login"; do
-                if [ -f "$rc" ]; then
-                    append_shell_path "$rc" "$SHELL_PATH_LINE" "$SHELL_PATH_SETUP_RE"
-                fi
-            done
-            ;;
-    esac
-}
-
-stage_products() {
-    # The whole tail in one place, by calling the completion an update calls:
-    # publish the commands, build the products (tui/web, plus the desktop app),
-    # then run the post-build maintenance that syncs bundled skills and migrates
-    # config. Node, browsers and the frontend build tools arrive through pm as
-    # the build asks for them; the bootstrap interpreter itself only re-enters
-    # the tree on PM's selected Python.
-    local boot_py
-    local args=(--source "$INSTALL_DIR")
-    bootstrap_python
-    if [ "$INCLUDE_DESKTOP" = true ] || desktop_product_present; then
-        args+=(--desktop)
-    fi
-    (cd "$INSTALL_DIR" && run_logged "Building the hermes command and apps" \
-        "$boot_py" -I -B -X utf8 hermes_cli/source_completion.py "${args[@]}") \
-        || fail "app products or command publication failed" products_build_failed
-    wire_shell_path
-    log_success "app products and hermes command ready"
-}
-
-stage_desktop() {
-    # External-caller contract: `--stage desktop` stays dispatchable on its own
-    # (the manifest never lists it now -- --include-desktop selects the desktop
-    # product inside `products`). Same completion call, desktop selected.
-    INCLUDE_DESKTOP=true
-    stage_products
-}
-
-stage_config() {
-    mkdir -p "$HERMES_HOME"/cron "$HERMES_HOME"/sessions "$HERMES_HOME"/logs \
-        "$HERMES_HOME"/pairing "$HERMES_HOME"/hooks "$HERMES_HOME"/image_cache \
-        "$HERMES_HOME"/audio_cache "$HERMES_HOME"/memories "$HERMES_HOME"/skills
-    if [ ! -f "$HERMES_HOME/.env" ]; then
-        cp "$INSTALL_DIR/.env.example" "$HERMES_HOME/.env" 2>/dev/null || touch "$HERMES_HOME/.env"
-    fi
-    chmod 600 "$HERMES_HOME/.env"
-    if [ ! -f "$HERMES_HOME/config.yaml" ] && [ -f "$INSTALL_DIR/cli-config.yaml.example" ]; then
-        cp "$INSTALL_DIR/cli-config.yaml.example" "$HERMES_HOME/config.yaml"
     fi
     log_success "config prepared in $HERMES_HOME"
 }
@@ -1383,32 +1169,6 @@ stage_gateway() {
     "$INSTALL_DIR/.hermes/bin/hermes" gateway install --if-missing </dev/tty || fail "gateway installation failed" gateway_failed
 }
 
-=======
-# Interactive stages read the terminal, not stdin: under `curl | bash` stdin
-# IS the script. Probe by opening /dev/tty -- a Docker build has the device
-# node in its mount namespace but opening it fails (ENXIO).
-has_terminal() { (: </dev/tty) 2>/dev/null; }
-
-stage_setup() {
-    if [ "$NON_INTERACTIVE" = true ]; then return 0; fi
-    if ! has_terminal; then
-        log "setup skipped (no terminal); run 'hermes setup' after install"
-        return 0
-    fi
-    "$INSTALL_DIR/.hermes/bin/hermes" setup </dev/tty || fail "setup failed" setup_failed
-}
-
-stage_gateway() {
-    if [ "$NON_INTERACTIVE" = true ]; then return 0; fi
-    if ! has_terminal; then
-        log "gateway setup skipped (no terminal); run 'hermes gateway install' after install"
-        return 0
-    fi
-    # Setup installs the service when it handles the gateway; ask only if it did not.
-    "$INSTALL_DIR/.hermes/bin/hermes" gateway install --if-missing </dev/tty || fail "gateway installation failed" gateway_failed
-}
-
->>>>>>> origin/main
 stage_complete() {
     local commit
     commit="$INSTALL_COMMIT"

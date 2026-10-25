@@ -379,9 +379,6 @@ async function assertRemoteInstallUpdateClear(ssh, hermesHome, hermesPath = '') 
   throw error
 }
 
-<<<<<<< HEAD
-async function listRemoteHermesProfiles(ssh) {
-=======
 async function listRemoteHermesProfiles(ssh, platform: any = null) {
   if (platform?.os === 'Windows') {
     const { listWindowsRemoteProfiles } = await import('./windows-remote-inventory')
@@ -389,7 +386,6 @@ async function listRemoteHermesProfiles(ssh, platform: any = null) {
     return listWindowsRemoteProfiles(ssh, platform)
   }
 
->>>>>>> origin/main
   const home = assertSafeRemoteHome(await probeRemoteHermesHome(ssh))
   const dir = expandRemotePath(`${home}/profiles`)
   let listing = ''
@@ -406,9 +402,6 @@ async function listRemoteHermesProfiles(ssh, platform: any = null) {
   return parseRemoteProfileListing(listing)
 }
 
-<<<<<<< HEAD
-async function readRemoteInstallId(ssh) {
-=======
 async function readRemoteInstallId(ssh, platform: any = null) {
   if (platform?.os === 'Windows') {
     const { readWindowsRemoteInstallId } = await import('./windows-remote-inventory')
@@ -416,7 +409,6 @@ async function readRemoteInstallId(ssh, platform: any = null) {
     return readWindowsRemoteInstallId(ssh, platform)
   }
 
->>>>>>> origin/main
   // The stable backend identity the roster collapses on (`hermes_cli/install_identity.py`:
   // `<install root>/install_id`, opaque hex). Read from the INSTALL root, so an ssh connection
   // pinned to `<root>/profiles/<name>` reports the same id as one pointed at the root — they are

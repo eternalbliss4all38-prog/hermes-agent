@@ -7,10 +7,7 @@ failure propagates without changing plugin configuration or the live venv.
 from __future__ import annotations
 
 import hashlib
-<<<<<<< HEAD
-=======
 import json
->>>>>>> origin/main
 import os
 import shutil
 from collections.abc import Mapping
@@ -66,8 +63,6 @@ def members_stamp(plugin_dirs) -> str:
     return h.hexdigest()
 
 
-<<<<<<< HEAD
-=======
 def _published_store_entries(directory: Path) -> frozenset[str]:
     """Names of the PM tool-store entries published in *directory*, if it is a store root.
 
@@ -91,7 +86,6 @@ def _published_store_entries(directory: Path) -> frozenset[str]:
     return frozenset(name for name in names if (directory / name).is_dir())
 
 
->>>>>>> origin/main
 def _copy_core_inputs(source: Path, destination: Path) -> None:
     """Build from a writable snapshot, never from signed/read-only source."""
     import fnmatch
@@ -119,14 +113,9 @@ def _copy_core_inputs(source: Path, destination: Path) -> None:
     # environment runs from this snapshot and serves bundled plugins' dashboard/dist/.
     nested_excluded = excluded - {"dist"}
     def ignore(directory, names):
-<<<<<<< HEAD
-        return [name for name in names if name in nested_excluded or name.startswith(".")
-                or name.endswith(".egg-info") or (Path(directory) / name).is_symlink()]
-=======
         published = _published_store_entries(Path(directory))
         return [name for name in names if name in nested_excluded or name.startswith(".")
                 or name in published or name.endswith(".egg-info") or (Path(directory) / name).is_symlink()]
->>>>>>> origin/main
 
     for entry in source.iterdir():
         if (entry.is_dir() and not entry.is_symlink() and entry.name not in excluded
@@ -145,14 +134,9 @@ def _copy_core_inputs(source: Path, destination: Path) -> None:
         shutil.copy2(entry, target)
 
 
-<<<<<<< HEAD
-def _generate_pyproject(plugin_dirs: list[Path] | Mapping[Path, Path], root: Path, *, source: Path) -> None:
-    """Snapshot core and plugin build inputs into a fresh generation."""
-=======
 def _generate_pyproject(plugin_dirs: list[Path] | Mapping[Path, Path], root: Path, *, source: Path,
                         python: Path) -> None:
     """Snapshot core and plugin build inputs into a fresh generation for the *python* that installs it."""
->>>>>>> origin/main
     source = source.resolve()
     if root.resolve() == source or source.is_relative_to(root.resolve()):
         raise InstallError("venv", "workspace must not replace the core source")
@@ -176,10 +160,7 @@ def _generate_pyproject(plugin_dirs: list[Path] | Mapping[Path, Path], root: Pat
         uv_policy.pop("exclude-newer", None)
         uv_policy.pop("exclude-newer-package", None)
         uv_policy["workspace"] = {"members": sorted(members)}
-<<<<<<< HEAD
-=======
         _solve_only_for(uv_policy, python)
->>>>>>> origin/main
         text = tomli_w.dumps(document)
     else:
         # A member-less generation syncs frozen against core's own lock.
@@ -203,10 +184,6 @@ def _without_release_age(text: str) -> str:
     return re.sub(r"(?m)^exclude-newer\s*=.*\n", "", text)
 
 
-<<<<<<< HEAD
-def _is_member_candidate(plugin_dir: Path) -> bool:
-    return read_python_declaration(plugin_dir).is_member
-=======
 def _solve_only_for(uv_policy: dict, python: Path) -> None:
     """Narrow ``tool.uv.environments`` to the platform of the interpreter that installs the generation.
 
@@ -231,7 +208,6 @@ def _solve_only_for(uv_policy: dict, python: Path) -> None:
 
 def _is_member_candidate(plugin_dir: Path) -> bool:
     return read_python_declaration(plugin_dir).installs_packages
->>>>>>> origin/main
 
 
 def enabled_plugin_entries(*, proposed_home=None, enabled=None, disabled=None,
@@ -291,11 +267,7 @@ def enabled_member_dirs(*, proposed_home=None, enabled=None, disabled=None) -> l
         reason = manifest_version_error(declaration.manifest, path.name)
         if reason:
             raise InstallError("venv", reason)
-<<<<<<< HEAD
-        if declaration.is_member:
-=======
         if declaration.installs_packages:
->>>>>>> origin/main
             members.append(path)
     return members
 
@@ -442,11 +414,7 @@ def lock_and_sync(
     if root.exists() or root.is_symlink():
         raise InstallError("venv", f"workspace must be fresh: {root}")
     if replay is None:
-<<<<<<< HEAD
-        _generate_pyproject(plugin_dirs, root, source=source)
-=======
         _generate_pyproject(plugin_dirs, root, source=source, python=environment.python)
->>>>>>> origin/main
         if seed_lock is not None:
             (root / "uv.lock").write_bytes(seed_lock.read_bytes())
     else:

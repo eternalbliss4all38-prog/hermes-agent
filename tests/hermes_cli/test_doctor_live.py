@@ -7,16 +7,10 @@ from __future__ import annotations
 
 import argparse
 import os
-<<<<<<< HEAD
-import threading
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from types import SimpleNamespace
-=======
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from types import ModuleType, SimpleNamespace
->>>>>>> origin/main
 
 import pytest
 
@@ -25,7 +19,6 @@ from hermes_cli.doctor_live import (
     maybe_run_live_checks,
     run_live_checks,
 )
-from tools import browser_tool_install as bt_install
 
 # Captured before the autouse fixture below stubs doctor_live._browser_available
 # to a constant, so TestBrowserAvailable can exercise the real function.
@@ -210,7 +203,6 @@ def test_http_get_sanitizes_bracketed_ipv6_no_proxy(monkeypatch, kind, entry):
         finally:
             httpd.shutdown()
             thread.join(timeout=5)
-<<<<<<< HEAD
 
 
 def test_run_live_checks_sanitizes_clash_env_and_probes_pass(clash_env, monkeypatch):
@@ -263,77 +255,6 @@ def test_run_live_checks_leaves_a_clean_environment_untouched(monkeypatch):
     assert os.environ["NO_PROXY"] == "example.com,10.0.0.0/8"
 
 
-class TestBrowserAvailable:
-    """Live probes use the same passive selection as browser execution."""
-=======
->>>>>>> origin/main
-
-
-<<<<<<< HEAD
-    def test_true_when_installed_browser_resolves(self, monkeypatch, tmp_path):
-        self._block_path_and_node_modules_checks(monkeypatch, tmp_path)
-
-        monkeypatch.setattr(bt_install, "_find_agent_browser", lambda **_kw: "/pm/agent-browser")
-=======
-def test_run_live_checks_sanitizes_clash_env_and_probes_pass(clash_env, monkeypatch):
-    # Red-on-base end-to-end: _keyed_probe -> _http_get -> bare httpx.get raised
-    # InvalidURL under this env; _run_one's catch-all dressed it up as
-    # "(Invalid port: ':1]')" — a backend-failure verdict for a healthy service.
-    monkeypatch.setenv("FIRECRAWL_API_KEY", "fc-test")
-
-    # Real HTTP origin: a 200 from an actual socket proves both client construction
-    # and the request reaching a reachable origin. The remote-credential probes would
-    # send real auth material or 401 without proving either.
-    with HTTPServer(("127.0.0.1", 0), _Probes) as httpd:
-        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
-        thread.start()
-        try:
-            monkeypatch.setitem(
-                doctor_live._KEYED_PROBES, "Firecrawl",
-                (f"http://127.0.0.1:{httpd.server_port}/v2/team/credit-usage",
-                 "FIRECRAWL_API_KEY", "Bearer"))
-            issues: list[str] = []
-            results = {r.name: r for r in run_live_checks(issues)}
-            assert results["Firecrawl"].status == "pass"
-            assert issues == []
-            assert "Invalid port" not in (results["Firecrawl"].detail or "")
-        finally:
-            httpd.shutdown()
-            thread.join(timeout=5)
-    # The seam rewrote the entry in place, the established pattern of this seam
-    # (chat transports and run_probes already do exactly this).
-    assert "[::1]" not in os.environ["NO_PROXY"]
-    assert os.environ["no_proxy"] == "127.0.0.1,localhost,::1"
->>>>>>> origin/main
-
-
-<<<<<<< HEAD
-    def test_false_when_nothing_resolves(self, monkeypatch, tmp_path):
-        self._block_path_and_node_modules_checks(monkeypatch, tmp_path)
-=======
-def test_run_live_checks_leaves_a_clean_environment_untouched(monkeypatch):
-    for key in ("NO_PROXY", "no_proxy", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
-                "http_proxy", "https_proxy", "all_proxy"):
-        monkeypatch.delenv(key, raising=False)
-    monkeypatch.setenv("NO_PROXY", "example.com,10.0.0.0/8")
-    # _http_get is untouched by the sanitize-once design; a socket-level 200 proves
-    # the live path still works end to end when there is nothing to sanitize.
-    with HTTPServer(("127.0.0.1", 0), _Probes) as httpd:
-        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
-        thread.start()
-        try:
-            assert doctor_live._http_get(
-                f"http://127.0.0.1:{httpd.server_port}/", timeout=5.0).status_code == 200
-        finally:
-            httpd.shutdown()
-            thread.join(timeout=5)
-    assert os.environ["NO_PROXY"] == "example.com,10.0.0.0/8"
->>>>>>> origin/main
-
-
-<<<<<<< HEAD
-        monkeypatch.setattr(bt_install, "_find_agent_browser", _raise)
-=======
 class TestBrowserAvailable:
     """Live probes use the launcher's own Chromium selection."""
 
@@ -343,7 +264,6 @@ class TestBrowserAvailable:
 
         assert _real_browser_available() is available
 
->>>>>>> origin/main
 
 class TestLaunchBrowserProbe:
     """The probe launches through browser_exec's launcher and always stops what it started."""

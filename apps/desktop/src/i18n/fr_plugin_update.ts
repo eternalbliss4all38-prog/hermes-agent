@@ -2,8 +2,6 @@ import type { PluginUpdateTranslations } from './types_plugin_update'
 
 /** Copy for updating an installed plugin (Plugins tab): catalog re-pin consent and the security-scan override. */
 export const frPluginUpdate: PluginUpdateTranslations = {
-<<<<<<< HEAD
-=======
   folderAccess: {
     title: 'Accès aux dossiers',
     hint: (name: string) => `${name} peut lire et modifier les fichiers de ces dossiers. Une révocation prend effet immédiatement.`,
@@ -17,7 +15,6 @@ export const frPluginUpdate: PluginUpdateTranslations = {
       `${name} ne peut pas utiliser ce dossier : il contient des réglages, des clés ou des données de plugins Hermes. Choisissez un dossier qui ne les contient pas.`,
     loadFailed: (name: string) => `Impossible de charger les dossiers partagés avec ${name}.`
   },
->>>>>>> origin/main
   updateToPin: (sha: string) => `Mettre à jour vers ${sha}`,
   updateFailed: (name: string) => `Impossible de mettre à jour ${name}`,
   updated: (name: string) =>

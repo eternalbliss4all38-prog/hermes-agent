@@ -32,11 +32,7 @@ def bootstrap_environment(source: Path, work: Path, cache: Path,
              "HERMES_PYTHON_SRC_ROOT", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "XDG_DATA_HOME", "XDG_STATE_HOME",
              "UV_CACHE_DIR", "NPM_CONFIG_CACHE", "NPM_EXECPATH", "NPM_NODE_EXECPATH",
              "NPM_CONFIG_USERCONFIG", "NPM_CONFIG_GLOBALCONFIG", "NPM_CONFIG_PREFIX",
-<<<<<<< HEAD
-             "PYTHONUTF8", "PYTHONDONTWRITEBYTECODE", "CARGO_HOME", "RUSTUP_HOME"}
-=======
              "PYTHONUTF8", "PYTHONDONTWRITEBYTECODE", "CARGO_HOME", "RUSTUP_HOME", "CARGO_TARGET_DIR"}
->>>>>>> origin/main
     result = {key: value for key, value in env.items() if key.upper() not in _INSTALL_ENV | owned}
     canonical = {key.upper(): value for key, value in env.items()}
     # Rustup must still find the runner's installed toolchain after HOME moves.
@@ -55,13 +51,10 @@ def bootstrap_environment(source: Path, work: Path, cache: Path,
         "XDG_CONFIG_HOME": str(home / "config"), "XDG_CACHE_HOME": str(home / "cache"),
         "XDG_DATA_HOME": str(home / "data"), "XDG_STATE_HOME": str(home / "state"),
         "UV_CACHE_DIR": str(cache / "python/runtime"),
-<<<<<<< HEAD
-=======
         # Rust sdists (obstore via maturin) otherwise compile into target/ inside uv's
         # nested sdist cache entry; on Windows that pushes build-script paths past
         # MAX_PATH and link.exe fails with LNK1104. A job-local root keeps them short.
         "CARGO_TARGET_DIR": str(work / "cargo"),
->>>>>>> origin/main
         # vcpkg's default binary cache is under LOCALAPPDATA, which moved into the
         # job-local home above; keep its archives in the transported native domain.
         "VCPKG_DEFAULT_BINARY_CACHE": str(cache / "native/vcpkg-archives"),
@@ -131,13 +124,6 @@ def prepare_tools(source: Path, work: Path, cache: Path,
             raise FileNotFoundError(f"PM did not prepare a native {name} executable")
         binaries[name] = installed.binary
     prepared = pm.env_for("python", "npm", base_env=prepared)
-<<<<<<< HEAD
-    prepared.update({"HERMES_PYTHON": str(binaries["python"]), "HERMES_NODE": str(binaries["node"]),
-                     "UV_CACHE_DIR": str(native_cache_path(cache, prepared))})
-    return binaries["python"], binaries["node"], prepared
-
-
-=======
     uv_cache = native_cache_path(cache, prepared)
     if os.name == "nt":
         uv_cache = short_alias(uv_cache, work / "uv")
@@ -166,7 +152,6 @@ def short_alias(directory: Path, link: Path) -> Path:
     return link
 
 
->>>>>>> origin/main
 def _msvc_identity() -> dict[str, str] | None:
     """The newest VC toolset vswhere reports, with its default tools version."""
     from hermes_platform.resolver import locate_command

@@ -347,8 +347,6 @@ export interface WsRecorder {
 export function recordWebSockets(page: Page): WsRecorder {
   const rec: WsRecorder = { sockets: [], events: [], sent: [] }
 
-<<<<<<< HEAD
-=======
   // A new main-frame document (reload, goto) tears down every socket the old
   // one held, but Playwright forgets its sockets at that commit without
   // emitting their 'close', so a pre-reload socket would read as live forever.
@@ -378,7 +376,6 @@ export function recordWebSockets(page: Page): WsRecorder {
     }
   })
 
->>>>>>> origin/main
   page.on('websocket', ws => {
     if (!ws.url().includes('/api/ws')) {
       return

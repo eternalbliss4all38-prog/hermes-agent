@@ -1,15 +1,9 @@
 import type { TranslationOverrides } from './define-locale'
-<<<<<<< HEAD
-=======
 import { zhHantPluginPreviewAccess } from './zh-hant_plugin_preview_access'
->>>>>>> origin/main
 
 export const zhHantCapabilities = {
   skills: {
     plugins: {
-<<<<<<< HEAD
-      pageBlurb: '外掛可以擴充本應用程式、代理，或兩者 — 每一部分都有自己的開關。'
-=======
       ...zhHantPluginPreviewAccess,
       pageBlurb: '外掛可以擴充本應用程式、代理，或兩者 — 每一部分都有自己的開關。',
       folderAccess: {
@@ -25,7 +19,6 @@ export const zhHantCapabilities = {
           `${name} 不能使用該資料夾：其中包含 Hermes 的設定、金鑰或外掛資料。請選擇不包含它們的資料夾。`,
         loadFailed: (name: string) => `無法載入與 ${name} 共用的資料夾。`
       }
->>>>>>> origin/main
     },
     hub: {
       search: '搜尋',

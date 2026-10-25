@@ -1,30 +1,18 @@
-<<<<<<< HEAD
-"""The dock's Browser and agent-browser resolve to one identity: same executable, same user-data-dir —
-=======
 """The dock's Browser and the agent's Chromium resolve to one identity: same executable, same user-data-dir —
->>>>>>> origin/main
 and when a human opened that browser first, the agent attaches to it instead of launching a second one
 (Chromium's profile singleton would forward the launch and kill it without a DevTools endpoint)."""
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-import os
-import socket
-=======
 import json
 import os
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
->>>>>>> origin/main
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-<<<<<<< HEAD
-from tools.bot_desktop import browser, runtime
-=======
 from tools.bot_desktop import browser, placement, runtime
 
 
@@ -59,28 +47,12 @@ def _agent_launch(monkeypatch, display: str = ":37") -> dict:
     monkeypatch.setattr(browser_launcher, "launch_chromium", launch)
     browser_session.get_session_info("agent-task")
     return call
->>>>>>> origin/main
 
 
 def test_dock_and_agent_share_browser_identity(tmp_path, monkeypatch):
     exe = tmp_path / "chrome"
     exe.write_text("#!/bin/sh\n", encoding="utf-8")
     exe.chmod(0o755)
-<<<<<<< HEAD
-    monkeypatch.setenv("AGENT_BROWSER_EXECUTABLE_PATH", str(exe))
-    monkeypatch.delenv("AGENT_BROWSER_PROFILE", raising=False)
-    monkeypatch.setattr(runtime, "state_dir", lambda: tmp_path / "bot-desktop")
-
-    dock_exe, dock_profile = browser.dock_launch()
-    agent_env = browser.env_for_agent({})
-
-    assert dock_exe == agent_env["AGENT_BROWSER_EXECUTABLE_PATH"] == str(exe)
-    assert dock_profile == agent_env["AGENT_BROWSER_PROFILE"] == str(tmp_path / "bot-desktop" / "browser-profile")
-
-
-def test_user_pinned_profile_wins(tmp_path, monkeypatch):
-    monkeypatch.setenv("AGENT_BROWSER_PROFILE", str(tmp_path / "mine"))
-=======
     _browser_config(monkeypatch, tmp_path / "home", executable_path=str(exe))
     monkeypatch.setattr(runtime, "state_dir", lambda: tmp_path / "bot-desktop")
 
@@ -94,43 +66,25 @@ def test_user_pinned_profile_wins(tmp_path, monkeypatch):
 
 def test_user_pinned_profile_wins(tmp_path, monkeypatch):
     _browser_config(monkeypatch, tmp_path / "home", user_data_dir=str(tmp_path / "mine"))
->>>>>>> origin/main
     monkeypatch.setattr(runtime, "state_dir", lambda: tmp_path / "bot-desktop")
     assert browser.profile_dir() == tmp_path / "mine"
 
 
 def test_pinned_profile_honours_tilde_and_resolves_relative_paths_against_hermes_home(tmp_path, monkeypatch):
-<<<<<<< HEAD
-    """Regression for #110029: the docs say setting AGENT_BROWSER_PROFILE pins your own user-data-dir, but only
-    an absolute value was honoured — `~/pin` and `pin` silently fell back to the default and the human's dock
-    browser and the agent's browser could end up on different jars. A relative path is anchored where the rest
-    of this profile's screen state lives (its HERMES_HOME), so two profiles never share one 'pin'."""
-    home = tmp_path / "hermes-home"
-    monkeypatch.setenv("HERMES_HOME", str(home))
-=======
     """Regression for #110029: the docs say pinning a user-data-dir pins your own, but only an absolute value
     was honoured — `~/pin` and `pin` silently fell back to the default and the human's dock browser and the
     agent's browser could end up on different jars. A relative path is anchored where the rest of this
     profile's screen state lives (its HERMES_HOME), so two profiles never share one 'pin'."""
     home = tmp_path / "hermes-home"
->>>>>>> origin/main
     monkeypatch.setattr(runtime, "get_hermes_home", lambda: home)
     monkeypatch.setattr(Path, "home", lambda: tmp_path / "user")
     monkeypatch.setenv("HOME", str(tmp_path / "user"))
 
-<<<<<<< HEAD
-    monkeypatch.setenv("AGENT_BROWSER_PROFILE", "~/pin")
-    assert browser.profile_dir() == tmp_path / "user" / "pin"
-    monkeypatch.setenv("AGENT_BROWSER_PROFILE", "pin")
-    assert browser.profile_dir() == home / "pin"
-    assert browser.env_for_agent({})["AGENT_BROWSER_PROFILE"] == str(home / "pin"), "agent-browser gets the resolved path"
-=======
     _browser_config(monkeypatch, home, user_data_dir="~/pin")
     assert browser.profile_dir() == tmp_path / "user" / "pin"
     _browser_config(monkeypatch, home, user_data_dir="pin")
     assert browser.profile_dir() == home / "pin"
     assert _agent_launch(monkeypatch)["user_data_dir"] == str(home / "pin"), "the agent's launch gets the resolved path"
->>>>>>> origin/main
 
 
 def test_dock_browser_advertises_a_devtools_port():
@@ -151,16 +105,6 @@ def _fake_running_instance(user_data_dir, pid: int, port: int) -> None:
     os.symlink(f"host-{pid}", user_data_dir / "SingletonLock")
 
 
-<<<<<<< HEAD
-def test_running_instance_port_requires_live_pid_and_open_port(tmp_path):
-    listener = socket.socket()
-    listener.bind(("127.0.0.1", 0))
-    listener.listen(1)
-    port = listener.getsockname()[1]
-    try:
-        _fake_running_instance(tmp_path, os.getpid(), port)
-        assert browser.running_instance_cdp_port(str(tmp_path)) == port
-=======
 def _devtools_server():
     """A loopback server answering ``/json/version`` like the dock's Chromium (browser id ``abc``)."""
     class Handler(BaseHTTPRequestHandler):
@@ -189,49 +133,10 @@ def test_running_instance_port_requires_live_pid_and_open_port(tmp_path):
     try:
         _fake_running_instance(tmp_path, os.getpid(), port)
         assert launcher.running_instance(str(tmp_path)) == (port, "/devtools/browser/abc", os.getpid())
->>>>>>> origin/main
 
         # Both files outlive a closed Chromium: a dead pid must not be trusted.
         os.unlink(tmp_path / "SingletonLock")
         os.symlink("host-2147483000", tmp_path / "SingletonLock")
-<<<<<<< HEAD
-        assert browser.running_instance_cdp_port(str(tmp_path)) is None
-    finally:
-        listener.close()
-    # Live pid, port no longer accepting: still not attachable.
-    os.unlink(tmp_path / "SingletonLock")
-    os.symlink(f"host-{os.getpid()}", tmp_path / "SingletonLock")
-    assert browser.running_instance_cdp_port(str(tmp_path)) is None
-    assert browser.running_instance_cdp_port(str(tmp_path / "missing")) is None
-
-
-def test_agent_attaches_to_human_started_browser(monkeypatch):
-    """With a live dock instance on the shared profile the local argv carries ``--cdp <port>``; without one
-    it stays a plain ``--session`` launch."""
-    from tools import browser_tool_session as session
-
-    monkeypatch.setattr(runtime, "published_env", lambda: {"DISPLAY": ":37"})
-    monkeypatch.setattr(session._cloud, "_get_browser_engine", lambda: "auto")
-    monkeypatch.setattr(session._cloud, "_is_headed_mode", lambda: False)
-    monkeypatch.setattr(session, "_agent_browser_argv", lambda cmd: [cmd])
-    argvs: list = []
-
-    def spawn(task_id, session_info, cmd_parts, *rest):
-        argvs.append(cmd_parts)
-        return {"success": True}
-
-    monkeypatch.setattr(session, "_spawn_and_collect", spawn)
-    monkeypatch.setattr(session._lp, "_lightpanda_fallback_reason", lambda *a: None)
-    info = {"session_name": "h_abc", "cdp_url": None, "features": {"local": True}}
-
-    monkeypatch.setattr(browser, "running_instance_cdp_port", lambda d, **kw: 41234)
-    session._dispatch_browser_command("t", info, "agent-browser", "open", ["https://x"], 10, None)
-    assert argvs[-1][:5] == ["agent-browser", "--session", "h_abc", "--cdp", "41234"]
-
-    monkeypatch.setattr(browser, "running_instance_cdp_port", lambda d, **kw: None)
-    session._dispatch_browser_command("t", info, "agent-browser", "open", ["https://x"], 10, None)
-    assert "--cdp" not in argvs[-1] and argvs[-1][:3] == ["agent-browser", "--session", "h_abc"]
-=======
         assert launcher.running_instance(str(tmp_path)) is None
     finally:
         server.shutdown()
@@ -268,16 +173,12 @@ def test_agent_attaches_to_human_started_browser(tmp_path, monkeypatch):
     monkeypatch.setattr(launcher, "running_instance", lambda d: None)
     launcher.launch_chromium(f"profile:{udd}", executable="/opt/chrome", user_data_dir=udd, ephemeral=False)
     assert spawned == [(f"profile:{udd}", "/opt/chrome", udd)]
->>>>>>> origin/main
 
 
 def _install_browsers(tmp_path, monkeypatch, *, playwright: bool, system: bool):
     """A Playwright build under a private PLAYWRIGHT_BROWSERS_PATH and/or a system chromium on PATH."""
     monkeypatch.delenv("AGENT_BROWSER_EXECUTABLE_PATH", raising=False)
-<<<<<<< HEAD
-=======
     monkeypatch.setattr("tools.browser_session_cloud.executable_path", lambda: "")
->>>>>>> origin/main
     roots = tmp_path / "pw"
     roots.mkdir(parents=True)
     monkeypatch.setenv("PLAYWRIGHT_BROWSERS_PATH", str(roots))
@@ -304,11 +205,7 @@ def test_unprivileged_user_under_apparmor_userns_restriction_gets_the_system_bro
     kernel.apparmor_restrict_unprivileged_userns=1 it dies 'FATAL: No usable sandbox!' for a non-root user,
     so the dock icon is dead. A distro chromium (which ships the sandbox helper) must win there — and
     the Playwright build stays the answer when it is the only one, started with exactly the flags
-<<<<<<< HEAD
-    agent-browser starts it with on that host (one sandbox policy for the human's and the bot's browser)."""
-=======
     the agent's launch starts it with on that host (one sandbox policy for the human's and the bot's browser)."""
->>>>>>> origin/main
     pw_exe, sys_exe = _install_browsers(tmp_path, monkeypatch, playwright=True, system=True)
     monkeypatch.setattr(browser.os, "geteuid", lambda: 1000)
     monkeypatch.setattr(browser, "_userns_restricted", lambda: True)
@@ -321,45 +218,11 @@ def test_unprivileged_user_under_apparmor_userns_restriction_gets_the_system_bro
     monkeypatch.setattr(browser, "_userns_restricted", lambda: True)
     exe = browser.executable()
     assert exe and exe.endswith("chrome-linux/chrome")
-<<<<<<< HEAD
-    from tools import browser_tool_session as session
-
-    agent_env: dict = {}
-    session._apply_chromium_sandbox_args(agent_env)
-    agent_flags = set(agent_env.get("AGENT_BROWSER_ARGS", "").split(",")) - {""}
-=======
     agent_flags = _agent_sandbox_flags(exe)
->>>>>>> origin/main
     assert agent_flags <= set(browser.dock_argv(exe, "/p/dir"))
     assert ("--no-sandbox" in browser.dock_argv(exe, "/p/dir")) == ("--no-sandbox" in agent_flags)
 
 
-<<<<<<< HEAD
-def test_root_dock_browser_starts_with_the_same_sandbox_args_as_the_agents_browser(monkeypatch):
-    """Chromium refuses to start as root without --no-sandbox; agent-browser gets that flag from one
-    policy, and the dock icon (same binary, same profile) must get the very same flags or the human's
-    click dies while the agent's launch works."""
-    from tools import browser_tool_session as session
-
-    monkeypatch.setattr(session.os, "geteuid", lambda: 0)
-    monkeypatch.setattr(browser.os, "geteuid", lambda: 0)
-    agent_env: dict = {}
-    session._apply_chromium_sandbox_args(agent_env)
-    agent_flags = set(agent_env["AGENT_BROWSER_ARGS"].split(","))
-    assert agent_flags, "root must inject sandbox flags for agent-browser"
-    assert agent_flags <= set(browser.dock_argv("/opt/chrome", "/p/dir"))
-
-    # Same policy for the NON-root container case (the official image runs the gateway as uid 10000 in
-    # Docker): agent-browser bypasses the sandbox there, and the dock icon must too or it dies on click.
-    monkeypatch.setattr(session.os, "geteuid", lambda: 10000)
-    monkeypatch.setattr(browser.os, "geteuid", lambda: 10000)
-    monkeypatch.setattr(session._install, "_running_in_docker", lambda: True)
-    docker_env: dict = {}
-    session._apply_chromium_sandbox_args(docker_env)
-    assert set(docker_env["AGENT_BROWSER_ARGS"].split(",")) <= set(browser.dock_argv("/opt/chrome", "/p/dir"))
-    monkeypatch.setattr(session._install, "_running_in_docker", lambda: False)
-    monkeypatch.setattr(session, "apparmor_restricts_unprivileged_userns", lambda: False)
-=======
 def _agent_sandbox_flags(exe: str) -> set:
     """The sandbox-bypass flags the agent's launch of ``exe`` on the shared profile carries."""
     from tools.browser_launcher import CHROMIUM_SANDBOX_BYPASS_ARGS, build_chromium_argv
@@ -389,7 +252,6 @@ def test_root_dock_browser_starts_with_the_same_sandbox_args_as_the_agents_brows
     assert docker_flags and docker_flags <= set(browser.dock_argv("/opt/chrome", "/p/dir"))
     monkeypatch.setattr(launcher, "running_in_docker", lambda: False)
     monkeypatch.setattr(launcher, "apparmor_restricts_unprivileged_userns", lambda: False)
->>>>>>> origin/main
     assert "--no-sandbox" not in browser.dock_argv("/opt/chrome", "/p/dir")  # seated non-root host: sandboxed
 
 
@@ -423,11 +285,7 @@ def test_dock_exec_line_survives_spaces_in_the_executable_and_profile_paths():
 
 def test_headless_shell_override_is_not_a_headed_browser(tmp_path, monkeypatch):
     """The official Docker image ships only Playwright's chrome-headless-shell and its boot hook exports it
-<<<<<<< HEAD
-    as AGENT_BROWSER_EXECUTABLE_PATH. That binary cannot open a window: taken at face value the dock's
-=======
     as the browser override. That binary cannot open a window: taken at face value the dock's
->>>>>>> origin/main
     Browser icon would point at it and status would claim a headed browser exists. Live in the image:
     status.browser named the headless shell while the dock had no working Browser."""
     shell = tmp_path / "shell" / "chromium_headless_shell-1243" / "chrome-headless-shell-linux64" / "chrome-headless-shell"
@@ -435,19 +293,11 @@ def test_headless_shell_override_is_not_a_headed_browser(tmp_path, monkeypatch):
     shell.write_text("#!/bin/sh\n", encoding="utf-8")
     shell.chmod(0o755)
     _install_browsers(tmp_path, monkeypatch, playwright=False, system=False)
-<<<<<<< HEAD
-    monkeypatch.setenv("AGENT_BROWSER_EXECUTABLE_PATH", str(shell))
-    assert browser.executable() is None
-
-    _, sys_exe = _install_browsers(tmp_path / "with-sys", monkeypatch, playwright=False, system=True)
-    monkeypatch.setenv("AGENT_BROWSER_EXECUTABLE_PATH", str(shell))
-=======
     monkeypatch.setattr("tools.browser_session_cloud.executable_path", lambda: str(shell))
     assert browser.executable() is None
 
     _, sys_exe = _install_browsers(tmp_path / "with-sys", monkeypatch, playwright=False, system=True)
     monkeypatch.setattr("tools.browser_session_cloud.executable_path", lambda: str(shell))
->>>>>>> origin/main
     assert browser.executable() == sys_exe  # a real headed browser elsewhere still wins over the override
 
 
@@ -460,11 +310,7 @@ def test_headless_override_does_not_hide_pm_headed_browser(tmp_path, monkeypatch
     for exe in (headless, headed):
         exe.write_text("#!/bin/sh\n", encoding="utf-8")
         exe.chmod(0o755)
-<<<<<<< HEAD
-    monkeypatch.setenv("AGENT_BROWSER_EXECUTABLE_PATH", str(headless))
-=======
     _browser_config(monkeypatch, tmp_path / "home", executable_path=str(headless))
->>>>>>> origin/main
     monkeypatch.setattr(pm, "installed_package", lambda name: SimpleNamespace(binary=headed))
     monkeypatch.setattr(browser, "_system_executable", lambda: None)
     monkeypatch.setattr(browser, "_userns_restricted", lambda: False)
@@ -472,20 +318,6 @@ def test_headless_override_does_not_hide_pm_headed_browser(tmp_path, monkeypatch
     assert chromium_executable() == str(headless)  # ordinary headless browsing keeps its override
     dock = browser.dock_launch()
     assert dock is not None and dock[0] == str(headed)
-<<<<<<< HEAD
-    assert browser.env_for_agent({})["AGENT_BROWSER_EXECUTABLE_PATH"] == str(headed)
-
-
-@pytest.mark.parametrize("engine, headed, starts", [("chrome", True, 1), ("chrome", False, 0), ("lightpanda", True, 0)])
-def test_headed_chromium_spawn_asks_the_screen_to_start_but_the_env_builder_never_does(tmp_path, monkeypatch, engine, headed, starts):
-    """Regression for #110050 at the right boundary: a real browser command that forks a headed Chromium daemon
-    starts the profile's screen (bot_desktop.auto_start) like computer_use dispatch does; `_build_browser_env()`
-    itself stays pure — it also serves the npx cache warmer, the Chromium auto-installer and the Lightpanda
-    engine, none of which may block on Xvnc+Xfce coming up."""
-    from tools import browser_tool as bt
-    from tools import browser_tool_cloud as cloud
-    from tools import browser_tool_session as session
-=======
     assert _agent_launch(monkeypatch)["executable"] == str(headed)
 
 
@@ -497,27 +329,10 @@ def test_headed_chromium_spawn_asks_the_screen_to_start_but_the_env_builder_neve
     may block on Xvnc+Xfce coming up."""
     from tools import browser_launcher, browser_lightpanda, browser_session, browser_session_cdp
     from tools import browser_session_cloud, browser_session_lifecycle
->>>>>>> origin/main
 
     calls: list = []
     monkeypatch.setattr(runtime, "ensure_started_for_tool", lambda: calls.append(1))
     monkeypatch.setattr(runtime, "published_env", dict)
-<<<<<<< HEAD
-    monkeypatch.setattr(cloud, "_is_headed_mode", lambda: headed)
-    bt._build_browser_env()
-    assert calls == []
-
-    class _Done:
-        returncode = 0
-        def wait(self, timeout=None): return 0
-    def _fake_popen(argv, env, socket_dir, tag, stdin_payload=None):
-        for slot in ("stdout", "stderr"):
-            Path(socket_dir, f"_{slot}_{tag}").write_text("{}" if slot == "stdout" else "", encoding="utf-8")
-        return _Done()
-    monkeypatch.setattr(session, "_popen_agent_browser", _fake_popen)
-    monkeypatch.setattr(session, "_prepare_session_socket_dir", lambda name: str(tmp_path))
-    session._spawn_and_collect("t", {"session_name": "h_x"}, ["agent-browser"], "open", engine, 5)
-=======
     monkeypatch.setattr(browser_session_cloud, "is_headed_mode", lambda: headed)
     browser_session.build_browser_env()
     assert calls == []
@@ -535,42 +350,19 @@ def test_headed_chromium_spawn_asks_the_screen_to_start_but_the_env_builder_neve
     monkeypatch.setattr(browser_lightpanda, "launch_lightpanda", lambda name, **kw: (
         SimpleNamespace(cdp_url="ws://127.0.0.1:9333", port=9333), None))
     browser_session.get_session_info("t")
->>>>>>> origin/main
     assert len(calls) == starts
 
 
 def test_janitor_keeps_the_shared_browser_alive_while_a_human_holds_the_lease(monkeypatch):
     """#110064: the agent goes idle BECAUSE the human took over to log in; the janitor must count the human's
     lease as activity for the shared local browser, and reap it again once the lease is handed back."""
-<<<<<<< HEAD
-    from tools import browser_tool_lifecycle as lifecycle, browser_tool_session as session
-=======
     from tools import browser_session as session, browser_session_lifecycle as lifecycle
->>>>>>> origin/main
     from tools.bot_desktop import lease
 
     monkeypatch.setattr(runtime, "published_env", lambda: {"DISPLAY": ":37"})
     holder = {"human": True}
     monkeypatch.setattr(lease, "human_holds", lambda *a, **k: holder["human"])
     reaped: list = []
-<<<<<<< HEAD
-    monkeypatch.setattr(lifecycle, "cleanup_browser", lambda task_id: reaped.append(task_id))
-    monkeypatch.setattr(lifecycle._bt, "BROWSER_SESSION_INACTIVITY_TIMEOUT", 1)
-    monkeypatch.setattr(lifecycle._bt, "_active_sessions", {
-        "bot": {"session_name": "h_bot", "features": {"local": True}},
-        "cloud": {"session_name": "c_1", "bb_session_id": "bb", "features": {}},
-    })
-    monkeypatch.setattr(lifecycle._bt, "_session_last_activity", {"bot": 0.0, "cloud": 0.0})
-    monkeypatch.setattr(lifecycle._bt, "_session_owner_homes", {})
-
-    lifecycle._cleanup_inactive_browser_sessions()
-    assert reaped == ["cloud"], "only the browser the human is not typing into may be reaped"
-    assert lifecycle._bt._session_last_activity["bot"] > 0, "the human's lease refreshed the bot browser's activity"
-
-    holder["human"] = False
-    lifecycle._bt._session_last_activity["bot"] = 0.0
-    lifecycle._cleanup_inactive_browser_sessions()
-=======
     monkeypatch.setattr(lifecycle, "cleanup_single_session", lambda cache_key: reaped.append(cache_key))
     monkeypatch.setattr(session, "BROWSER_SESSION_INACTIVITY_TIMEOUT", 1)
     monkeypatch.setattr(session, "_active_sessions", {
@@ -588,30 +380,10 @@ def test_janitor_keeps_the_shared_browser_alive_while_a_human_holds_the_lease(mo
     holder["human"] = False
     session._session_last_activity["bot"] = 0.0
     lifecycle.cleanup_inactive_sessions()
->>>>>>> origin/main
     assert reaped == ["cloud", "bot"]
     assert session.human_holds_shared_browser({"features": {"local": True}}) is False
 
 
-<<<<<<< HEAD
-def test_daemon_idle_timer_defers_to_the_janitor_only_for_the_shared_headed_browser(monkeypatch):
-    """The agent-browser daemon cannot see the lease, so on the Bot Desktop its self-termination timer steps
-    back and the lease-aware janitor owns the browser's lifetime; headless browsing keeps the mirror."""
-    from tools import browser_tool_session as session
-
-    monkeypatch.setattr(session._bt, "BROWSER_SESSION_INACTIVITY_TIMEOUT", 120)
-    monkeypatch.setattr(runtime, "published_env", lambda: {"DISPLAY": ":37"})
-    monkeypatch.setattr(session._cloud, "_is_headed_mode", lambda: True)
-    assert session._daemon_idle_timeout_seconds() > 120
-    monkeypatch.setattr(session._cloud, "_is_headed_mode", lambda: False)
-    assert session._daemon_idle_timeout_seconds() == 120
-    monkeypatch.setattr(session._cloud, "_is_headed_mode", lambda: True)
-    monkeypatch.setattr(runtime, "published_env", dict)
-    assert session._daemon_idle_timeout_seconds() == 120
-
-
-=======
->>>>>>> origin/main
 def test_a_headless_shell_pin_is_replaced_while_a_screen_is_up(tmp_path, monkeypatch):
     """The boot hook exports a chrome-headless-shell path; leaving it would put the agent and the dock on
     two binaries over one --user-data-dir, where the singleton swallows the dock's launch."""
@@ -623,24 +395,14 @@ def test_a_headless_shell_pin_is_replaced_while_a_screen_is_up(tmp_path, monkeyp
     headed.chmod(0o755)
     monkeypatch.setattr(runtime, "state_dir", lambda: tmp_path / "bot-desktop")
     monkeypatch.setattr(browser, "_managed_executable", lambda: str(headed))
-<<<<<<< HEAD
-    monkeypatch.delenv("AGENT_BROWSER_PROFILE", raising=False)
-=======
     monkeypatch.setattr("tools.browser_session_cloud.executable_path", lambda: str(shell))
->>>>>>> origin/main
     # Unpinned, the ubuntu runner (non-root, userns-restricted) flips executable() to
     # its own /usr/bin/google-chrome; host policy is not the subject here.
     monkeypatch.setattr(browser, "_userns_restricted", lambda: False)
 
-<<<<<<< HEAD
-    agent_env = browser.env_for_agent({"AGENT_BROWSER_EXECUTABLE_PATH": str(shell)})
-    dock_exe, _ = browser.dock_launch()
-    assert agent_env["AGENT_BROWSER_EXECUTABLE_PATH"] == dock_exe == str(headed), \
-=======
     agent = _agent_launch(monkeypatch)
     dock_exe, _ = browser.dock_launch()
     assert agent["executable"] == dock_exe == str(headed), \
->>>>>>> origin/main
         "the agent and the dock must share one binary once a screen is up"
 
 
@@ -654,12 +416,6 @@ def test_a_real_user_pin_is_still_honoured(tmp_path, monkeypatch):
     other.chmod(0o755)
     monkeypatch.setattr(runtime, "state_dir", lambda: tmp_path / "bot-desktop")
     monkeypatch.setattr(browser, "_managed_executable", lambda: str(other))
-<<<<<<< HEAD
-
-    env = browser.env_for_agent({"AGENT_BROWSER_EXECUTABLE_PATH": str(mine)})
-    assert env["AGENT_BROWSER_EXECUTABLE_PATH"] == str(mine)
-=======
     monkeypatch.setattr("tools.browser_session_cloud.executable_path", lambda: str(mine))
 
     assert _agent_launch(monkeypatch)["executable"] == str(mine)
->>>>>>> origin/main

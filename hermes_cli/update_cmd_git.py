@@ -6,11 +6,8 @@ test patches on ``update_cmd`` stay effective).
 """
 
 import logging
-<<<<<<< HEAD
-=======
 import os
 import shlex
->>>>>>> origin/main
 from contextlib import nullcontext, suppress
 import subprocess
 import sys
@@ -501,8 +498,6 @@ def _has_http_code(stderr: str, *codes: str) -> bool:
     return any(f"HTTP {code}" in stderr or f"returned error: {code}" in stderr for code in codes)
 
 
-<<<<<<< HEAD
-=======
 def _damaged_checkout_message(root: Path) -> str:
     """The repair for a checkout git rejects: the installer pointed at THIS checkout (a bare one-liner
     would rebuild the default directory and leave a ``--dir`` install broken)."""
@@ -531,7 +526,6 @@ def _checkout_rejected_by_git(stderr: str, git_cmd, root: Path) -> bool:
         os.path.realpath(root))
 
 
->>>>>>> origin/main
 # Ordered (predicate, diagnosis): curl reports HTTP errors as ``unable to access '<url>': ... error: 429``,
 # so rate-limit/outage checks must run BEFORE the generic "unable to access" check. An anonymous fetch
 # answered with HTTP 401 ("could not read Username") is GitHub during an outage (or a renamed/private
@@ -565,12 +559,6 @@ def _classify_fetch_failure(stderr: str) -> str:
     return next((message for matches, message in _FETCH_FAILURE_RULES if matches(stderr)), "✗ Failed to fetch updates from origin.")
 
 
-<<<<<<< HEAD
-def _print_fetch_failure(stderr: str) -> None:
-    """Print the classified diagnosis plus bounded raw stderr for diagnosis."""
-    stderr = (stderr or "").strip()
-    print(_classify_fetch_failure(stderr))
-=======
 def _print_fetch_failure(stderr: str, *, git_cmd=None, root: Optional[Path] = None) -> None:
     """Print the classified diagnosis plus bounded raw stderr for diagnosis. With *root*, a checkout
     git rejects (no fetch can ever work; the ZIP fallback cannot tell user edits apart) gets the
@@ -578,7 +566,6 @@ def _print_fetch_failure(stderr: str, *, git_cmd=None, root: Optional[Path] = No
     stderr = (stderr or "").strip()
     damaged = root is not None and _checkout_rejected_by_git(stderr, git_cmd, Path(root))
     print(_damaged_checkout_message(Path(root)) if damaged else _classify_fetch_failure(stderr))
->>>>>>> origin/main
     if stderr:
         lines = stderr.splitlines()
         for line in lines[:15]:

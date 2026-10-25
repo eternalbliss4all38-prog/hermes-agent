@@ -139,9 +139,6 @@ describe('the row delegates the open and claims no activation authority', () => 
     fireEvent.click(renderRow(bot))
 
     expect(ensureAgent).not.toHaveBeenCalled()
-<<<<<<< HEAD
-    expect(openRosterBot.mock.calls).toEqual([[bot]])
-=======
     expect(openRosterBot.mock.calls).toEqual([[bot, { intent: 'in-place' }]])
   })
 
@@ -151,7 +148,6 @@ describe('the row delegates the open and claims no activation authority', () => 
     fireEvent.click(renderRow(bot), modifiers)
 
     expect(openRosterBot.mock.calls).toEqual([[bot, { intent: 'tab' }]])
->>>>>>> origin/main
   })
 
   it('never resolves a remote default into the same-named local bot', async () => {
@@ -180,8 +176,6 @@ describe('the menu opens the same forever-chat a row click does', () => {
 
     expect(openRosterBot.mock.calls).toEqual([[bot]])
   })
-<<<<<<< HEAD
-=======
 
   it('"Open Bot Chat in new tab" stacks it beside the current chat', async () => {
     const bot = { name: 'alpha' } as RosterRow
@@ -191,7 +185,6 @@ describe('the menu opens the same forever-chat a row click does', () => {
 
     expect(openRosterBot.mock.calls).toEqual([[bot, { intent: 'tab' }]])
   })
->>>>>>> origin/main
 })
 
 describe('context-menu mutations hydrate the alias first', () => {

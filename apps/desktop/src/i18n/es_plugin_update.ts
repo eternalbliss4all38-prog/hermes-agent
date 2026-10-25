@@ -2,8 +2,6 @@ import type { PluginUpdateTranslations } from './types_plugin_update'
 
 /** Copy for updating an installed plugin (Plugins tab): catalog re-pin consent and the security-scan override. */
 export const esPluginUpdate: PluginUpdateTranslations = {
-<<<<<<< HEAD
-=======
   folderAccess: {
     title: 'Acceso a carpetas',
     hint: (name: string) => `${name} puede leer y modificar archivos en estas carpetas. Revocar el acceso surte efecto al instante.`,
@@ -17,7 +15,6 @@ export const esPluginUpdate: PluginUpdateTranslations = {
       `${name} no puede usar esa carpeta: contiene ajustes, claves o datos de plugins de Hermes. Elige una carpeta que no los contenga.`,
     loadFailed: (name: string) => `No se pudieron cargar las carpetas compartidas con ${name}.`
   },
->>>>>>> origin/main
   updateToPin: (sha: string) => `Actualizar a ${sha}`,
   updateFailed: (name: string) => `No se pudo actualizar ${name}`,
   updated: (name: string) =>

@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 import { formatResetsIn } from '@hermes/shared/plan-usage'
 
 import type { BillingStateResponse } from '../../gatewayTypes.js'
->>>>>>> origin/main
 import { t } from '../../i18n/runtime.js'
 import type { PanelSection } from '../../types.js'
 
@@ -54,8 +51,6 @@ export function usageTotalsSections(r: UsageTotals): PanelSection[] {
 
   return sections
 }
-<<<<<<< HEAD
-=======
 
 /** Usage-window plans: the CLI's `/usage` allowance rows (`agent/account_usage.py`
  *  `_render_usage_window_lines`): plan name, then `Today  [|||       ]  31% used  ·  resets in 5h`.
@@ -95,4 +90,3 @@ export function planUsageLines(plan: BillingStateResponse['plan_usage'], nowMs: 
 
   return rows.length ? [...(plan.plan ? [plan.plan] : []), ...rows.map(r => `${r.label.padEnd(width)}  ${r.rest}`)] : []
 }
->>>>>>> origin/main

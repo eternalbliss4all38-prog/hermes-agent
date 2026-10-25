@@ -455,8 +455,6 @@ it('preserveLocalSystemNotices does not duplicate a notice the page already carr
   const preserved = preserveLocalSystemNotices(refreshed, [...refreshed, { ...notice, id: 'other' }])
   expect(preserved).toBe(refreshed)
 })
-<<<<<<< HEAD
-=======
 
 it.each([
   ['no failed-turn boundary row', false],
@@ -523,4 +521,3 @@ it.each([
   expect(errorCards).toHaveLength(1)
   expect(errorCards[0]).toMatchObject({ error: 'rate limited', errorSurface: { code: 'rate_limit' } })
 })
->>>>>>> origin/main

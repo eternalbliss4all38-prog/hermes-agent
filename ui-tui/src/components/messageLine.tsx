@@ -12,10 +12,7 @@ import { ROLE } from '../domain/roles.js'
 import { useT } from '../i18n/useT.js'
 import { transcriptBodyWidth, transcriptGutterWidth } from '../lib/inputMetrics.js'
 import { boundedLiveRenderText, compactPreview, isPasteBackedText } from '../lib/text.js'
-<<<<<<< HEAD
-=======
 import { type GaugeStyle, hasUsageGauge, splitUsageGaugeLine } from '../lib/usageGauge.js'
->>>>>>> origin/main
 import type { Theme } from '../theme.js'
 import type { ActiveTool, DetailsMode, Msg, SectionVisibility } from '../types.js'
 

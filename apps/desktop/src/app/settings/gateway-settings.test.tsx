@@ -549,8 +549,6 @@ describe('GatewaySettings', () => {
     })
   })
 
-<<<<<<< HEAD
-=======
   it('shows the remote cause for an unclassified SSH test failure, not the generic copy', async () => {
     getConnectionConfig.mockResolvedValue({
       ...localConnection,
@@ -583,7 +581,6 @@ describe('GatewaySettings', () => {
     }
   })
 
->>>>>>> origin/main
   it('surfaces the Tailscale browser-check guidance for an interactive-auth SSH test failure', async () => {
     getConnectionConfig.mockResolvedValue({
       ...localConnection,

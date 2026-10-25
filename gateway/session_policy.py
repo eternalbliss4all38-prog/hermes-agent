@@ -24,9 +24,6 @@ FOLLOW_SECTIONS = ('model', 'providers', 'custom_providers', 'fallback_providers
 # A Bot Chat an earlier build committed frozen follows its profile once a client opens it (``follow_bot_chat``).
 # The marker sits in the policy's own config, so no other receipt changes shape (an older owner restores
 # them all, and reads this chat as frozen), and the creation request, the exact-retry identity, stays as sent.
-<<<<<<< HEAD
-FOLLOW_ADOPTED = 'follow_adopted'
-=======
 # A chat created on the welcome trial's model carries it too (``stage_local_session``), so a provider the user
 # connects later replaces that model.
 FOLLOW_ADOPTED = 'follow_adopted'
@@ -35,7 +32,6 @@ FOLLOW_ADOPTED = 'follow_adopted'
 # an exact create retry from a socket whose declaration has not landed carries the same creation request,
 # and ``launch_request`` never echoes it.
 LOCAL_DESKTOP_CHAT = 'desktop_local'
->>>>>>> origin/main
 # A launch field's state as a committed session edit left it, in the policy's own config: ``True`` the
 # session chose it (``/reasoning <level>``, a model pick carrying one), ``False`` a reset gave it back to
 # the profile. Either wins over the creation request (the launch identity, never rewritten) and the older
@@ -1002,8 +998,6 @@ def _valid_client_env(value, kind: type = str):
         kind is str or all(isinstance(item, str) for item in v)) for k, v in env.items())
 
 
-<<<<<<< HEAD
-=======
 def policy_turn_toolsets(authority, policy, config, session_id):
     """A local turn's toolsets: the policy's current set, plus ``onboarding`` for an onboarding chat
     (``agent.onboarding_session.onboarding_chat_toolsets``)."""
@@ -1034,7 +1028,6 @@ def _serving_local_desktop_within(scope):
         yield
 
 
->>>>>>> origin/main
 def policy_for_source(runner, source):
     from gateway.session_local import LocalSessionAdapter
     from gateway.config import Platform
@@ -1051,8 +1044,6 @@ def policy_for_source(runner, source):
     return None
 
 
-<<<<<<< HEAD
-=======
 def workspace_ready(policy) -> bool:
     """Readiness, not structure: a removed workspace keeps the chat readable and movable, but no
     turn runs in a missing directory."""
@@ -1091,21 +1082,13 @@ def refused_turn_result(policy, exc) -> dict | None:
     return result
 
 
->>>>>>> origin/main
 @contextmanager
 def policy_scope(policy, *, authority=None):
     if policy is None:
         yield
         return
-<<<<<<< HEAD
-    # Readiness, not structure: a removed workspace keeps the chat readable and movable, but no
-    # turn runs in a missing directory.
-    if not Path(policy.cwd).is_dir():
-        raise RuntimeStoreError('workspace_unavailable')
-=======
     if not workspace_ready(policy):
         raise RuntimeStoreError('workspace_unavailable', field='cwd', detail=policy.cwd)
->>>>>>> origin/main
     from agent.runtime_cwd import set_session_cwd
     from tools.terminal_scope import set_terminal_scope, reset_terminal_scope
     terminal = json.loads(policy.terminal_json)

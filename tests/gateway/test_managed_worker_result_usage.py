@@ -144,8 +144,6 @@ def test_settled_usage_ignores_the_worker_reported_session_id(tmp_path):
         for claimed in ('sibling', 'foreign'):
             settled = _settled_session_usage(SimpleNamespace(db=db), 'mine', {'model': 'm', 'session_id': claimed})['session_usage']
             assert (settled['input_tokens'], settled['api_calls']) == (10, 1)
-<<<<<<< HEAD
-=======
 
 
 def test_worker_result_frame_carries_the_usage_window_refusal():
@@ -160,4 +158,3 @@ def test_worker_result_frame_carries_the_usage_window_refusal():
     surface = build_error_surface_from_result(result, 'nous', 'm')
     assert surface['code'] == 'usage_window' and surface['message'] == message
     assert surface['resets_at'] == 1_900_000_000.0
->>>>>>> origin/main

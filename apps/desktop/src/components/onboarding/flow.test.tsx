@@ -125,8 +125,6 @@ describe('ConfirmingModelPanel model pick', () => {
     }
   })
 })
-<<<<<<< HEAD
-=======
 
 describe('ConfirmingModelPanel sign-in result', () => {
   it('names the account and what moved before Begin', async () => {
@@ -148,4 +146,3 @@ describe('ConfirmingModelPanel sign-in result', () => {
     expect(screen.getByText('Your apps moved.')).toBeTruthy()
   })
 })
->>>>>>> origin/main

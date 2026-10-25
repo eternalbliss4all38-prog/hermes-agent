@@ -240,8 +240,6 @@ def test_fresh_session_agent_flushed_failed_turn_is_closed(tmp_path):
         db.close()
 
     asyncio.run(check())
-<<<<<<< HEAD
-=======
 
 
 def test_failed_turn_whose_tail_is_a_tool_row_is_closed(tmp_path):
@@ -292,4 +290,3 @@ def test_failed_turn_whose_tail_is_a_tool_row_is_closed(tmp_path):
         db.close()
 
     asyncio.run(check())
->>>>>>> origin/main

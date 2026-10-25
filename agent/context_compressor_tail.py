@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-"""Lean-mode stale-tail demotion for ContextCompressor: old tail tool results become one-line recovery stubs."""
-=======
 """Lean-mode stale-tail demotion for ContextCompressor (old tail tool results become one-line recovery stubs), and
 the Skill Safety Rule the compaction handoff carries whenever its transcript holds a skill prune marker."""
->>>>>>> origin/main
 
 from __future__ import annotations
 
@@ -20,8 +16,6 @@ _LEAN_TAIL_DEMOTE_MIN_CHARS = 1_500
 # id and a reload marker the stub can pass the Phase-1 prune floor, and re-summarising it would drop both pointers.
 _DEMOTED_STUB_RE = re.compile(r"\[[^\s\]]* output demoted at compaction — [\d,]+ chars preserved in session history\.")
 
-<<<<<<< HEAD
-=======
 # :func:`lean_tail_budget`: the lean tail never claims more than this share of the trigger. A configured
 # ``threshold_tokens`` (or aux summariser ceiling) far below the window left the 10K floor at 83% of a 12K trigger, and
 # the 2.5%-of-window term at 216% of it on a 1M window, so head + summary + tail stayed over threshold and every pre-API
@@ -43,7 +37,6 @@ def lean_tail_budget(context_length: int, threshold_tokens: int) -> int:
             window_term = min(window_term, share)
     return max(floor, window_term)
 
->>>>>>> origin/main
 
 def is_demoted_stub(content: str) -> bool:
     """True for a tail tool result already replaced by ``_lean_recovery_stub`` (plus an optional reload marker)."""
@@ -112,8 +105,6 @@ def demote_stale_tail_tools(
         result[i] = _rewritten(msg, stub)
         demoted += 1
     return result, demoted
-<<<<<<< HEAD
-=======
 
 
 # Sent only where ``[SKILL_PRUNED:`` markers exist — after a compaction, riding its handoff — rather than in every
@@ -176,4 +167,3 @@ def with_pruned_row_skill_safety_rule(original: list[dict[str, Any]], pruned: li
         if isinstance(content, str) and SKILL_PRUNED_MARKER_PREFIX in content and content != before.get("content"):
             return [*pruned[:i], {**after, "content": content + _SKILL_SAFETY_SUFFIX}, *pruned[i + 1:]]
     return pruned
->>>>>>> origin/main

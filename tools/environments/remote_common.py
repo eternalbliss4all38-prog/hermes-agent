@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-"""Helpers shared by the non-local terminal backends (docker, ssh, singularity, cloud SDKs)."""
-=======
 """Helpers shared by the non-local terminal backends (docker, ssh, cloud SDKs)."""
->>>>>>> origin/main
 
 from __future__ import annotations
 

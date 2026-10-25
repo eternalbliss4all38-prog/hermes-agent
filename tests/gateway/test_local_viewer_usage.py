@@ -175,8 +175,6 @@ def test_published_usage_view_matches_the_embedded_ticker(agent):
     assert frame['usage'] == _get_usage(agent)
 
 
-<<<<<<< HEAD
-=======
 def test_a_window_plans_gauge_rides_the_canonical_usage_feed():
     """The Desktop status bar's plan allowance reads ``usage.plan_gauge``; a normal local session's
     ticks and turn-end usage come from the gateway (``usage_frame`` / ``tui_usage``), not ``_get_usage``."""
@@ -199,7 +197,6 @@ def test_a_window_plans_gauge_rides_the_canonical_usage_feed():
     CANONICAL_METHODS['session.stats'].result.model_validate(usage_stats(agent))
 
 
->>>>>>> origin/main
 def test_turn_end_publishes_the_agents_banner_info():
     """Main re-emitted ``session.info`` at every turn end; the first turn's carries the built agent's
     ``system_prompt`` (the banner's ``▸ System Prompt — N chars`` row, FINDINGS row 2) and tools."""

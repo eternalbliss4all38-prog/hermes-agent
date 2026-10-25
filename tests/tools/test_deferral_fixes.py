@@ -28,11 +28,7 @@ import pytest
 
 from agent.tool_dispatch_helpers import _plan_tool_batch_segments
 from tools.tool_search import build_catalog, search_catalog
-<<<<<<< HEAD
-from tools.tool_search_catalog import _short_desc
-=======
 from tools.tool_search_catalog import CATALOG_SUMMARY_MAX_CHARS, _short_desc
->>>>>>> origin/main
 
 
 def _tc(name, arguments="{}", call_id=None):

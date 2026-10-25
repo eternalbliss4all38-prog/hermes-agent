@@ -1,12 +1,7 @@
 """Agent-facing tool: respond to a native JS dialog captured by the CDP supervisor.
 
-<<<<<<< HEAD
-Response-only: the agent reads ``pending_dialogs`` from ``browser_snapshot``,
-then calls ``browser_dialog(action=...)``. Gated on ``_browser_cdp_check`` so it
-=======
 Response-only: the agent calls ``browser_dialog(action=...)`` for a dialog the
 supervisor holds; with several queued, the error names the candidate ids. Gated on ``_browser_cdp_check`` so it
->>>>>>> origin/main
 appears together with ``browser_cdp``. Design: ``website/docs/developer-guide/browser-supervisor.md``.
 """
 
@@ -80,16 +75,9 @@ def browser_dialog(
         return json.dumps({
             "success": False,
             "error": (
-<<<<<<< HEAD
-                "No CDP supervisor is attached to this task. Either the "
-                "browser backend doesn't expose CDP (Camofox, default "
-                "Playwright) or no browser session has been started yet. "
-                "Call browser_navigate or /browser connect first."
-=======
                 "No CDP supervisor is attached to this task: no browser "
                 "session has been started yet. Call browser_exec or "
                 "/browser connect first."
->>>>>>> origin/main
             ),
         })
     result = supervisor.respond_to_dialog(action=action, prompt_text=prompt_text, dialog_id=dialog_id)

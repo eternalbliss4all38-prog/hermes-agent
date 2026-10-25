@@ -1717,12 +1717,6 @@ class MatrixAdapter(BasePlatformAdapter):
             provider_label = get_label(current_provider)
         except Exception:
             provider_label = current_provider
-<<<<<<< HEAD
-        unknown = t("platform.shared.unknown")
-        lines = [
-            t("platform.matrix.picker.title"), t("platform.matrix.picker.current_model", model=current_model or unknown),
-            t("platform.matrix.picker.provider", provider=provider_label or unknown), "",
-=======
         from hermes_cli.model_picker_usage import picker_row_suffix
         rows_by_slug = {str(p.get("slug") or ""): p for p in providers or []}
         plan_lines = [f"⚠️ {p['plan_line']}" for p in providers or [] if p.get("plan_line")]
@@ -1730,17 +1724,12 @@ class MatrixAdapter(BasePlatformAdapter):
         lines = [
             t("platform.matrix.picker.title"), t("platform.matrix.picker.current_model", model=current_model or unknown),
             t("platform.matrix.picker.provider", provider=provider_label or unknown), *plan_lines, "",
->>>>>>> origin/main
             t("platform.matrix.picker.react_model")]
         choices: dict[str, tuple[str, str]] = {}
         for emoji, (model_id, provider_slug, provider_name) in zip(_MATRIX_MODEL_PICKER_REACTIONS, flat_choices):
             choices[emoji] = (model_id, provider_slug)
-<<<<<<< HEAD
-            lines.append(f"{emoji} `{model_id}` — {provider_name}")
-=======
             suffix = picker_row_suffix(rows_by_slug.get(provider_slug), model_id)
             lines.append(f"{emoji} `{model_id}` — {provider_name}" + (f" · {suffix}" if suffix else ""))
->>>>>>> origin/main
         return await self._send_picker(
             chat_id, lines, choices, session_key, on_model_selected, metadata, self._model_picker_prompts_by_event,
             "model picker")

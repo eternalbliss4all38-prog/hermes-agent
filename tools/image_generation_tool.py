@@ -284,18 +284,10 @@ def _upscale_image(image_url: str, original_prompt: str) -> Optional[dict[str, A
 
 
 # --- Artifact path hinting for non-local terminal backends ---
-<<<<<<< HEAD
-_CONTAINER_HOME_ENVS = {"DockerEnvironment", "SingularityEnvironment", "ModalEnvironment"}
-# No env yet: only deterministic cache roots translate side-effect free (SSH: tilde path; its
-# first sync uploads the cache file).
-_CACHE_BASE_BY_BACKEND = {"docker": "/root/.hermes", "singularity": "/root/.hermes",
-                          "modal": "/root/.hermes", "ssh": "~/.hermes"}
-=======
 _CONTAINER_HOME_ENVS = {"DockerEnvironment", "ModalEnvironment"}
 # No env yet: only deterministic cache roots translate side-effect free (SSH: tilde path; its
 # first sync uploads the cache file).
 _CACHE_BASE_BY_BACKEND = {"docker": "/root/.hermes", "modal": "/root/.hermes", "ssh": "~/.hermes"}
->>>>>>> origin/main
 
 
 def _looks_like_absolute_file_path(value: str) -> bool:
@@ -388,8 +380,6 @@ def _format_images(images: list, should_upscale: bool, prompt: str) -> list:
     return formatted
 
 
-<<<<<<< HEAD
-=======
 # The managed FAL gateway answers HTTP 413 above ~4.5 MB of request body (probed: 4.0 MB of base64
 # passes, 4.5 MB fails), so inlined sources share this budget and are downscaled to fit it.
 _FAL_INLINE_BUDGET = 3_500_000
@@ -438,7 +428,6 @@ def _shrink_data_url(url: str, budget: int) -> str:
         side = int(side * 0.75)
 
 
->>>>>>> origin/main
 def _prepare_fal_request(model_id, meta, prompt, aspect_ratio, seed, overrides, source_images):
     """Validate inputs and return ``(endpoint, arguments)``; raises ValueError with the user-facing message."""
     if not isinstance(prompt, str) or not prompt.strip():
@@ -461,11 +450,7 @@ def _prepare_fal_request(model_id, meta, prompt, aspect_ratio, seed, overrides, 
     if source_images:
         # Clamp reference count to the model's declared cap.
         max_refs = int(meta.get("max_reference_images") or 1)
-<<<<<<< HEAD
-        clamped_sources = source_images[:max_refs] if max_refs > 0 else source_images
-=======
         clamped_sources = _inline_fal_sources(source_images[:max_refs] if max_refs > 0 else source_images)
->>>>>>> origin/main
         arguments = _build_fal_edit_payload(
             model_id, prompt, clamped_sources, aspect_lc, seed=seed, overrides=overrides)
         logger.info("Editing image with %s (%s) — %d source image(s), prompt: %s",
@@ -623,11 +608,7 @@ IMAGE_GENERATE_SCHEMA = {
     # and upscale are advertised ONLY when supported; the handler accepts them regardless
     # (replay compat + teaching errors).
     "description": (
-<<<<<<< HEAD
-        "Generate images from text prompts. The active model's edit/reference "
-=======
         "Generate or edit images with the configured model. Edit/reference "
->>>>>>> origin/main
         "capabilities are rendered at serving time."
     ),
     "parameters": {
@@ -1017,11 +998,7 @@ def _build_dynamic_image_schema() -> dict[str, Any]:
     """Render description AND params from the active model's capabilities; args it cannot
     honor are NOT advertised (the handler still accepts them for replay compat)."""
     base_desc = (
-<<<<<<< HEAD
-        "Generate high-quality images from text prompts{edit_clause}. "
-=======
         "{lead} {edit_clause}Use this rather than calling image APIs or scripts directly. "
->>>>>>> origin/main
         "Returns the result in the `image` field — a URL or an absolute "
         "file path; reference it in your response using the current "
         "platform's file-delivery convention."
@@ -1035,23 +1012,15 @@ def _build_dynamic_image_schema() -> dict[str, Any]:
     style_refs = info.get("source_image_role") == "style"
     if can_edit:
         if style_refs:
-<<<<<<< HEAD
-            edit_clause = ", or copy the look of reference images passed in image_url"
-=======
             lead = "Generate images, optionally styled on reference images, via configured model."
             edit_clause = "Pass style references in image_url. "
->>>>>>> origin/main
             properties["prompt"] = _STYLE_PROMPT_PARAM
             properties["image_url"] = _STYLE_IMAGE_URL_PARAM
             refs_desc = f"Up to {max_refs} more style references. URLs or absolute local paths."
         else:
-<<<<<<< HEAD
-            edit_clause = ", or edit / transform an existing image by passing image_url"
-=======
             lead = ("Generate or edit images (with reference images) using the configured model."
                     if max_refs > 1 else "Generate or edit images using the configured image model.")
             edit_clause = "Pass image_url to edit / transform an existing image. "
->>>>>>> origin/main
             properties["image_url"] = _IMAGE_URL_PARAM
             refs_desc = (
                 f"Up to {max_refs} additional reference images (style, "
@@ -1066,22 +1035,14 @@ def _build_dynamic_image_schema() -> dict[str, Any]:
                 "description": refs_desc,
             }
     else:
-<<<<<<< HEAD
-        edit_clause = " (text-to-image only — the active model cannot edit existing images)"
-=======
         lead = "Generate images from text with the configured model (it cannot edit images)."
         edit_clause = ""
->>>>>>> origin/main
     if info.get("supports_upscale"):
         properties["upscale"] = _UPSCALE_PARAM
     for name in info.get("creative_controls") or []:
         if name in _CREATIVE_CONTROL_PARAMS:
             properties[name] = _CREATIVE_CONTROL_PARAMS[name]
-<<<<<<< HEAD
-    return {"description": base_desc.format(edit_clause=edit_clause),
-=======
     return {"description": base_desc.format(lead=lead, edit_clause=edit_clause),
->>>>>>> origin/main
             "parameters": {"type": "object", "properties": properties, "required": ["prompt"]}}
 
 

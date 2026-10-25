@@ -174,8 +174,6 @@ it('a Send that converges on another window\'s pending intent keeps this window\
   await waitFor(() => expect((screen.getByRole('textbox') as HTMLTextAreaElement).value).toBe('typed here'))
   expect((screen.getByRole('textbox') as HTMLTextAreaElement).disabled).toBe(false)
 })
-<<<<<<< HEAD
-=======
 
 it('shows which bots are working, and still says the group is working on a gateway without member activity', async () => {
   const members = [{ member_id: 'ops', profile: 'ops', handle: 'ops', display_name: 'Ops' },
@@ -201,4 +199,3 @@ it('shows which bots are working, and still says the group is working on a gatew
   render(<CanonicalGroupWorkspace binding={{ connectionId: 'local', profile: 'team', roomId: 'older' }} />)
   await waitFor(() => expect(screen.getByRole('status').textContent).toBe('The group is working…'))
 })
->>>>>>> origin/main

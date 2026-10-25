@@ -580,11 +580,7 @@ function BillingSettingsContent({
       )}
 
       {view.usageRows.length > 0 && (
-<<<<<<< HEAD
-        <SettingsSection icon={BarChart3} title={b.sections.usage}>
-=======
         <SettingsSection icon={BarChart3} meta={view.usagePlanName} title={b.sections.usage}>
->>>>>>> origin/main
           <div className="@container">
             {view.usageRows.map(row => (
               <UsageRow key={row.id} row={row} />

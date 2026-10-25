@@ -69,11 +69,7 @@ def test_setup_summary_local_browser_unavailable_without_chromium(
 
     Unlike the mocked-feature tests above, this drives the real
     ``get_nous_subscription_features`` so the surface stays aligned with the
-<<<<<<< HEAD
-    runtime gate in ``tools.browser_tool_install.check_browser_requirements``.
-=======
     launcher's Chromium selection (``hermes_cli.browser_runtime.chromium_executable``).
->>>>>>> origin/main
     """
     monkeypatch.setenv("HERMES_HOME", str(tmp_path))
     _clear_provider_env(monkeypatch)
@@ -92,12 +88,7 @@ def test_setup_summary_local_browser_unavailable_without_chromium(
         "hermes_cli.nous_subscription.get_nous_portal_account_info",
         lambda *a, **k: None,
     )
-<<<<<<< HEAD
-    monkeypatch.setattr("tools.browser_tool_install._chromium_installed", lambda: False)
-    monkeypatch.setattr("tools.browser_tool_lightpanda_fallback._using_lightpanda_engine", lambda: False)
-=======
     monkeypatch.setattr("hermes_cli.browser_runtime.chromium_executable", lambda **_kw: None)
->>>>>>> origin/main
     monkeypatch.setattr(
         "agent.auxiliary_client.get_available_vision_backends", list
     )
@@ -106,8 +97,4 @@ def test_setup_summary_local_browser_unavailable_without_chromium(
     output = capsys.readouterr().out
 
     assert "Browser Automation (Local browser)" not in output
-<<<<<<< HEAD
-    assert "hermes pm install agent-browser" in output
-=======
     assert "hermes pm install chromium" in output
->>>>>>> origin/main

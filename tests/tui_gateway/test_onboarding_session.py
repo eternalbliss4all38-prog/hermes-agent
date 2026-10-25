@@ -12,10 +12,7 @@ import pytest
 
 from agent import onboarding_record
 from agent.onboarding_flow import End, Facts, Shown
-<<<<<<< HEAD
-=======
 from agent.onboarding_session import carry_onboarding_toolset, onboarding_prelude, onboarding_toolsets
->>>>>>> origin/main
 from agent.onboarding_text import GREETING
 from tui_gateway import server, server_requests
 
@@ -52,13 +49,9 @@ def client(root, monkeypatch):
 
     monkeypatch.setitem(server._methods, "session.resume", resume)
     monkeypatch.setitem(server._methods, "prompt.submit", submit)
-<<<<<<< HEAD
-    return calls
-=======
     from hermes_cli.process_identity import serving_local_desktop
     with serving_local_desktop(True):  # the local Desktop's requests: only it starts a first run
         yield calls
->>>>>>> origin/main
 
 
 def _call(method: str, params: dict | None = None) -> dict:
@@ -109,15 +102,6 @@ def test_only_a_chat_with_a_run_in_progress_gets_the_onboarding_toolset(root):
     db.create_session("plain", "desktop")
     onboarding_record.start(db, "onb", FACTS)
 
-<<<<<<< HEAD
-    assert server._onboarding_toolsets(["web", "file"], db, "onb") == ["web", "file", "onboarding"]
-    assert server._onboarding_toolsets(["web", "file"], db, "plain") == ["web", "file"]
-    assert server._onboarding_toolsets([], db, "onb") == []
-    # A refresh keeps what the agent was built with, and never adds it to another chat.
-    built = SimpleNamespace(enabled_toolsets=["web", "onboarding"])
-    assert server._carry_onboarding_toolset(["web"], built) == ["web", "onboarding"]
-    assert server._carry_onboarding_toolset(["web"], SimpleNamespace(enabled_toolsets=["web"])) == ["web"]
-=======
     assert onboarding_toolsets(["web", "file"], db, "onb") == ["web", "file", "onboarding"]
     assert onboarding_toolsets(["web", "file"], db, "plain") == ["web", "file"]
     assert onboarding_toolsets([], db, "onb") == []
@@ -125,7 +109,6 @@ def test_only_a_chat_with_a_run_in_progress_gets_the_onboarding_toolset(root):
     built = SimpleNamespace(enabled_toolsets=["web", "onboarding"])
     assert carry_onboarding_toolset(["web"], built) == ["web", "onboarding"]
     assert carry_onboarding_toolset(["web"], SimpleNamespace(enabled_toolsets=["web"])) == ["web"]
->>>>>>> origin/main
 
 
 def test_an_unrestricted_chat_with_a_run_keeps_every_tool_and_gets_setup_beat(root):
@@ -136,16 +119,6 @@ def test_an_unrestricted_chat_with_a_run_keeps_every_tool_and_gets_setup_beat(ro
     db.create_session("plain", "desktop")
     onboarding_record.start(db, "onb", FACTS)
 
-<<<<<<< HEAD
-    enabled = server._onboarding_toolsets(None, db, "onb")
-    assert _select_tool_names(enabled, None, True) == _select_tool_names(None, None, True) | {"setup_beat"}
-    # The context-engine gate at agent build reads the toolset name, as it reads None.
-    assert "context_engine" in enabled
-    assert server._onboarding_toolsets(None, db, "plain") is None
-    # A refresh loads None again; the built agent keeps setup_beat.
-    assert server._carry_onboarding_toolset(None, SimpleNamespace(enabled_toolsets=enabled)) == enabled
-    assert server._carry_onboarding_toolset(None, SimpleNamespace(enabled_toolsets=None)) is None
-=======
     enabled = onboarding_toolsets(None, db, "onb")
     assert _select_tool_names(enabled, None, True) == _select_tool_names(None, None, True) | {"setup_beat"}
     # The context-engine gate at agent build reads the toolset name, as it reads None.
@@ -154,7 +127,6 @@ def test_an_unrestricted_chat_with_a_run_keeps_every_tool_and_gets_setup_beat(ro
     # A refresh loads None again; the built agent keeps setup_beat.
     assert carry_onboarding_toolset(None, SimpleNamespace(enabled_toolsets=enabled)) == enabled
     assert carry_onboarding_toolset(None, SimpleNamespace(enabled_toolsets=None)) is None
->>>>>>> origin/main
 
 
 def _agent(db, sid="onb"):
@@ -168,21 +140,12 @@ def test_the_opening_plays_the_greeting_and_name_card_until_the_name_card_was_sh
     onboarding_record.start(db, "onb", FACTS)
     agent = _agent(db)
 
-<<<<<<< HEAD
-    assert list(server._onboarding_prelude(agent, [])) == [(GREETING, "setup_beat", {"beat": "name"})]
-    relaunch = [{"role": "assistant", "content": GREETING}]
-    assert list(server._onboarding_prelude(agent, relaunch)) == [("", "setup_beat", {"beat": "name"})]
-    onboarding_record.advance(db, "onb", Shown("name"))
-    assert server._onboarding_prelude(agent, []) is None
-    assert server._onboarding_prelude(SimpleNamespace(valid_tool_names={"terminal"}), []) is None
-=======
     assert list(onboarding_prelude(agent, [])) == [(GREETING, "setup_beat", {"beat": "name"})]
     relaunch = [{"role": "assistant", "content": GREETING}]
     assert list(onboarding_prelude(agent, relaunch)) == [("", "setup_beat", {"beat": "name"})]
     onboarding_record.advance(db, "onb", Shown("name"))
     assert onboarding_prelude(agent, []) is None
     assert onboarding_prelude(SimpleNamespace(valid_tool_names={"terminal"}), []) is None
->>>>>>> origin/main
 
 
 @pytest.mark.parametrize("locale, opens_with, asks", [
@@ -200,15 +163,9 @@ def test_the_opening_greets_and_asks_the_name_in_the_run_s_locale(root, locale, 
     onboarding_record.start(db, "onb", Facts(os="macos", locale=locale))
     agent = _agent(db)
 
-<<<<<<< HEAD
-    [(hello, tool, args)] = list(server._onboarding_prelude(agent, []))
-    assert hello.startswith(opens_with) and (tool, args) == ("setup_beat", {"beat": "name"})
-    assert next(iter(server._onboarding_prelude(agent, [{"role": "assistant", "content": hello}])))[0] == ""
-=======
     [(hello, tool, args)] = list(onboarding_prelude(agent, []))
     assert hello.startswith(opens_with) and (tool, args) == ("setup_beat", {"beat": "name"})
     assert next(iter(onboarding_prelude(agent, [{"role": "assistant", "content": hello}])))[0] == ""
->>>>>>> origin/main
     shown = []
     setup_beat_tool(args, db=db, session_id="onb", callback=lambda payload: shown.append(payload) or None)
     assert shown[0]["question"] == asks
@@ -436,8 +393,6 @@ def test_the_onboarding_facts_are_read_in_the_default_profile(root, client, monk
 
     _call("onboarding.start")
     assert homes == [root]
-<<<<<<< HEAD
-=======
 
 
 def test_a_start_outside_the_local_desktop_schedules_nothing(root):
@@ -445,4 +400,3 @@ def test_a_start_outside_the_local_desktop_schedules_nothing(root):
     from hermes_cli.onboarding_run import _explicit_run
     assert _call("onboarding.start")["error"]["code"] == 5080
     assert _explicit_run() is None
->>>>>>> origin/main

@@ -536,20 +536,11 @@ class BrowserAction(WireEnum):
     status = "status"
     connect = "connect"
     disconnect = "disconnect"
-<<<<<<< HEAD
-    use = "use"
-=======
->>>>>>> origin/main
 
 
 class BrowserManageParams(Params):
     action: BrowserAction = BrowserAction.status
     url: str | None = None
-<<<<<<< HEAD
-    # ``use`` only: True selects Browser Use mode (browser_exec), False the built-in browser tools.
-    enabled: bool | None = None
-=======
->>>>>>> origin/main
     session_id: str | None = None
     profile: str | None = None
 
@@ -558,17 +549,7 @@ class BrowserManageResult(Result):
     connected: bool
     url: str | None = None
     messages: list[str] | None = None
-<<<<<<< HEAD
-    # ``status`` / ``use``: whether new agents for this profile get browser_exec.
-    browser_use: bool | None = None
-
-
-method("browser.manage", params=BrowserManageParams, result=BrowserManageResult,
-       doc="Inspect, attach to, or drop the CDP browser the tools use, or switch Browser Use mode "
-           "(``use``, applies to new sessions); ``messages`` narrate a connect.")
-=======
 
 
 method("browser.manage", params=BrowserManageParams, result=BrowserManageResult,
        doc="Inspect, attach to, or drop the CDP browser the tools use; ``messages`` narrate a connect.")
->>>>>>> origin/main

@@ -24,10 +24,7 @@ logger = logging.getLogger(__name__)
 UPDATE_AVAILABLE_NO_COUNT = -1
 _UPDATE_CHECK_CACHE_SECONDS = 24 * 3600
 _UPDATE_CHECK_FAILURE_CACHE_SECONDS = 3600
-<<<<<<< HEAD
-=======
 _RUNTIME_LOOKUP_SECONDS = 8.0
->>>>>>> origin/main
 
 
 def _quiet(fn, default=None):
@@ -292,8 +289,6 @@ def _write_cache(cache_file: Path, identity: dict, now: float, result: dict) -> 
         logger.debug("Could not cache source check: %s", exc)
 
 
-<<<<<<< HEAD
-=======
 def _read_runtime_verdict(repository: str, sha: str) -> Optional[bool]:
     """Read the tree and at most four schema blobs at once, within one lookup deadline."""
     from contextvars import copy_context
@@ -402,7 +397,6 @@ def _hold_refused_release(result: dict, co: _Checkout, home: Path) -> None:
         result.update(updateAvailable=False, behind=0, held="downgrade", rollback=False)
 
 
->>>>>>> origin/main
 def _resolve_channel(result: dict, channel: str, co: _Checkout, *, forward_only: bool = False):
     """Resolve a release channel's target into ``result``; the SourceTarget, or None on error.
 
@@ -552,24 +546,16 @@ def check_for_updates(*, install_root: Path | None = None, home: Path | None = N
     else:
         result["branch"] = selected_branch
     identity = {"root": str(root), "home": str(home), "head": co.head, "origin": co.origin, "branch": selected_branch,
-<<<<<<< HEAD
-                "channel": channel, "embedded": embedded, "branchOverride": branch is not None, "channelProtocol": 1,
-=======
                 "channel": channel, "embedded": embedded, "branchOverride": branch is not None, "channelProtocol": 3,
->>>>>>> origin/main
                 "forwardOnly": forward_only}
     cache_file = Path(cache_path) if cache_path is not None else home / "source-checks" / f"{install_id(root)}.json"
     now = time.time()
     cached = None if force else _cached_status(cache_file, identity, now)
     if cached is not None:
-<<<<<<< HEAD
-        return {**cached, "dirty": co.dirty, "currentBranch": co.current_branch}
-=======
         cached = {**cached, "dirty": co.dirty, "currentBranch": co.current_branch}
         if cached.get("channel"):
             _hold_refused_release(cached, co, home)
         return cached
->>>>>>> origin/main
     result["fetchedAt"] = int(now * 1000)
     source_target = None
     if not _is_full_sha(co.head):
@@ -585,11 +571,8 @@ def check_for_updates(*, install_root: Path | None = None, home: Path | None = N
         _check_branch(result, co, selected_branch,
                       heal=(branch_config_path, desktop_config) if heal else None)
     _write_cache(cache_file, identity, now, result)
-<<<<<<< HEAD
-=======
     if result.get("channel"):
         _hold_refused_release(result, co, home)
->>>>>>> origin/main
     return result
 
 

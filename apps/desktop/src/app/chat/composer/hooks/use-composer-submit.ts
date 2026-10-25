@@ -19,10 +19,7 @@ import { resetBrowseState } from '@/store/composer-input-history'
 import { enqueueQueuedPrompt, type QueuedPromptEntry, serverOwnsComposerQueue } from '@/store/composer-queue'
 import { hasConnectionRequest, skipConnectionRequest } from '@/store/connection-request'
 import { notify } from '@/store/notifications'
-<<<<<<< HEAD
-=======
 import { isOnboardingChat } from '@/store/onboarding-session'
->>>>>>> origin/main
 import { answerParkedCard, skipParkedCards, yieldParkedCardsToMessage } from '@/store/parked-card-answers'
 import { hasBlockingPromptRequest } from '@/store/prompts'
 
@@ -368,8 +365,6 @@ export function useComposerSubmit({
     return yielded ? 'yielded' : null
   }
 
-<<<<<<< HEAD
-=======
   // Slash commands come after setup. Every send action asks here first, so the words stay put and one
   // note (re-shown, never stacked) says why.
   const refusedDuringSetup = (text: string): boolean => {
@@ -383,7 +378,6 @@ export function useComposerSubmit({
     return true
   }
 
->>>>>>> origin/main
   const submitDraft = () => {
     if (disabled) {
       return
@@ -414,17 +408,12 @@ export function useComposerSubmit({
     const text = pathifyRefs(draftRef.current)
     const payloadPresent = text.trim().length > 0 || attachments.length > 0
 
-<<<<<<< HEAD
-    const parked = answerParkedCardWithDraft(text, payloadPresent)
-
-=======
     if (refusedDuringSetup(text)) {
       return
     }
 
     const parked = answerParkedCardWithDraft(text, payloadPresent)
 
->>>>>>> origin/main
     if (parked === 'answered') {
       return
     }

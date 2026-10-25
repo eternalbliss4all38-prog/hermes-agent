@@ -82,13 +82,8 @@ def _account_gate_closed(rid):
 
 
 def _account_identity_error(rid):
-<<<<<<< HEAD
-    """Opening the Connectors page or connecting from it is the user asking for apps: create the
-    guest identity here when the user has none. Operation polls never call this."""
-=======
     """Connecting from the Connectors page is the user asking for apps: create the guest identity
     here when the user has none. Page reads and operation polls never call this."""
->>>>>>> origin/main
     from tools.connectors import ensure_guest_identity
     from tui_gateway.contracts.connectors import ConnectorErrorReason
 
@@ -195,12 +190,6 @@ def _connector_rows(rows):
     ])
 
 
-<<<<<<< HEAD
-def _account_connector_list(rid):
-    from tools.connectors.managed import managed_client
-
-    return _ok(rid, {"available": True, "connectors": _connector_rows(managed_client().list_connectors())})
-=======
 # Whether each account-owned action of the Connectors page may create the guest identity.
 _ACCOUNT_CREATES_GUEST = {"status": False, "connect": True}
 
@@ -213,7 +202,6 @@ def _account_connector_list(rid):
     rows = managed_client(creates_guest=False).list_connectors() if read_nous_access_token() else []
     note_connected_apps_seen(rows)
     return _ok(rid, {"available": True, "connectors": _connector_rows(rows)})
->>>>>>> origin/main
 
 
 def _account_connector_connect(rid, request):
@@ -252,11 +240,7 @@ def _connector_rpc(rid, params, action):
         with _account_scope(request):
             if closed := _account_gate_closed(rid):
                 return _ok(rid, {"available": False, "connectors": []}) if action == "status" else closed
-<<<<<<< HEAD
-            if setup_error := _account_identity_error(rid):
-=======
             if _ACCOUNT_CREATES_GUEST[action] and (setup_error := _account_identity_error(rid)):
->>>>>>> origin/main
                 return setup_error
             return _account_connector_list(rid) if action == "status" else _account_connector_connect(rid, request)
 

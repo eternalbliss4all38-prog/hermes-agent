@@ -13,8 +13,6 @@ from utils import is_truthy_value
 logger = logging.getLogger("run_agent")
 
 
-<<<<<<< HEAD
-=======
 
 def _is_nous_agent(agent) -> bool:
     """True for the Nous provider (or a route to a nousresearch.com host)."""
@@ -24,7 +22,6 @@ def _is_nous_agent(agent) -> bool:
     base_url = str(getattr(agent, "base_url", "") or "")
     return bool(base_url) and base_url_host_matches(base_url, "nousresearch.com")
 
->>>>>>> origin/main
 def _response_headers(http_response: Any):
     """Headers of a response, or None when there is nothing to parse."""
     return getattr(http_response, "headers", None) if http_response is not None else None
@@ -80,11 +77,7 @@ class RateLimitCreditsMixin:
         self._capture_rate_limits(http_response)
         self._capture_credits(http_response)
 
-<<<<<<< HEAD
-    def _capture_credits(self, http_response: Any) -> None:
-=======
     def _capture_credits(self, http_response: Any, *, refused: bool = False) -> None:
->>>>>>> origin/main
         """Parse x-nous-credits-* headers, cache CreditsState, fire threshold notices.
 
         The PARSE is swallowed (miss → keep last-known); notice EVALUATION WARNS on failure so a
@@ -125,9 +118,6 @@ class RateLimitCreditsMixin:
                             "(miss — producer off / non-Nous path / >TTL stale)")
             return
 
-<<<<<<< HEAD
-        _adopt_credits_state(self, state)
-=======
         if state.is_usage_window and not _is_nous_agent(self):
             return  # window headers from any other upstream are ignored (no window UI, no Keep going button)
         if state.is_usage_window and not any(k.lower() == "x-nous-credits-purchased-micros" for k in headers):
@@ -148,7 +138,6 @@ class RateLimitCreditsMixin:
             sync_plan_snapshot(state)
         except Exception:
             logger.debug("Plan snapshot sync failed", exc_info=True)
->>>>>>> origin/main
         if dev:
             # HERMES_DEV_CREDITS streams each capture to agent.log (`hermes logs -f`, grep 'credits ▸').
             spent = self.get_credits_spent_micros()
@@ -180,11 +169,6 @@ class RateLimitCreditsMixin:
                 latch = self._credits_latch = new_credits_latch()
             # Free-model gate: a depleted account can still inference on a free model. Local data only.
             model_is_free = is_free_tier_model(getattr(self, "model", "") or "", getattr(self, "base_url", "") or "")
-<<<<<<< HEAD
-            if state.depleted and not model_is_free and rewarm_pricing_before_depleted_notice(self):
-                return  # a cold catalog cannot say the model is billed elsewhere; the warm's re-run decides
-            to_show, to_clear = evaluate_credits_notices(state, latch, model_is_free=model_is_free)
-=======
             # Any blocking state (depleted, or a used-up window / large-model allowance) needs a warm catalog to
             # tell a model billed elsewhere apart once the 300s pricing cache lapses.
             blocking = state.depleted or state.window_exhausted or state.top_tier_exhausted
@@ -208,7 +192,6 @@ class RateLimitCreditsMixin:
             elif session_id:
                 from agent.credits_tracker import forget_window_notices
                 forget_window_notices(session_id)
->>>>>>> origin/main
             for key in to_clear:
                 self._emit_notice_clear(key)
             for notice in to_show:

@@ -75,15 +75,6 @@ def step_migrate_config() -> dict:
         SUPPORT_FLOOR_VERSION,
         support_floor_message,
     )
-<<<<<<< HEAD
-
-    current_ver, latest_ver = check_config_version()
-    if current_ver >= latest_ver:
-        return {"ok": True, "skipped": "up-to-date"}
-    if current_ver < SUPPORT_FLOOR_VERSION:
-        # migrate_config() refuses sub-floor configs and leaves the file
-        # untouched; warn instead of failing the boot.
-=======
     from hermes_cli.config_migrations_browser import agent_browser_env_pending
     from hermes_cli.config_version_stamp import read_config_version_stamp, stamp_missing_config
 
@@ -98,17 +89,12 @@ def step_migrate_config() -> dict:
         # left alone too, unless its .env still holds AGENT_BROWSER_* settings
         # nothing reads any more: migrate_config() gives it the legacy-key
         # steps (v52's move among them) and a stamp.
->>>>>>> origin/main
         logger.warning("config migration skipped: %s", support_floor_message())
         return {"ok": True, "skipped": "below-support-floor"}
 
     backups = _backup_existing((get_config_path(), get_env_path()))
     try:
-<<<<<<< HEAD
-        migrate_config(interactive=False, quiet=True)
-=======
         results = migrate_config(interactive=False, quiet=True)
->>>>>>> origin/main
     except Exception:
         _restore_backups(backups)
         raise
@@ -120,13 +106,10 @@ def step_migrate_config() -> dict:
             f"(still {post_ver}); restored: "
             + (", ".join(str(p) for p in restored) if restored else "none")
         )
-<<<<<<< HEAD
-=======
     # `hermes update` prints what a quiet migration changed; boot has no terminal to print it to.
     from hermes_cli.left_core_migration import defer_startup_notice
     for notice in results.get("notices") or ():
         defer_startup_notice(notice)
->>>>>>> origin/main
     return {"ok": True, "migrated": f"{current_ver}->{latest_ver}"}
 
 

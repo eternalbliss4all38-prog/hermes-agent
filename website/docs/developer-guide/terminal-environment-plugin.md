@@ -134,8 +134,6 @@ interface as `tools.environments.base.BaseEnvironment`:
 Subclassing `BaseEnvironment` is recommended (you inherit the shared file-sync
 and background-process plumbing) but not required.
 
-<<<<<<< HEAD
-=======
 ## File tools and the host filesystem
 
 `read_file`, `write_file`, `patch` and `search_files` go through your
@@ -173,7 +171,6 @@ container registers it as `<name>_image` for the active backend, and that value
 reaches `create_environment(image=...)`. Otherwise `image` is `""`; fall back to
 your setting.
 
->>>>>>> origin/main
 ## Starting directory
 
 Without `default_cwd`, a plugin backend starts in `/root`, and a host-looking
@@ -212,13 +209,8 @@ Relative paths are ignored, because Hermes would anchor them on the host.
 
 ## Bot Desktop and `computer_use`
 
-<<<<<<< HEAD
-The screen, `computer_use` and the browser follow the terminal into Docker, SSH
-and Singularity sandboxes by spawning long-lived processes there with stdin and
-=======
 The screen, `computer_use` and the browser follow the terminal into Docker and
 SSH sandboxes (and the Singularity plugin's) by spawning long-lived processes there with stdin and
->>>>>>> origin/main
 stdout left open. A plugin backend can opt in the same way:
 
 1. Set `supports_streams = True` on the provider. `bot_desktop.placement: auto`
@@ -243,20 +235,12 @@ the browser keep their scratch files under the environment's
 `get_temp_dir()`. An environment that doesn't subclass `BaseEnvironment` and
 has no such method gets the same default `BaseEnvironment` uses.
 
-<<<<<<< HEAD
-Both `exec_prefix()` and the `~` home resolution read the environment object
-itself, so they work only for plugins loaded in-process. Under
-`plugins.isolation: host` the environment reaches Hermes as an opaque
-placeholder: Bot Desktop refuses a `supports_streams` backend with a message
-naming the setting, and `default_cwd = "~"` stays a literal `~`.
-=======
 A terminal backend runs only in-process: its environment object is what the
 terminal tool, file tools, `exec_prefix()` and the `~` home resolution all
 drive. Under `plugins.isolation: host` the object cannot cross the host
 boundary, so creating the environment refuses with a message naming
 `plugins.isolation: in_process` (before the host starts a sandbox), and Bot
 Desktop refuses a `supports_streams` backend the same way.
->>>>>>> origin/main
 
 ## Session isolation semantics
 

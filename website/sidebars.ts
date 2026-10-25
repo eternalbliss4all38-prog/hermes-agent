@@ -832,10 +832,7 @@ const sidebars: SidebarsConfig = {
                 'developer-guide/web-search-provider-plugin',
                 'developer-guide/browser-provider-plugin',
                 'developer-guide/terminal-environment-plugin',
-<<<<<<< HEAD
-=======
                 'developer-guide/delegation-provider-plugin',
->>>>>>> origin/main
                 'developer-guide/plugins/application-declarations',
                 'developer-guide/plugins/catalog-submission',
               ],

@@ -165,8 +165,6 @@ def test_default_active_still_migrates_named_siblings(monkeypatch, tmp_path):
     on_disk = yaml.safe_load((sibling / "config.yaml").read_text())
     assert on_disk["_config_version"] == _latest_version()
     assert yaml.safe_load((default_home / "config.yaml").read_text())["_config_version"] == _latest_version()
-<<<<<<< HEAD
-=======
 
 
 def test_sibling_step_notices_reach_the_update_output(monkeypatch, tmp_path, capsys):
@@ -192,4 +190,3 @@ def test_sibling_step_notices_reach_the_update_output(monkeypatch, tmp_path, cap
     assert "`browser` toolset in `hermes tools`" in out[notice:]
     assert "display.new_option" not in out[profile_line:]
     assert "backend" not in (yaml.safe_load((work / "config.yaml").read_text()).get("browser") or {})
->>>>>>> origin/main

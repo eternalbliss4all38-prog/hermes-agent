@@ -241,23 +241,6 @@ def test_banner_session_label_is_mains_eight_characters_for_a_canonical_id():
 
 
 def test_cli_startup_notices_render_from_the_snapshot(store, monkeypatch):
-<<<<<<< HEAD
-    """Main's tool-availability warning and browser notice print from the gateway snapshot (the
-    gateway resolved the session's tools); the CLI process enumerates nothing."""
-    from types import SimpleNamespace
-
-    from hermes_cli.cli_info_mixin import CLIInfoMixin
-    from hermes_cli.cli_tui_runtime_mixin import CLITuiRuntimeMixin
-    db, _ = store
-    db.open_session(cli("local-old", resumed=True))
-    db.current["info"].update(tool_availability_warnings=["[yellow]⚠ terminal off[/]"],
-                              browser_backend_notice="browser-harness is missing")
-    printed = []
-    host = SimpleNamespace(_session_db=db, _console_print=lambda *a: printed.append(a[0] if a else ""),
-                           _show_browser_backend_notice=lambda: printed.append("LOCAL"))
-    CLITuiRuntimeMixin._show_startup_browser_notice(host)
-    assert printed == ["[yellow]⚠ browser-harness is missing[/yellow]"]
-=======
     """Main's tool-availability warning prints from the gateway snapshot (the gateway resolved the
     session's tools); the CLI process enumerates nothing."""
     from types import SimpleNamespace
@@ -268,16 +251,11 @@ def test_cli_startup_notices_render_from_the_snapshot(store, monkeypatch):
     db.current["info"].update(tool_availability_warnings=["[yellow]⚠ terminal off[/]"])
     printed = []
     host = SimpleNamespace(_session_db=db, _console_print=lambda *a: printed.append(a[0] if a else ""))
->>>>>>> origin/main
     monkeypatch.setattr("cli._build_compact_banner", lambda: "compact", raising=False)
     banner = SimpleNamespace(**vars(host), console=SimpleNamespace(clear=lambda: None), compact=True,
                              session_id="local-old", _show_status=lambda: None, agent=None,
                              _show_tool_availability_warnings=lambda: printed.append("LOCAL-WARN"))
     banner._print_gateway_tool_warnings = lambda lines: CLIInfoMixin._print_gateway_tool_warnings(banner, lines)
-<<<<<<< HEAD
-    printed.clear()
-=======
->>>>>>> origin/main
     CLIInfoMixin.show_banner(banner)
     assert "[yellow]⚠ terminal off[/]" in printed and "LOCAL-WARN" not in printed
 

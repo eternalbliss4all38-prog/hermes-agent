@@ -5,10 +5,7 @@ columns + Free/Pro badges and gate paid models on free Nous accounts, the
 same way the `hermes model` CLI picker does.
 """
 
-<<<<<<< HEAD
-=======
 from tests.usage_window_fixtures import usage_window
->>>>>>> origin/main
 from threading import Event
 from time import monotonic
 
@@ -111,8 +108,6 @@ def test_apply_pricing_omits_sale_when_original_not_cheaper(monkeypatch):
     assert "discount_percent" not in rows[0]["pricing"]["a/eq"]
 
 
-<<<<<<< HEAD
-=======
 def test_apply_pricing_window_plan_drops_prices_and_stamps_plan_usage(monkeypatch):
     _patch_pricing(
         monkeypatch, free_tier=False,
@@ -156,7 +151,6 @@ def test_apply_pricing_credit_grant_keeps_prices_and_stamps_plan_usage(monkeypat
     assert "plan_usage" not in rows[0]
 
 
->>>>>>> origin/main
 def test_model_options_cold_pricing_fetch_runs_off_the_request_path(monkeypatch):
     """A cold pricing endpoint must not delay the first picker payload."""
     fetch_started = Event()

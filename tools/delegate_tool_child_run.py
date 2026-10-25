@@ -33,14 +33,6 @@ def _num(value: Any, default: int = 0) -> int:
 def _str_or_none(value: Any) -> Optional[str]:
     return value if isinstance(value, str) else None
 
-<<<<<<< HEAD
-def _fabricated_entry(idx: int, status: str, error: str, child: Any, duration: float = 0) -> dict[str, Any]:
-    """Result entry for a child that raised, never finished, or was abandoned."""
-    return {
-        "task_index": idx, "status": status, "summary": None, "error": error, "api_calls": 0,
-        "duration_seconds": duration, "_child_role": getattr(child, "_delegate_role", None),
-    }
-=======
 def _tier_in_effect(child: Any) -> Any:
     """The child's speed tier: its own (a route's tier), else the one its request settings carry (an inherited
     ``service_tier: priority`` or ``speed: fast``, top level or in ``extra_body``)."""
@@ -84,7 +76,6 @@ def _fabricated_entry(idx: int, status: str, error: str, child: Any, duration: f
     if route is not None:
         entry["route"] = route
     return entry
->>>>>>> origin/main
 
 def _append_missed_steer(entry: dict[str, Any], late_steer: Optional[str]) -> None:
     """Record steer text that won the race with the child's failure/timeout."""
@@ -482,35 +473,13 @@ def _defer_close_after_timeout(child: Any, child_future: Any) -> None:
 def _lease_child_credential(child: Any) -> tuple[Any, Optional[str]]:
     """Lease a credential from the child's pool (if any) and bind it; ``(pool, lease_id)``. The bound entry must
     serve the child's endpoint: on a mixed same-provider pool the least-leased pick may target another host, so it is
-<<<<<<< HEAD
-    released and an endpoint-matching entry is leased by id instead (#68237)."""
-=======
     released and an endpoint-matching entry is leased by id instead (#68237). Child work, so it runs in the child's
     profile scope: a lease may refresh that profile's OAuth entries, and ``_swap_credential`` re-reads TLS/header
     config for the bound endpoint."""
->>>>>>> origin/main
     child_pool = getattr(child, "_credential_pool", None)
     if child_pool is None:
         return None, None
     from agent.credential_pool import credential_pool_entry_serves_endpoint as _entry_serves_endpoint
-<<<<<<< HEAD
-    base_url = getattr(child, "base_url", None)
-    leased_cred_id = child_pool.acquire_lease()
-    if leased_cred_id is not None:
-        with _quiet("Failed to bind child to leased credential: %s"):
-            # Resolve the leased entry by id: the pool is shared with the parent/siblings, so current() is a
-            # mutable cursor that may already point at someone else's pick.
-            leased_entry = next((e for e in child_pool.entries() if e.id == leased_cred_id), None)
-            if not _entry_serves_endpoint(leased_entry, base_url):
-                child_pool.release_lease(leased_cred_id)
-                leased_entry = next(
-                    (e for e in child_pool.entries() if e.last_status != "dead" and _entry_serves_endpoint(e, base_url)),
-                    None,
-                )
-                leased_cred_id = child_pool.acquire_lease(leased_entry.id) if leased_entry is not None else None
-            if leased_entry is not None and hasattr(child, "_swap_credential"):
-                child._swap_credential(leased_entry)
-=======
     from tools.delegate_tool_routes import child_profile_scope
     base_url = getattr(child, "base_url", None)
     with child_profile_scope(child):
@@ -529,7 +498,6 @@ def _lease_child_credential(child: Any) -> tuple[Any, Optional[str]]:
                     leased_cred_id = child_pool.acquire_lease(leased_entry.id) if leased_entry is not None else None
                 if leased_entry is not None and hasattr(child, "_swap_credential"):
                     child._swap_credential(leased_entry)
->>>>>>> origin/main
     return child_pool, leased_cred_id
 
 def _merge_late_steer(result: dict[str, Any], subagent_id: Optional[str], child: Any) -> None:
@@ -570,12 +538,8 @@ def _validate_child_output_schema(
         # Same identity as the main child turn: this runs on the parent worker's thread, and an
         # unmarked turn is misread as the dispatcher-owned worker by every HERMES_KANBAN_* gate.
         from agent.delegation_context import delegated_child_context
-<<<<<<< HEAD
-        with delegated_child_context(str(getattr(child, "session_id", "") or "")):
-=======
         from tools.delegate_tool_routes import child_profile_scope
         with child_profile_scope(child), delegated_child_context(str(getattr(child, "session_id", "") or "")):
->>>>>>> origin/main
             _retry_result = child.run_conversation(
                 user_message=build_retry_message(_schema_errors), task_id=child_task_id,
                 stream_callback=relay_child_text,
@@ -692,12 +656,9 @@ def _build_result_entry(
     # Model-visible per-delegation spend (unlike _child_cost_usd above).
     entry["cost_usd"] = round(entry["_child_cost_usd"], 6)
     entry["cost_status"] = _cost_status if isinstance(_cost_status, str) and _cost_status else "unknown"
-<<<<<<< HEAD
-=======
     _route = _route_report(child)
     if _route is not None:
         entry["route"] = _route
->>>>>>> origin/main
     if status == "failed":
         entry["error"] = result.get("error", "Subagent did not produce a response.")
         # Classified reason from the child loop (e.g. "rate_limit", "billing")
@@ -838,11 +799,6 @@ class _ChildRun:
         # Seed the child's cwd record from the parent's: same starting directory,
         # but the child's later `cd`s stay in its own record. Per-session container
         # isolation keys containers by task_id; the child must share the PARENT's.
-<<<<<<< HEAD
-        with _quiet("Child cwd seed failed: %s"):
-            from tools.terminal_tool import get_session_cwd, record_session_cwd, register_container_alias
-            record_session_cwd(self.child_task_id, get_session_cwd(self.parent_task_id))
-=======
         # The parent's record is read in the parent's scope; the child's is written in the child's (cwd records
         # are keyed by the active profile, and a profile-routed child looks its own up as that profile).
         from tools.delegate_tool_routes import child_profile_scope
@@ -851,16 +807,11 @@ class _ChildRun:
             parent_cwd = get_session_cwd(self.parent_task_id)
             with child_profile_scope(self.child):
                 record_session_cwd(self.child_task_id, parent_cwd)
->>>>>>> origin/main
             register_container_alias(self.child_task_id, self.parent_task_id)
 
         self.worktree_info = _create_isolated_worktree(self.parent_agent, self.parent_task_id, self.subagent_id)
         if self.worktree_info is not None:
-<<<<<<< HEAD
-            with _quiet("worktree cwd seed failed: %s"):
-=======
             with _quiet("worktree cwd seed failed: %s"), child_profile_scope(self.child):
->>>>>>> origin/main
                 from tools.terminal_tool import record_session_cwd as _rsc
                 _rsc(self.child_task_id, self.worktree_info["path"])
             # The child's context is already built; carry the isolation contract on
@@ -956,13 +907,9 @@ class _ChildRun:
         def _run_with_thread_capture():
             worker_thread_holder["t"] = threading.current_thread()
             from agent.delegation_context import delegated_child_context
-<<<<<<< HEAD
-            with delegated_child_context(str(getattr(child, "session_id", "") or "")):
-=======
             from tools.delegate_tool_routes import child_profile_scope
             # A profile-routed child converses as that profile (config, secrets, skills, terminal policy).
             with child_profile_scope(child), delegated_child_context(str(getattr(child, "session_id", "") or "")):
->>>>>>> origin/main
                 return child.run_conversation(
                     user_message=user_message, task_id=self.child_task_id, stream_callback=self.relay_text,
                 )

@@ -2,18 +2,12 @@
 import json
 import os
 from pathlib import Path
-<<<<<<< HEAD
-=======
 import queue
->>>>>>> origin/main
 import shlex
 import shutil
 import subprocess
 import sys
-<<<<<<< HEAD
-=======
 import threading
->>>>>>> origin/main
 
 import pytest
 
@@ -66,15 +60,12 @@ def fixture_tree(tmp_path, monkeypatch):
     return repo, home, interpreter
 
 
-<<<<<<< HEAD
-=======
 def without_distlib(monkeypatch):
     """No ScriptMaker anywhere: not in this process, not beside the store's Python."""
     monkeypatch.setattr(_launchers, "_load_script_maker", lambda: None)
     monkeypatch.setattr(_launchers, "_store_script_maker", lambda _python: None)
 
 
->>>>>>> origin/main
 def select_generation(repo, name, value):
     selected = install_state_dir(repo) / 'environments' / str(name) / 'venv'
     site = site_packages(selected)
@@ -166,11 +157,7 @@ def test_profile_publication_preserves_shared_launcher_default_home(tmp_path, mo
     select_generation(repo, "shared", "ready")
     out = tmp_path / ".local" / "bin"
     if publisher == "cmd":
-<<<<<<< HEAD
-        monkeypatch.setattr(_launchers, "_load_script_maker", lambda: None)
-=======
         without_distlib(monkeypatch)
->>>>>>> origin/main
     launchers = [Path(p) for p in _launchers.ensure_install_launchers(repo, out)]
     assert len(launchers) == len(_launchers.ENTRY_POINTS)
     if publisher == "cmd":
@@ -387,11 +374,7 @@ def test_running_source_launcher_can_republish_itself(tmp_path, monkeypatch, lau
     )
     out = repo / ".hermes/bin"
     if launcher_form == "cmd":
-<<<<<<< HEAD
-        monkeypatch.setattr(_launchers, "_load_script_maker", lambda: None)
-=======
         without_distlib(monkeypatch)
->>>>>>> origin/main
     launchers = _launchers.ensure_install_launchers(repo, out)
     assert len(launchers) == len(_launchers.ENTRY_POINTS)
     command = next(Path(p) for p in launchers if Path(p).stem == "hermes")
@@ -406,10 +389,6 @@ def test_running_source_launcher_can_republish_itself(tmp_path, monkeypatch, lau
 
 
 @pytest.mark.platforms("windows")
-<<<<<<< HEAD
-def test_repin_without_distlib_retires_stale_native_launcher(tmp_path, monkeypatch):
-    repo, home, _interpreter = fixture_tree(tmp_path, monkeypatch)
-=======
 @pytest.mark.parametrize("running, store_pip", [(False, False), (True, False), (True, True)],
                          ids=["idle", "running", "running-store-pip"])
 def test_repin_without_distlib_retires_stale_native_launcher(tmp_path, monkeypatch, running, store_pip):
@@ -417,22 +396,12 @@ def test_repin_without_distlib_retires_stale_native_launcher(tmp_path, monkeypat
     (repo / "hermes_cli/main.py").write_text(
         "import sys\ndef main():\n    print('ready', flush=True)\n    sys.stdin.read()\n    return 0\n",
         encoding="utf-8")
->>>>>>> origin/main
     local = repo / ".hermes/bin"
     original = Path(_launchers.ensure_install_launchers(repo, local)[0])
     assert original.suffix == ".exe"
     new_python = home / "tools" / "repinned" / "python.exe"
     new_python.parent.mkdir()
     new_python.touch()
-<<<<<<< HEAD
-    (home / "tools/facts.json").write_text(
-        json.dumps({"packages": {"python": {"entry": "repinned"}}}), encoding="utf-8")
-    monkeypatch.setattr(_launchers, "_load_script_maker", lambda: None)
-    result = _launchers.stage_launcher("hermes", repo, local)
-    assert result == local / "hermes.cmd"
-    assert not original.exists()  # cmd.exe must not run the old exe first
-    assert result is not None and str(new_python) in result.read_text(encoding="utf-8-sig")
-=======
     if store_pip:
         # python-build-standalone ships pip; the activated update process cannot import it.
         import distlib
@@ -475,7 +444,6 @@ def test_repin_without_distlib_retires_stale_native_launcher(tmp_path, monkeypat
         monkeypatch.setattr(_launchers, "_load_script_maker", real_maker)
         assert _launchers.stage_launcher("hermes", repo, local) == local / "hermes.exe"
         assert not list(local.glob("hermes.exe*.deleteme"))
->>>>>>> origin/main
 
 
 @pytest.mark.platforms("windows")

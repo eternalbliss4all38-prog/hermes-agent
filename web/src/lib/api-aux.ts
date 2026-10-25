@@ -21,8 +21,6 @@ export interface AuxiliaryModelsResponse {
   tasks: AuxiliaryTaskAssignment[];
   main: { provider: string; model: string };
 }
-<<<<<<< HEAD
-=======
 
 /** An auxiliary task still pinned to a provider that differs from the
  *  newly-selected main provider after a main-model switch. */
@@ -49,4 +47,3 @@ export interface ModelAssignmentResponse {
    *  plan, provider and model. Only set on scope:'main'. */
   notice?: string;
 }
->>>>>>> origin/main

@@ -11,10 +11,7 @@ interpreter before it publishes either command.
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-=======
 from contextlib import suppress
->>>>>>> origin/main
 import json
 import os
 import shlex
@@ -170,8 +167,6 @@ def _load_script_maker():
         return None
 
 
-<<<<<<< HEAD
-=======
 def _store_script_maker(python_exe: Path):
     """ScriptMaker from the pip that ships with the interpreter being bound.
 
@@ -205,7 +200,6 @@ def _store_script_maker(python_exe: Path):
         return None
 
 
->>>>>>> origin/main
 def exe_is_venv_bound(exe: Path, venv_dir: Path | None) -> bool:
     """True when an existing launcher exe embeds the venv interpreter —
     i.e. it is a copied venv console-script trampoline from the pre-pm
@@ -266,11 +260,7 @@ def mint_launcher(
     if not _is_windows():
         return _mint_shell_launcher(name, out_dir, python_exe, script)
 
-<<<<<<< HEAD
-    script_maker_cls = _load_script_maker()
-=======
     script_maker_cls = _load_script_maker() or _store_script_maker(python_exe)
->>>>>>> origin/main
     if script_maker_cls is not None:
         class _PathedScriptMaker(script_maker_cls):  # type: ignore[misc,valid-type]
             def _get_script_text(self, entry):
@@ -600,14 +590,6 @@ def stage_launcher(name: str, repo_root: Path, out_dir: Path) -> Path | None:
     store_python = resolve_store_python(repo_root, publication=True)
     if store_python is not None:
         path = mint_launcher(name, repo_root, out_dir, store_python, None)
-<<<<<<< HEAD
-        if path is not None and path.suffix == ".cmd":
-            # cmd.exe prefers .exe. An older launcher must not shadow the
-            # newly published command when distlib is unavailable.
-            try:
-                (Path(out_dir) / f"{name}.exe").unlink(missing_ok=True)
-            except OSError:
-=======
         if path is None:
             return None
         # Any publication collects copies retired by an earlier one, whatever
@@ -617,14 +599,11 @@ def stage_launcher(name: str, repo_root: Path, out_dir: Path) -> Path | None:
             # cmd.exe prefers .exe. An older launcher must not shadow the
             # newly published command when distlib is unavailable.
             if not _retire_exe(Path(out_dir) / f"{name}.exe"):
->>>>>>> origin/main
                 return None
         return path
     return None
 
 
-<<<<<<< HEAD
-=======
 def _collect_retired(exe: Path) -> None:
     """Delete aside copies of ``exe`` whose process has since exited: ours
     (``.<pid>.deleteme``) and distlib's own (``.deleteme``)."""
@@ -657,7 +636,6 @@ def _retire_exe(exe: Path) -> bool:
     return True
 
 
->>>>>>> origin/main
 def _first_token(line: str) -> Path | None:
     """First whitespace-delimited token of *line*, honoring one quote pair.
 

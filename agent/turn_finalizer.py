@@ -466,8 +466,6 @@ def _apply_output_hooks(
     )
     # Detached forks are internal work and must not publish turns under the parent's session ID.
     if not getattr(agent, "_persist_disabled", False):
-<<<<<<< HEAD
-=======
         # Leased on the turn thread so the capture holds this turn's context; None unless a
         # loaded plugin holds llm.side_question. The response must survive a failed capture.
         try:
@@ -476,7 +474,6 @@ def _apply_output_hooks(
         except Exception:
             side_question_token = None
             logger.warning("side question lease failed", exc_info=True)
->>>>>>> origin/main
         _invoke_hook_safely(
             "post_llm_call", logger,
             session_id=agent.session_id,
@@ -487,10 +484,7 @@ def _apply_output_hooks(
             conversation_history=list(messages),
             model=agent.model,
             platform=platform,
-<<<<<<< HEAD
-=======
             side_question_token=side_question_token,
->>>>>>> origin/main
         )
     return final_response, transformed, pre_transform
 

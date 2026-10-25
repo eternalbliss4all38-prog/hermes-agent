@@ -262,8 +262,6 @@ def test_owner_finite_scope_overrides_history_without_leaking(harness, monkeypat
     assert dict(os.environ) == before
     assert finite_turn_required() is None
     assert _resolve_async_wake_sid("history", True) is None
-<<<<<<< HEAD
-=======
 
 
 def test_oneshot_started_session_joins_children_on_an_interactive_turn(harness, monkeypatch):
@@ -281,4 +279,3 @@ def test_oneshot_started_session_joins_children_on_an_interactive_turn(harness, 
     with finite_turn_scope(False):
         result = dispatch("completed", "error")
     _joined(result, ["completed", "error"])
->>>>>>> origin/main

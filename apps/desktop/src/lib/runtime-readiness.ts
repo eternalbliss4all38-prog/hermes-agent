@@ -152,14 +152,6 @@ export function interpretRuntimeReadiness(
     model: normalizeMessage(signals.runtime?.model) ?? undefined
   }
 
-  // Route facts the check reported, carried through untouched so consumers
-  // (free-tier chrome) don't have to re-issue setup.runtime_check. Left
-  // undefined when the check said nothing — "absent" and "false" differ.
-  const route = {
-    freeTier: typeof signals.runtime?.free_tier_route === 'boolean' ? signals.runtime.free_tier_route : undefined,
-    model: normalizeMessage(signals.runtime?.model) ?? undefined
-  }
-
   const checksDisagree =
     typeof setupConfigured === 'boolean' && typeof runtimeOk === 'boolean' && setupConfigured !== runtimeOk
 

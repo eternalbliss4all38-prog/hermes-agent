@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-"""External-tool checks for hermes doctor: terminal backends, git/rg, Node + agent-browser, npm audit, tool availability.
-=======
 """External-tool checks for hermes doctor: terminal backends, git/rg, Node + Chromium, npm audit, tool availability.
->>>>>>> origin/main
 Split out of ``hermes_cli/doctor.py``, which re-exports every name so ``hermes_cli.doctor.<name>`` keeps resolving (and monkeypatching)."""
 
 from __future__ import annotations
@@ -86,15 +82,6 @@ def _run_ok(cmd: list[str], timeout: int, **kw) -> bool:
         return False
 
 
-<<<<<<< HEAD
-def _termux_browser_setup_steps(node_installed: bool) -> list[str]:
-    steps = [] if node_installed else ["pkg install nodejs"]
-    steps += ["npm install -g agent-browser", "agent-browser install"]
-    return [f"{i}) {step}" for i, step in enumerate(steps, 1)]
-
-
-=======
->>>>>>> origin/main
 _TERMUX_INSTALL_ALL_FALLBACK_NOTES = (
     "Termux uses the Hermes APT package: pkg install hermes-agent.",
     "Matrix E2EE extra is excluded on Termux (python-olm currently fails to build).",
@@ -197,11 +184,7 @@ def _check_git_and_rg(should_fix: bool, f: Finding) -> None:
         check_info(f"Install for faster search: {_system_package_install_cmd('ripgrep')}")
 
 
-<<<<<<< HEAD
-_BUILTIN_TERMINAL_BACKENDS = {"local", "docker", "singularity", "modal", "managed_modal", "daytona", "vercel_sandbox", "ssh"}
-=======
 _BUILTIN_TERMINAL_BACKENDS = {"local", "docker", "modal", "managed_modal", "daytona", "vercel_sandbox", "ssh"}
->>>>>>> origin/main
 
 
 def _check_docker_backend(terminal_env: str, running_in_container: bool, issues: list[str]) -> None:
@@ -328,72 +311,6 @@ def _check_terminal_backend(should_fix: bool, f: Finding) -> None:
         _check_plugin_backend(terminal_env, f.issues)
 
 
-<<<<<<< HEAD
-def _check_agent_browser(should_fix: bool) -> bool:
-    """Read the runtime's installed selection; only --fix may acquire through PM."""
-    try:
-        from tools.browser_tool_install import _find_agent_browser
-        resolved = _find_agent_browser(validate=False)
-    except Exception:
-        resolved = None
-    if not resolved and should_fix and not _is_termux():
-        try:
-            import pm
-            from tools.browser_tool_install import _find_agent_browser
-            pm.ensure("agent-browser", explicit=True)
-            resolved = _find_agent_browser(validate=False)
-        except Exception as exc:
-            check_warn("agent-browser install failed", f"({exc})")
-    if resolved:
-        check_ok("agent-browser", f"({resolved})")
-        return True
-    if _is_termux():
-        _termux_browser_hints("agent-browser is not installed (expected in the tested Termux path)",
-                              "Install it manually later with: npm install -g agent-browser && agent-browser install", node_installed=True)
-    else:
-        check_warn("agent-browser not installed", "(run: hermes pm install agent-browser)")
-    return False
-
-
-def _termux_browser_hints(*lines: str, node_installed: bool) -> None:
-    for line in lines:
-        check_info(line)
-    check_info("Termux browser setup:")
-    for step in _termux_browser_setup_steps(node_installed=node_installed):
-        check_info(step)
-
-
-def _check_chromium() -> None:
-    """Playwright Chromium presence, using the exact predicate browser_tool uses to hide browser_* tools.
-
-    Lazy import: browser_tool is ~150KB; an import failure is a separate bug surfaced elsewhere. Camofox, a
-    CDP override, a cloud provider, or Lightpanda all bypass the local Chromium requirement (no warning).
-    """
-    try:
-        from tools.browser_tool import _is_camofox_mode
-        from tools.browser_tool_cloud import _get_cloud_provider
-        from tools.browser_tool_cdp import _get_cdp_override_raw
-        from tools.browser_tool_install import _chromium_installed
-        from tools.browser_tool_lightpanda_fallback import _using_lightpanda_engine
-    except Exception:
-        return
-    if _is_camofox_mode() or bool(_get_cdp_override_raw()) or _get_cloud_provider() is not None or _using_lightpanda_engine():
-        return
-    if not check_bool(_chromium_installed(), ("Playwright Chromium", "(browser engine)"),
-                      ("Playwright Chromium not installed", "(browser_* tools will be hidden from the agent)")):
-        check_info("Install with: hermes pm install chromium")
-
-
-def _check_lightpanda() -> None:
-    """Lightpanda engine (browser.engine / AGENT_BROWSER_ENGINE); independent of Node since Browser Use mode spawns ``lightpanda serve`` itself."""
-    try:
-        from tools.browser_tool_lightpanda_fallback import _using_lightpanda_engine, lightpanda_engine_status
-        from tools.browser_lightpanda import LIGHTPANDA_INSTALL_HINT, find_lightpanda_binary
-    except Exception:
-        return
-    # _using_lightpanda_engine() is a cached config read — a failure there is exceptional, not hidden.
-    if not _using_lightpanda_engine():
-=======
 def _chromium_not_needed_reason() -> str:
     """Why this profile's config needs no local Chromium (``""`` when it does). Config-only, no I/O: a CDP
     override attaches to the user's browser, Lightpanda is its own engine, and a cloud provider hosts one."""
@@ -439,7 +356,6 @@ def _check_lightpanda() -> None:
         return
     # using_lightpanda_engine() is a cached config read — a failure there is exceptional, not hidden.
     if not using_lightpanda_engine():
->>>>>>> origin/main
         return
     try:
         used, reason = lightpanda_engine_status()
@@ -455,28 +371,15 @@ def _check_lightpanda() -> None:
 
 @doctor_check()
 def _check_node_and_browser(should_fix: bool, f: Finding) -> None:
-<<<<<<< HEAD
-    """Node.js, agent-browser resolution, Playwright Chromium, Lightpanda engine."""
-=======
     """Node.js, the Chromium browser_exec launches, Lightpanda engine."""
->>>>>>> origin/main
     # Only PM's Node counts; Termux's APT distribution is the one that relies on `pkg install nodejs`.
     if _pm_tool_path("node") or (_is_termux() and _safe_which("node")):
         check_ok("Node.js")
     elif _is_termux():
-<<<<<<< HEAD
-        _termux_browser_hints("Node.js not found (browser tools are optional in the tested Termux path)",
-                              "Install Node.js on Termux with: pkg install nodejs", node_installed=False)
-    else:
-        check_warn("Node.js not found", "(optional; PM agent-browser is a native executable)")
-    if _check_agent_browser(should_fix) and not _is_termux():
-        _check_chromium()
-=======
         check_info("Node.js not found (optional; install on Termux with: pkg install nodejs)")
     else:
         check_warn("Node.js not found", "(optional; run: hermes pm install node)")
     _check_chromium(should_fix)
->>>>>>> origin/main
     _check_lightpanda()
 
 
@@ -552,14 +455,7 @@ def _check_npm_audit(should_fix: bool, f: Finding) -> None:
         except Exception:
             whatsapp_bridge_dir = PROJECT_ROOT / "scripts" / "whatsapp-bridge"
         for npm_dir, label, audit_extra in (
-<<<<<<< HEAD
-            # NOT agent-browser: it is now a pm-managed precompiled binary
-            # (see AgentBrowser in pm/packages.py) with no node_modules/lockfile
-            # of its own to audit. This row is the root package.json itself
-            # (js-yaml, semver, eslint tooling). See #122223.
-=======
             # The root package.json itself (js-yaml, semver, eslint tooling). See #122223.
->>>>>>> origin/main
             (PROJECT_ROOT, "Root npm package", ["--workspaces=false"]),
             (PROJECT_ROOT, "web workspace", ["--workspace", "web"]),
             (PROJECT_ROOT, "ui-tui workspace", ["--workspace", "ui-tui"]),
@@ -602,8 +498,6 @@ def _check_tool_availability(should_fix: bool, f: Finding) -> None:
     api_disabled = _missing_api_key_toolsets_for_summary(unavailable)
     if api_disabled or any(status != "ok" for status, _, _ in web_rows):
         f.issues.append("Run 'hermes setup' to configure missing API keys for full tool access")
-<<<<<<< HEAD
-=======
     _warn_partially_stripped_toolsets(f)
 
 
@@ -616,4 +510,3 @@ def _warn_partially_stripped_toolsets(f: Finding) -> None:
     for ts, (tools, by, hint) in toolsets_partially_stripped(config, _get_platform_tools(config, "cli")).items():
         check_warn(f"{ts} (partly disabled)", f"({', '.join(tools)} removed by agent.disabled_toolsets: {', '.join(by)})")
         f.issues.append(f"{ts}: {hint[0].upper()}{hint[1:]} {', '.join(tools)}")
->>>>>>> origin/main

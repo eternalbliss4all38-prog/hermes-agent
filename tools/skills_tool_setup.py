@@ -13,11 +13,7 @@ from utils import env_var_enabled
 logger = logging.getLogger("tools.skills_tool")
 
 _ENV_VAR_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-<<<<<<< HEAD
-_REMOTE_ENV_BACKENDS = frozenset({"docker", "singularity", "modal", "ssh", "daytona", "vercel_sandbox"})
-=======
 _REMOTE_ENV_BACKENDS = frozenset({"docker", "modal", "ssh", "daytona", "vercel_sandbox"})
->>>>>>> origin/main
 
 
 class SkillReadinessStatus(str, Enum):

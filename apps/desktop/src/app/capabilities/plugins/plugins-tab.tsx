@@ -7,10 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Codicon } from '@/components/ui/codicon'
 import { Switch } from '@/components/ui/switch'
 import { Tip } from '@/components/ui/tooltip'
-<<<<<<< HEAD
-=======
 import { revokeGrantsIfUninstalled } from '@/contrib/plugin-files'
->>>>>>> origin/main
 import { $pluginRecords, enablePackageDesktopHalf, type PluginRecord, setPluginEnabled } from '@/contrib/plugins-store'
 import { useContributions } from '@/contrib/react/use-contributions'
 import { discoverRuntimePlugins, uninstallDiskPlugin } from '@/contrib/runtime-loader'
@@ -19,11 +16,7 @@ import type { ProfileScope } from '@/hermes'
 import { useI18n } from '@/i18n'
 import { DESKTOP_PLUGIN_TOOLSETS } from '@/lib/desktop-toolsets'
 import { triggerHaptic } from '@/lib/haptics'
-<<<<<<< HEAD
-import { CheckCircle2, FolderOpen, Loader2, Monitor, Package, RefreshCw, Trash2 } from '@/lib/icons'
-=======
 import { CheckCircle2, FolderOpen, Loader2, Monitor, Package, RefreshCw } from '@/lib/icons'
->>>>>>> origin/main
 import { queryClient } from '@/lib/query-client'
 import { cn } from '@/lib/utils'
 import {
@@ -53,13 +46,9 @@ import { type CatalogEntry, parseCatalog } from '../catalog/catalog-data'
 import { CatalogSwitch } from '../catalog/catalog-switch'
 import { TOOLSETS_QUERY_KEY } from '../toolsets/toolsets-data'
 
-<<<<<<< HEAD
-import { mergePluginPackages, type PackageKind, type PluginPackage } from './plugin-packages'
-=======
 import { PluginFolderAccess } from './plugin-folder-access'
 import { mergePluginPackages, type PackageKind, type PluginPackage } from './plugin-packages'
 import { PluginPageAccess } from './plugin-page-access'
->>>>>>> origin/main
 import { runPluginUpdate } from './plugin-update'
 
 /** Deep-link anchor for a package row (`/capabilities?tab=plugins&plugin=<key>`).
@@ -120,8 +109,6 @@ function installAgentHalfHere(record: PluginRecord, profile: null | string) {
     return
   }
 
-<<<<<<< HEAD
-=======
   // The package marker carries no tier, so read it from the cached catalog
   // (a plugin row's `source` is its tier). Not cached: the dialog keeps the
   // generic Verified badge.
@@ -131,18 +118,13 @@ function installAgentHalfHere(record: PluginRecord, profile: null | string) {
         ?.find(entry => entry.name === origin.catalogName)?.source
     : undefined
 
->>>>>>> origin/main
   openPluginInstallRequest({
     catalogName: origin.catalogName,
     legacyHint: 'agent',
     profile,
     repo: origin.repo,
-<<<<<<< HEAD
-    sha: origin.sha
-=======
     sha: origin.sha,
     tier
->>>>>>> origin/main
   })
 }
 
@@ -241,8 +223,6 @@ function Dash() {
   )
 }
 
-<<<<<<< HEAD
-=======
 function UninstallRow({
   name,
   note,
@@ -276,7 +256,6 @@ function UninstallRow({
   )
 }
 
->>>>>>> origin/main
 function PackageRow({
   pkg,
   scope,
@@ -299,11 +278,7 @@ function PackageRow({
   request: GatewayRequest
   onAgentToggle: (row: AgentPluginRow, enable: boolean) => void
   onAgentUpdate: (row: AgentPluginRow) => void
-<<<<<<< HEAD
-  onAgentRemove: (row: AgentPluginRow) => void
-=======
   onAgentRemove: (row: AgentPluginRow, desktop: null | PluginRecord) => void
->>>>>>> origin/main
   onDesktopRemove: (record: PluginRecord) => void
 }) {
   const { t } = useI18n()
@@ -428,10 +403,7 @@ function PackageRow({
                 {desktop?.status === 'error' ? desktop.error : pkg.description}
               </div>
             )}
-<<<<<<< HEAD
-=======
             <PluginPageAccess plugin={desktop} pluginName={pkg.name} />
->>>>>>> origin/main
             {unavailableServers.map(server =>
               server.sentence ? (
                 <div
@@ -465,46 +437,10 @@ function PackageRow({
               </Tip>
             )}
           </span>
-<<<<<<< HEAD
-          {/* Same fixed-slot treatment for Uninstall: present on every row so the
-            halves line up, populated when the agent half is a user install or
-            the row is a standalone desktop plugin. */}
-          <span className="flex size-7 shrink-0 items-center justify-center">
-            {agent && agentRemovable ? (
-              <Tip label={p.uninstallTip(pkg.name, scopeLabel)}>
-                <Button
-                  aria-label={`${p.uninstall}: ${pkg.name}`}
-                  className="text-(--ui-text-tertiary) hover:text-(--ui-danger,#f87171)"
-                  disabled={busy}
-                  onClick={() => onAgentRemove(agent)}
-                  size="icon"
-                  variant="ghost"
-                >
-                  <Trash2 className="size-3.5" />
-                </Button>
-              </Tip>
-            ) : desktop && desktopRemovable ? (
-              <Tip label={p.uninstallDesktopTip(pkg.name)}>
-                <Button
-                  aria-label={`${p.uninstall}: ${pkg.name}`}
-                  className="text-(--ui-text-tertiary) hover:text-(--ui-danger,#f87171)"
-                  onClick={() => onDesktopRemove(desktop)}
-                  size="icon"
-                  variant="ghost"
-                >
-                  <Trash2 className="size-3.5" />
-                </Button>
-              </Tip>
-            ) : null}
-          </span>
-        </div>
-
-=======
         </div>
 
         <PluginFolderAccess name={pkg.name} plugin={desktop} />
 
->>>>>>> origin/main
         {/* The two halves. Desktop is app-level and reads the same whichever
           profile is selected; Agent follows the selector. A half the package
           lacks shows a dash; a half it has but which is missing on this side
@@ -579,8 +515,6 @@ function PackageRow({
             <Dash />
           )}
         </HalfCell>
-<<<<<<< HEAD
-=======
 
         {/* Uninstall lives here, not on the card: the card only installs (+)
           and switches. Bundled and pip plugins have no row. */}
@@ -601,7 +535,6 @@ function PackageRow({
             />
           )
         )}
->>>>>>> origin/main
       </div>
     </>
   )
@@ -756,11 +689,7 @@ export const PluginsTab = memo(function PluginsTab({
   const isInstalled = (entry: CatalogEntry) => packageById.has(entry.id)
 
   const handleAgentRemove = useCallback(
-<<<<<<< HEAD
-    (row: AgentPluginRow) => {
-=======
     (row: AgentPluginRow, desktop: null | PluginRecord) => {
->>>>>>> origin/main
       void confirm({
         confirmLabel: p.uninstall,
         description: p.uninstallConfirmBody(row.name, label),
@@ -773,10 +702,6 @@ export const PluginsTab = memo(function PluginsTab({
 
         if (await removeAgentPlugin(requestGateway, row.name, p.uninstallFailed(row.name), scope)) {
           notify({ kind: 'success', message: p.uninstalled(row.name) })
-<<<<<<< HEAD
-          // Prunes the app-level desktop half whose source package just went away.
-          void rescanAll(requestGateway, scope)
-=======
 
           // Prunes the app-level desktop half whose source package just went
           // away; its folder grants go with it, and only then (another profile
@@ -784,7 +709,6 @@ export const PluginsTab = memo(function PluginsTab({
           void rescanAll(requestGateway, scope)
             .then(() => desktop && revokeGrantsIfUninstalled(desktop.id))
             .catch(error => notifyError(error, p.folderAccess.revokeFailed(row.name)))
->>>>>>> origin/main
         }
       })
     },
@@ -816,11 +740,7 @@ export const PluginsTab = memo(function PluginsTab({
   )
 
   // The card switch turns the whole package on or off, like a skill's; per-half
-<<<<<<< HEAD
-  // switches and uninstall (trash + confirm) live in the detail's PackageRow.
-=======
   // switches and Uninstall (with confirm) live in the detail's PackageRow.
->>>>>>> origin/main
   const packageSwitch = (pkg: PluginPackage) => {
     const { agent, desktop } = pkg
 
@@ -865,13 +785,9 @@ export const PluginsTab = memo(function PluginsTab({
       kind="plugins"
       matchInstalled={matchInstalled}
       notice={notice}
-<<<<<<< HEAD
-      onInstall={entry => openCatalogPluginInstall(entry, scope)}
-=======
       // A plugin row's `source` IS its catalog tier (catalog-data.ts::catalogEntry);
       // CatalogEntry has no `tier` field, so don't "fix" this to entry.tier.
       onInstall={entry => openCatalogPluginInstall(entry, scope, { tier: entry.source })}
->>>>>>> origin/main
       onQueryChange={onQueryChange}
       query={query}
       renderInstalledAction={entry => {

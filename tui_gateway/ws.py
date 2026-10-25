@@ -104,8 +104,6 @@ _WS_CONCURRENT_READ_METHODS = frozenset({"session.context_breakdown"})
 _WS_CONCURRENT_READ_LIMIT = 2
 # Reads admitted beyond the running ones; one more parks the reader (as the serial lane did).
 _WS_WAITING_READ_LIMIT = 8
-<<<<<<< HEAD
-=======
 # A viewer's answer to an open server→client request (its response frame, a batch clarify's
 # ``clarify.lock``) settles in memory and never queues: the serial lane may be running the very handler
 # that waits for it (a plugin slash command's ``ctx.ask_choice`` under ``slash.exec``).
@@ -115,7 +113,6 @@ _WS_ANSWER_METHODS = frozenset({"clarify.lock"})
 def _answers_open_request(req: Any) -> bool:
     from tui_gateway.server_requests import is_response_frame
     return isinstance(req, dict) and (req.get("method") in _WS_ANSWER_METHODS or is_response_frame(req))
->>>>>>> origin/main
 
 # Per-token streaming frames are coalesced: buffered and flushed as a batch on a short timer instead
 # of waking the loop once per token (each wakeup competes with the agent turn for the GIL). Keep this
@@ -143,16 +140,10 @@ class WSTransport:
         self._loop = loop
         self._peer = peer
         #: Server-verified identity from the WS-upgrade credential, stamped by ``web_server_chat._ws_auth_reason``; None
-<<<<<<< HEAD
-        #: for legacy-token/stdio. RPC params can never populate it: sole identity authority for browser controllers
-        #: and for the ``user_id`` the agent is built with (``server._session_auth_user_id``).
-        self.auth_identity = auth_identity
-=======
         #: for legacy-token/stdio. RPC params can never populate it: sole identity authority for relay authorship
         #: and for the ``user_id`` the agent is built with (``server._session_auth_user_id``).
         self.auth_identity = auth_identity
         self.desktop_local = False
->>>>>>> origin/main
         #: The served profile home whose skin this peer follows (None = the launch home); see change_watcher.
         self.skin_home: str | None = None
         self._closed = False
@@ -375,21 +366,6 @@ def _authority_connection(ws: Any, transport: WSTransport, auth_identity: dict |
 
 
 async def _dispatch_request(authority_connection: Any, req: Any, req_method: Any, transport: WSTransport) -> Any:
-<<<<<<< HEAD
-    """One request through the authority when attached, else the legacy dispatcher."""
-    if authority_connection is None:
-        return await asyncio.to_thread(server.dispatch, req, transport)
-    resp = await authority_connection.dispatch(req)
-    actor = authority_connection.actor
-    if (_is_unknown_method(resp) and req_method in server._methods
-            and legacy_fallback_allowed(actor, req_method)):
-        # Session verbs live on the authority; everything else the sidecar still
-        # registers (pet, wake word, connectors) keeps its legacy handler. A legacy
-        # session writer keeps the authority's -32601 (ws_legacy_fallback), as does a
-        # method neither side knows, which is what the client's version-skew notice keys on.
-        resp = await asyncio.to_thread(dispatch_legacy, server, req, transport, actor)
-    return resp
-=======
     """One request through the authority when attached, else the legacy dispatcher. A request from the
     local Desktop runs as work for it (the welcome trial and onboarding key on that), and so do the
     threads it hands off to: ``to_thread`` and the legacy pool copy this context."""
@@ -407,7 +383,6 @@ async def _dispatch_request(authority_connection: Any, req: Any, req_method: Any
             # method neither side knows, which is what the client's version-skew notice keys on.
             resp = await asyncio.to_thread(dispatch_legacy, server, req, transport, actor)
         return resp
->>>>>>> origin/main
 
 
 def _start_backend_liveness() -> None:
@@ -432,11 +407,7 @@ async def handle_ws(ws: Any, *, auth_identity: dict | None = None, subprotocol: 
                     operator: bool = False) -> None:
     """Run one WebSocket session. Wire-compatible with ``tui_gateway.entry``. *auth_identity* is the server-minted
     ``{user_id, provider}`` recorded at WS-upgrade auth, stored as ``WSTransport.auth_identity`` (the only identity
-<<<<<<< HEAD
-    authority for browser-controller registration); callers that omit it (harnesses, embedded TUI child) get None."""
-=======
     authority for session ownership and relay authorship); callers that omit it (harnesses, embedded TUI child) get None."""
->>>>>>> origin/main
     peer, transport = _ws_peer_label(ws), None
     authority_connection = None
     messages = parse_errors = dispatch_crashes = send_failures = 0
@@ -528,12 +499,9 @@ async def handle_ws(ws: Any, *, auth_identity: dict | None = None, subprotocol: 
             await _dispatch_one(req)
 
     async def _queue_request(req: Any) -> None:
-<<<<<<< HEAD
-=======
         if _answers_open_request(req):
             await _dispatch_one(req)
             return
->>>>>>> origin/main
         if isinstance(req, dict) and req.get("method") in _WS_CONCURRENT_READ_METHODS:
             # A read past the waiting cap parks the reader, as the serial lane did; released
             # when its task ends (a read cancelled before it ran releases it too).
@@ -659,17 +627,6 @@ async def handle_ws(ws: Any, *, auth_identity: dict | None = None, subprotocol: 
         reaped_sessions = detached_sessions = 0
         if transport is not None:
             server.unregister_live_transport(transport)
-<<<<<<< HEAD
-            # Owner-safely park browser controllers this transport registered (a same-identity reconnect may
-            # deliver a terminal result for in-flight work). Offloaded: disconnect takes the controller's
-            # send_lock, which a worker-thread dispatch may hold while blocking on THIS loop to transmit.
-            try:
-                from gateway.browser_control_broker import get_browser_control_broker
-                await asyncio.to_thread(get_browser_control_broker().disconnect_owner, transport)
-            except Exception:
-                _log.exception("ws browser-controller disconnect failed peer=%s", peer)
-=======
->>>>>>> origin/main
             transport.close()
             try:
                 await asyncio.to_thread(server._release_wake_for_transport, transport)

@@ -10,16 +10,12 @@ import fsp from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
-<<<<<<< HEAD
-import { publishDesktopTree, writeDesktopHalfMarker } from './desktop-plugins-root'
-=======
 import {
   PACKAGE_MARKER,
   publishDesktopTree,
   withDesktopPluginsRoot,
   writeDesktopHalfMarker
 } from './desktop-plugins-root'
->>>>>>> origin/main
 import { execGit, hiddenGitSpawnSpec } from './no-console-git'
 
 const GITHUB_BROWSER_SEGMENTS = new Set(['tree', 'blob', 'commit'])
@@ -477,35 +473,8 @@ export async function installDesktopPluginFromGit(
             // media), so only this installer or the reconcile pass writes one.
             await fsp.rm(path.join(staged, PACKAGE_MARKER), { force: true })
 
-<<<<<<< HEAD
-      // Staged copy + rename: a failed copy must not leave an empty `targetDir`
-      // that turns every retry into "already exists. Enable force reinstall".
-      // The half of a unified package is stamped with the package marker as
-      // part of that publication — without it the Plugins page cannot tell this
-      // copy belongs to the agent row (it sits on "copying…" forever) and the
-      // half loads default-enabled instead of opt-in.
-      await publishDesktopTree(sourceDir, targetDir, async staged => {
-        if (!packageName) {
-          return
-        }
-
-        await writeDesktopHalfMarker(staged, {
-          package: packageName,
-          repo: gitUrl,
-          // The published folder, not the temp clone. The clone is deleted
-          // below; a source that disappears is ghost-pruned on the next
-          // reconcile when no local `plugins/<name>/desktop` exists to
-          // re-copy from (remote backend, or Desktop UI only). A later pass
-          // that does find the agent package still replaces this copy,
-          // because this path is not that package's `desktop/` dir.
-          source: targetDir,
-          sourceMtimeMs: (await fsp.stat(path.join(staged, 'plugin.js'))).mtimeMs
-        })
-      })
-=======
             return
           }
->>>>>>> origin/main
 
           await writeDesktopHalfMarker(staged, {
             package: packageName,

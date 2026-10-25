@@ -10,10 +10,6 @@ import pytest
 import hermes_constants
 from hermes_platform.host import runtime as host_runtime
 from hermes_constants import (
-<<<<<<< HEAD
-    agent_browser_runnable,
-=======
->>>>>>> origin/main
     get_default_hermes_root,
     get_hermes_dir,
     get_hermes_home,
@@ -508,43 +504,6 @@ class TestSecureParentDir:
         assert called_with[0] == (str(real_dir), 0o700)
 
 
-<<<<<<< HEAD
-@pytest.mark.platforms("posix")  # POSIX shell stubs; Windows uses .cmd shims
-class TestAgentBrowserRunnable:
-    """agent_browser_runnable() validates the resolved CLI actually runs.
-
-    Regression coverage for issue #48521: a dangling global symlink left by
-    agent-browser's npm postinstall is reported by ``which`` but fails at exec
-    with exit 127, silently breaking every browser tool. The validator must
-    reject it (and other non-runnable candidates) so callers fall through.
-    """
-
-    def _stub(self, tmp_path, name, body, mode=0o755):
-        p = tmp_path / name
-        p.write_text(body)
-        p.chmod(mode)
-        return p
-
-    def test_none_and_empty_rejected(self):
-        assert agent_browser_runnable(None) is False
-        assert agent_browser_runnable("") is False
-
-    def test_dangling_symlink_rejected(self, tmp_path):
-        link = tmp_path / "agent-browser"
-        link.symlink_to(tmp_path / "does-not-exist")
-        # exists() follows the link → False, so it's rejected without exec.
-        assert agent_browser_runnable(str(link)) is False
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> origin/main
 class TestGetHermesDir:
     """Tests for ``get_hermes_dir(new_subpath, old_name)``.
 

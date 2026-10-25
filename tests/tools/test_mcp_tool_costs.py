@@ -113,8 +113,6 @@ def test_full_trust_asks_only_past_the_limit_and_unattended_refuses_without_disp
     assert "used about 140 credits" in result["error"] and session.call_tool.await_count == dispatched
 
 
-<<<<<<< HEAD
-=======
 def test_over_limit_untrusted_prompt_shows_notice_then_arguments_on_the_text_fallback(session):
     """A surface without approval buttons gets the gateway's plain-text prompt: it carries the spend-limit
     notice and cost first, then the call's arguments."""
@@ -135,7 +133,6 @@ def test_over_limit_untrusted_prompt_shows_notice_then_arguments_on_the_text_fal
     assert session.call_tool.await_count == 0
 
 
->>>>>>> origin/main
 def test_chats_and_profiles_never_share_a_tally(session):
     _register(COSTED)
     for _ in range(2):

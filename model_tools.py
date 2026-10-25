@@ -181,11 +181,6 @@ _LEGACY_TOOLSET_MAP = {
     "vision_tools": ["vision_analyze"],
     "image_tools": ["image_generate"],
     "skills_tools": ["skills_list", "skill_view", "skill_manage"],
-<<<<<<< HEAD
-    "browser_tools": ["browser_navigate", "browser_snapshot", "browser_click", "browser_type", "browser_scroll",
-                      "browser_back", "browser_press", "browser_get_images", "browser_vision", "browser_console"],
-=======
->>>>>>> origin/main
     "cronjob_tools": ["cronjob_manage"],
     "file_tools": ["read_file", "write_file", "patch", "search_files"],
     "tts_tools": ["text_to_speech"],
@@ -370,20 +365,6 @@ def _discord_rewriter(schema_fn_name: str):
     return _rewrite
 
 
-<<<<<<< HEAD
-def _rewrite_browser_navigate(td: dict[str, Any], available: set) -> Optional[dict[str, Any]]:
-    """Static schema is toolset-neutral; name the lightweight retrieval tools only when they are present
-    (#39797: a hard "prefer web_search" overrode the user's SOUL.md and was hallucinated when web was off)."""
-    web_tools = [name for name in ("web_search", "web_extract") if name in available]
-    if not web_tools:
-        return td
-    noun = "tool" if len(web_tools) == 1 else "tools"
-    hint = f" Available lightweight retrieval {noun}: {' and '.join(web_tools)}."
-    return _fn_def({**td["function"], "description": td["function"].get("description", "") + hint})
-
-
-=======
->>>>>>> origin/main
 def _rewrite_browser_cdp(td: dict[str, Any], available: set) -> Optional[dict[str, Any]]:
     """Same rule for the CDP docs pointer: mention web_extract only when the session has it."""
     if "web_extract" not in available:
@@ -399,8 +380,6 @@ def _rewrite_browser_exec(td: dict[str, Any], available: set) -> Optional[dict[s
     return td if "terminal" in available else None
 
 
-<<<<<<< HEAD
-=======
 def _rewrite_browser_exec_vision(td: dict[str, Any], available: set) -> Optional[dict[str, Any]]:
     """Point a header that says screenshots are not attached at vision_analyze, only when the
     session has it (an auxiliary vision route alone does not expose the tool)."""
@@ -413,7 +392,6 @@ def _rewrite_browser_exec_vision(td: dict[str, Any], available: set) -> Optional
     return _fn_def({**fn, "description": desc.replace(SCREENSHOTS_DETACHED, SCREENSHOTS_DETACHED + hint, 1)})
 
 
->>>>>>> origin/main
 def _rewrite_delegate_task(td: dict[str, Any], available: set) -> Optional[dict[str, Any]]:
     """Trim the child-restrictions line to sibling tools actually present, or drop
     the line when none apply, so the model never learns ghost vocabulary. Two
@@ -445,22 +423,11 @@ _VAULT_INPUT_TOOL_HINT = "the browser's input tool"
 
 
 def _rewrite_browser_vault(td: dict[str, Any], available: set) -> Optional[dict[str, Any]]:
-<<<<<<< HEAD
-    """Name the concrete input tool for typing the login identifier: `fill_input` inside browser_exec code, or
-    browser_type on the built-in stack. Resolved here because the two live in different toolsets."""
-    if "browser_exec" in available:
-        concrete = "`fill_input` inside browser_exec"
-    elif "browser_type" in available:
-        concrete = "browser_type"
-    else:
-        return td
-=======
     """Name the concrete input tool for typing the login identifier (`fill_input` inside browser_exec code).
     Resolved here because the two live in different toolsets."""
     if "browser_exec" not in available:
         return td
     concrete = "`fill_input` inside browser_exec"
->>>>>>> origin/main
     fn = td["function"]
     return _fn_def({**fn, "description": fn.get("description", "").replace(_VAULT_INPUT_TOOL_HINT, concrete)})
 
@@ -494,15 +461,8 @@ _DYNAMIC_SCHEMA_REWRITERS = {
     "execute_code": _rewrite_execute_code,
     "discord": _discord_rewriter("get_dynamic_schema_core"),
     "discord_admin": _discord_rewriter("get_dynamic_schema_admin"),
-<<<<<<< HEAD
-    "browser_navigate": _rewrite_browser_navigate,
-    "browser_cdp": _rewrite_browser_cdp,
-    "browser_exec": _compose_rewriters(_rewrite_browser_exec, _rewrite_input_tool_for_vault),
-    "browser_type": _rewrite_input_tool_for_vault,
-=======
     "browser_cdp": _rewrite_browser_cdp,
     "browser_exec": _compose_rewriters(_rewrite_browser_exec, _rewrite_browser_exec_vision, _rewrite_input_tool_for_vault),
->>>>>>> origin/main
     "browser_vault": _rewrite_browser_vault,
     "delegate_task": _rewrite_delegate_task,
 }
@@ -914,11 +874,7 @@ def handle_function_call(
 ) -> str:
     """Route a tool call through hooks/middleware to the registry; returns a JSON string.
 
-<<<<<<< HEAD
-    task_id isolates terminal/browser sessions; user_task feeds browser_snapshot.
-=======
     task_id isolates terminal/browser sessions; user_task is forwarded to every handler as a kwarg.
->>>>>>> origin/main
     enabled_tools picks execute_code's sandbox tools (default: the process-global
     ``_last_resolved_tool_names``). skip_pre_tool_call_hook: caller already fired
     it (single-fire contract). enabled/disabled_toolsets scope the Tool Search

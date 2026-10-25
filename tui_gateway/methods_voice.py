@@ -523,11 +523,6 @@ def _(rid, params: dict) -> dict:
     """What the calling client handles. ``server_requests: true`` marks this connection as one that answers
     server→client requests; a WebSocket client that never sends it gets every such request failed fast
     instead of stalling the agent for the deadline (#112548)."""
-<<<<<<< HEAD
-    from tui_gateway import server_requests
-    from tui_gateway.contracts import registry as contracts
-    server_requests.advertise(_caller_transport(), bool(params.get("server_requests")))
-=======
     from hermes_cli.process_identity import local_desktop_client
     from tui_gateway import server_requests
     from tui_gateway.contracts import registry as contracts
@@ -541,7 +536,6 @@ def _(rid, params: dict) -> dict:
         if transport.desktop_local:
             from tui_gateway import server
             server.begin_local_desktop_boot()
->>>>>>> origin/main
     return _ok(rid, {"server_requests": sorted(contracts.SERVER_REQUESTS), "declines_not_shown": True})
 
 

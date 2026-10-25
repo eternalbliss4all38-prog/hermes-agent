@@ -167,8 +167,6 @@ describe('ModelPickerDialog download rows', () => {
   })
 })
 
-<<<<<<< HEAD
-=======
 const WINDOW_USAGE = {
   kind: 'usage_window' as const,
   plan: 'Window Plan',
@@ -445,7 +443,6 @@ describe('ModelPickerDialog plan usage', () => {
   })
 })
 
->>>>>>> origin/main
 describe('ModelPickerDialog search ranking', () => {
   // Rows must come out in the order the shared fuzzyRank produces — the same
   // helper the web and TUI pickers use — so a query ranks identically on

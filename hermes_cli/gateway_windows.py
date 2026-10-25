@@ -1860,8 +1860,6 @@ def _wait_for_gateway_absent(timeout_s: float = 30.0, interval_s: float = 0.5) -
             return True
         time.sleep(interval_s)
     return _absent()
-<<<<<<< HEAD
-=======
 
 
 def _mark_planned_restart() -> None:
@@ -1877,7 +1875,6 @@ def _mark_planned_restart() -> None:
     """
     from gateway.restart_notice import write_planned_restart_marker
     write_planned_restart_marker()
->>>>>>> origin/main
 
 
 def restart() -> None:
@@ -1900,10 +1897,7 @@ def restart() -> None:
     from hermes_cli.gateway import _wait_for_api_server_port_free  # avoid circular init
 
     _wait_for_api_server_port_free()
-<<<<<<< HEAD
-=======
     _mark_planned_restart()
->>>>>>> origin/main
     start()
 
     if not _wait_for_gateway_ready(timeout_s=15.0):

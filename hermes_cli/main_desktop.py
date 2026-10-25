@@ -1769,10 +1769,7 @@ def cmd_gui(args: argparse.Namespace):
                 raise FileNotFoundError(executable)
         except OSError as exc:
             print(f"✗ Prepared Electron runtime is missing: {exc}")
-<<<<<<< HEAD
-=======
             print("  From the project root, run: node scripts/build/electron-runtime.mjs --source .")
->>>>>>> origin/main
             raise SystemExit(1) from exc
         launch_command = [str(executable), "."]
     else:

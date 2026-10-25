@@ -144,14 +144,6 @@ function blockableProxy(targetPort: number) {
   })
 }
 
-<<<<<<< HEAD
-/** Nothing spins for `ms`: no Stop button in the composer at any sample. */
-async function settledFor(page: Page, ms = 3_000): Promise<void> {
-  const end = Date.now() + ms
-
-  while (Date.now() < end) {
-    expect(await stopButton(page).count(), 'a turn indicator (Stop) is still showing after the turn settled').toBe(0)
-=======
 /**
  * Failure evidence for the settle checks. This flake has only ever reproduced on CI, so the artifact
  * must carry its own story: every non-delta gateway frame (events with seq/running, RPC results with
@@ -279,7 +271,6 @@ async function settledFor(page: Page, timeline: Timeline, ms = 3_000): Promise<v
     }
 
     expect(count, 'a turn indicator (Stop) is still showing after the turn settled').toBe(0)
->>>>>>> origin/main
     await page.waitForTimeout(250)
   }
 }
@@ -291,10 +282,7 @@ function setup(label: string) {
     writeProviderHome(sandbox.hermesHome, provider.url)
     const { app, page } = await launchCoreApp(coreAppEnv(sandbox))
     const ws = recordWebSockets(page)
-<<<<<<< HEAD
-=======
     const timeline = recordTimeline(page)
->>>>>>> origin/main
 
     const finished = (marker: string, step = 0, timeout = 120_000) =>
       expect
@@ -304,20 +292,12 @@ function setup(label: string) {
         })
         .toBe(true)
 
-<<<<<<< HEAD
-    return { provider, sandbox, app, page, ws, finished }
-=======
     return { provider, sandbox, app, page, ws, finished, timeline }
->>>>>>> origin/main
   }
 }
 
 test('socket drop mid-turn: the finished reply shows once on reconnect, and a follow-up right after runs', async () => {
-<<<<<<< HEAD
-  const { provider, sandbox, app, page, ws, finished } = await setup('nf2-drop')()
-=======
   const { provider, sandbox, app, page, ws, finished, timeline } = await setup('nf2-drop')()
->>>>>>> origin/main
   const proxies: { close: () => Promise<void> }[] = []
   const session: OracleTarget = { sessionId: '', expectUserMarkers: [] }
 
@@ -340,10 +320,7 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
     await page.reload()
     await waitForInteractive(app, page)
     await installDuplicateSampler(page)
-<<<<<<< HEAD
-=======
     await watchStop(page)
->>>>>>> origin/main
     await expect.poll(() => proxy.connections(), { timeout: 60_000 }).toBeGreaterThan(0)
     await page.evaluate(id => (window.location.hash = `#/${encodeURIComponent(id)}`), session.sessionId)
     await expect(viewport(page)).toContainText(A(1), { timeout: 60_000 })
@@ -369,11 +346,7 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
       session.lossyWire = [U(2)]
       await assertTranscriptOracle(page, ws, provider, session, 'drop: completed while away')
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
-<<<<<<< HEAD
-      await settledFor(page)
-=======
       await settledFor(page, timeline)
->>>>>>> origin/main
     })
 
     await test.step('(b) follow-up sent right after the reconnect while the prior turn still runs', async () => {
@@ -398,11 +371,7 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
       session.lossyWire = [U(2), U(3)]
       await assertTranscriptOracle(page, ws, provider, session, 'drop: follow-up after reconnect')
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
-<<<<<<< HEAD
-      await settledFor(page)
-=======
       await settledFor(page, timeline)
->>>>>>> origin/main
       await dump(page, 'b-done')
     })
   } finally {
@@ -418,20 +387,13 @@ test('socket drop mid-turn: the finished reply shows once on reconnect, and a fo
 })
 
 test('gateway SIGKILL mid-turn: the lost turn is offered for Discard, and a follow-up never hangs behind it', async () => {
-<<<<<<< HEAD
-  const { provider, sandbox, app, page, ws, finished } = await setup('nf2-kill')()
-=======
   const { provider, sandbox, app, page, ws, finished, timeline } = await setup('nf2-kill')()
->>>>>>> origin/main
   const session: OracleTarget = { sessionId: '', expectUserMarkers: [] }
 
   try {
     await waitForInteractive(app, page)
     await installDuplicateSampler(page)
-<<<<<<< HEAD
-=======
     await watchStop(page)
->>>>>>> origin/main
 
     provider.script(U(1), [{ text: words(A(1), 'first', 'turn') }])
     await send(page, `${U(1)} hello`, 'Enter', ws)
@@ -486,11 +448,7 @@ test('gateway SIGKILL mid-turn: the lost turn is offered for Discard, and a foll
       await finished(U(3), 0, 60_000)
       await expect(viewport(page)).toContainText('END3', { timeout: 60_000 })
       await expect(stopButton(page)).toHaveCount(0, { timeout: 30_000 })
-<<<<<<< HEAD
-      await settledFor(page)
-=======
       await settledFor(page, timeline)
->>>>>>> origin/main
       session.expectUserMarkers.push(U(1), U(2), U(3))
       session.lossyWire = [U(2)]
       await dump(page, 'c-done')

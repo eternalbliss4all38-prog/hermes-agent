@@ -16,8 +16,6 @@ class OpenModel(Result):
     model_config = Result.model_config | {"extra": "allow"}
 
 
-<<<<<<< HEAD
-=======
 class PlanGauge(Result):
     """``gateway/session_usage.py::plan_gauge``: a window plan's allowance for the status bar."""
 
@@ -27,7 +25,6 @@ class PlanGauge(Result):
     resets_at_ms: int | None = None
 
 
->>>>>>> origin/main
 class Usage(OpenModel):
     """``tui_gateway/server.py::_get_usage`` + ``agent/context_breakdown.py::context_usage_fields``."""
 
@@ -54,10 +51,7 @@ class Usage(OpenModel):
     dev_credits_spent_micros: int | None = None
     cost_usd: float | None = None
     cost_status: str | None = None
-<<<<<<< HEAD
-=======
     plan_gauge: PlanGauge | None = None
->>>>>>> origin/main
 
 
 class ProjectRef(Result):
@@ -278,11 +272,6 @@ class EmptyPayload(Payload):
     pass
 
 
-<<<<<<< HEAD
-__all__ = [
-    "TERMINAL_SUBAGENT_STATUSES", "AccountOwner", "ConnectorOwner", "EmptyPayload", "EmptyResult", "McpServerStatus",
-    "MessageReaction", "OkResult", "OpenModel", "PendingApproval",
-=======
 class PlanUsageGauge(Result):
     """One server allowance on ``ModelOptionProvider.plan_usage``, in the server's order. ``label`` is the
     server's id (``day`` / ``week`` / ``month`` / ``top_tier`` have client words; any other id shows
@@ -314,7 +303,6 @@ class PlanUsage(Result):
 __all__ = [
     "TERMINAL_SUBAGENT_STATUSES", "AccountOwner", "ConnectorOwner", "EmptyPayload", "EmptyResult", "McpServerStatus",
     "MessageReaction", "OkResult", "OpenModel", "PendingApproval", "PlanUsage", "PlanUsageGauge",
->>>>>>> origin/main
     "ProfileParams", "ProjectRef", "SessionLiveInfo", "SessionOwner", "SessionParams", "StatusResult", "StoredSessionRow",
     "SubagentStatus", "ToolLabel", "ToolLabelKind", "TranscriptMessage", "Usage",
 ]

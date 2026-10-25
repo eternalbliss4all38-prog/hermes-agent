@@ -55,15 +55,9 @@ def _drift_error(path: Path, bak_path: str) -> dict[str, Any]:
         f"either rewrite the file as a clean §-delimited list of entries, or move the extra "
         f"content out — then retry. This guard exists to prevent silent data loss (issue #26045)."
     ), "drift", drift_backup=bak_path, remediation=(
-<<<<<<< HEAD
-        "Open the .bak file, integrate the missing entries into the memory tool one at a time via "
-        f"memory(action=add, target='{_store_target(path.name)}', content=...), then remove or rewrite the "
-        "original file to a clean state."))
-=======
         "Open the .bak file, integrate the missing entries into the memory tool with one add op per entry via "
         f"memory(target='{_store_target(path.name)}', operations=[{{action: 'add', content: ...}}]), then remove or "
         "rewrite the original file to a clean state."))
->>>>>>> origin/main
 
 
 def _read_failed_error(path: Path) -> dict[str, Any]:
@@ -330,8 +324,6 @@ class MemoryStore:
         return self._consolidation_failure(
             _error(message, "over_budget", current_entries=self._entries_for(target), usage=self._usage(target)))
 
-<<<<<<< HEAD
-=======
     def _add_overflow(self, target: str, content: str, limit: int) -> dict[str, Any]:
         """A lone add over budget, legacy or one-item batch: the model has not consolidated yet,
         so the live entries come back (its prompt snapshot may predate other sessions' writes)."""
@@ -342,7 +334,6 @@ class MemoryStore:
             f"removes or shortens (patch) stale entries from current_entries below to free at least "
             f"{over:,} chars AND adds this entry — the limit is checked only on the batch result."))
 
->>>>>>> origin/main
     def _batch_failure(self, target: str, message: str, failure_class: str,
                        closest_entries: Optional[list[str]] = None) -> dict[str, Any]:
         """Batch-abort failure WITHOUT ``current_entries``: the store did not change and the
@@ -397,16 +388,7 @@ class MemoryStore:
             if content in entries:
                 return self._success_response(target, "Entry already exists (no duplicate added).")
             if len(ENTRY_DELIMITER.join(entries + [content])) > limit:
-<<<<<<< HEAD
-                new_total = len(ENTRY_DELIMITER.join(entries + [content]))
-                return self._failure_with_entries(target, (
-                    f"Memory at {self._char_count(target):,}/{limit:,} chars; adding this entry ({len(content)} chars) "
-                    f"would exceed the limit by {new_total - limit:,} chars. Retry as ONE 'operations' batch that "
-                    f"removes or shortens (patch) stale entries from current_entries below to free at least "
-                    f"{new_total - limit:,} chars AND adds this entry — the limit is checked only on the batch result."))
-=======
                 return self._add_overflow(target, content, limit)
->>>>>>> origin/main
             return entries + [content], "Entry added."
         # Append-only: skip the drift guard (appending never clobbers foreign
         # content) but still refuse a failed read — add rewrites the WHOLE file.
@@ -603,29 +585,17 @@ class MemoryStore:
                 matched.append(previous_content)
                 if after is not None:
                     produced[i + 1] = after
-<<<<<<< HEAD
-            if entries and not working:
-                # #103419: a consolidation batch that removes the last entry would
-                # commit an empty file as a normal successful write. Refuse; single
-                # remove() is the deliberate-wipe path.
-=======
             if entries and not working and not (len(ops) == 1 and ops[0].get("action") == "remove"):
                 # #103419: a consolidation batch that removes the last entry would
                 # commit an empty file as a normal successful write. Refuse; a batch of
                 # exactly one remove is the deliberate single delete (operations[] is the
                 # memory tool's only advertised shape), and unattended forks never get
                 # that far: the #105921 delete gate stages their removes.
->>>>>>> origin/main
                 label = self._path_for(target).name
                 return self._batch_failure(target, (
                     f"Refusing to empty {label}: this batch would remove every entry from a "
                     f"previously non-empty store. Keep at least one entry — merge overlapping "
                     f"entries into a shorter one instead of removing the last one. To delete the "
-<<<<<<< HEAD
-                    f"final entry deliberately, use single remove() calls."), "would_empty")
-            new_total = len(ENTRY_DELIMITER.join(working))  # budget check against the FINAL state only
-            if new_total > limit:
-=======
                     f"final entry deliberately, remove it alone in a one-item batch."), "would_empty")
             new_total = len(ENTRY_DELIMITER.join(working))  # budget check against the FINAL state only
             # A one-item remove or duplicate add never grows the store, so like the legacy
@@ -634,7 +604,6 @@ class MemoryStore:
             if grows and new_total > limit:
                 if len(ops) == 1 and ops[0].get("action") == "add":  # the advertised single add
                     return self._add_overflow(target, (ops[0].get("content") or ops[0].get("new_text") or "").strip(), limit)
->>>>>>> origin/main
                 return self._batch_failure(target, (
                     f"Applying all {len(operations)} operations {_over_limit(new_total, limit)} more. Add "
                     f"removes or shortening patches of other stale entries to the same batch, then retry."),

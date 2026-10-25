@@ -33,17 +33,6 @@
 let
   repoRoot = ./..;
 
-<<<<<<< HEAD
-  npm12 = callPackage ./npm-pinned.nix { };
-  node_gyp_11_4_0 = callPackage ./node-gyp-11-4-0.nix { };
-  nodejs_26_npm_12 = symlinkJoin {
-    name = "nodejs-26-npm-12";
-    paths = [
-      npm12
-      nodejs_26
-    ];
-    inherit (nodejs_26) meta passthru;
-=======
   # Every JS tool comes from pm/lock.json — the node the builds and the
   # shipped app run on, plus npm wrapped onto it. nixpkgs supplies nothing
   # here; node/npm have Linux artifacts in the lock.
@@ -74,7 +63,6 @@ let
     # buildNpmPackage puts nodejs.python (its build interpreter) on the npm
     # hook's PATH; the pm node derivation has no such attribute.
     python = python3;
->>>>>>> origin/main
   };
 
   # Patched hook: just a new derivation that copies and patches the script

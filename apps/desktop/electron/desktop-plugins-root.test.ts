@@ -264,8 +264,6 @@ describe('reconcileUnifiedDesktopHalves', () => {
     expect(await reconcileUnifiedDesktopHalves(home, appRoot)).toEqual([])
   })
 
-<<<<<<< HEAD
-=======
   it('overlapping passes publish a half once, from the first home that has it', async () => {
     // Every window's disk poll and the Plugins page each run a pass through IPC,
     // so passes overlap at boot. Unserialized, both copied, one rename hit the
@@ -291,7 +289,6 @@ describe('reconcileUnifiedDesktopHalves', () => {
     expect(await reconcileUnifiedDesktopHalves(home, appRoot)).toEqual([])
   })
 
->>>>>>> origin/main
   it('cleans up failed staging copies without exposing a marker-less target', async () => {
     const home = makeHome()
     const appRoot = path.join(home, 'desktop-plugins')

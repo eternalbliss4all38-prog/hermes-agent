@@ -2,15 +2,9 @@
 
 import pytest
 
-import pytest
-
 from hermes_cli.nous_account import NousPortalAccountInfo, NousToolAccessInfo
 from hermes_cli import nous_subscription as ns
 from tools import tool_backend_helpers
-<<<<<<< HEAD
-from tools import browser_tool_install as bt_install
-=======
->>>>>>> origin/main
 from tools.image_generation_catalog import DEFAULT_MODEL as FAL_DEFAULT_MODEL
 
 
@@ -126,20 +120,10 @@ def test_unconfigured_web_without_keys_is_unavailable(monkeypatch):
     assert features.web.available is False
     assert features.web.active is False
     assert features.web.explicit_configured is False
-<<<<<<< HEAD
-def _stub_browser_probes(monkeypatch, *, has_agent_browser, chromium, lightpanda=False):
-    """Common monkeypatches for local-browser readiness scenarios.
-
-    ``chromium`` / ``lightpanda`` drive the runtime probes that
-    ``_local_browser_runnable`` reuses from the ``tools.browser_tool_*`` siblings (lazy import,
-    so patching the module attributes is enough).
-    """
-=======
 def _stub_browser_probes(monkeypatch, *, harness, chromium):
     """Common monkeypatches for local-browser readiness scenarios: ``harness`` drives browser_exec's
     engine lookup, ``chromium`` the launcher's Chromium selection (both lazy imports, so patching the
     module attributes is enough)."""
->>>>>>> origin/main
     monkeypatch.setattr(ns, "get_env_value", lambda name: "")
     monkeypatch.setattr(
         ns, "get_nous_portal_account_info", lambda: _account(logged_in=False)
@@ -149,14 +133,8 @@ def _stub_browser_probes(monkeypatch, *, harness, chromium):
     monkeypatch.setattr(ns, "resolve_openai_audio_api_key", lambda: "")
     monkeypatch.setattr(ns, "has_direct_modal_credentials", lambda: False)
     monkeypatch.setattr(ns, "is_managed_tool_gateway_ready", lambda vendor: False)
-<<<<<<< HEAD
-    monkeypatch.setattr("tools.browser_tool_install._chromium_installed", lambda: chromium)
-    monkeypatch.setattr(
-        "tools.browser_tool_lightpanda_fallback._using_lightpanda_engine", lambda: lightpanda
-=======
     monkeypatch.setattr(
         "hermes_cli.browser_runtime.chromium_executable", lambda **_kw: "/pm/chromium/chrome" if chromium else None
->>>>>>> origin/main
     )
 
 
@@ -222,11 +200,7 @@ def test_logged_in_entitled_account_yields_a_state_for_every_feature(monkeypatch
     monkeypatch.setattr(ns, "get_nous_portal_account_info", lambda **kw: _pool_account())
     monkeypatch.setattr(ns, "is_managed_tool_gateway_ready", lambda gateway: True)
     monkeypatch.setattr(ns, "get_env_value", lambda name: "")
-<<<<<<< HEAD
-    monkeypatch.setattr(ns, "_has_agent_browser", lambda: False)
-=======
     monkeypatch.setattr(ns, "_has_browser_harness", lambda: False)
->>>>>>> origin/main
     monkeypatch.setattr(ns, "resolve_openai_audio_api_key", lambda: "")
     monkeypatch.setattr(ns, "has_direct_modal_credentials", lambda: False)
 
@@ -495,86 +469,3 @@ def test_configured_image_section_is_left_alone(monkeypatch):
 # ---------------------------------------------------------------------------
 # ensure_nous_portal_access — inline login gate for `hermes tools`
 # ---------------------------------------------------------------------------
-<<<<<<< HEAD
-
-
-
-
-
-
-# ---------------------------------------------------------------------------
-# STT — managed-by-Nous detection (Phase 4 follow-up)
-# ---------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-def _block_legacy_agent_browser_checks(monkeypatch):
-    """Make the legacy checks (PATH lookup + local node_modules/.bin) find nothing."""
-    real_which = shutil.which
-    monkeypatch.setattr(
-        shutil,
-        "which",
-        lambda cmd, *args, **kwargs: (
-            None if cmd == "agent-browser" else real_which(cmd, *args, **kwargs)
-        ),
-    )
-    monkeypatch.setattr("hermes_constants.agent_browser_runnable", lambda path: False)
-
-
-def test_has_agent_browser_uses_passive_runtime_resolution(monkeypatch):
-    """Readiness shares the runtime resolver without acquiring a package."""
-    _block_legacy_agent_browser_checks(monkeypatch)
-
-    calls = []
-
-    def fake_find_agent_browser(*, validate=True):
-        calls.append({"validate": validate})
-        return "/prepared/agent-browser"
-
-    monkeypatch.setattr(bt_install, "_find_agent_browser", fake_find_agent_browser)
-
-    assert ns._has_agent_browser() is True
-    # A readiness probe must resolve without spawning the daemon.
-    assert calls and all(call["validate"] is False for call in calls)
-
-
-def test_has_agent_browser_false_when_nothing_resolvable(monkeypatch):
-    _block_legacy_agent_browser_checks(monkeypatch)
-
-    def raise_not_found(*, validate=True):
-        raise FileNotFoundError("agent-browser CLI not found")
-
-    monkeypatch.setattr(bt_install, "_find_agent_browser", raise_not_found)
-
-    assert ns._has_agent_browser() is False
-
-
-def test_has_agent_browser_import_failure_does_not_run_another_resolver(monkeypatch):
-    """A broken runtime resolver cannot advertise an unchecked fallback."""
-    monkeypatch.setitem(sys.modules, "tools.browser_tool_install", None)
-    real_which = shutil.which
-    monkeypatch.setattr(
-        shutil,
-        "which",
-        lambda cmd, *args, **kwargs: (
-            "/fake/bin/agent-browser"
-            if cmd == "agent-browser"
-            else real_which(cmd, *args, **kwargs)
-        ),
-    )
-    monkeypatch.setattr(
-        "hermes_constants.agent_browser_runnable",
-        lambda path: path == "/fake/bin/agent-browser",
-    )
-
-    assert ns._has_agent_browser() is False
-=======
->>>>>>> origin/main

@@ -376,8 +376,6 @@ export function pollOAuthSession(
   })
 }
 
-<<<<<<< HEAD
-=======
 /** The free tier's handoff after a Nous sign-in. A long-poll: given `since`
  *  (the `updated_at` on screen) the backend answers once the record changes. */
 export function getNousHandoffStatus(since: null | string, profile?: ProfileScope): Promise<AppHandoffStatus> {
@@ -390,7 +388,6 @@ export function getNousHandoffStatus(since: null | string, profile?: ProfileScop
   })
 }
 
->>>>>>> origin/main
 export function cancelOAuthSession(sessionId: string, profile?: ProfileScope): Promise<{ ok: boolean }> {
   return window.hermesDesktop.api<{ ok: boolean }>({
     ...capabilityScoped(profile),

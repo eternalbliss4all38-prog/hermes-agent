@@ -709,11 +709,7 @@ def test_real_binding_drives_lifecycle_aggregation_export_and_snapshot(
     } == {
         ("terminal", "success", "none"),
         ("read_file", "failed", "unknown"),
-<<<<<<< HEAD
-        ("browser_navigate", "cancelled", "interrupted"),
-=======
         ("browser_exec", "cancelled", "interrupted"),
->>>>>>> origin/main
     }
     assert {
         counter["dimensions"]["outcome"]

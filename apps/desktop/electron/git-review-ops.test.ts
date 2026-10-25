@@ -4,10 +4,6 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 
-<<<<<<< HEAD
-import simpleGit from 'simple-git'
-=======
->>>>>>> origin/main
 import { afterEach, test, vi } from 'vitest'
 
 import {
@@ -17,11 +13,7 @@ import {
   REVIEW_FILE_CAP,
   reviewCreatePr,
   reviewList,
-<<<<<<< HEAD
-  SIMPLE_GIT_UNSAFE_BINARY_WARN
-=======
   simpleGitHostEnv
->>>>>>> origin/main
 } from './git-review-ops'
 import type * as NoConsoleGit from './no-console-git'
 
@@ -76,69 +68,7 @@ test('gitFor accepts internally resolved git paths with restricted non-space cha
 
   for (const binary of restrictedBinaries) {
     assert.doesNotThrow(() => gitFor(process.cwd(), binary), `should accept ${binary}`)
-<<<<<<< HEAD
   }
-})
-
-test('gitFor accepts a Windows no-console host tuple with restricted characters', async () => {
-  vi.resetModules()
-  vi.doMock('./no-console-git', async importOriginal => {
-    const actual = await importOriginal<typeof NoConsoleGit>()
-
-    return {
-      ...actual,
-      windowsGitHost: () => ({
-        isWindows: true,
-        pythonBin: String.raw`C:\Tools\python-3.14+build\python.exe`,
-        scriptPath: String.raw`C:\Hermes\hermes-no-console-git.py`
-      })
-    }
-  })
-
-  try {
-    const { gitFor: gitForWithHostTuple } = await import('./git-review-ops')
-
-    assert.doesNotThrow(() => gitForWithHostTuple(process.cwd(), 'git'))
-  } finally {
-    vi.doUnmock('./no-console-git')
-    vi.resetModules()
-  }
-})
-
-test('gitFor suppresses only the known custom-binary warning and restores console.warn', () => {
-  const spacedBin = String.raw`C:\Program Files\Git\cmd\git.exe`
-  // `windowsGitHost()` resolves nothing in this process (no configured roots, no
-  // HERMES_DESKTOP_PYTHON), so `gitBin` itself is what simple-git validates — the
-  // spaced `Program Files` path, which warns once per factory call.
-  const warnings: unknown[][] = []
-  const originalWarn = console.warn
-
-  const recordingWarn = (...args: unknown[]) => {
-    warnings.push(args)
-  }
-
-  console.warn = recordingWarn
-
-  try {
-    for (let i = 0; i < 5; i += 1) {
-      gitFor(process.cwd(), spacedBin)
-    }
-
-    assert.equal(console.warn, recordingWarn)
-
-    // The escape hatch used directly still warns: the message gitFor filters is a
-    // live emission of the installed simple-git, so the filter cannot go stale
-    // silently (an upgrade that rewords it fails this test, not production).
-    simpleGit({ baseDir: process.cwd(), binary: spacedBin, unsafe: { allowUnsafeCustomBinary: true } })
-    console.warn('unrelated warning')
-  } finally {
-    console.warn = originalWarn
-  }
-
-  assert.deepEqual(warnings, [[SIMPLE_GIT_UNSAFE_BINARY_WARN], ['unrelated warning']])
-=======
-  }
->>>>>>> origin/main
 })
 
 test('gitFor accepts a Windows no-console host tuple with restricted characters', async () => {

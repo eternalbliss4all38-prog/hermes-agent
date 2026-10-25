@@ -11,13 +11,6 @@ reason to refuse, and a target that descends from the running commit is a forwar
 from __future__ import annotations
 
 import sqlite3
-<<<<<<< HEAD
-from contextlib import closing
-from pathlib import Path
-
-# The runtime ledger DDL: a target whose state-store modules lack it predates the cutover.
-_RUNTIME_SCHEMA_MARKER = "CREATE TABLE IF NOT EXISTS session_admissions"
-=======
 from collections.abc import Callable, Iterable
 from contextlib import closing
 from pathlib import Path
@@ -26,20 +19,12 @@ from typing import Optional
 # The runtime ledger DDL: a target whose state-store modules lack it predates the cutover.
 _RUNTIME_SCHEMA_MARKER = "CREATE TABLE IF NOT EXISTS session_admissions"
 STATE_MODULES = "hermes_state*.py"  # git pathspec and fnmatch pattern alike (``*`` crosses ``/`` in both)
->>>>>>> origin/main
 _LEDGER_PROBE = ("SELECT EXISTS(SELECT 1 FROM session_admissions) "
                  "OR EXISTS(SELECT 1 FROM worker_executions)")
 _DOCS = "https://hermes-agent.nousresearch.com/docs/getting-started/updating#rolling-back-to-an-older-release"
 
 
-<<<<<<< HEAD
-def target_predates_runtime(git_cmd, root: Path, target_ref: str) -> bool:
-    """True when ``target_ref`` does not descend from HEAD and none of its ``hermes_state*.py`` files
-    defines the runtime ledger. The pathspec keeps a blobless partial clone from fetching the whole
-    tree. Any git failure proves nothing (False)."""
-=======
 def _updater_git(git_cmd, root: Path) -> Callable[..., int]:
->>>>>>> origin/main
     import subprocess
 
     from hermes_cli.update_custody import run_git
@@ -49,15 +34,6 @@ def _updater_git(git_cmd, root: Path) -> Callable[..., int]:
             return run_git(git_cmd, list(args), cwd=str(root), capture_output=True, timeout=120).returncode
         except (OSError, subprocess.SubprocessError):
             return -1
-<<<<<<< HEAD
-
-    if git("merge-base", "--is-ancestor", "HEAD", target_ref) == 0:
-        return False  # forward update: whatever the target's schema, it was written knowing this one
-    if git("cat-file", "-e", f"{target_ref}^{{commit}}") != 0:
-        return False
-    # Exit 1 = no match (the target lacks the ledger); 0 = found; anything else is a git error.
-    return git("grep", "-q", "-F", _RUNTIME_SCHEMA_MARKER, target_ref, "--", "hermes_state*.py") == 1
-=======
     return git
 
 
@@ -87,7 +63,6 @@ def target_predates_runtime(git_cmd, root: Path, target_ref: str, *,
     # Exit 1 = no match in a complete local schema; 0 = found; anything else is a git error.
     result = git("grep", "-q", "-F", _RUNTIME_SCHEMA_MARKER, target_ref, "--", STATE_MODULES)
     return result == 1 if result in (0, 1) else remote is not None and remote(target_ref) is True
->>>>>>> origin/main
 
 
 def _has_ledger_rows(db_path: Path) -> bool:
@@ -129,21 +104,12 @@ def _named_profile(home: Path) -> str:
     return resolved.name if named else ""
 
 
-<<<<<<< HEAD
-def downgrade_refusal(git_cmd, root: Path, target_ref: str, home: Path | None = None) -> str | None:
-    """Why the update must not move to ``target_ref``, or ``None``: refuses only a pre-runtime target
-    while this profile's or a sibling profile's state.db holds runtime ledger rows."""
-=======
 def _ledgered_profiles(home: Path | None) -> list[tuple[str, Path]]:
->>>>>>> origin/main
     from hermes_cli.backup import _sibling_profile_homes
     from hermes_constants import get_hermes_home
 
     home = Path(home or get_hermes_home())
     profiles = [(_named_profile(home), home), *_sibling_profile_homes(home)]
-<<<<<<< HEAD
-    ledgered = [(name, h) for name, h in profiles if _has_ledger_rows(h / "state.db")]
-=======
     return [(name, h) for name, h in profiles if _has_ledger_rows(h / "state.db")]
 
 
@@ -160,7 +126,6 @@ def downgrade_refusal(git_cmd, root: Path, target_ref: str, home: Path | None = 
     """Why the update must not move to ``target_ref``, or ``None``: refuses only a pre-runtime target
     while this profile's or a sibling profile's state.db holds runtime ledger rows."""
     ledgered = _ledgered_profiles(home)
->>>>>>> origin/main
     if not ledgered or not target_predates_runtime(git_cmd, root, target_ref):
         return None
     lines = [f"✗ Refusing to move this install to {target_ref[:12]}: that release predates the gateway runtime "

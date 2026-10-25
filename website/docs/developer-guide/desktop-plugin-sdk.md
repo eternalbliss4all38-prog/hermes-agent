@@ -207,12 +207,9 @@ interface PluginContext {
   os: PluginOs
   /** Lines in the core pet's speech bubble, attributed to this plugin (see "Pet bubble"). */
   pet: PluginPet
-<<<<<<< HEAD
-=======
   /** Script in the preview Browser page — declared capability + per-origin user consent
    *  (see "Preview page scripts"). */
   preview: PluginPreview
->>>>>>> origin/main
   /** Plugin-scoped JSON persistence (keys live under `hermes.plugin.<id>.`). */
   storage: PluginStorage
 }
@@ -252,13 +249,9 @@ Import the area constants from the SDK; each area has its own `data` payload.
 | Theme | `THEMES_AREA` | `data` as a `DesktopTheme` |
 | Composer | `COMPOSER_AREAS.*` | render slots, or middleware / attachment providers |
 | Model menu rows | `MODEL_MENU_ROW_AREA` | `data: ModelMenuRowContribution` — a leading icon / trailing badge per model |
-<<<<<<< HEAD
-| Appearance settings | `APPEARANCE_AREAS.extra` | `render` — controls appended to Settings → Appearance |
-=======
 | Kanban card badges | `KANBAN_CARD_AREAS.badges` | `data: KanbanCardBadgeContribution` — short text labels per card, painted by the board |
 | Appearance settings | `APPEARANCE_AREAS.extra` | `render` — controls appended to Settings → Appearance |
 | Tool media | `TOOL_MEDIA_RENDERER_AREA` (`'transcript.toolMedia'`) | `data: { tools, render }` — draw the `MEDIA:` files your package's own tools produced ([Tool media renderers](#tool-media-renderers)) |
->>>>>>> origin/main
 | Plugin settings page | `SETTINGS_PLUGINS_AREA` (`'settings.plugins'`) | Use `ctx.registerSettingsPage({ id, title, render, icon?, order?, children? })` — your own entry (with sub-pages) under Settings → Plugins |
 
 ### Panes
@@ -493,11 +486,7 @@ whole migration.
 ### Composer extensions
 
 `COMPOSER_AREAS` (`top`, `bottom`, `underside`, `leading`, `actions`,
-<<<<<<< HEAD
-`attachments`, `middleware`) let a plugin add controls around the message
-=======
 `attachments`, `middleware`, `contextMenu`) let a plugin add controls around the message
->>>>>>> origin/main
 composer, provide an attachment source, or transform a draft before it is sent
 (`ComposerMiddleware` with a `handler(draft) => draft | null`). `top` is a
 banner strip above the input and `bottom` a row below the input grid, both
@@ -506,8 +495,6 @@ composer with no chrome of its own — the seat for a suggestion pill or a statu
 hint that should sit outside the input frame (the next-prompt plugin renders its
 "next prompt" pill there).
 
-<<<<<<< HEAD
-=======
 ### Composer context menu — rows on a right-click in the input {#composer-context-menu}
 
 `COMPOSER_AREAS.contextMenu` adds rows to the menu the app opens when the user
@@ -591,7 +578,6 @@ at least one letter, at most 64 characters. Anything else resolves `false`
 without touching the dictionary; so does an older desktop shell. There is no
 way to list or read the dictionary.
 
->>>>>>> origin/main
 ### Composer draft API — read and write the live input
 
 For everything the composer areas can't do — put text INTO the input, replace
@@ -868,8 +854,6 @@ images onto them. The same marks come from `decorate({ provider })` returning
 `{ icon: <img alt="" src={providerSvgDataUrl(provider)} /> }` — no DOM reads,
 and the row keeps working when the menu's markup changes.
 
-<<<<<<< HEAD
-=======
 #### Kanban card badges {#kanban-card-badges}
 
 `KANBAN_CARD_AREAS.badges` puts small text labels on Kanban card tiles: a
@@ -960,7 +944,6 @@ reads of the Kanban plugin's query cache. The whole decoration becomes the
 `KANBAN_CARD_BADGE_HUES` (its twelve hues are the same `hsl(n×30 68% 58%)`
 set, in the same order).
 
->>>>>>> origin/main
 ### Appearance settings
 
 `APPEARANCE_AREAS.extra` renders contributions at the end of **Settings →
@@ -1177,8 +1160,6 @@ prompt reaches the chat's composer, or `{ ok: false, error }` where `error` is
 `too_long` (with `maxLength`), `throttled` (with `retryAfterMs`), `invalid`,
 or `undelivered` (no visible composer took it). Check it before showing a
 widget as saved.
-<<<<<<< HEAD
-=======
 
 ### Tool media renderers — draw the files your own tools produce {#tool-media-renderers}
 
@@ -1274,7 +1255,6 @@ Before this area existed, a plugin had to make the model emit its own
 non-Desktop users with a raw directive line. With a renderer, the tool returns
 the ordinary `MEDIA:` tag every surface understands and Desktop alone upgrades
 it.
->>>>>>> origin/main
 
 ### Mount-scoped chrome (`Contribute`)
 
@@ -1423,11 +1403,8 @@ ctx.os.notify({ title, body?, silent?, icon?, activate?, onActivate?, actions? }
 ctx.os.openExternal(url)                   // OS default handler (browser, mail, spotify:) → Promise<boolean>
 ctx.os.revealPath(path)                    // reveal in Finder / Explorer → Promise<boolean>
 ctx.os.writeClipboard(text)                // system clipboard → Promise<boolean>
-<<<<<<< HEAD
-=======
 ctx.files.requestFolder()                  // the app's folder picker → { ok, folder: { id, name, path } | null }
 ctx.files.readText(folder, 'notes/a.md')   // folder = 'data' or a granted folder's id; path is relative
->>>>>>> origin/main
 ctx.pet.say(text, { id?, tone?, ttlMs? })   // line in the core pet's speech bubble → disposer
 ctx.pet.clear(id?)                         // drop one line (or all of yours)
 ctx.pet.visible                            // ReadableAtom<boolean> — is a pet on screen?
@@ -1616,8 +1593,6 @@ The other doors (`openExternal`, `revealPath`, `writeClipboard`) resolve
 `false` instead of throwing when the capability isn't available (older desktop
 shell, plain browser) — branch on the result rather than sniffing the bridge.
 
-<<<<<<< HEAD
-=======
 ### Files — `ctx.files` {#plugin-files}
 
 `ctx.files` is the one sanctioned way for a plugin to touch files on the
@@ -1685,7 +1660,6 @@ exist.
 Paths are on the machine running Desktop, not on a remote backend. To work
 with the backend's files, go through your plugin's `ctx.rest` routes.
 
->>>>>>> origin/main
 ### Pet bubble — `ctx.pet` {#pet-bubble}
 
 The core pet (the petdex mascot, in-window or popped out into its own OS
@@ -1820,8 +1794,6 @@ actions a plugin can run.
 
 Feature-detect on older hosts: `ctx.runAction?.('view.showBrowser')`.
 
-<<<<<<< HEAD
-=======
 ### Preview page scripts — `ctx.preview` {#preview-page-scripts}
 
 `ctx.preview.executeJavaScript(code)` runs `code` in the focused session's
@@ -1872,7 +1844,6 @@ Reach the page only through this door. Querying or creating a `<webview>`
 consent, and fails the catalog's `desktop surface` lint (`preview guest
 reach`). A popped-out Browser window is not bridged.
 
->>>>>>> origin/main
 ### Desktop appearance settings — `host.settings`
 
 `host.settings` is the supported door for the small set of Desktop-local
@@ -2441,9 +2412,6 @@ installs the trust comes from admission — a human reviewed the exact pinned
 commit — backed by two tripwires: the `desktop surface` lint at admission and
 the loader's import allowlist (`@hermes/plugin-sdk` and `react*` only; a static
 or dynamic `import` of anything else, including `https:` URLs, fails the load).
-<<<<<<< HEAD
-Neither is a sandbox. A future remote-source door will need a real boundary
-=======
 Neither is a sandbox. Doors that touch user data outside the app are gated
 on top of that: `ctx.preview.executeJavaScript` needs a declared capability
 and the user's per-origin consent ([Preview page scripts](#preview-page-scripts)).
@@ -2453,7 +2421,6 @@ should read and write through [`ctx.files`](#plugin-files), not the raw
 process, so a plugin that uses it (or untrusted text it handles, such as a
 note name from the model) cannot leave the folders the user granted; the raw
 bridge has no such limit, which is why catalog review asks for `ctx.files`. A future remote-source door will need a real boundary
->>>>>>> origin/main
 (iframe/worker + CSP + capability gating) before it can land; do not treat this
 pipeline as a trust boundary.
 
@@ -2495,17 +2462,10 @@ pipeline as a trust boundary.
 
 | Category | Exports |
 |----------|---------|
-<<<<<<< HEAD
-| Host | `host` (`.state.*`, `.settings`, `.notify`, `.notifyError`, `.navigate`, `.onEvent`, `.logs`, `.status`, `.restartGateway`, `.request`, `.composer`, `.sessions`, `.skills`, `.toolsets`, `.profiles`, `.pluginDecisions`) |
-| Plugin contract | `HermesPlugin`, `PluginContext`, `PluginContribution`, `PluginStorage`, `PluginOs`, `PluginPet`, `PetSayOptions`, `PetMessageTone`, `PluginAppActionId`, `PluginAppActionInfo`, `PluginRunActionResult`, `PLUGIN_APP_ACTIONS`, `PluginRestOptions`, `PluginNativeNotificationInput`, `PluginNotificationAction`, `HermesOpenTarget`, `Contribution` |
-| Area constants | `PANES_AREA`, `ROUTES_AREA`, `SIDEBAR_NAV_AREA`, `STATUSBAR_AREAS`, `TITLEBAR_AREAS`, `WORKSPACE_PAGE_HEADER_AREA`, `PALETTE_AREA`, `KEYBINDS_AREA`, `THEMES_AREA`, `COMPOSER_AREAS`, `MODEL_MENU_ROW_AREA`, `SESSION_ROW_AREAS`, `SIDEBAR_NAV_PREFS_AREA`, `APPEARANCE_AREAS`, `SETTINGS_PLUGINS_AREA` |
-| Area payloads | `PluginSettingsPage`, `PluginSettingsSubpage` (+ `pluginSettingsHref`), `RouteContribution`, `SidebarNavContribution`, `StatusbarItem`, `TitlebarTool`, `PaletteContribution`, `KeybindContribution`, `ComposerMiddleware`, `ComposerAttachmentProvider`, `SessionRowSlotContribution`, `SidebarNavPrefsContribution` |
-=======
 | Host | `host` (`.state.*`, `.settings`, `.notify`, `.notifyError`, `.navigate`, `.onEvent`, `.logs`, `.status`, `.restartGateway`, `.request`, `.composer`, `.spellcheck`, `.sessions`, `.skills`, `.toolsets`, `.profiles`, `.pluginDecisions`) |
 | Plugin contract | `HermesPlugin`, `PluginContext`, `PluginContribution`, `PluginStorage`, `PluginFiles`, `PluginFolder`, `PluginFileEntry`, `PluginFilesResult`, `PluginOs`, `PluginPet`, `PetSayOptions`, `PetMessageTone`, `PluginAppActionId`, `PluginAppActionInfo`, `PluginRunActionResult`, `PLUGIN_APP_ACTIONS`, `PluginRestOptions`, `PluginNativeNotificationInput`, `PluginNotificationAction`, `HermesOpenTarget`, `Contribution` |
 | Area constants | `PANES_AREA`, `ROUTES_AREA`, `SIDEBAR_NAV_AREA`, `STATUSBAR_AREAS`, `TITLEBAR_AREAS`, `WORKSPACE_PAGE_HEADER_AREA`, `PALETTE_AREA`, `KEYBINDS_AREA`, `THEMES_AREA`, `COMPOSER_AREAS`, `MODEL_MENU_ROW_AREA`, `KANBAN_CARD_AREAS`, `SESSION_ROW_AREAS`, `SIDEBAR_NAV_PREFS_AREA`, `APPEARANCE_AREAS`, `SETTINGS_PLUGINS_AREA` |
 | Area payloads | `PluginSettingsPage`, `PluginSettingsSubpage` (+ `pluginSettingsHref`), `RouteContribution`, `SidebarNavContribution`, `StatusbarItem`, `TitlebarTool`, `PaletteContribution`, `KeybindContribution`, `ComposerMiddleware`, `ComposerAttachmentProvider`, `ComposerContextMenuProvider` (+ `ComposerContextMenuItem`, `ComposerContextMenuContext`, `ComposerContextMenuAction`), `SessionRowSlotContribution`, `KanbanCardBadgeContribution` (+ `KanbanCard`, `KanbanCardBoard`, `KanbanCardBadge`, `KanbanCardBadgeTone`, `KANBAN_CARD_BADGE_HUES`, `KANBAN_CARD_BADGE_LIMITS`), `SidebarNavPrefsContribution` |
->>>>>>> origin/main
 | React / state | `useValue`, `atom`, `computed`, `useQuery`, `useMutation`, `useQueryClient`, `queryClient`, `Contribute`, `WorkspacePageHeaderControl` |
 | Theming | `useTheme`, `requestTheme`, `setAccentOverride`, `$accentOverride`, `retintTheme`, `themeHue`, `DesktopTheme`, `DesktopThemeColors`, plus OKLCH math (`hexToOklch`, `oklchToHex`, `oklchToSrgb255`, `mixOklab`, `maxChroma`, `hueDelta`, `normalizeHex`) and sRGB measures (`contrastRatio` — `number | null`, null for unparseable input — `readableOn`) |
 | UI kit | `Button`, `Input`, `Textarea`, `Select*`, `Switch`, `Checkbox`, `SegmentedControl`, `Tabs*`, `Dialog*`, `ConfirmDialog`, `DropdownMenu*`, `ContextMenu*`, `Popover*`, `Tip`/`Tooltip*`, `Badge`, `Kbd`/`KbdGroup`, `SearchField`, `ScrollArea`, `Separator`, `Skeleton`, `GlyphSpinner`, `Loader`, `EmptyState`, `ErrorState`, `CopyButton`, `StatusDot`, `LogView`, `Codicon`, `DecodeText`, `SandboxedFrame` |

@@ -480,8 +480,6 @@ def test_execute_code_replay_streak_notice_fires_on_warn_only_desktop_config():
     assert notices[:2] == [None, None]
     assert all(n is not None and "consecutive identical call to execute_code" in n for n in notices[2:]), notices
     assert controller.halt_decision is None, "warn-only surfaces must not halt"
-<<<<<<< HEAD
-=======
 
 
 @pytest.mark.parametrize("prior_ordinary_failures", [0, 2])
@@ -508,4 +506,3 @@ def test_rate_limited_retry_is_not_a_replay_but_stays_bounded(result, throttled,
             break
     else:
         raise AssertionError("a permanently failing endpoint must still halt or block")
->>>>>>> origin/main

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import logging
-<<<<<<< HEAD
-=======
 from contextlib import contextmanager
->>>>>>> origin/main
 
 from hermes_constants import get_hermes_home, get_default_hermes_root
 from hermes_cli.profiles import parked_marker_path, profile_is_parked, profile_is_standalone, profiles_to_serve
@@ -48,8 +45,6 @@ def host_scope_for_all_verb(owner):
     return _home_env(owner.home if owner is not None else get_default_hermes_root())
 
 
-<<<<<<< HEAD
-=======
 @contextmanager
 def restart_all_verb_scope(owner):
     """``host_scope_for_all_verb`` plus the owed online notice: ``restart --all`` restarts the host.
@@ -65,7 +60,6 @@ def restart_all_verb_scope(owner):
         yield write_planned_restart_marker
 
 
->>>>>>> origin/main
 def profile_lifecycle(command: str, args) -> bool:
     """True when a named-profile command was handled (including an unconfirmed request)."""
     from hermes_cli import gateway as gw

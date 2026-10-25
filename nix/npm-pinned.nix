@@ -2,12 +2,8 @@
   stdenv,
   makeWrapper,
   fetchurl,
-<<<<<<< HEAD
-  nodejs_26,
-=======
   # The node the wrapper launches; lib.nix passes the pm-pinned one.
   nodejs,
->>>>>>> origin/main
 }:
 let
   # pm/lock.json is the one pin table. Every artifact carries its resolved
@@ -34,15 +30,9 @@ stdenv.mkDerivation {
     cp -r . $out/lib/npm/
     mkdir -p $out/bin
 
-<<<<<<< HEAD
-    makeWrapper ${nodejs_26}/bin/node $out/bin/npm \
-      --add-flags "$out/lib/npm/bin/npm-cli.js"
-    makeWrapper ${nodejs_26}/bin/node $out/bin/npx \
-=======
     makeWrapper ${nodejs}/bin/node $out/bin/npm \
       --add-flags "$out/lib/npm/bin/npm-cli.js"
     makeWrapper ${nodejs}/bin/node $out/bin/npx \
->>>>>>> origin/main
       --add-flags "$out/lib/npm/bin/npx-cli.js"
   '';
 }

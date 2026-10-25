@@ -579,8 +579,6 @@ async def _spawn_registered_worker(authority, ref, row):
     return worker, process
 
 
-<<<<<<< HEAD
-=======
 async def admit_managed(authority, ref, row, policy):
     """The ingress route into a managed worker. A removed folder is refused before a worker exists,
     like the in-process runner: a worker failing in its policy scope reads as a LOST execution
@@ -593,7 +591,6 @@ async def admit_managed(authority, ref, row, policy):
     return await execute_managed(authority, ref, row, policy)
 
 
->>>>>>> origin/main
 async def execute_managed(authority, ref, row, policy):
     from gateway.run_turn_progress import publish_worker_tool_event
     # This route never passes the inbound prepare step, so the worker would read ``@`` tokens as typed.

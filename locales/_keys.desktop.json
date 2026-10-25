@@ -200,10 +200,7 @@
     "assistant.thread.copyFullResponse",
     "assistant.thread.dismissError",
     "assistant.thread.editMessage",
-<<<<<<< HEAD
-=======
     "assistant.thread.errorAddCredits",
->>>>>>> origin/main
     "assistant.thread.errorAuthKinds.api_key.body",
     "assistant.thread.errorAuthKinds.api_key.title",
     "assistant.thread.errorAuthKinds.oauth.title",
@@ -248,11 +245,8 @@
     "assistant.thread.errorCodes.free_tier_route.title",
     "assistant.thread.errorCodes.invalid_response.body",
     "assistant.thread.errorCodes.invalid_response.title",
-<<<<<<< HEAD
-=======
     "assistant.thread.errorCodes.launch_credentials_unavailable.body",
     "assistant.thread.errorCodes.launch_credentials_unavailable.title",
->>>>>>> origin/main
     "assistant.thread.errorCodes.loop_error.body",
     "assistant.thread.errorCodes.loop_error.title",
     "assistant.thread.errorCodes.model_not_found.body",
@@ -281,13 +275,10 @@
     "assistant.thread.errorCodes.upstream_blocked.title",
     "assistant.thread.errorCodes.upstream_rate_limit.body",
     "assistant.thread.errorCodes.upstream_rate_limit.title",
-<<<<<<< HEAD
-=======
     "assistant.thread.errorCodes.usage_window.body",
     "assistant.thread.errorCodes.usage_window.title",
     "assistant.thread.errorCodes.workspace_unavailable.body",
     "assistant.thread.errorCodes.workspace_unavailable.title",
->>>>>>> origin/main
     "assistant.thread.errorCompressConversation",
     "assistant.thread.errorCompressFailed",
     "assistant.thread.errorCopyDiagnostics",
@@ -313,10 +304,7 @@
     "assistant.thread.errorLayers.streaming",
     "assistant.thread.errorLimitResets",
     "assistant.thread.errorOauthExpired",
-<<<<<<< HEAD
-=======
     "assistant.thread.errorOpenBillingSettings",
->>>>>>> origin/main
     "assistant.thread.errorOpenDesktopLogs",
     "assistant.thread.errorOpenHermesFolder",
     "assistant.thread.errorOpenHermesFolderFailed",
@@ -330,11 +318,6 @@
     "assistant.thread.errorSignInAgain",
     "assistant.thread.errorSignInFreeTier",
     "assistant.thread.errorStartNewSession",
-<<<<<<< HEAD
-    "assistant.thread.errorSwitchProvider",
-    "assistant.thread.errorToastTitle",
-    "assistant.thread.errorUpdateApiKey",
-=======
     "assistant.thread.errorSwitchModelFailed",
     "assistant.thread.errorSwitchProvider",
     "assistant.thread.errorSwitchToModel",
@@ -342,7 +325,6 @@
     "assistant.thread.errorUpdateApiKey",
     "assistant.thread.errorUseCredits",
     "assistant.thread.errorUseCreditsFailed",
->>>>>>> origin/main
     "assistant.thread.expandMessage",
     "assistant.thread.filesChanged",
     "assistant.thread.goForward",
@@ -620,10 +602,7 @@
     "catalog.featured",
     "catalog.filters",
     "catalog.hooks",
-<<<<<<< HEAD
-=======
     "catalog.install",
->>>>>>> origin/main
     "catalog.installComplete",
     "catalog.installDescription",
     "catalog.installHint",
@@ -1112,11 +1091,8 @@
     "composer.wakeWordOff",
     "composer.wakeWordPausedVoice",
     "composer.wakingProfile",
-<<<<<<< HEAD
-=======
     "connectorOffer.body",
     "connectorOffer.heading",
->>>>>>> origin/main
     "connectors.authorizedToolsUnavailable",
     "connectors.cancel",
     "connectors.checking",
@@ -1669,11 +1645,8 @@
     "firstRun.skipFailed",
     "firstRun.skipTip",
     "firstRun.skippedAll",
-<<<<<<< HEAD
-=======
     "firstRun.slashOffBody",
     "firstRun.slashOffTitle",
->>>>>>> origin/main
     "firstRun.tours.full",
     "firstRun.tours.quick",
     "firstRun.tours.skip",
@@ -1684,23 +1657,14 @@
     "freeTier.busyBody",
     "freeTier.busyHeading",
     "freeTier.change",
-<<<<<<< HEAD
-    "freeTier.codeBody",
     "freeTier.completedBody",
-    "freeTier.copyLink",
-=======
-    "freeTier.completedBody",
->>>>>>> origin/main
     "freeTier.defaultModel",
     "freeTier.didNotComplete",
     "freeTier.dismiss",
     "freeTier.doNotShare",
     "freeTier.done",
     "freeTier.errorBody",
-<<<<<<< HEAD
-=======
     "freeTier.finishInBrowser",
->>>>>>> origin/main
     "freeTier.finishingBody",
     "freeTier.finishingHeading",
     "freeTier.notNow",
@@ -1708,25 +1672,16 @@
     "freeTier.offer.heading",
     "freeTier.offer.notNow",
     "freeTier.offer.signIn",
-<<<<<<< HEAD
-    "freeTier.openModelPicker",
-=======
     "freeTier.openConnectors",
     "freeTier.openModelPicker",
     "freeTier.openPageAgain",
->>>>>>> origin/main
     "freeTier.otherProviders",
     "freeTier.providerName",
     "freeTier.providerRowPitch",
     "freeTier.providerRowTitle",
     "freeTier.readyCaption",
     "freeTier.readyTitle",
-<<<<<<< HEAD
-    "freeTier.rejectedBody",
-    "freeTier.retiredBody",
-=======
     "freeTier.reconnect",
->>>>>>> origin/main
     "freeTier.settingUp",
     "freeTier.setupFailed.gateClosed",
     "freeTier.setupFailed.generic",
@@ -1743,19 +1698,10 @@
     "freeTier.signInHeading",
     "freeTier.signInInstead",
     "freeTier.signedIn",
-<<<<<<< HEAD
-    "freeTier.signedInAs",
-    "freeTier.startAgain",
-    "freeTier.statusLabel",
-    "freeTier.stripBody",
-    "freeTier.stripTitle",
-    "freeTier.supersededBody",
-=======
     "freeTier.signedInAsLabel",
     "freeTier.statusLabel",
     "freeTier.stripBody",
     "freeTier.stripTitle",
->>>>>>> origin/main
     "freeTier.timedOutBody",
     "freeTier.timedOutHeading",
     "freeTier.tryAgain",
@@ -2151,20 +2097,6 @@
     "modelPicker.downloading",
     "modelPicker.free",
     "modelPicker.freeTier",
-<<<<<<< HEAD
-    "modelPicker.loadFailed",
-    "modelPicker.loadingIntoMemory",
-    "modelPicker.localDownloadsHeading",
-    "modelPicker.noAuthenticatedProviders",
-    "modelPicker.noModels",
-    "modelPicker.priceTitle",
-    "modelPicker.pro",
-    "modelPicker.proNeedsSubscription",
-    "modelPicker.search",
-    "modelPicker.title",
-    "modelPicker.unknown",
-    "modelPicker.wasPrice",
-=======
     "modelPicker.included",
     "modelPicker.includedUsedUp",
     "modelPicker.largeFootnote",
@@ -2201,7 +2133,6 @@
     "modelPicker.usageLevels.top_tier",
     "modelPicker.wasPrice",
     "modelPicker.week",
->>>>>>> origin/main
     "modelVisibility.addCustomModel",
     "modelVisibility.addProvider",
     "modelVisibility.noAuthenticatedProviders",
@@ -2810,10 +2741,7 @@
     "settings.about.channel.description",
     "settings.about.channel.detailsLabel",
     "settings.about.channel.failed",
-<<<<<<< HEAD
-=======
     "settings.about.channel.heldBody",
->>>>>>> origin/main
     "settings.about.channel.latestRelease",
     "settings.about.channel.main",
     "settings.about.channel.rollbackAction",
@@ -3053,8 +2981,6 @@
     "settings.billing.freeTier.plan",
     "settings.billing.freeTier.signIn",
     "settings.billing.freeTier.title",
-<<<<<<< HEAD
-=======
     "settings.billing.keepGoingOnCredits.approveInBrowser",
     "settings.billing.keepGoingOnCredits.approvedRetry",
     "settings.billing.keepGoingOnCredits.cancel",
@@ -3062,7 +2988,6 @@
     "settings.billing.keepGoingOnCredits.openAgain",
     "settings.billing.keepGoingOnCredits.title",
     "settings.billing.keepGoingOnCredits.tryAgain",
->>>>>>> origin/main
     "settings.billing.perMonth",
     "settings.billing.plan.alreadyOn",
     "settings.billing.plan.backAria",
@@ -3135,8 +3060,6 @@
     "settings.billing.state.usage.subscriptionCredits.valueOver",
     "settings.billing.state.usage.topupCredits.caption",
     "settings.billing.state.usage.topupCredits.title",
-<<<<<<< HEAD
-=======
     "settings.billing.state.usage.window.barLabel",
     "settings.billing.state.usage.window.captionIncluded",
     "settings.billing.state.usage.window.captionPaused",
@@ -3149,7 +3072,6 @@
     "settings.billing.state.usage.window.topTier",
     "settings.billing.state.usage.window.valueUsed",
     "settings.billing.state.usage.window.week",
->>>>>>> origin/main
     "settings.billing.stepUp.deniedBody",
     "settings.billing.stepUp.deniedTitle",
     "settings.billing.stepUp.dismiss",
@@ -3850,8 +3772,6 @@
     "settings.model.subagents.parentModel",
     "settings.model.subagents.parentModelWarning",
     "settings.model.subagents.providerLabel",
-<<<<<<< HEAD
-=======
     "settings.model.subagents.routing.addRoute",
     "settings.model.subagents.routing.baseUrlRoute",
     "settings.model.subagents.routing.blockedDetail",
@@ -3932,7 +3852,6 @@
     "settings.model.subagents.routing.tierUltrafast",
     "settings.model.subagents.routing.title",
     "settings.model.subagents.routing.useDefault",
->>>>>>> origin/main
     "settings.model.tasks.approval.hint",
     "settings.model.tasks.approval.label",
     "settings.model.tasks.compression.hint",
@@ -3996,11 +3915,8 @@
     "settings.notifications.kinds.turnDone.label",
     "settings.notifications.kinds.turnError.description",
     "settings.notifications.kinds.turnError.label",
-<<<<<<< HEAD
-=======
     "settings.notifications.muteSoundsDesc",
     "settings.notifications.muteSoundsTitle",
->>>>>>> origin/main
     "settings.notifications.test",
     "settings.notifications.testBody",
     "settings.notifications.testSent",
@@ -4571,10 +4487,7 @@
     "shell.statusbar.openModelPicker",
     "shell.statusbar.openStarmap",
     "shell.statusbar.openWebhooks",
-<<<<<<< HEAD
-=======
     "shell.statusbar.planUsageTitle",
->>>>>>> origin/main
     "shell.statusbar.providerModelTitle",
     "shell.statusbar.releaseAvailable",
     "shell.statusbar.resetStatusbar",
@@ -4597,10 +4510,7 @@
     "shell.statusbar.toggleCommandCenter",
     "shell.statusbar.toggleContextUsage",
     "shell.statusbar.toggleFreeTier",
-<<<<<<< HEAD
-=======
     "shell.statusbar.togglePlanUsage",
->>>>>>> origin/main
     "shell.statusbar.toggleRunningTimer",
     "shell.statusbar.toggleSessionTimer",
     "shell.statusbar.toggleTerminal",
@@ -4926,8 +4836,6 @@
     "skills.plugins.empty",
     "skills.plugins.emptyAll",
     "skills.plugins.emptyHint",
-<<<<<<< HEAD
-=======
     "skills.plugins.folderAccess.hint",
     "skills.plugins.folderAccess.loadFailed",
     "skills.plugins.folderAccess.pickerButton",
@@ -4938,7 +4846,6 @@
     "skills.plugins.folderAccess.revokeLabel",
     "skills.plugins.folderAccess.revoked",
     "skills.plugins.folderAccess.title",
->>>>>>> origin/main
     "skills.plugins.halfAgent",
     "skills.plugins.halfAgentIn",
     "skills.plugins.halfDesktop",
@@ -4955,8 +4862,6 @@
     "skills.plugins.pinnedBadge",
     "skills.plugins.pinnedProvenance",
     "skills.plugins.portableBadge",
-<<<<<<< HEAD
-=======
     "skills.plugins.previewScriptAccessLabel",
     "skills.plugins.previewScriptAccessNone",
     "skills.plugins.previewScriptAllow",
@@ -4968,7 +4873,6 @@
     "skills.plugins.previewScriptRevoke",
     "skills.plugins.previewScriptRevokeUnsaved",
     "skills.plugins.previewScriptRevoked",
->>>>>>> origin/main
     "skills.plugins.serverStates.app_not_running",
     "skills.plugins.serverStates.connected",
     "skills.plugins.serverStates.endpoint_unavailable",

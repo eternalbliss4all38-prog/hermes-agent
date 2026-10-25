@@ -10,10 +10,7 @@ import {
   $desktopOnboarding,
   completeDesktopOnboarding,
   confirmOnboardingModel,
-<<<<<<< HEAD
-=======
   DEFAULT_ONBOARDING_REASON,
->>>>>>> origin/main
   type DesktopOnboardingState,
   type OnboardingContext,
   refreshOnboarding,
@@ -27,12 +24,9 @@ import {
 // Onboarding's due check answered "not due": first-run surfaces are free to show.
 markOnboardingDecided()
 
-<<<<<<< HEAD
-=======
 const NOT_CONNECTED =
   'Hermes is not connected to any AI provider yet. Run `hermes model` to pick one, or `hermes auth add <provider>`.'
 
->>>>>>> origin/main
 function baseState(overrides: Partial<DesktopOnboardingState> = {}): DesktopOnboardingState {
   return {
     configured: false,
@@ -1213,11 +1207,7 @@ describe('device-code poll expiry', () => {
         return deviceStart(2)
       }
 
-<<<<<<< HEAD
-      if (path === '/api/providers/oauth/nous/poll/device-sess-1') {
-=======
       if (path.startsWith('/api/providers/oauth/nous/poll/device-sess-1')) {
->>>>>>> origin/main
         return { status: 'pending' }
       }
 
@@ -1244,11 +1234,7 @@ describe('device-code poll expiry', () => {
         return deviceStart(600)
       }
 
-<<<<<<< HEAD
-      if (path === '/api/providers/oauth/nous/poll/device-sess-1') {
-=======
       if (path.startsWith('/api/providers/oauth/nous/poll/device-sess-1')) {
->>>>>>> origin/main
         return { status: 'pending' }
       }
 

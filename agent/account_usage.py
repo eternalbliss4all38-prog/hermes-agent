@@ -2,14 +2,9 @@ from __future__ import annotations
 
 import logging
 import math
-<<<<<<< HEAD
-from dataclasses import dataclass
-from datetime import datetime, timezone, UTC
-=======
 import time
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
->>>>>>> origin/main
 from typing import TYPE_CHECKING, Any, Callable, Optional
 
 import httpx
@@ -19,11 +14,8 @@ from hermes_cli.auth import AuthError, _read_codex_tokens, resolve_codex_runtime
 from hermes_cli.auth_codex import _codex_pool_route_base_url
 from hermes_cli.runtime_provider import resolve_runtime_provider
 from hermes_time import safe_strftime
-<<<<<<< HEAD
-=======
 
 from agent.usage_gauges import BP_FULL
->>>>>>> origin/main
 
 if TYPE_CHECKING:
     from typing import TypeGuard
@@ -31,14 +23,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 _DEPLETED_LINE = "Status: access depleted — top up to restore"
-<<<<<<< HEAD
-=======
 # Usage-window plans: allowances are shown as percent used.
 _WINDOW_TOP_TIER_USED_UP = "Monthly large-model usage is used up."
 _WINDOW_PAUSED_LINE = ("Status: included usage paused. Your subscription payment failed. Update your card to restore it. "
                        "Until then, Hermes uses your credits.")
 _WINDOW_PAUSED_OTHER_LINE = "Status: included usage paused. See Billing in the Portal. Until then, Hermes uses your credits."
->>>>>>> origin/main
 
 
 def _utc_now() -> datetime:
@@ -74,12 +63,9 @@ class AccountUsageSnapshot:
     # Exact decoded provider response body (no headers/credentials) for integrations that need
     # fields Hermes does not normalize yet. Only populated by providers that fetch a JSON body.
     raw: Optional[dict] = None
-<<<<<<< HEAD
-=======
     # Usage-window plans only: the stacked bar layout. Every other snapshot
     # renders exactly as before.
     usage_window: bool = False
->>>>>>> origin/main
 
     @property
     def available(self) -> bool:
@@ -123,8 +109,6 @@ def _format_reset(dt: Optional[datetime]) -> str:
         days, hours = divmod(hours, 24)
         return f"in {days}d {hours}h ({stamp})"
     return f"in {hours}h {minutes}m ({stamp})" if hours else f"in {minutes}m ({stamp})"
-<<<<<<< HEAD
-=======
 
 
 def _reset_phrase(dt: Optional[datetime]) -> str:
@@ -137,17 +121,13 @@ def _reset_phrase(dt: Optional[datetime]) -> str:
     except Exception:
         logger.debug("Reset phrase formatting failed", exc_info=True)
         return f"resets {_format_reset(dt)}"
->>>>>>> origin/main
 
 
 def render_account_usage_lines(snapshot: Optional[AccountUsageSnapshot], *, markdown: bool = False) -> list[str]:
     if not snapshot:
         return []
-<<<<<<< HEAD
-=======
     if snapshot.usage_window:
         return _render_usage_window_lines(snapshot)
->>>>>>> origin/main
     bold = "**" if markdown else ""
     plan = f" ({snapshot.plan})" if snapshot.plan else ""
     lines = [f"📈 {bold}{snapshot.title}{bold}", f"Provider: {snapshot.provider}{plan}"]
@@ -163,8 +143,6 @@ def render_account_usage_lines(snapshot: Optional[AccountUsageSnapshot], *, mark
             base += f" • {window.detail}"
         lines.append(base)
     lines.extend(snapshot.details)
-<<<<<<< HEAD
-=======
     if snapshot.unavailable_reason:
         lines.append(f"Unavailable: {snapshot.unavailable_reason}")
     return lines
@@ -197,7 +175,6 @@ def _render_usage_window_lines(snapshot: AccountUsageSnapshot) -> list[str]:
             base += f"  ·  {window.detail}"
         lines.append(base)
     lines.extend(snapshot.details)
->>>>>>> origin/main
     if snapshot.unavailable_reason:
         lines.append(f"Unavailable: {snapshot.unavailable_reason}")
     return lines
@@ -216,13 +193,6 @@ def _is_finite_num(v: Any) -> TypeGuard[float]:
     return _is_num(v) and not isinstance(v, bool) and math.isfinite(v)
 
 
-<<<<<<< HEAD
-def _nous_snapshot(windows: list, details: list, tail: list, *, source: str, plan: Optional[str] = None) -> Optional[AccountUsageSnapshot]:
-    """Nous snapshot with *tail* lines appended, or None when there is nothing to show."""
-    if not windows and not details:
-        return None
-    return _snapshot("nous", source, windows, details + tail, title="Nous credits", plan=plan)
-=======
 def _nous_snapshot(windows: list, details: list, tail: list, *, source: str, plan: Optional[str] = None,
                    usage_window: bool = False) -> Optional[AccountUsageSnapshot]:
     """Nous snapshot with *tail* lines appended, or None when there is nothing to show."""
@@ -288,17 +258,12 @@ def _usage_window_rows(gauges: Any, *, paused_reason: Any,
     elif keep_going_on_credits is True:
         lines.append(_WINDOW_KEEP_GOING_ON_LINE)
     return out, lines
->>>>>>> origin/main
 
 
 def build_nous_credits_snapshot(account_info) -> Optional[AccountUsageSnapshot]:
     """NousPortalAccountInfo → /usage snapshot: dollar magnitudes + renewal date + portal CTA, plus a ``% used``
-<<<<<<< HEAD
-    gauge when the portal supplies ``monthly_credits``. Fail-open → None."""
-=======
     gauge when the portal supplies ``monthly_credits``. A usage-window account (``usage_window`` present) shows
     its allowances as percent used, the large-model line and its top-up balance instead. Fail-open → None."""
->>>>>>> origin/main
     try:
         from hermes_cli.nous_account import nous_portal_topup_url
         if account_info is None or not getattr(account_info, "logged_in", False):
@@ -307,8 +272,6 @@ def build_nous_credits_snapshot(account_info) -> Optional[AccountUsageSnapshot]:
         sub = getattr(account_info, "subscription", None)
         windows: list[AccountUsageWindow] = []
         details: list[str] = []
-<<<<<<< HEAD
-=======
         uw = getattr(account_info, "usage_window", None)
         if uw is not None:
             windows, window_lines = _usage_window_rows(
@@ -327,7 +290,6 @@ def build_nous_credits_snapshot(account_info) -> Optional[AccountUsageSnapshot]:
                 details.append(f"Renews: {format_renews(period_end) or period_end}")
             return _nous_snapshot(windows, details, ["Top up via /topup"], source="portal-account",
                                   plan=getattr(sub, "plan", None) if sub is not None else None, usage_window=True)
->>>>>>> origin/main
         # Gauge needs a positive cap AND a finite remaining <= cap (numeric fields, NOT a server *_usd); used =
         # cap - remaining clamped [0,100] so debt reads 100%. NaN/Inf (json.loads accepts bare NaN → "$nan") and
         # remaining > cap (rollover makes the cap a meaningless denominator) fall back to the magnitudes lines.
@@ -395,12 +357,6 @@ def _fetch_portal_account(timeout: float):
         pool.shutdown(wait=False)
 
 
-<<<<<<< HEAD
-def nous_credits_lines(*, markdown: bool = False, timeout: float = 10.0) -> list[str]:
-    """Rendered Nous-credits /usage lines, or [] when there's nothing to show. Independent of any live agent
-    (logged-in gate, then a bounded portal fetch); shared by CLI ``_show_usage`` and the TUI ``session.usage`` RPC.
-    Fail-open: any hiccup or timeout → []. HERMES_DEV_CREDITS_FIXTURE renders from the fixture instead of the portal."""
-=======
 def _header_gauge_percent(bp: Any) -> Optional[float]:
     if isinstance(bp, bool) or not isinstance(bp, int):
         return None
@@ -455,7 +411,6 @@ def nous_credits_lines(*, markdown: bool = False, timeout: float = 10.0, credits
 def nous_credits_view(*, markdown: bool = False, timeout: float = 10.0, credits_state: Any = None) -> tuple[list[str], bool]:
     """``nous_credits_lines`` plus whether they are the usage-window layout (callers keep today's
     presentation for everyone else). Fail-open → ``([], False)``."""
->>>>>>> origin/main
     try:
         from agent.credits_tracker import dev_fixture_credits_state
         fixture = dev_fixture_credits_state()
@@ -463,14 +418,6 @@ def nous_credits_view(*, markdown: bool = False, timeout: float = 10.0, credits_
         logger.debug("Dev credits fixture unavailable", exc_info=True)
         fixture = None
     if fixture is not None:
-<<<<<<< HEAD
-        return render_account_usage_lines(_snapshot_from_credits_state(fixture), markdown=markdown)
-    if not _nous_logged_in():
-        return []
-    try:
-        snapshot = build_nous_credits_snapshot(_fetch_portal_account(timeout))
-        return render_account_usage_lines(snapshot, markdown=markdown)
-=======
         snapshot = _snapshot_from_credits_state(fixture)
         return render_account_usage_lines(snapshot, markdown=markdown), bool(snapshot and snapshot.usage_window)
     if not _nous_logged_in():
@@ -480,7 +427,6 @@ def nous_credits_view(*, markdown: bool = False, timeout: float = 10.0, credits_
             build_nous_credits_snapshot(_fetch_portal_account(timeout)), credits_state,
         )
         return render_account_usage_lines(snapshot, markdown=markdown), bool(snapshot and snapshot.usage_window)
->>>>>>> origin/main
     except Exception:
         # Fail-open; breadcrumb so a dead /usage credits block is diagnosable.
         logger.debug("credits ▸ /usage portal fetch/render failed (fail-open)", exc_info=True)
@@ -506,8 +452,6 @@ def _snapshot_from_credits_state(state) -> Optional[AccountUsageSnapshot]:
             return None
         windows: list[AccountUsageWindow] = []
         details: list[str] = []
-<<<<<<< HEAD
-=======
         if getattr(state, "is_usage_window", False):
             windows, window_lines = _usage_window_rows(
                 state.gauges, paused_reason=state.paused_reason,
@@ -520,7 +464,6 @@ def _snapshot_from_credits_state(state) -> Optional[AccountUsageSnapshot]:
                 details.append(_DEPLETED_LINE)
             return _nous_snapshot(windows, details, ["(dev fixture — HERMES_DEV_CREDITS_FIXTURE)"], source="dev-fixture",
                                   usage_window=True)
->>>>>>> origin/main
         uf = getattr(state, "used_fraction", None)
         sub_usd = getattr(state, "subscription_usd", None)
         cap_usd = getattr(state, "subscription_limit_usd", None)
@@ -570,11 +513,7 @@ def build_credits_view(*, markdown: bool = False, timeout: float = 10.0) -> Cred
     balance_lines = [
         line
         for line in render_account_usage_lines(build_nous_credits_snapshot(account), markdown=markdown)
-<<<<<<< HEAD
-        if not line.lstrip().startswith(("Top up:", "(or run"))
-=======
         if not line.lstrip().startswith(("Top up:", "Top up via", "(or run"))
->>>>>>> origin/main
     ]
     who = [str(v) for v in (getattr(account, "email", None),) if v]
     org_name = getattr(account, "org_name", None)

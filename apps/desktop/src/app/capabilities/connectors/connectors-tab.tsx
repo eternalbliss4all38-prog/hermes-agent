@@ -6,10 +6,7 @@ import { Button } from '@/components/ui/button'
 import type { HermesGateway, ProfileScope } from '@/hermes'
 import { useI18n } from '@/i18n'
 import { $freeTierStatus } from '@/store/free-tier'
-<<<<<<< HEAD
-=======
 import { $freeTierSignIn, $openAppWindows } from '@/store/free-tier-sign-in'
->>>>>>> origin/main
 import { notifyError } from '@/store/notifications'
 
 import { installBundledEntry } from '../mcp/install-catalog-entry'
@@ -125,11 +122,8 @@ export function ConnectorsTab({ gateway, profile }: ConnectorsTabProps) {
 
   const openCard = useMemo(() => cards.find(card => cardKey(card) === openKey) ?? null, [cards, openKey])
 
-<<<<<<< HEAD
-=======
   useYieldToSignIn(openCard !== null, setOpenKey)
 
->>>>>>> origin/main
   useOpenFromRoute(cards, profile, setOpenKey, setPendingRename)
 
   const bundledEntry = (card: ConnectorCardModel) =>
@@ -285,8 +279,6 @@ export function ConnectorsTab({ gateway, profile }: ConnectorsTabProps) {
   )
 }
 
-<<<<<<< HEAD
-=======
 /** An open app window holds the sign-in offer back, and closes when a sign-in starts, so the two
  *  never stack. The window's state is stale after a sign-in anyway. */
 export function useYieldToSignIn(open: boolean, setOpenKey: (key: null) => void): void {
@@ -310,7 +302,6 @@ export function useYieldToSignIn(open: boolean, setOpenKey: (key: null) => void)
   }, [open, setOpenKey])
 }
 
->>>>>>> origin/main
 function useOpenFromRoute(
   cards: readonly ConnectorCardModel[],
   scope: ProfileScope,

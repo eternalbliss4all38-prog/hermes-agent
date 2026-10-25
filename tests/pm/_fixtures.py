@@ -7,10 +7,7 @@ import hashlib
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 import importlib
 import io
-<<<<<<< HEAD
-=======
 import json
->>>>>>> origin/main
 import os
 from pathlib import Path
 import shutil
@@ -23,9 +20,6 @@ import zipfile
 import pytest
 
 
-<<<<<<< HEAD
-def _wheel(directory: Path, name: str, version: str = "1.0", requirements=()) -> Path:
-=======
 def _wheel(directory: Path, name: str, version: str = "1.0", requirements=(), extra=None) -> Path:
     """Build a wheel whose bytes depend only on its arguments.
 
@@ -34,28 +28,18 @@ def _wheel(directory: Path, name: str, version: str = "1.0", requirements=(), ex
     second plugin) must therefore hash the same: ``writestr(name, ...)`` stamps the wall clock,
     so a rebuild that crosses a 2-second zip-time tick failed ``uv sync`` with a hash mismatch.
     """
->>>>>>> origin/main
     metadata = f"{name}-{version}.dist-info"
     entries = {
         f"{name}/__init__.py": f"__version__ = {version!r}\n",
         f"{metadata}/METADATA": f"Metadata-Version: 2.1\nName: {name}\nVersion: {version}\n"
         + "".join(f"Requires-Dist: {requirement}\n" for requirement in requirements),
         f"{metadata}/WHEEL": "Wheel-Version: 1.0\nRoot-Is-Purelib: true\nTag: py3-none-any\n",
-<<<<<<< HEAD
-=======
         **(extra or {}),
->>>>>>> origin/main
     }
     entries[f"{metadata}/RECORD"] = "".join(f"{path},,\n" for path in entries)
     wheel = directory / f"{name}-{version}-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
         for path, body in entries.items():
-<<<<<<< HEAD
-            archive.writestr(path, body)
-    return wheel
-
-
-=======
             info = zipfile.ZipInfo(path, date_time=(1980, 1, 1, 0, 0, 0))
             info.external_attr = 0o644 << 16
             archive.writestr(info, body)
@@ -77,7 +61,6 @@ def installing_member(plugin: Path, name: str, wheels: Path, *, requires_python:
         f'[tool.uv.sources]\nmember-dep = {{ path = {json.dumps(wheel.as_posix())} }}\n', encoding="utf-8")
 
 
->>>>>>> origin/main
 def stage_host_python(python: Path) -> Path:
     """Place a runnable copy of the test host's interpreter at ``python`` (``<root>/bin/python…``).
 

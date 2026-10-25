@@ -476,8 +476,6 @@ def _nous_picker_model_ids(curated: dict, force_fresh_nous_tier: bool) -> list:
         from hermes_cli.models_pricing import nous_policy_allowed_ids, restrict_to_nous_policy
         model_ids = restrict_to_nous_policy(model_ids, nous_policy_allowed_ids(), rescue_empty=True)
     except Exception:
-<<<<<<< HEAD
-=======
         logger.debug("Nous model policy filter failed", exc_info=True)
     try:
         # Window plans: the plan's featured picks lead the list. Plan shape only (it rarely changes), so
@@ -488,7 +486,6 @@ def _nous_picker_model_ids(curated: dict, force_fresh_nous_tier: bool) -> list:
         if usage is not None:
             model_ids = featured_first(model_ids, usage.featured_model_ids)
     except Exception:
->>>>>>> origin/main
         pass
     return model_ids
 
@@ -1411,9 +1408,6 @@ def list_picker_providers(
     from hermes_cli.models_validate import drop_unofferable_model_ids
 
     drop_unofferable_model_ids(filtered)
-<<<<<<< HEAD
-    return filtered
-=======
     _attach_window_model_notes(filtered)
     return filtered
 
@@ -1446,4 +1440,3 @@ def _attach_window_model_notes(providers: list[dict]) -> None:
             nous["plan_line"] = line
     except Exception:
         logger.debug("window model notes failed", exc_info=True)
->>>>>>> origin/main

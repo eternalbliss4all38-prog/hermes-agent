@@ -356,8 +356,6 @@ def _deps_hold_resume(root: Path) -> bool:
         return False
 
 
-<<<<<<< HEAD
-=======
 def _paused_on_unreadable_head(token: dict) -> bool:
     """Every pause in the set already found HEAD unreadable and none bound a tree move since.
 
@@ -372,7 +370,6 @@ def _paused_on_unreadable_head(token: dict) -> bool:
         for b in baselines)
 
 
->>>>>>> origin/main
 def tree_is_whole(token: dict, root: Path | None = None) -> tuple[bool, str]:
     """May paused gateways start on this checkout now? ``(verdict, reason when not)``."""
     from hermes_cli._early_recovery import interrupted_pull_marker
@@ -382,11 +379,8 @@ def tree_is_whole(token: dict, root: Path | None = None) -> tuple[bool, str]:
             return False, "the checkout is mid-pull (interrupted-pull marker present)"
         head = head_sha(root)
         if head is None:
-<<<<<<< HEAD
-=======
             if _paused_on_unreadable_head(token):
                 return True, ""
->>>>>>> origin/main
             return False, "the checkout HEAD is unreadable"
         baselines = token.get("baselines") or []
         at_head = [b for b in baselines if b.get("pre_sha") == head]

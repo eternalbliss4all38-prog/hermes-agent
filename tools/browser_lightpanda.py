@@ -1,17 +1,8 @@
-<<<<<<< HEAD
-"""Lightpanda local engine for Browser Use mode.
-
-With ``browser.engine: lightpanda``, Browser Use mode spawns one ``lightpanda serve`` per
-browser session and points ``browser_exec`` at its CDP endpoint (``BU_CDP_URL``); the
-built-in ``browser_*`` tools keep going through ``agent-browser --engine lightpanda``.
-``tools.browser_tool`` owns the session cache, inactivity reaper and atexit sweep.
-=======
 """Lightpanda local engine.
 
 With ``browser.engine: lightpanda``, each browser session spawns one ``lightpanda serve`` and
 ``browser_exec`` drives its CDP endpoint (``BU_CDP_URL``). ``tools.browser_session`` owns the
 session cache, inactivity reaper and atexit sweep.
->>>>>>> origin/main
 """
 
 import functools
@@ -69,21 +60,6 @@ def _home_candidates() -> list:
     return candidates
 
 
-<<<<<<< HEAD
-def find_lightpanda_binary() -> Optional[str]:
-    """Return the lightpanda executable, or None. Order: PATH (with agent-browser's Homebrew/managed-node
-    fallbacks), then installer/agent-browser locations, then ``$HERMES_HOME/bin``. No Windows build."""
-    if os.name == "nt":
-        logger.debug("Lightpanda has no Windows build")
-        return None
-    path_env = os.environ.get("PATH", "")
-    try:
-        from tools.browser_tool_install import _merge_browser_path
-        path_env = _merge_browser_path(path_env)
-    except Exception as e:
-        logger.debug("browser PATH merge unavailable: %s", e)
-    return shutil.which("lightpanda", path=path_env) or next(
-=======
 # System PATH fallbacks for a minimal service PATH (systemd units, launchd), Homebrew included.
 _SANE_PATH_DIRS = ("/opt/homebrew/bin", "/opt/homebrew/sbin", "/usr/local/sbin", "/usr/local/bin",
                    "/usr/sbin", "/usr/bin", "/sbin", "/bin")
@@ -102,7 +78,6 @@ def find_lightpanda_binary() -> Optional[str]:
         logger.debug("Lightpanda has no Windows build")
         return None
     return shutil.which("lightpanda", path=merge_sane_path(os.environ.get("PATH", ""))) or next(
->>>>>>> origin/main
         (str(c) for c in _home_candidates() if c.is_file() and os.access(c, os.X_OK)), None)
 
 
@@ -163,17 +138,8 @@ def _record_path(session_name: str) -> Path:
 
 
 def _browser_env() -> dict:
-<<<<<<< HEAD
-    try:
-        from tools.browser_tool import _build_browser_env
-        return _build_browser_env()
-    except Exception as e:
-        logger.debug("credential-scrubbed browser env unavailable: %s", e)
-        return os.environ.copy()
-=======
     from tools.browser_session import build_browser_env
     return build_browser_env()
->>>>>>> origin/main
 
 
 def _cdp_ready(url: str, timeout: float = 0.2) -> bool:
@@ -195,11 +161,7 @@ def _read_log_tail(path: str) -> str:
 
 
 def _terminate(proc: subprocess.Popen, what: str = "lightpanda") -> None:
-<<<<<<< HEAD
-    """poll -> terminate -> wait(5) -> kill; shared with the real-profile Chrome cleanup."""
-=======
     """poll -> terminate -> wait(5) -> kill (fallback when the tree-kill failed)."""
->>>>>>> origin/main
     try:
         if proc.poll() is None:
             proc.terminate()
@@ -381,8 +343,6 @@ def reap_orphaned_lightpanda() -> int:
                 logger.debug("orphan lightpanda kill failed for pid %s: %s", pid, e)
         record_path.unlink(missing_ok=True)
     return reaped
-<<<<<<< HEAD
-=======
 
 
 def using_lightpanda_engine() -> bool:
@@ -417,4 +377,3 @@ def lightpanda_engine_status() -> tuple[bool, str]:
     if is_legacy_browser_use_cloud_config(_read_browser_cfg()):
         return False, "Browser Use cloud (BROWSER_USE_API_KEY) is selected"
     return True, "Hermes spawns `lightpanda serve` per browser session"
->>>>>>> origin/main

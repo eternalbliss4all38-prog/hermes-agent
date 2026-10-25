@@ -104,8 +104,6 @@ class TestKnownPrefixes:
         ]:
             assert redact_sensitive_text(benign) == benign
 
-<<<<<<< HEAD
-=======
     def test_context7_api_key_prefix(self):
         """Context7 keys carry a fixed vendor prefix (``ctx7sk-``) and must redact on every surface.
 
@@ -136,7 +134,6 @@ class TestKnownPrefixes:
         ]:
             assert redact_sensitive_text(benign) == benign
 
->>>>>>> origin/main
     def test_agentmail_prefix_needs_a_key_shaped_hex_suffix(self):
         """``am_`` is a common identifier prefix; only the documented hex key body is a secret (#10983)."""
         for benign in ["schema.am_example_identifier_123", "path/to/am_monthly_report.sql"]:

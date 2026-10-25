@@ -49,28 +49,8 @@ test('camofox is not in root dependencies (must stay opt-in)', () => {
   assert.ok(
     !('@askjo/camofox-browser' in deps),
     'Camofox is a ~300MB binary-postinstall backend that must stay ' +
-<<<<<<< HEAD
-      'out of root package.json dependencies. It belongs in the ' +
-      'Camofox post_setup handler in hermes_cli/tools_config.py so it ' +
-      'only installs when the user explicitly selects Camofox via ' +
-      '`hermes tools` → Browser Automation → Camofox.'
-  )
-})
-
-test('agent-browser is not in root dependencies (resolves via npx, #43564)', () => {
-  const deps = (rootPackageJson().dependencies ?? {}) as Record<string, string>
-  assert.ok(
-    !('agent-browser' in deps),
-    'agent-browser must not be a root package.json dependency — it ' +
-      'resolves lazily via `npx agent-browser` instead (see ' +
-      'tools/browser_tool.py::_find_agent_browser and ' +
-      'warm_agent_browser_npx_cache). Putting it back in root ' +
-      'dependencies re-entangles it with the ui-tui/web workspace ' +
-      'install graph and reintroduces #43564.'
-=======
       'out of root package.json dependencies. It ships as the camofox ' +
       'catalog plugin, which installs it only when the user sets that ' +
       'plugin up.'
->>>>>>> origin/main
   )
 })

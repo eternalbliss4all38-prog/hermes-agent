@@ -24,10 +24,7 @@ _CATEGORY = "Plugin commands"  # tui_gateway/command_discovery.py
 GONE = object()  # run(): the gateway no longer has the command; the caller dispatches the name again
 STOPPED = object()  # call_unbounded(): Ctrl+C stopped the wait (the stopped line is printed)
 _GONE_LINE = "  /{}: the gateway no longer has this plugin command; nothing was run."
-<<<<<<< HEAD
-=======
 _CHOICE_POLL_S = 0.1  # how often a running command's clarify requests are looked for
->>>>>>> origin/main
 _STOPPED_LINE = "  /{}: stopped waiting. The command keeps running in the gateway and its reply will not be shown."
 
 
@@ -224,12 +221,9 @@ def call_unbounded(cli, connection, name, command):
     from cli import _cprint
     from hermes_cli.gateway_connection import CallStopped
     wake = cli._gateway_command_wait = threading.Event()  # set by Ctrl+C (cli_tui_mixin)
-<<<<<<< HEAD
-=======
     from agent.memory_provider import spawn_context_thread
     answering: list = []  # the clarify request id the panel is answering, while it is open
     spawn_context_thread(_answer_choices, args=(cli, connection, wake, answering), name="hermes-command-choices").start()
->>>>>>> origin/main
     try:
         return connection.call_until("slash.exec", wake, session_id=cli.session_id, command=command)
     except (CallStopped, KeyboardInterrupt) as exc:
@@ -239,8 +233,6 @@ def call_unbounded(cli, connection, name, command):
         return STOPPED
     finally:
         cli._gateway_command_wait = None
-<<<<<<< HEAD
-=======
         if answering:  # the command is over: its picker must not keep the input
             cli._withdraw_gateway_modal("clarify")
 
@@ -276,7 +268,6 @@ def _answer_choices(cli, connection, wake, answering):
                 connection.reply(frame["id"], reply)
     finally:
         state.request_listeners.remove(withdrawn)
->>>>>>> origin/main
 
 
 def run(cli, name, arg):

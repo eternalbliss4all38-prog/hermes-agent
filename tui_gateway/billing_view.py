@@ -9,10 +9,7 @@ so tests may still monkeypatch e.g. ``server._usage_payload``.
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-=======
 import logging
->>>>>>> origin/main
 from typing import Optional
 
 from .method_ctx import bind_module
@@ -108,11 +105,6 @@ def _serialize_billing_state(state, *, free_tier_account: bool = False) -> dict:
         "min_usd": _wire_str(state.min_usd), "max_usd": _wire_str(state.max_usd),
         "card": card, "payment_method": _serialize_payment_method(state.payment_method),
         "monthly_cap": mc, "auto_reload": _serialize_auto_reload(state.auto_reload, format_money),
-<<<<<<< HEAD
-        "portal_url": state.portal_url, "error": state.error,
-        # Shared two-bar dollar usage model so /topup matches /usage and /subscription; fail-open.
-        "usage": _usage_payload(state)}
-=======
         "keep_going_on_credits": getattr(state, "keep_going_on_credits", None),
         "portal_url": state.portal_url, "error": state.error,
         # Shared two-bar dollar usage model so /topup matches /usage and /subscription; fail-open.
@@ -141,7 +133,6 @@ def _plan_usage_payload(state) -> Optional[dict]:
     except Exception:
         logging.getLogger(__name__).debug("Plan usage payload unavailable", exc_info=True)
         return None
->>>>>>> origin/main
 
 
 def _usage_payload(state) -> dict:
@@ -218,12 +209,8 @@ def _serialize_subscription_state(state) -> dict:
         "portal_url": state.portal_url, "error": state.error,
         # Shared two-bar usage model (account-info is the only source with top-up dollars);
         # fail-open → {available:false}; lazy when logged out.
-<<<<<<< HEAD
-        "usage": _usage_payload(state)}
-=======
         "usage": _usage_payload(state),
         "plan_usage": _plan_usage_payload(state)}
->>>>>>> origin/main
 
 
 def _serialize_subscription_preview(p) -> dict:

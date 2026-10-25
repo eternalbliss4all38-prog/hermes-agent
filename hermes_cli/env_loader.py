@@ -325,21 +325,8 @@ def _sanitize_loaded_credentials() -> None:
         )
 
 
-<<<<<<< HEAD
-def _load_dotenv_with_fallback(
-    path: Path, *, override: bool, load_pass: int | None = None, managed: bool = False,
-) -> None:
-    """Load one dotenv file into ``os.environ`` like ``dotenv.load_dotenv`` — same parser, same
-    ``${VAR}`` / ``${VAR:-default}`` / precedence rules — except that ``${VAR}`` resolves against the value
-    VAR had before this process's earlier passes published it (see ``_DOTENV_PUBLISHED``).
-
-    ``load_pass`` groups the layered files of one ``load_hermes_dotenv`` call: within a pass a later layer
-    (project, managed) still sees the earlier layer's output, as it always did; only OTHER passes' output
-    is peeled. A bare call (``hermes send``'s direct reload) is its own pass."""
-=======
 def _parse_dotenv_file(path: Path) -> list[tuple[str, str | None]]:
     """``(name, raw value)`` assignments of one dotenv file, uninterpolated, in file order."""
->>>>>>> origin/main
     raw = path.read_bytes()
     try:
         # utf-8-sig strips a leading BOM (PowerShell 5.1 / Notepad); plain utf-8 would keep U+FEFF on the
@@ -351,28 +338,6 @@ def _parse_dotenv_file(path: Path) -> list[tuple[str, str | None]]:
     # Imported here, not at module level: gateway tests stub ``sys.modules["dotenv"]`` with a bare module
     # exposing only ``load_dotenv``, and ``gateway.run`` imports this module at import time.
     from dotenv.main import DotEnv
-<<<<<<< HEAD
-    from dotenv.variables import parse_variables
-
-    assignments = list(DotEnv(dotenv_path=None, stream=io.StringIO(text), interpolate=False).parse())
-
-    with _DOTENV_LOCK:
-        if load_pass is None:
-            load_pass = next(_DOTENV_PASSES)
-        lookup_env: dict[str, str | None] = dict(os.environ)
-        for name, (baseline, published, published_pass) in _DOTENV_PUBLISHED.items():
-            if published_pass != load_pass and lookup_env.get(name) == published:
-                if baseline is None:
-                    del lookup_env[name]  # absent, so ``${VAR:-default}`` takes the default again
-                else:
-                    lookup_env[name] = baseline
-        resolved: dict[str, str | None] = {}
-        for name, value in assignments:
-            if value is not None:  # mirrors dotenv.main.resolve_variables, minus the live os.environ
-                lookup = {**lookup_env, **resolved} if override else {**resolved, **lookup_env}
-                value = "".join(atom.resolve(lookup) for atom in parse_variables(value))
-            resolved[name] = value
-=======
 
     return list(DotEnv(dotenv_path=None, stream=io.StringIO(text), interpolate=False).parse())
 
@@ -445,7 +410,6 @@ def _load_dotenv_with_fallback(
         if load_pass is None:
             load_pass = next(_DOTENV_PASSES)
         resolved = _resolve_dotenv_assignments(assignments, _dotenv_lookup_env(load_pass), override=override)
->>>>>>> origin/main
         for name, value in resolved.items():
             if value is None or (not override and name in os.environ):
                 continue

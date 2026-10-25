@@ -384,8 +384,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     'user-data': { type: 'string' }, out: { type: 'string' }, phase: { type: 'string' },
     'expect-commit': { type: 'string' }, 'launch-spec': { type: 'string' }, 'mock-url': { type: 'string' },
   } })
-<<<<<<< HEAD
-=======
 
   // When the app exits before printing its debugger line, Playwright's Electron.launch rejects
   // the awaited watcher and leaves its sibling stderr watchers' rejections unhandled. Without a
@@ -396,7 +394,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exitCode = 1
   })
 
->>>>>>> origin/main
   try {
     await runInstalledDesktopSmoke(optionsSchema.parse(values))
   } catch (error) {

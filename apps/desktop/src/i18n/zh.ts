@@ -6,34 +6,23 @@ import { introZh } from './intro-zh'
 import { zhCatalog, zhSkillDeepLink } from './zh_catalog'
 import { zhClarify } from './zh_clarify'
 import { zhConnectorCard } from './zh_connector_card'
-<<<<<<< HEAD
-=======
 import { zhErrorCodes } from './zh_error_codes'
 import { zhErrorLayers } from './zh_error_layers'
->>>>>>> origin/main
 import { zhFirstRun } from './zh_first_run'
 import { zhLocalModels } from './zh_local_models'
 import { zhModelMenu } from './zh_model_menu'
 import { zhModelSettings } from './zh_model_settings'
 import { zhNotices } from './zh_notices'
-<<<<<<< HEAD
-import { zhOnboarding } from './zh_onboarding'
-=======
 import { zhNotifications } from './zh_notifications'
 import { zhOnboarding } from './zh_onboarding'
 import { zhPluginPreviewAccess } from './zh_plugin_preview_access'
 import { zhPluginUpdate } from './zh_plugin_update'
->>>>>>> origin/main
 import { zhProjects } from './zh_projects'
 import { zhSharedMetrics } from './zh_shared_metrics'
 import { zhThemePicker } from './zh_theme_picker'
 import { zhUpdateChannel } from './zh_update_channel'
 
 export const zhOverrides = {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
   catalog: zhCatalog,
   externalOpenFailed: {
     title: '无法打开此链接',
@@ -1686,8 +1675,6 @@ export const zhOverrides = {
         effectScheduled: (targetName, effectiveAt, creditsDelta) =>
           `更改为 ${targetName}，于 ${effectiveAt} 生效。现在不扣费；在此之前保留当前套餐。${creditsDelta ? `每月额度变化：${creditsDelta}。` : ''}`
       },
-<<<<<<< HEAD
-=======
       keepGoingOnCredits: {
         title: '用额度继续',
         description: '包含的用量用完后，使用你的额度。关闭时，Hermes 等待重置。',
@@ -1697,7 +1684,6 @@ export const zhOverrides = {
         approvedRetry: 'Remote Spending 已批准，但更改未保存。',
         tryAgain: '重试'
       },
->>>>>>> origin/main
       autoReload: {
         threshold: '阈值',
         thresholdAria: '自动充值阈值',
@@ -1768,8 +1754,6 @@ export const zhOverrides = {
             captionDefault: '默认上限',
             captionSpending: '每月远程支出',
             valueUsed: (spent, limit) => `${limit} 中已用 ${spent}`
-<<<<<<< HEAD
-=======
           },
           window: {
             today: '今天',
@@ -1784,7 +1768,6 @@ export const zhOverrides = {
             captionResetsIn: duration => `${duration}后重置`,
             captionIncluded: '包含用量',
             valueUsed: percent => `已用 ${percent}`
->>>>>>> origin/main
           }
         },
         planCard: {
@@ -2067,10 +2050,7 @@ export const zhOverrides = {
     skillArchivedMessage: '可通过 hermes curator restore 恢复。',
     tabPlugins: '插件',
     plugins: {
-<<<<<<< HEAD
-=======
       ...zhPluginPreviewAccess,
->>>>>>> origin/main
       agentTitle: 'Agent 插件',
       agentBlurb: '为所选配置扩展 agent — 工具、钩子、模型提供方。重启网关后生效。',
       pageBlurb: '插件可以扩展本应用、agent，或两者 — 每一半都有自己的开关。',
@@ -2103,13 +2083,7 @@ export const zhOverrides = {
       catalogProvenance: (sha: string) => `从 Hermes 目录安装${sha ? `，固定提交 ${sha}` : ''}。`,
       pinnedProvenance: (sha: string) => `已固定到提交 ${sha}。重新固定前将拒绝更新。`,
       pinnedBadge: (sha: string) => `固定 @ ${sha}`,
-<<<<<<< HEAD
-      updateToPin: (sha: string) => `更新到 ${sha}`,
-      updateFailed: (name: string) => `无法更新 ${name}`,
-      updated: (name: string) => `${name} 已更新到当前目录固定提交。重启网关后生效。`,
-=======
       ...zhPluginUpdate,
->>>>>>> origin/main
       uninstall: '卸载',
       uninstallTip: (name: string, profile: string) => `从 ${profile} 卸载 ${name}`,
       uninstallConfirmTitle: (name: string) => `卸载 ${name}？`,
@@ -3317,11 +3291,7 @@ export const zhOverrides = {
       '/init': '扫描仓库并生成或更新 AGENTS.md 项目指引',
       '/suggestions': '查看建议的自动化项目（接受或跳过）',
       '/blueprint': '使用 blueprint 模板设置自动化',
-<<<<<<< HEAD
-      '/browser': '管理智能体浏览器 [connect|disconnect|status|use]',
-=======
       '/browser': '管理智能体浏览器 [connect|disconnect|status]',
->>>>>>> origin/main
       '/palette': '打开模糊搜索命令面板（也可使用 Ctrl+P）',
       '/usage': '显示 Token 用量与速率限制；`reset` 可兑换保留的 Codex 限额重置',
       '/subscription': '查看你的 Nous 方案，并在浏览器中更改',
@@ -3815,17 +3785,6 @@ export const zhOverrides = {
     signIn: '登录',
     signInHeading: '登录 Nous 账户以解锁更多模型和工具。',
     settingUp: '正在设置免费推理…',
-<<<<<<< HEAD
-    codeBody: '在浏览器中输入此代码以完成登录。',
-    copyLink: '复制链接',
-    doNotShare: '请勿分享此代码。',
-    waiting: '等待登录…',
-    finishingHeading: '正在完成登录…',
-    finishingBody: '已在浏览器中批准。正在获取账户令牌。',
-    signedInAs: email => `已登录为 ${email}`,
-    signedIn: '已登录。',
-    completedBody: '现在由你的账户提供推理和工具。',
-=======
     finishInBrowser: '在浏览器中完成',
     doNotShare: '请勿分享此代码。',
     openPageAgain: '重新打开页面',
@@ -3837,25 +3796,14 @@ export const zhOverrides = {
     completedBody: '现在由你的账户提供推理和工具。',
     reconnect: '重新连接',
     openConnectors: '打开连接器',
->>>>>>> origin/main
     defaultModel: '默认模型',
     change: '更改',
     done: '完成',
     notNow: '暂不',
     tryAgain: '重试',
-<<<<<<< HEAD
-    startAgain: '重新开始',
-    didNotComplete: '登录未完成',
-    rejectedBody: '登录在浏览器中被拒绝。你仍在免费层。',
-    supersededBody: '一个更新的登录代码替换了此代码。',
-    timedOutHeading: '登录超时',
-    timedOutBody: '代码未在有效期内使用。你仍在免费层。',
-    retiredBody: '此免费层身份已被使用或已过期；下次启动时会重新设置。',
-=======
     didNotComplete: '登录未完成',
     timedOutHeading: '登录超时',
     timedOutBody: '代码未在有效期内使用。你仍在免费层。',
->>>>>>> origin/main
     errorBody: '登录未完成；请重试。',
     alreadySignedInHeading: '已登录。',
     alreadySignedInBody: '此 Hermes 已登录 Nous 账户。',
@@ -3887,9 +3835,6 @@ export const zhOverrides = {
     wasPrice: '原价',
     customModel: '自定义模型',
     addCustomModelAction: '添加自定义模型…',
-<<<<<<< HEAD
-    customModelPlaceholder: '输入模型 ID，例如 openai/gpt-5'
-=======
     customModelPlaceholder: '输入模型 ID，例如 openai/gpt-5',
     today: '今日',
     week: '本周',
@@ -3911,7 +3856,6 @@ export const zhOverrides = {
     sectionRecommended: '推荐',
     sectionOther: '其他模型',
     largeFootnote: '大型模型也会消耗你的每月大型模型额度。'
->>>>>>> origin/main
   },
 
   modelVisibility: {
@@ -4356,19 +4300,9 @@ export const zhOverrides = {
       react: '回应',
       dismissError: '关闭错误',
       errorGenericProvider: 'AI 服务',
-<<<<<<< HEAD
-      errorLayerBodies: {
-        generic: 'Hermes 回复时出现问题。请重试；若问题持续，请复制错误详情。',
-        provider: 'AI 服务无法完成此请求。请稍后重试或切换服务商。',
-        endpoint: 'Hermes 无法连接到你的自定义模型服务器。请确认它正在运行，然后重新发送消息。',
-        streaming: '回复完成前连接已断开。请重试以重新发送。'
-      },
-      errorCodes: {
-=======
       ...zhErrorLayers,
       errorCodes: {
         ...zhErrorCodes,
->>>>>>> origin/main
         provider_policy_blocked: {
           title: '账户设置阻止了此模型',
           body: provider => `${provider} 无法按你账户的数据或隐私设置路由此请求。请选择其他模型或切换服务商。`
@@ -4413,25 +4347,6 @@ export const zhOverrides = {
           title: '安全连接失败',
           body: provider => `Hermes 无法验证与 ${provider} 的安全连接。请检查网络或代理设置，或切换服务商后重新发送。`
         },
-<<<<<<< HEAD
-        cron_session_read_only: {
-          title: '此聊天属于一个定时任务',
-          body: '它只运行该任务，因此你的消息未被执行。请新建聊天后再发送。'
-        }
-      },
-      errorLayers: {
-        auth: '认证错误',
-        billing: '额度不足',
-        disk: '磁盘已满',
-        endpoint: '自定义端点错误',
-        gateway: '网关错误',
-        generic: '本轮失败',
-        provider: '模型服务商错误',
-        runtime: '本地运行时错误',
-        streaming: '流式连接错误'
-      },
-      errorRetry: '重试',
-=======
         usage_window: {
           title: '包含用量已用完',
           body: '你的方案包含的用量已用完，将在重置后恢复。在 /topup 中添加额度即可继续。'
@@ -4444,7 +4359,6 @@ export const zhOverrides = {
       errorUseCreditsFailed: '无法开启用额度继续',
       errorAddCredits: '添加额度',
       errorOpenBillingSettings: '打开账单设置',
->>>>>>> origin/main
       errorLimitResets: time => `限额将于 ${time} 重置`,
       errorRetryAtReset: time => `限额重置后重试（${time}）`,
       errorRetryScheduled: (time, wait) => `将于 ${time} 重试 — 还剩 ${wait}`,

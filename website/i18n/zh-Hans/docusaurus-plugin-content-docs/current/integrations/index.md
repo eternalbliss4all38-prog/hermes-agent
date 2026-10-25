@@ -49,11 +49,8 @@ Hermes 通过 `browser_exec`（基于 CDP 的 Python）提供完整的浏览器�
 - **本地 Chromium 系 CDP** — 使用 `/browser connect` 连接正在运行的 Chrome、Brave、Chromium 或 Edge 浏览器
 - **本地 Chromium** — 由 Hermes 自行启动的无头本地 Chromium（默认）
 
-<<<<<<< HEAD
-=======
 Camofox 反检测浏览器以目录插件形式提供：`hermes plugins install camofox`。
 
->>>>>>> origin/main
 详见[浏览器自动化](../user-guide/features/browser.md)的配置与使用说明。
 
 ## 语音与 TTS 提供商

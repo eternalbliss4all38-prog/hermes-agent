@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-"""Verify Docker exports a runnable full Chromium executable.
-=======
 """Verify the Docker image bakes a runnable full Chromium executable.
->>>>>>> origin/main
 
 The image must ship no separate headless-shell package or store entry.
 """
@@ -16,11 +12,7 @@ from tests.docker.conftest import docker_exec, docker_exec_sh, start_container
 def test_stage2_discovers_chromium_binary(
     built_image: str, container_name: str,
 ) -> None:
-<<<<<<< HEAD
-    """Stage2 must export the baked full-browser path, not a shell or .so.
-=======
     """The build bakes the full-browser path, not a shell or .so, and Hermes resolves it.
->>>>>>> origin/main
 
     Exercise it as the runtime user: an executable bit alone does not prove
     Chromium can load its shared libraries.

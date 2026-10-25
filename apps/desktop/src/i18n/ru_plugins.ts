@@ -77,8 +77,6 @@ export const ruPluginSettings = {
     }
   }
 } satisfies Pick<SettingsOverrides, 'pluginPages' | 'plugins'>
-<<<<<<< HEAD
-=======
 
 /** Russian copy for the Capabilities ▸ Plugins tab: the page blurb and a plugin's folder access. */
 export const ruPluginsTab = {
@@ -98,4 +96,3 @@ export const ruPluginsTab = {
     loadFailed: (name: string) => `Не удалось загрузить папки, открытые для ${name}.`
   }
 } satisfies NonNullable<NonNullable<TranslationOverrides['skills']>['plugins']>
->>>>>>> origin/main

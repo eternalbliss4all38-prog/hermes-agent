@@ -41,8 +41,6 @@ export const jaPluginSettings = {
     }
   }
 } satisfies Pick<SettingsOverrides, 'pluginPages' | 'plugins'>
-<<<<<<< HEAD
-=======
 
 /** Japanese copy for the Capabilities ▸ Plugins tab: the page blurb and a plugin's folder access. */
 export const jaPluginsTab = {
@@ -62,4 +60,3 @@ export const jaPluginsTab = {
     loadFailed: (name: string) => `${name} と共有しているフォルダーを読み込めませんでした。`
   }
 } satisfies NonNullable<NonNullable<TranslationOverrides['skills']>['plugins']>
->>>>>>> origin/main

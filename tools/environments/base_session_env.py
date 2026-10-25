@@ -28,11 +28,7 @@ from typing import Iterable
 # name/prefix instead of grepping declare lines (see below / issue #71296).
 _SNAPSHOT_EXCLUDED_ENV_REGEX = (
     "^declare -x (HERMES_SESSION_|HERMES_UI_SESSION_ID|HERMES_CRON_AUTO_DELIVER_|"
-<<<<<<< HEAD
-    "HERMES_CRON_SESSION|HERMES_BROWSER_CONTROL_|HERMES_DELEGATED_CHILD_CONTEXT|"
-=======
     "HERMES_CRON_SESSION|HERMES_DELEGATED_CHILD_CONTEXT|"
->>>>>>> origin/main
     "HERMES_RPC_|HERMES_KERNEL_DIR)")
 _SHELL_ENV_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -45,8 +41,6 @@ def _cwd_marker(session_id: str) -> str:
     return f"__HERMES_CWD_{session_id}__"
 
 
-<<<<<<< HEAD
-=======
 def _pipe_marker(session_id: str) -> str:
     return f"__HERMES_PIPE_{session_id}__"
 
@@ -79,7 +73,6 @@ def _can_capture_pipestatus(command: str) -> bool:
     return "<<" not in command and not command.endswith("\\")
 
 
->>>>>>> origin/main
 def _cwd_marker_printf(marker: str) -> str:
     """Emit the CWD marker on its own line (leading ``\\n`` guards against a
     command whose output lacks a trailing newline; ``_split_cwd_marker`` strips it)."""
@@ -107,10 +100,6 @@ def _export_dump_excluding_session_vars(tmp_path: str, excluded_names: Iterable[
     extra_unset = "".join(f" {shlex.quote(name)}" for name in sorted(safe_names))
     return (
         "{ ( unset ${!HERMES_SESSION_*} ${!HERMES_CRON_AUTO_DELIVER_*} "
-<<<<<<< HEAD
-        "${!HERMES_BROWSER_CONTROL_*} "
-=======
->>>>>>> origin/main
         # AI_AGENT / HERMES_AGENT are per-command attribution markers re-exported
         # by every wrapper with ${VAR:-default} semantics; persisting them would
         # let the FIRST command's value override a later outer-harness value.
@@ -174,11 +163,7 @@ def _passthrough_save_restore(names: Iterable[str]) -> tuple[list[str], list[str
 def _wrap_command_script(
     command: str, *, quoted_cwd: str, quoted_snap: str, snap_tmp_template: str,
     passthrough_names: Iterable[str], snapshot_ready: bool, cwd_marker: str,
-<<<<<<< HEAD
-    persist_env: bool = True) -> str:
-=======
     pipe_marker: str = "", persist_env: bool = True) -> str:
->>>>>>> origin/main
     """Per-command bash script: source snapshot, cd, run, re-dump env, emit CWD marker.
     ``persist_env=False`` skips the re-dump, so every command starts from the login-time
     snapshot and exports from one command never reach the next (the CWD marker still runs).
@@ -192,10 +177,7 @@ def _wrap_command_script(
     changing the command's umask.
     """
     escaped = command.replace("'", "'\\''")
-<<<<<<< HEAD
-=======
     capture = bool(pipe_marker) and _can_capture_pipestatus(command)
->>>>>>> origin/main
     save, restore = _passthrough_save_restore(passthrough_names)
     parts = list(save)
     if snapshot_ready:
@@ -206,11 +188,7 @@ def _wrap_command_script(
         'export GIT_PAGER="${GIT_PAGER:-cat}" PAGER="${PAGER:-cat}"',
         # ``--`` keeps hyphen-prefixed directory names from being parsed as options.
         f"builtin cd -- {quoted_cwd} || exit 126",
-<<<<<<< HEAD
-        f"eval '{escaped}'",
-=======
         _eval_capturing_pipestatus(escaped) if capture else f"eval '{escaped}'",
->>>>>>> origin/main
         "__hermes_ec=$?",
         "umask 077"]
     if snapshot_ready and persist_env:
@@ -219,11 +197,8 @@ def _wrap_command_script(
             f"{{ {_export_dump_excluding_session_vars(_SNAP_TMP, passthrough_names)} "
             f"&& mv -f {_SNAP_TMP} {quoted_snap}; }} "
             f"2>/dev/null || rm -f {_SNAP_TMP} 2>/dev/null || true")
-<<<<<<< HEAD
-=======
     if capture:
         parts.append(_pipe_marker_printf(pipe_marker))
->>>>>>> origin/main
     parts += [_cwd_marker_printf(cwd_marker), "exit $__hermes_ec"]
     return "\n".join(parts)
 

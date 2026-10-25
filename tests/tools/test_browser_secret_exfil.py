@@ -29,30 +29,6 @@ class TestBrowserSecretExfil:
         assert parsed.get("success") is not True
         assert "API key" in parsed["error"] or "Blocked" in parsed["error"]
 
-<<<<<<< HEAD
-
-    def test_cloud_browser_allows_credential_named_query_param(self):
-        """Magic links / OAuth callbacks / signed assets carry ``?token=``-style params and must
-        reach a cloud browser too: the browser is where the agent signs in, and it already sees the
-        session's cookies and typed passwords. Only Hermes-secret-shaped values stay blocked."""
-        from tools.browser_tool import browser_navigate
-
-        url = "https://example.com/callback?token=opaque-oauth-code&signature=abc123"
-        mock_result = {"success": True, "data": {"title": "ok", "url": url}}
-        with patch("tools.browser_tool_cloud._is_local_backend", return_value=False), \
-             patch("socket.getaddrinfo", return_value=[
-                 (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))
-             ]), \
-             patch("tools.browser_tool._navigation_session_key", return_value="default"), \
-             patch("tools.browser_tool_session._get_session_info", return_value={"_first_nav": False}), \
-             patch("tools.browser_tool_session._run_browser_command", return_value=mock_result) as mock_run:
-            allowed = json.loads(browser_navigate(url))
-            blocked = json.loads(browser_navigate("https://example.com/callback?token=" + "sk-or-v1-" + "b" * 30))
-
-        assert allowed["success"] is True
-        assert blocked["success"] is False and "Blocked" in blocked["error"]
-        assert all(call.args[1] != "open" or "sk-or-v1-" not in call.args[2][0] for call in mock_run.call_args_list)
-=======
     def test_cloud_browser_allows_credential_named_query_param(self, monkeypatch):
         """Magic links / OAuth callbacks / signed assets carry ``?token=``-style params and must
         reach a cloud browser too: the browser is where the agent signs in, and it already sees the
@@ -75,48 +51,16 @@ class TestBrowserSecretExfil:
         assert allowed is None
         assert blocked["success"] is False and "Blocked" in blocked["error"]
         assert "Blocked" in exec_blocked["error"]
->>>>>>> origin/main
 
     def test_local_browser_allows_opaque_sensitive_query_param(self):
         """Local browser/CDP sessions may navigate magic-link style URLs."""
         from tools.browser_url_policy import evaluate_url_safety
 
-<<<<<<< HEAD
-        mock_result = {"success": True, "data": {"title": "ok", "url": "https://example.com/callback?token=opaque-oauth-code"}}
-        with patch("tools.browser_tool_session._run_browser_command", return_value=mock_result), \
-             patch("tools.browser_tool_session._get_session_info", return_value={"_first_nav": False}), \
-             patch("tools.browser_tool_cloud._is_local_backend", return_value=True):
-            result = browser_navigate("https://example.com/callback?token=opaque-oauth-code")
-
-        parsed = json.loads(result)
-        assert parsed["success"] is True
-
-
-    def test_normalizes_non_ascii_url_before_navigation(self):
-        from tools.browser_tool import browser_navigate
-
-        captured = {}
-
-        def mock_run(_session_key, command, args, **_kwargs):
-            if command == "open":
-                captured["url"] = args[0]
-            return {"success": True, "data": {"title": "ok", "url": args[0]}}
-
-        with patch("tools.browser_tool_session._run_browser_command", side_effect=mock_run), \
-             patch("tools.browser_tool_session._get_session_info", return_value={"_first_nav": False}), \
-             patch("tools.browser_tool_cloud._is_local_backend", return_value=True):
-            result = browser_navigate("https://wttr.in/Köln")
-
-        parsed = json.loads(result)
-        assert parsed["success"] is True
-        assert captured["url"] == "https://wttr.in/K%C3%B6ln"
-=======
         with patch("tools.browser_session_cloud.is_local_backend", return_value=True), \
              patch("tools.browser_url_policy.check_website_access", return_value=None):
             result = evaluate_url_safety("https://example.com/callback?token=opaque-oauth-code")
 
         assert result is None
->>>>>>> origin/main
 
 
 class TestWebExtractSecretExfil:
@@ -195,41 +139,6 @@ class TestWebExtractSecretExfil:
         assert parsed["results"][0]["url"] == "https://wttr.in/K%C3%B6ln"
 
 
-<<<<<<< HEAD
-class TestBrowserSnapshotRedaction:
-    """Verify secrets in stored/truncated page snapshots are redacted.
-
-    The old LLM summarization path (_extract_relevant_content) is gone —
-    oversized snapshots always truncate-and-store. The security boundary is
-    now the stored file (force-redacted in _store_full_snapshot) and the
-    returned view (_redact_browser_output at the call sites).
-    """
-
-    def test_stored_snapshot_redacts_secrets(self):
-        """Secrets in a snapshot must be masked in the stored full-text file."""
-        from pathlib import Path
-        from tools.browser_tool_snapshot import _store_full_snapshot
-
-        fake_key = "sk-" + "FAKESECRETVALUE1234567890ABCDEF"
-        snapshot_with_secret = (
-            "heading: Dashboard Settings\n"
-            f"text: API Key: {fake_key}\n"
-            "button [ref=e5]: Save\n"
-        )
-        stored = _store_full_snapshot(snapshot_with_secret)
-        assert stored is not None
-        content = Path(stored).read_text(encoding="utf-8")
-        assert "FAKESECRETVALUE1234567890" not in content
-        # Non-secret content should survive
-        assert "Dashboard" in content
-        assert "ref=e5" in content
-
-
-
-
-
-=======
->>>>>>> origin/main
 class TestBrowserSupervisorRedaction:
     """Verify supervisor dialog snapshots redact page-originated secrets."""
 

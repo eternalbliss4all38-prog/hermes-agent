@@ -41,10 +41,7 @@ import emailer
 import pdd
 import legal
 import ledger
-<<<<<<< HEAD
-=======
 import paths
->>>>>>> origin/main
 import report
 import storage
 import tiers

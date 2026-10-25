@@ -100,8 +100,6 @@ def test_all_entries_rejecting_falls_back_to_session_marker(pool):
     ) is None
     assert _mark_entitlement_rejected_model(agent, _entitlement_400()) is True
     assert _is_entitlement_rejected(agent, "openai-codex", MODEL)
-<<<<<<< HEAD
-=======
 
 
 def test_a_plan_limit_benches_only_the_refused_model_until_its_reset(pool):
@@ -118,4 +116,3 @@ def test_a_plan_limit_benches_only_the_refused_model_until_its_reset(pool):
     assert first.last_status is None
     assert set(first.model_cooldowns) == {MODEL} and abs(first.model_cooldowns[MODEL] - reset) < 2
     assert pool.select(model=OTHER_MODEL).id == "cred-0"
->>>>>>> origin/main

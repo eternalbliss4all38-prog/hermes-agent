@@ -576,18 +576,6 @@ class Machine:
         except OSError:
             pass
         artifacts = os.environ.get("HERMES_E2E_ARTIFACTS")
-<<<<<<< HEAD
-        if artifacts:
-            dest = Path(artifacts) / self.root.name
-            shutil.copytree(self.logs, dest / "transcripts", dirs_exist_ok=True)
-            for sub in ("logs",):
-                src = self.hermes_home / sub
-                if src.is_dir():
-                    shutil.copytree(src, dest / sub, dirs_exist_ok=True,
-                                    ignore=shutil.ignore_patterns("*.db", "*.db-*"))
-            (dest / "evidence.txt").write_text(self.evidence(), encoding="utf-8", errors="replace")
-            (dest / "timings.json").write_text(json.dumps(self.timings, indent=1), encoding="utf-8")
-=======
         try:
             if artifacts:
                 dest = Path(artifacts) / self.root.name
@@ -628,7 +616,6 @@ def _remove_tree(path: Path) -> str | None:
             error = exc
             time.sleep(2)
     return None if not path.exists() else f"{path}: {error}"
->>>>>>> origin/main
 
 
 def new_machine(tmp_root: Path, base_url: str, *, label: str, person: str = "",

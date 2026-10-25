@@ -193,8 +193,6 @@ describe('JsonRpcRequestChannel', () => {
     expect(sent).toHaveLength(1)
   })
 
-<<<<<<< HEAD
-=======
   it('says it is the local Desktop first on the socket, in a call of its own', () => {
     let local = true
     const channel = new JsonRpcRequestChannel({ desktopLocal: () => local, requestIdPrefix: 'c' })
@@ -211,7 +209,6 @@ describe('JsonRpcRequestChannel', () => {
     expect(params()).toHaveLength(3)
   })
 
->>>>>>> origin/main
   it('sends a not-shown decline only to a backend that advertised counting it', async () => {
     // An older backend settles a request on the first error frame, so a bystander window's decline
     // would beat the owner's answer (#113348): there `decline` must stay silent.

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-/** Copy for updating an installed plugin (Plugins tab): catalog re-pin consent and the security-scan override. */
-export interface PluginUpdateTranslations {
-=======
 /** Plugins tab copy for the folders a plugin may use (`ctx.files`): the app's
  *  picker, the per-plugin grant list and its Revoke action. */
 export interface PluginFolderAccessTranslations {
@@ -21,7 +17,6 @@ export interface PluginFolderAccessTranslations {
  *  plus the plugin's folder access. */
 export interface PluginUpdateTranslations {
   folderAccess: PluginFolderAccessTranslations
->>>>>>> origin/main
   updateToPin: (sha: string) => string
   updateFailed: (name: string) => string
   updated: (name: string) => string

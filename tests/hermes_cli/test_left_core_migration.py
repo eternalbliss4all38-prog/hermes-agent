@@ -378,8 +378,6 @@ def test_old_spotify_commands_point_at_the_plugin(tmp_path, monkeypatch):
     assert lcm.moved_command_hint("hermes", "honcho") == ""
 
 
-<<<<<<< HEAD
-=======
 def test_old_mcp_serve_spelling_names_the_plugin_command(tmp_path, monkeypatch, capsys):
     """`hermes mcp serve` (what MCP client configs launch) exits 2 with the new spelling and the install
     line on stderr, never on stdout (the MCP wire); once the plugin is installed only the spelling."""
@@ -410,7 +408,6 @@ def test_mcp_serve_is_never_installed_automatically(tmp_path):
     assert installs == []
 
 
->>>>>>> origin/main
 _LANGFUSE_KEYS_ENV = "HERMES_LANGFUSE_PUBLIC_KEY=pk-lf-x\nHERMES_LANGFUSE_SECRET_KEY=sk-lf-x\n"
 
 

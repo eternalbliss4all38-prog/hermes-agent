@@ -117,8 +117,6 @@ describe('describeRpcError', () => {
     ).toContain('/resume')
   })
 
-<<<<<<< HEAD
-=======
   it('names /new for a refusal on a chat whose launch API key changed, never the bare code', () => {
     const text = describeRpcError(new JsonRpcGatewayError('launch_credentials_unavailable', { code: 4001 }))
 
@@ -126,7 +124,6 @@ describe('describeRpcError', () => {
     expect(text).not.toContain('launch_credentials_unavailable')
   })
 
->>>>>>> origin/main
   it('records the raw wire text it replaced in the log sink', () => {
     const lines: string[] = []
     setRpcErrorLogSink(line => lines.push(line))

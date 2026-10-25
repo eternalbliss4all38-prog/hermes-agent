@@ -294,8 +294,6 @@ def test_failed_turn_boundary_keeps_the_error_card_for_rehydration(tmp_path, mon
     stored = db.get_messages(sid)[-1]["display_metadata"]
     assert (stored if isinstance(stored, dict) else json.loads(stored))["error_surface"]["code"] == "timeout"
     db.close()
-<<<<<<< HEAD
-=======
 
 
 def test_failed_turn_after_a_tool_row_is_closed_with_its_error_card(tmp_path, monkeypatch):
@@ -342,4 +340,3 @@ def test_failed_turn_after_a_tool_row_is_closed_with_its_error_card(tmp_path, mo
     metadata = boundary["display_metadata"]
     assert (metadata if isinstance(metadata, dict) else json.loads(metadata))["error_surface"]["code"] == "rate_limit"
     db.close()
->>>>>>> origin/main

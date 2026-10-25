@@ -14,11 +14,8 @@ from pathlib import Path
 
 import pytest
 import hermes_yaml as yaml
-<<<<<<< HEAD
-=======
 
 from agent.skill_utils import SKILL_PROMPT_DESC_LIMIT
->>>>>>> origin/main
 
 REPO = Path(__file__).resolve().parents[2]
 MARKETING = re.compile(

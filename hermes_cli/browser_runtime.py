@@ -1,29 +1,12 @@
-<<<<<<< HEAD
-"""Read-only full-Chromium selection shared by browser launchers."""
-=======
 """Read-only full-Chromium selection shared by browser launchers.
 
 Nothing here installs, downloads or starts anything: a caller that may provision (the launcher's
 one-shot ``pm.ensure("chromium")``) does so itself and then asks again.
 """
->>>>>>> origin/main
 
 from __future__ import annotations
 
 import os
-<<<<<<< HEAD
-
-import pm
-
-
-def chromium_executable(*, allow_override: bool = True) -> str | None:
-    """Prefer an explicit override unless the caller needs PM's own Chromium."""
-    override = os.environ.get("AGENT_BROWSER_EXECUTABLE_PATH") if allow_override else None
-    if override:
-        return override
-    installed = pm.installed_package("chromium")
-    return str(installed.binary) if installed and installed.binary is not None else None
-=======
 from pathlib import Path
 
 import pm
@@ -106,4 +89,3 @@ def chromium_missing_hint() -> str:
         return ("No Chromium found: pm builds none for this platform. Install your distribution's "
                 "chromium package, or set browser.executable_path.")
     return "Chromium is not installed: run `hermes pm install chromium`."
->>>>>>> origin/main

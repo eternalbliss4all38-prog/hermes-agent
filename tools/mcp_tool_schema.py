@@ -209,8 +209,6 @@ _UTILITY_TOOL_SPECS = (
              "description": "Optional arguments to pass to the prompt",
              "properties": {},
              "additionalProperties": True},
-<<<<<<< HEAD
-=======
      }, ["name"]),
     ("list_event_types", "List the event types MCP server '{server}' can notify about, and your active "
      "subscriptions to them", {}, None),
@@ -237,7 +235,6 @@ _UTILITY_TOOL_SPECS = (
              "description": "The same arguments the subscription was made with",
              "properties": {},
              "additionalProperties": True},
->>>>>>> origin/main
      }, ["name"]))
 
 
@@ -291,9 +288,5 @@ def matches_name_filter(tool_name: str, patterns: set[str]) -> bool:
 # the real tools worked. See #18051.
 _UTILITY_CAPABILITY_ATTRS = {
     "list_resources": "resources", "read_resource": "resources",
-<<<<<<< HEAD
-    "list_prompts": "prompts", "get_prompt": "prompts"}
-=======
     "list_prompts": "prompts", "get_prompt": "prompts",
     "list_event_types": "events", "subscribe_event": "events", "unsubscribe_event": "events"}
->>>>>>> origin/main

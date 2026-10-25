@@ -57,9 +57,6 @@ def _tool_is_read_only(server_name: str, tool_name: str) -> bool:
     return _core._tool_read_only_hints.get(_resolve_server_key(server_name), {}).get(tool_name) is True
 
 
-<<<<<<< HEAD
-def _trust_gate_check(server_name: str, tool_name: str, booked: Optional[list] = None) -> Optional[str]:
-=======
 def _trust_approval_key(server_name: str, tool_name: str) -> str:
     """Approval key a session/always answer to the trust gate is kept under: one (server, tool) pair,
     so allowing one write tool never covers the server's others. Session entries are per chat;
@@ -125,7 +122,6 @@ def _format_trust_gate_arguments(args: dict) -> str:
 
 def _trust_gate_check(server_name: str, tool_name: str, booked: Optional[list] = None,
                       args: Optional[dict] = None) -> Optional[str]:
->>>>>>> origin/main
     """Approval gate for write-capable tools on ``trust: untrusted`` servers, plus the declared spend
     limit on any server. None to proceed, else a ``tool_error``. Fail-closed: approval-system errors
     block. An admitted costed call is charged to the chat's tally and appended to *booked* so the
@@ -135,40 +131,24 @@ def _trust_gate_check(server_name: str, tool_name: str, booked: Optional[list] =
     # Trust and costs are the calling profile's own policy (an adopter of a shared connection keeps its own).
     key = _server_key(server_name)
     trust = _core._server_trust_levels.get(key, _core._TRUST_FULL)
-<<<<<<< HEAD
-    gated = trust == _core._TRUST_UNTRUSTED and not _tool_is_read_only(server_name, tool_name)
-=======
     gated = (trust == _core._TRUST_UNTRUSTED and not _tool_is_read_only(server_name, tool_name)
              and not _trust_granted(server_name, tool_name))
->>>>>>> origin/main
     charge = None
     if key in _core._server_cost_policies:  # no table: not even a session lookup, main's path byte for byte
         from tools.approval_context import get_current_session_key
         charge = _costs.pending_charge(key, server_name, tool_name, get_current_session_key())
     if charge is None:
-<<<<<<< HEAD
-        return _ask_for_call(server_name, tool_name, None, booked) if gated else None
-=======
         return _ask_for_call(server_name, tool_name, None, booked, args=args) if gated else None
->>>>>>> origin/main
     if not gated and charge.reserve_within_limit()[0]:
         if booked is not None:
             booked.append(charge)
         return None
     with charge.asking():  # re-read under the slot: a call that asked first may have booked meanwhile
-<<<<<<< HEAD
-        return _ask_for_call(server_name, tool_name, charge, booked, gated=gated)
-
-
-def _ask_for_call(server_name: str, tool_name: str, charge, booked: Optional[list], *,
-                  gated: bool = True) -> Optional[str]:
-=======
         return _ask_for_call(server_name, tool_name, charge, booked, gated=gated, args=args)
 
 
 def _ask_for_call(server_name: str, tool_name: str, charge, booked: Optional[list], *,
                   gated: bool = True, args: Optional[dict] = None) -> Optional[str]:
->>>>>>> origin/main
     """Ask the user about one gated and/or costed call; book the charge only on an explicit yes."""
     spent, over = 0.0, False
     if charge is not None:
@@ -186,12 +166,6 @@ def _ask_for_call(server_name: str, tool_name: str, charge, booked: Optional[lis
     if gated:
         head = f"MCP tool '{tool_name}' on UNTRUSTED server '{server_name}' wants to run."
         tail = "This tool is write-capable (no readOnlyHint=true annotation) and may modify external state."
-<<<<<<< HEAD
-        # The limit notice leads: the messaging gateway's text fallback keeps only the first ~200 characters.
-        message = " ".join([head, *(["This call goes past the chat's spend limit."] if over else []), *extra, tail])
-        description = (f"Server '{server_name}' is configured 'trust: untrusted'. "
-                       f"Approve to run '{tool_name}' once, or deny to block it.")
-=======
         # The limit notice leads, and the arguments trail: a prompt cut to a platform's cap keeps the notice.
         message = " ".join([head, *(["This call goes past the chat's spend limit."] if over else []), *extra, tail])
         if args:
@@ -202,7 +176,6 @@ def _ask_for_call(server_name: str, tool_name: str, charge, booked: Optional[lis
         scope = "once" if over else "once, for this session, or always"
         description = (f"Server '{server_name}' is configured 'trust: untrusted'. "
                        f"Approve to run '{tool_name}' {scope}, or deny to block it.")
->>>>>>> origin/main
         title = f"MCP server '{server_name}' is asking"
     else:
         message = " ".join([f"MCP tool '{tool_name}' on server '{server_name}' would take this chat past its "
@@ -210,17 +183,11 @@ def _ask_for_call(server_name: str, tool_name: str, charge, booked: Optional[lis
         description = (f"Server '{server_name}' declares a spend limit per chat. Approve to run '{tool_name}' "
                        f"once (every further paid call in this chat asks again), or deny to block it.")
         title = f"MCP server '{server_name}' spend limit"
-<<<<<<< HEAD
-    try:  # lazy: tools.approval routes the prompt to whichever surface owns the session
-        from tools.approval_prompt import request_elicitation_consent
-        answer = request_elicitation_consent(message, description, surface=f"mcp-trust/{server_name}", title=title)
-=======
         remember_key = None
     try:  # lazy: tools.approval routes the prompt to whichever surface owns the session
         from tools.approval_prompt import request_elicitation_consent
         answer = request_elicitation_consent(message, description, surface=f"mcp-trust/{server_name}", title=title,
                                             remember_key=remember_key)
->>>>>>> origin/main
     except Exception as exc:
         logger.error("MCP trust gate: approval check failed for %s.%s: %s", server_name, tool_name, exc, exc_info=True)
         if over and charge is not None:
@@ -732,11 +699,7 @@ def _make_tool_handler(server_name: str, tool_name: str, tool_timeout: float, *,
     def _handler(args: dict, **kwargs) -> Any:
         # Security boundary: untrusted-server write tools need approval before ANY transport work (incl. lazy spawn).
         booked: list = []  # a costed call's charge; refunded when the call never reaches the server
-<<<<<<< HEAD
-        error = _trust_gate_check(server_name, tool_name, booked)
-=======
         error = _trust_gate_check(server_name, tool_name, booked, args)
->>>>>>> origin/main
         if error is not None:
             return error
         server, error = None, _check_circuit_breaker(server_name)

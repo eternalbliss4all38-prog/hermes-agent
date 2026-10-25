@@ -2,31 +2,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type * as HermesApi from '@/hermes'
 import type { FreeTierRequester } from '@/store/free-tier'
-<<<<<<< HEAD
-=======
 import type { AppHandoffStatus } from '@/types/hermes'
->>>>>>> origin/main
 
 const startOAuthLogin = vi.fn()
 const pollOAuthSession = vi.fn()
 const cancelOAuthSession = vi.fn(async (_id: string) => ({ ok: true }))
-<<<<<<< HEAD
-=======
 const getNousHandoffStatus = vi.fn()
->>>>>>> origin/main
 
 vi.mock('@/hermes', async importOriginal => ({
   ...(await importOriginal<typeof HermesApi>()),
   cancelOAuthSession: (id: string) => cancelOAuthSession(id),
-<<<<<<< HEAD
-  listOAuthProviders: async () => ({ providers: [] }),
-  pollOAuthSession: (providerId: string, sessionId: string) => pollOAuthSession(providerId, sessionId),
-=======
   getNousHandoffStatus: (since: null | string) => getNousHandoffStatus(since),
   listOAuthProviders: async () => ({ providers: [] }),
   pollOAuthSession: (providerId: string, sessionId: string, _profile?: unknown, wait?: number) =>
     pollOAuthSession(providerId, sessionId, wait),
->>>>>>> origin/main
   startOAuthLogin: () => startOAuthLogin()
 }))
 
@@ -86,10 +75,6 @@ describe('free-tier sign-in failure screens', () => {
   it('maps the account service verdicts onto ruled screens', async () => {
     const { signInFailureKind } = await import('./free-tier-sign-in')
 
-<<<<<<< HEAD
-    expect(signInFailureKind('account_busy')).toBe('busy')
-=======
->>>>>>> origin/main
     expect(signInFailureKind('anon_rate_limited')).toBe('busy')
     expect(signInFailureKind('anon_gate_paused')).toBe('busy')
     expect(signInFailureKind('anon_unreachable')).toBe('unreachable')
@@ -97,11 +82,7 @@ describe('free-tier sign-in failure screens', () => {
     expect(signInFailureKind('anon_gate_closed')).toBe('unavailable')
     expect(signInFailureKind('anon_pow_required')).toBe('unavailable')
     expect(signInFailureKind('anon_account_locked')).toBe('unavailable')
-<<<<<<< HEAD
-    expect(signInFailureKind('user_declined')).toBe('rejected')
-=======
     expect(signInFailureKind('timeout')).toBe('timed_out')
->>>>>>> origin/main
     expect(signInFailureKind('wat')).toBe('error')
     expect(signInFailureKind(null)).toBe('error')
   })
@@ -129,8 +110,6 @@ describe('free-tier sign-in failure screens', () => {
     })
   })
 })
-<<<<<<< HEAD
-=======
 
 describe('free-tier sign-in long-polls', () => {
   it('long-polls the sign-in, and never asks again sooner than the gap when the backend answers at once', async () => {
@@ -253,4 +232,3 @@ describe('free-tier sign-in long-polls', () => {
     queryClient.clear()
   })
 })
->>>>>>> origin/main

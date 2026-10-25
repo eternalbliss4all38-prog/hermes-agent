@@ -35,14 +35,10 @@ from agent.context_compressor_prellm import PreLlmSkipMixin
 from agent.context_compressor_prune import ProactivePruneMixin
 from agent.context_compressor_summary import SummaryDispatchMixin
 from agent.context_compressor_retry import retryable_user_text
-<<<<<<< HEAD
-from agent.context_compressor_tail import demote_stale_tail_tools, is_demoted_stub, skill_view_names_by_call_id
-=======
 from agent.context_compressor_tail import (
     demote_stale_tail_tools, lean_tail_budget, is_demoted_stub, skill_view_names_by_call_id,
     elide_keeping_skill_safety_rule, with_skill_safety_rule, without_skill_safety_rule,
 )
->>>>>>> origin/main
 from agent.context_compressor_telemetry import CompressionTelemetryMixin
 from agent.error_classifier import FailoverReason, classify_api_error
 from agent.micro_compaction import MicroCompactionMixin
@@ -593,11 +589,7 @@ def salvage_grown_transcript(
             and len(content) > _SALVAGE_SUMMARY_MAX_CHARS
             and _looks_like_compaction_summary(msg, content)
         ):
-<<<<<<< HEAD
-            msg["content"] = elide(content, _SALVAGE_SUMMARY_MAX_CHARS) + "\n\n" + _SUMMARY_END_MARKER
-=======
             msg["content"] = elide_keeping_skill_safety_rule(content, _SALVAGE_SUMMARY_MAX_CHARS) + "\n\n" + _SUMMARY_END_MARKER
->>>>>>> origin/main
     _prune_stale_reasoning_replay(out)
     if estimate_messages_tokens_rough(out) >= budget:
         _salvage_reduce_todo_snapshot(out)
@@ -844,13 +836,8 @@ _PRUNED_TOOL_PLACEHOLDER = "[Old tool output cleared to save context space]"
 
 
 def _is_summary_stub(content: str) -> bool:
-<<<<<<< HEAD
-    """True for a tool result already replaced by a 1-line ``[tool] ... (N chars)`` summary or a lean-tail demotion stub."""
-    return content.startswith("[") and " chars)" in content and len(content) < 400 or is_demoted_stub(content)
-=======
     """True for a ``[tool] ... (N chars)`` summary (a prune-only one may carry the rule) or a lean-tail demotion stub."""
     return (s := without_skill_safety_rule(content)).startswith("[") and " chars)" in s and len(s) < 400 or is_demoted_stub(s)
->>>>>>> origin/main
 
 
 # Shared floor; the clarify summary cap must stay strictly BELOW it so a preserved
@@ -924,20 +911,8 @@ def _reinject_pruned_skill_markers(summary: str, skill_names: list[str]) -> str:
     missing = [_skill_pruned_marker(name) for name in skill_names if _skill_pruned_marker(name) not in summary]
     if not missing:
         return summary
-<<<<<<< HEAD
-    block = (
-        "\n\n" + _PRUNED_SKILLS_SECTION_HEADING + "\n"
-        + "\n".join(missing)
-        + "\n(The listed skills' instructions were pruned during context "
-        "compression. Reload with the skill_view call in each marker before "
-        "relying on that skill; one reload per skill is enough — ignore any "
-        "older markers for the same skill.)"
-    )
-    return summary + _redact_compaction_text(block)
-=======
     # How to react to the markers is the handoff's Skill Safety Rule (``with_skill_safety_rule``), not repeated here.
     return summary + _redact_compaction_text("\n\n" + _PRUNED_SKILLS_SECTION_HEADING + "\n" + "\n".join(missing))
->>>>>>> origin/main
 
 
 # Lean tail mode: small recency window; continuity via verbatim user messages in
@@ -2257,11 +2232,7 @@ class ContextCompressor(
         if self._tail_token_budget is None:
             if getattr(self, "tail_mode", "lean") == "lean":
                 # Lean mode: tail is a small clamped recency window; the summary carries continuity.
-<<<<<<< HEAD
-                budget = max(LEAN_TAIL_FLOOR_TOKENS, min(LEAN_TAIL_CAP_TOKENS, int(self.context_length * 0.025)))
-=======
                 budget = lean_tail_budget(self.context_length, self.threshold_tokens)
->>>>>>> origin/main
             else:
                 budget = int(self.threshold_tokens * self.summary_target_ratio)
             if self.context_length > 0:
@@ -5588,10 +5559,7 @@ Write only the summary body. Do not include any preamble or prefix."""
         head/tail compress at all (#61932); tool-call arguments are never rewritten by pruning."""
         compressed = self._assemble_head(messages, compress_start)
         tail_messages = self._assemble_tail(messages, compress_end, scan.tail_start, scan.summary_indices)
-<<<<<<< HEAD
-=======
         summary, compressed, tail_messages = with_skill_safety_rule(summary, compressed, tail_messages)
->>>>>>> origin/main
         summary_role, merge_into_tail, force_user_leading, first_tail_visible_idx = (
             self._summary_placement(compressed, tail_messages, compress_start)
         )

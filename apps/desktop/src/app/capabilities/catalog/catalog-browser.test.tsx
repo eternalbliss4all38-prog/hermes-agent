@@ -66,27 +66,12 @@ const card = (name: string) =>
   screen.getAllByRole('article').find(article => within(article).queryByRole('button', { name }))!
 
 describe.each(['skills', 'plugins'] as const)('%s catalog layouts', kind => {
-<<<<<<< HEAD
-  it('defaults to cards, with installed entries already switched on', () => {
-=======
   it('defaults to cards, with installed entries marked added', () => {
->>>>>>> origin/main
     const { container } = setup(kind)
 
     expect(screen.getAllByRole('article')).toHaveLength(2)
     expect(container.querySelector('[data-catalog-list]')).toBeNull()
     expect(screen.getByRole('button', { name: 'List view' })).toBeTruthy()
-<<<<<<< HEAD
-    expect(
-      within(card('beta')).getByRole<HTMLButtonElement>('switch', { name: 'Added beta' }).getAttribute('aria-checked')
-    ).toBe('true')
-  })
-
-  it('installs from the card switch without opening its details', () => {
-    const { entries, onInstall } = setup(kind)
-
-    fireEvent.click(within(card('alpha')).getByRole('switch', { name: 'Add alpha' }))
-=======
     expect(within(card('beta')).getByRole<HTMLButtonElement>('button', { name: 'Added beta' }).disabled).toBe(true)
   })
 
@@ -94,7 +79,6 @@ describe.each(['skills', 'plugins'] as const)('%s catalog layouts', kind => {
     const { entries, onInstall } = setup(kind)
 
     fireEvent.click(within(card('alpha')).getByRole('button', { name: 'Install alpha' }))
->>>>>>> origin/main
 
     expect(onInstall).toHaveBeenCalledExactlyOnceWith(entries[0])
     expect(screen.queryByRole('dialog')).toBeNull()
@@ -107,11 +91,7 @@ describe.each(['skills', 'plugins'] as const)('%s catalog layouts', kind => {
 
     expect(within(dialog).getByRole('link', { name: 'Repository' }).getAttribute('href')).toBe(entries[0].sourceUrl)
     expect(within(dialog).getByRole('link', { name: 'Documentation' }).getAttribute('href')).toBe(entries[0].docsUrl)
-<<<<<<< HEAD
-    fireEvent.click(within(dialog).getByRole('switch', { name: 'Add alpha' }))
-=======
     fireEvent.click(within(dialog).getByRole('button', { name: 'Install alpha' }))
->>>>>>> origin/main
     expect(onInstall).toHaveBeenCalledExactlyOnceWith(entries[0])
 
     if (kind === 'plugins') {

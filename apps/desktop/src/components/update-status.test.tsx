@@ -93,8 +93,6 @@ describe('deriveUpdateStatus', () => {
     expect(derive({ supported: true, behind: 0, branch: 'main' }).line).toBe(en.updates.latestBody)
   })
 
-<<<<<<< HEAD
-=======
   it('names a stable release the updater refuses as held, never an update', () => {
     const view = deriveUpdateStatus({
       apply: IDLE_APPLY,
@@ -122,7 +120,6 @@ describe('deriveUpdateStatus', () => {
     expect(view.line).toBe(en.settings.about.channel.heldBody('v0.22.2'))
   })
 
->>>>>>> origin/main
   it('names a stable release the checkout already contains as a rollback, never a new update', () => {
     const status = {
       supported: true,

@@ -2,10 +2,7 @@ import { Box, Text, useInput, useStdout } from '@hermes/ink'
 import { fuzzyRank } from '@hermes/shared/fuzzy'
 import type { ModelOptionProvider, ModelOptionsResult } from '@hermes/shared/gateway-events'
 import { modelSearchText } from '@hermes/shared/model-search-text'
-<<<<<<< HEAD
-=======
 import { hasTopTier, planBlocks, planLimitLine, sectionAt, usageLevel, usageTag } from '@hermes/shared/plan-usage'
->>>>>>> origin/main
 import { REASONING_EFFORTS } from '@hermes/shared/reasoning-effort'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -834,11 +831,7 @@ export function ModelPicker({
         {filter ? `${C.filter(filter)}▎` : M.provider.filterHint}
       </Text>
       <Text color={t.color.label} wrap="truncate-end">
-<<<<<<< HEAD
-        {provider?.warning ? M.provider.warning(provider.warning) : ' '}
-=======
         {provider?.warning ? M.provider.warning(provider.warning) : footnote || ' '}
->>>>>>> origin/main
       </Text>
       <Text color={t.color.muted} wrap="truncate-end">
         {offset > 0 ? C.moreAbove(offset) : ' '}
@@ -893,11 +886,7 @@ export function ModelPicker({
         ))}
 
       <Text color={t.color.muted} wrap="truncate-end">
-<<<<<<< HEAD
-        {offset + VISIBLE < models.length ? C.moreBelow(models.length - offset - VISIBLE) : ' '}
-=======
         {offset + visibleModels < models.length ? C.moreBelow(models.length - offset - visibleModels) : ' '}
->>>>>>> origin/main
       </Text>
 
       <Text color={t.color.muted} wrap="truncate-end">

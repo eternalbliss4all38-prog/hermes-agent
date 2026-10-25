@@ -19,10 +19,7 @@ import {
   saveSelectedRosterBot
 } from './bot-state'
 import { isStaleBotChatTile, notifyBotOpenFailure, openBotCanonicalChat, prepareBotSource } from './canonical-chat'
-<<<<<<< HEAD
-=======
 import type { BotChatOpenIntent } from './canonical-chat'
->>>>>>> origin/main
 import { $botMeta, botActivitySession, botRosterKey, botSelectionKey, newBotChat } from './data'
 import { $groupChats, $groupChatWorkspace } from './group-chat'
 import { openGroupChat } from './group-chat-view'
@@ -227,9 +224,6 @@ function focusExistingBotTab(bot: RosterRow): null | { registryId: string; store
  *  conversations ("[Bots] - Sessions is not in sync again"). The workspace
  *  remembers only this transient opened-view observation; it never stores or
  *  resolves a canonical-chat id. */
-<<<<<<< HEAD
-export async function openRosterBot(bot: RosterRow): Promise<boolean> {
-=======
 export interface OpenRosterBotOptions {
   /** `tab`: open the Bot Chat as a stacked tab beside the current chat
    *  (⌘/⌃-click, "Open in new tab") instead of loading it into main. An
@@ -238,7 +232,6 @@ export interface OpenRosterBotOptions {
 }
 
 export async function openRosterBot(bot: RosterRow, { intent = 'in-place' }: OpenRosterBotOptions = {}): Promise<boolean> {
->>>>>>> origin/main
   const generation = bumpBotOpenGeneration()
   const key = botRosterKey(bot)
   const meta = botRosterMeta(bot, $botMeta.get())
@@ -339,14 +332,10 @@ export async function openRosterBot(bot: RosterRow, { intent = 'in-place' }: Ope
   }
 
   try {
-<<<<<<< HEAD
-    const opened = await openBotCanonicalChat(bot, { openingStillCurrent: () => generation === getBotOpenGeneration() })
-=======
     const opened = await openBotCanonicalChat(bot, {
       intent,
       openingStillCurrent: () => generation === getBotOpenGeneration()
     })
->>>>>>> origin/main
 
     if (generation !== getBotOpenGeneration()) {
       settlePendingBotOpen(generation)

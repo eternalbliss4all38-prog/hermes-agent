@@ -249,15 +249,12 @@ def billing_state_from_payload(payload: dict[str, Any], *, portal_url: Optional[
     )
 
 
-<<<<<<< HEAD
-=======
 def _parse_keep_going_on_credits(raw: Any) -> Optional[bool]:
     """``{enabled: bool}`` → the bool; anything else (null, absent, malformed) → None."""
     enabled = raw.get("enabled") if isinstance(raw, dict) else None
     return enabled if isinstance(enabled, bool) else None
 
 
->>>>>>> origin/main
 def fetch_portal_state(
     endpoint: str, label: str, *, failed: Callable[..., Any], parse: Callable[[dict, Optional[str]], Any],
     portal_fallback: Callable[[str], str], timeout: float, log: logging.Logger,

@@ -1,19 +1,10 @@
 import { useStore } from '@nanostores/react'
 import { useQueryClient } from '@tanstack/react-query'
-<<<<<<< HEAD
-import type * as React from 'react'
-import { type ReactNode, useEffect, useId } from 'react'
-
-import { useGatewayRequest } from '@/app/gateway/hooks/use-gateway-request'
-import type { ModelSelection } from '@/app/shell/model-menu-panel'
-import { DeviceCode } from '@/components/onboarding/flow'
-=======
 import { type ReactNode, useEffect, useId } from 'react'
 
 import { useGatewayRequest } from '@/app/gateway/hooks/use-gateway-request'
 import { CAPABILITIES_ROUTE } from '@/app/routes'
 import type { ModelSelection } from '@/app/shell/model-menu-panel'
->>>>>>> origin/main
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,16 +27,6 @@ import {
 import {
   $freeTierSignIn,
   $freeTierTurnCompleted,
-<<<<<<< HEAD
-  beginFreeTierSignIn,
-  claimFreeTierSignIn,
-  closeFreeTierSignIn,
-  copyFreeTierCode,
-  copyFreeTierUrl,
-  freeTierSignInClaim,
-  type FreeTierSignInFailure,
-  releaseFreeTierSignIn,
-=======
   $openAppWindows,
   beginFreeTierSignIn,
   claimFreeTierSignIn,
@@ -56,7 +37,6 @@ import {
   handoffStillMoving,
   releaseFreeTierSignIn,
   reopenFreeTierSignInPage,
->>>>>>> origin/main
   sameGatewayRoute,
   stopFreeTierOffer,
   syncFreeTierOffer
@@ -65,10 +45,7 @@ import { $localModelOfferPending } from '@/store/local-model-offer'
 import { refreshOnboardingProviders } from '@/store/onboarding'
 import { $onboardingSurfaceClear } from '@/store/onboarding-presence'
 import { $currentModel, setModelPickerOpen } from '@/store/session'
-<<<<<<< HEAD
-=======
 import type { AppHandoffStatus } from '@/types/hermes'
->>>>>>> origin/main
 
 interface FreeTierSignInDialogProps {
   /** The app's model-assignment path. Used only to re-home a live session that
@@ -124,10 +101,7 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
       $freeTierStatus.listen(sync),
       $onboardingSurfaceClear.listen(sync),
       $localModelOfferPending.listen(sync),
-<<<<<<< HEAD
-=======
       $openAppWindows.listen(sync),
->>>>>>> origin/main
       $freeTierTurnCompleted.listen(() => void refreshFreeTierStatus(requestGateway, sameGatewayRoute()))
     ]
 
@@ -173,14 +147,10 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
     <Dialog onOpenChange={open => !open && closeFreeTierSignIn()} open>
       <DialogContent onOpenAutoFocus={preventCloseButtonAutoFocus}>
         {state.status === 'offer' && (
-<<<<<<< HEAD
-          <Screen body={copy.offer.body} heading={copy.offer.heading}>
-=======
           <Screen
             body={state.kind === 'connector' ? t.connectorOffer.body : copy.offer.body}
             heading={state.kind === 'connector' ? t.connectorOffer.heading : copy.offer.heading}
           >
->>>>>>> origin/main
             <Actions>
               <Button onClick={() => closeFreeTierSignIn()} size="sm" type="button" variant="text">
                 {copy.offer.notNow}
@@ -199,38 +169,14 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
         )}
 
         {state.status === 'code' && (
-<<<<<<< HEAD
-          <Screen body={copy.codeBody} heading={copy.signInHeading}>
-            <DeviceCode code={state.code} copied={state.codeCopied} onCopy={() => void copyFreeTierCode()} />
-            <div className="flex min-w-0 items-center justify-between gap-3">
-              <a
-                className="min-w-0 truncate text-[length:var(--conversation-caption-font-size)] text-(--ui-text-tertiary) underline underline-offset-2 hover:text-foreground"
-                href={state.url}
-                rel="noreferrer"
-                target="_blank"
-              >
-                {state.url}
-              </a>
-              <Button onClick={() => void copyFreeTierUrl()} size="xs" type="button" variant="text">
-                {state.urlCopied ? t.common.copied : copy.copyLink}
-              </Button>
-            </div>
-            <p className="text-[length:var(--conversation-caption-font-size)] text-(--ui-text-tertiary)">
-=======
           <Screen heading={copy.finishInBrowser}>
             {/* The code is only there to compare with the browser page, so it stays small. */}
             <p className="flex flex-wrap items-baseline gap-x-2 text-[length:var(--conversation-caption-font-size)] text-(--ui-text-tertiary)">
               <span className="font-mono text-sm tracking-widest text-foreground">{state.code}</span>
->>>>>>> origin/main
               {copy.doNotShare}
             </p>
             <div className="flex items-center justify-between gap-3">
               <Spinner>{copy.waiting}</Spinner>
-<<<<<<< HEAD
-              <Button onClick={() => closeFreeTierSignIn()} size="sm" type="button" variant="ghost">
-                {t.common.cancel}
-              </Button>
-=======
               <div className="flex items-center gap-2">
                 <Button onClick={() => void reopenFreeTierSignInPage()} size="sm" type="button" variant="text">
                   {copy.openPageAgain}
@@ -239,7 +185,6 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
                   {t.common.cancel}
                 </Button>
               </div>
->>>>>>> origin/main
             </div>
           </Screen>
         )}
@@ -250,41 +195,7 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
           </Screen>
         )}
 
-<<<<<<< HEAD
-        {state.status === 'completed' && (
-          <Screen
-            body={copy.completedBody}
-            heading={state.email ? copy.signedInAs(state.email) : copy.signedIn}
-            icon={CheckCircle2}
-          >
-            {state.model && (
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground">
-                  {copy.defaultModel}
-                </span>
-                <span className="min-w-0 truncate font-mono text-[length:var(--conversation-text-font-size)]">
-                  {state.model}
-                </span>
-                <Button
-                  onClick={() => finish(state.model, () => setModelPickerOpen(true))}
-                  size="inline"
-                  type="button"
-                  variant="text"
-                >
-                  {copy.change}
-                </Button>
-              </div>
-            )}
-            <Actions>
-              <Button onClick={() => finish(state.model)} type="button">
-                {copy.done}
-              </Button>
-            </Actions>
-          </Screen>
-        )}
-=======
         {state.status === 'completed' && <SignedInScreen copy={copy} finish={finish} state={state} />}
->>>>>>> origin/main
 
         {state.status === 'already_signed_in' && (
           <Screen body={copy.alreadySignedInBody} heading={copy.alreadySignedInHeading}>
@@ -309,11 +220,7 @@ export function FreeTierSignInDialog({ onSelectModel }: FreeTierSignInDialogProp
                   request) has nothing to retry: the backend's sentence names the way out. */}
               {state.kind === 'unavailable' ? null : (
                 <Button onClick={retry} type="button">
-<<<<<<< HEAD
-                  {state.kind === 'superseded' ? copy.startAgain : copy.tryAgain}
-=======
                   {copy.tryAgain}
->>>>>>> origin/main
                 </Button>
               )}
             </Actions>
@@ -351,18 +258,6 @@ function failureBody(
       // in when an older backend sent none.
       return message ?? copy.busyBody(friendlyWait(retryAfter || 60))
 
-<<<<<<< HEAD
-    case 'rejected':
-      return copy.rejectedBody
-
-    case 'retired':
-      return copy.retiredBody
-
-    case 'superseded':
-      return copy.supersededBody
-
-=======
->>>>>>> origin/main
     case 'timed_out':
       return copy.timedOutBody
 
@@ -376,29 +271,11 @@ function failureBody(
   }
 }
 
-<<<<<<< HEAD
-function Screen({
-  body,
-  children,
-  heading,
-  icon
-}: {
-  body?: string
-  children: ReactNode
-  heading: string
-  icon?: React.ComponentType<{ className?: string }>
-}) {
-  return (
-    <>
-      <DialogHeader>
-        <DialogTitle icon={icon}>{heading}</DialogTitle>
-=======
 function Screen({ body, children, heading }: { body?: string; children: ReactNode; heading: string }) {
   return (
     <>
       <DialogHeader>
         <DialogTitle>{heading}</DialogTitle>
->>>>>>> origin/main
         {body ? <DialogDescription>{body}</DialogDescription> : null}
       </DialogHeader>
       {children}
@@ -421,8 +298,6 @@ function Spinner({ children }: { children: ReactNode }) {
 function Actions({ children }: { children: ReactNode }) {
   return <div className="flex items-center justify-end gap-2">{children}</div>
 }
-<<<<<<< HEAD
-=======
 
 /** The result screen: who is signed in, set large, then what the free tier's apps did. */
 function SignedInScreen({
@@ -523,4 +398,3 @@ function openConnectors(handoff: AppHandoffStatus | null) {
     window.location.hash = `#${target}`
   }
 }
->>>>>>> origin/main

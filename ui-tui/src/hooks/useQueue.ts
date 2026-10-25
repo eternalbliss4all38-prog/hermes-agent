@@ -91,17 +91,6 @@ interface PendingQueue {
   items: QueueItem[]
 }
 
-<<<<<<< HEAD
-// `gw` owns server-queued rows: the authority's pending fanout is rendered
-// after this client's unconfirmed local items, and deleting/editing one goes
-// through `prompt.cancel` — the next fanout, not a local splice, retires it.
-export function useQueue(gw?: { request: (method: string, params: Record<string, unknown>) => Promise<unknown> }) {
-  const ui = useStore($uiState)
-  const queues = useRef(new Map<string, PendingQueue>())
-  const unbound = useRef<PendingQueue>({ edit: null, items: [] })
-  const [, refresh] = useState(0)
-
-=======
 // Restored and migrated queues order by `createdAt`; one process-wide clock keeps it strictly
 // increasing across every session's queue, so two inputs queued in the same millisecond on
 // different sessions keep their order when a resume merges them.
@@ -122,7 +111,6 @@ export function useQueue(gw?: { request: (method: string, params: Record<string,
   const unbound = useRef<PendingQueue>({ edit: null, items: [] })
   const [, refresh] = useState(0)
 
->>>>>>> origin/main
   const getQueue = useCallback((destination = captureDestination()) => {
     // Apply compression before resolving a queue, including through stale callbacks.
     for (const [oldKey, source] of queues.current) {
@@ -293,11 +281,7 @@ export function useQueue(gw?: { request: (method: string, params: Record<string,
         ...(attachments?.length ? { attachments } : {}),
         submissionId: randomUUID(),
         destination: owner,
-<<<<<<< HEAD
-        createdAt: Math.max(Date.now(), (queue.items.at(-1)?.createdAt ?? 0) + 1)
-=======
         createdAt: nextQueueCreatedAt(queue.items.at(-1)?.createdAt)
->>>>>>> origin/main
       }
 
       return { queue, item }

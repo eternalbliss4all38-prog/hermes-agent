@@ -291,39 +291,11 @@ def test_browser_backend_is_not_resolved_while_collection_is_off(home, monkeypat
         "hermes_cli.config.read_raw_config_readonly", lambda: {"telemetry": {"shared_metrics": {"enabled": False}}},
     )
     resolved = []
-<<<<<<< HEAD
-    loop.record_browser_call(lambda legacy: legacy(lambda: '{"success": true}'), lambda: resolved.append(1) or "local")
-=======
     loop.record_browser_call(lambda: '{"success": true}', lambda: resolved.append(1) or "local")
->>>>>>> origin/main
     assert resolved == []
 
 
 def test_browser_calls_name_the_backend_that_served_them(home):
-<<<<<<< HEAD
-    served = loop.record_browser_call(lambda legacy: legacy(lambda: '{"success": true}'), lambda: "browserbase")
-    assert served == '{"success": true}'
-    loop.record_browser_call(lambda legacy: '{"success": false, "error": "x"}', lambda: "browserbase")
-    with pytest.raises(RuntimeError):
-        loop.record_browser_call(lambda legacy: legacy(_raise), lambda: "some-private-provider")
-
-    rows = sorted((d["backend"], d["outcome"], d["error_class"]) for d, _ in _rows(home, "hermes.execution_backend.count"))
-    assert rows == [
-        ("browserbase", "success", "none"), ("extension", "failed", "tool_error"), ("other", "failed", "exception"),
-    ]
-
-
-def test_browser_tool_backend_is_resolved_from_the_profile_at_call_time(home, monkeypatch):
-    import tools.browser_tool as bt
-
-    handler = bt._routed_handler("browser_back", lambda args, kw: '{"success": true}')
-    handler({}, task_id="t")
-    monkeypatch.setenv("BROWSER_CDP_URL", "ws://127.0.0.1:9/devtools/browser/x")  # `/browser connect` mid-session
-    handler({}, task_id="t")
-
-    rows = sorted((d["backend"], d["outcome"]) for d, _ in _rows(home, "hermes.execution_backend.count"))
-    assert rows == [("cdp", "success"), ("local", "success")]
-=======
     served = loop.record_browser_call(lambda: '{"success": true}', lambda: "browserbase")
     assert served == '{"success": true}'
     loop.record_browser_call(lambda: '{"success": false, "error": "x"}', lambda: "browserbase")
@@ -416,7 +388,6 @@ def test_a_local_call_names_the_engine_that_served_it_not_the_one_configured_now
 
     rows = {d["backend"]: v for d, v in _rows(home, "hermes.execution_backend.count") if d["outcome"] == "success"}
     assert rows == {"local": 2, "lightpanda": 1}
->>>>>>> origin/main
 
 
 def _raise():

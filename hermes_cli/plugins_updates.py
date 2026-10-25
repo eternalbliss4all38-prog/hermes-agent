@@ -51,11 +51,7 @@ class CheckResult:
     latest: Optional[str] = None
     update_available: Optional[bool] = None   # None = unknown/uncheckable
     needs_fixing: Optional[str] = None        # mismatch reason when set
-<<<<<<< HEAD
-    min_hermes: Optional[str] = None          # feed's version floor, if any
-=======
     min_hermes: Optional[str] = None          # feed floor / catalog requires_hermes, if any
->>>>>>> origin/main
     reason: str = ""
 
     def to_json(self) -> dict:
@@ -134,8 +130,6 @@ def check_local_provenance(prov: Provenance) -> CheckResult:
     return result
 
 
-<<<<<<< HEAD
-=======
 def held_for_newer_hermes(result: CheckResult) -> Optional[str]:
     """``needs Hermes <spec>; this is <version>`` when the update's ``min_hermes`` (a feed floor or the
     catalog entry's ``requires_hermes``) rejects the running Hermes, else ``None``. The update path refuses
@@ -148,7 +142,6 @@ def held_for_newer_hermes(result: CheckResult) -> Optional[str]:
     return f"needs Hermes {result.min_hermes}; this is {running_hermes_version()}"
 
 
->>>>>>> origin/main
 def check_provenanced(
     prov: Provenance,
     *,
@@ -177,10 +170,7 @@ def check_provenanced(
             return result
         result.latest = entry.sha
         result.update_available = result.current != entry.sha
-<<<<<<< HEAD
-=======
         result.min_hermes = entry.requires_hermes or None
->>>>>>> origin/main
         return result
     result = check_local_provenance(prov)
     if result.reason or result.needs_fixing:

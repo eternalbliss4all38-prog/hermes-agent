@@ -85,16 +85,6 @@ def _run_portal_one_shot(config: dict) -> None:
     _record_setup_completed(config)
 
 
-<<<<<<< HEAD
-def _run_first_time_quick_setup(config: dict, hermes_home, is_existing: bool):
-    """Streamlined first-time setup via Nous Portal: OAuth, model, terminal & messaging;
-    everything else gets defaults."""
-    from hermes_cli.setup import (
-        _apply_default_agent_settings, _info, print_header, print_info, _print_setup_summary, print_success,
-        print_warning, prompt_choice, save_config, setup_gateway, setup_terminal_backend
-    )
-    # Step 1: Nous Portal — OAuth login + model selection (provider set to "nous" by the save).
-=======
 def _imported_model_label(config: dict) -> str:
     """``"<provider> · <model>"`` when *config* (just written by an agent import) names a model
     Hermes has credentials for, else ``""``."""
@@ -130,7 +120,6 @@ def _keep_imported_model(config: dict, imported_from: str) -> bool:
 def _quick_setup_nous_portal(config: dict) -> None:
     """Quick Setup's Nous Portal step: OAuth login + model selection (provider set to "nous" by the save)."""
     from hermes_cli.setup import _info, print_header, print_info, print_warning
->>>>>>> origin/main
     print_header("Nous Portal", gap=True)
     _info("One subscription, 300+ models, plus the Tool Gateway:",
           "  web search, image generation, TTS, browser automation.",
@@ -148,8 +137,6 @@ def _quick_setup_nous_portal(config: dict) -> None:
     # The wizard's later save_config(config) must not clobber the login/model save.
     _reload_config_into(config)
 
-<<<<<<< HEAD
-=======
 
 def _run_first_time_quick_setup(config: dict, hermes_home, is_existing: bool, imported_from: str = ""):
     """Streamlined first-time setup via Nous Portal: OAuth, model, terminal & messaging;
@@ -163,7 +150,6 @@ def _run_first_time_quick_setup(config: dict, hermes_home, is_existing: bool, im
     if not _keep_imported_model(config, imported_from):
         _quick_setup_nous_portal(config)
 
->>>>>>> origin/main
     # Step 2: Terminal Backend; Step 3: defaults for everything else.
     setup_terminal_backend(config)
     _apply_default_agent_settings(config)
@@ -224,12 +210,6 @@ def _blank_slate_minimal_toolsets(config: dict):
     keep = {"file", "terminal", "vision", "skills"}
     config.setdefault("platform_toolsets", {})["cli"] = sorted(keep)
     try:
-<<<<<<< HEAD
-        from toolsets import TOOLSETS
-        from hermes_cli.tools_config import CONFIGURABLE_TOOLSETS, _get_plugin_toolset_keys
-        all_keys = {k for k, _, _ in CONFIGURABLE_TOOLSETS}
-        all_keys.update(_get_plugin_toolset_keys())
-=======
         from toolsets import TOOLSETS, resolve_toolset
         from hermes_cli.tools_config import CONFIGURABLE_TOOLSETS, _get_plugin_toolset_keys
         all_keys = {k for k, _, _ in CONFIGURABLE_TOOLSETS}
@@ -239,7 +219,6 @@ def _blank_slate_minimal_toolsets(config: dict):
         # tools after the user re-enables the superset, with no UI to undo it (#134593).
         # resolve_toolset returns [] for unknown names and guards cycles, so it needs no try/except.
         configurable_tool_sets = [set(resolve_toolset(ck)) for ck, _, _ in CONFIGURABLE_TOOLSETS]
->>>>>>> origin/main
         # Plain TOOLSETS entries catch recovered toolsets like ``kanban``. Skip "hermes-*" platform
         # composites, "includes" groupings, and posture toolsets (session-level picks by
         # agent/coding_context.py — disabling them would subtract terminal/read_file).
@@ -249,13 +228,10 @@ def _blank_slate_minimal_toolsets(config: dict):
             # selections made by agent/coding_context.py — not permanent user-facing disables. Adding them
             # here causes model_tools to subtract their tools (terminal, read_file, …) from the minimal
             # Blank Slate surface (#57315).
-<<<<<<< HEAD
-=======
             if k not in all_keys:
                 tools = set(resolve_toolset(k))
                 if tools and any(tools <= cts for cts in configurable_tool_sets):
                     continue  # subset of a checklist toolset — the superset's entry already covers it (#134593)
->>>>>>> origin/main
             all_keys.add(k)
         disabled = sorted(all_keys - keep)
         if disabled:

@@ -113,10 +113,6 @@ interface OpenStoredBotChatOptions {
    *  only for explicit opens — a background wake resolves once the resume
    *  is requested, never blocking on a cold backend. */
   background?: boolean
-<<<<<<< HEAD
-}
-
-=======
   /** `tab`: open BESIDE the current chat as a stacked tab instead of loading
    *  into main. The default `in-place` spends main, so a second Bot Chat
    *  always replaced the first; ⌘-click / "Open in new tab" on a bot row
@@ -126,16 +122,11 @@ interface OpenStoredBotChatOptions {
 
 export type BotChatOpenIntent = 'in-place' | 'tab'
 
->>>>>>> origin/main
 async function openStoredBotChat(
   owner: RosterRow | string,
   storedId: string,
   summary: CanonicalChatRow,
-<<<<<<< HEAD
-  { background = false }: OpenStoredBotChatOptions = {}
-=======
   { background = false, intent = 'in-place' }: OpenStoredBotChatOptions = {}
->>>>>>> origin/main
 ): Promise<string> {
   if (!storedId || typeof host.openSession !== 'function') {
     throw new Error('This Hermes Desktop version cannot open stored sessions')
@@ -186,20 +177,9 @@ async function openStoredBotChat(
         }
       : {}),
     profile: name,
-<<<<<<< HEAD
-    // Same intent a session row click uses. `tab` stacked a fresh tile every
-    // time focusOpenSession missed, so bot chats piled up beside each other and
-    // beside the untouched "New session" draft, which then kept focus —
-    // clicking a bot appeared to do nothing. `in-place` still fronts an
-    // already-open tile first, so Bot tabs survive owner lifecycles (#a81854a2,
-    // the reason this stopped being `main`); it just loads into main instead of
-    // minting a second tab when there is nothing to front.
-    intent: 'in-place',
-=======
     // Default to the same in-place behavior as a session row. Explicit tab
     // opens preserve main; either intent fronts an already-open session first.
     intent,
->>>>>>> origin/main
     awaitHydration: !background,
     expectHistory,
     forceResume: true,
@@ -377,12 +357,9 @@ interface OpenCanonicalChatOptions {
    *  open degrades to the old navigating shape. */
   background?: boolean
   openingStillCurrent?: (() => boolean) | null
-<<<<<<< HEAD
-=======
   /** See OpenStoredBotChatOptions.intent. Only honored for an EXISTING Bot
    *  Chat; a freshly minted one always lands in main. */
   intent?: BotChatOpenIntent
->>>>>>> origin/main
 }
 
 /** The self-introduction a brand-new bot is born with (#91827).
@@ -637,11 +614,7 @@ export function createCanonicalChat(
  *  bot's chat opens without re-homing Desktop's chrome. */
 export async function openBotCanonicalChat(
   owner: RosterRow | string,
-<<<<<<< HEAD
-  { background = false, openingStillCurrent = null }: OpenCanonicalChatOptions = {}
-=======
   { background = false, openingStillCurrent = null, intent = 'in-place' }: OpenCanonicalChatOptions = {}
->>>>>>> origin/main
 ): Promise<{ openedId: string; registryId: string } | null> {
   const existing = await findExistingCanonicalChat(owner)
 
@@ -651,11 +624,7 @@ export async function openBotCanonicalChat(
     }
 
     const openedId = existing.resolved_id || existing.id
-<<<<<<< HEAD
-    await openStoredBotChat(owner, openedId, existing, { background })
-=======
     await openStoredBotChat(owner, openedId, existing, { background, intent })
->>>>>>> origin/main
 
     // Both identities matter downstream: the durable registry row names the
     // chat; the resolved lineage tip is what actually takes session focus.

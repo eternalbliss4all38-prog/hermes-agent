@@ -10,11 +10,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-<<<<<<< HEAD
-import { PACKAGE_MARKER } from './desktop-plugins-root'
-=======
 import { PACKAGE_MARKER, withDesktopPluginsRoot } from './desktop-plugins-root'
->>>>>>> origin/main
 
 export interface RemoveDesktopPluginResult {
   ok: boolean
@@ -23,9 +19,6 @@ export interface RemoveDesktopPluginResult {
   path?: string
 }
 
-<<<<<<< HEAD
-export async function removeDesktopPlugin(appRoot: string, rawName: unknown): Promise<RemoveDesktopPluginResult> {
-=======
 export function removeDesktopPlugin(appRoot: string, rawName: unknown): Promise<RemoveDesktopPluginResult> {
   // Under the root's writer lock: a reconcile pass adopting this folder (it
   // stamps the marker) must not land between the marker check and the delete.
@@ -33,7 +26,6 @@ export function removeDesktopPlugin(appRoot: string, rawName: unknown): Promise<
 }
 
 async function removeFolder(appRoot: string, rawName: unknown): Promise<RemoveDesktopPluginResult> {
->>>>>>> origin/main
   const name = String(rawName ?? '').trim()
 
   if (!name || name === '.' || name === '..' || /[\\/]/.test(name)) {

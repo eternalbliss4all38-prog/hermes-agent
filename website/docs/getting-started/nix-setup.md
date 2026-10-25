@@ -826,11 +826,8 @@ For optional extras declared in hermes-agent's `pyproject.toml`, use `extraDepen
 services.hermes-agent.extraDependencyGroups = [ "google-meet" ];
 ```
 
-<<<<<<< HEAD
-=======
 `extraDependencyGroups` and `extraPythonPackages` **add to** the groups the selected package ships; they never replace them. The `default` package already ships `messaging`, `voice`, `exa` and the other groups in the table below, so naming one of those changes nothing. The same holds for `pkgs.hermes-agent.override { extraDependencyGroups = [ ... ]; }`. For a smaller build, start from a smaller package: `package = inputs.hermes-agent.packages.${system}.minimal;` (or `#messaging`), or `.override { defaultDependencyGroups = [ ]; }` to drop the shipped groups and list only the ones you want.
 
->>>>>>> origin/main
 These groups join the core dependency resolution at build time. Conflicting
 requirements can still fail that resolution. The table lists common groups;
 `pyproject.toml` is authoritative for the complete list and platform markers.
@@ -889,13 +886,9 @@ External flakes can override the package directly:
     nixpkgs.overlays = [ hermes-agent.overlays.default ];
     # Then:
     #   pkgs.hermes-agent.override { extraPythonPackages = [...]; }
-<<<<<<< HEAD
-    #   pkgs.hermes-agent.override { extraDependencyGroups = [ "voice" ]; }
-=======
     #   pkgs.hermes-agent.override { extraDependencyGroups = [ "google-meet" ]; }
     # Both add to the groups the default package ships. To drop those:
     #   pkgs.hermes-agent.override { defaultDependencyGroups = [ ]; }
->>>>>>> origin/main
   };
 }
 ```
@@ -921,14 +914,9 @@ A build-time collision check prevents plugin packages from shadowing core hermes
 
 ### Dev Shell
 
-<<<<<<< HEAD
-The flake provides an editable Python environment with the lock-derived interpreter
-and the `dev` dependency group. `HERMES_PYTHON` points to its interpreter. It does not install
-=======
 The flake provides an editable Python venv with the `dev` dependency group, running
 on the interpreter `pm/lock.json` pins. `HERMES_PYTHON` and `VIRTUAL_ENV` point at it,
 and it needs no `PYTHONPATH`. It does not install
->>>>>>> origin/main
 Python dependencies into a repository-local `.venv`. The shell also provides
 Node.js and runtime tools. Its npm hook refreshes JS workspaces when their inputs change.
 
@@ -1046,11 +1034,7 @@ nix build .#checks.x86_64-linux.config-roundtrip    # merge script preserves use
 | `extraPackages` | `listOf package` | `[]` | Extra packages available to the agent. Added to the hermes user's per-user profile so terminal commands, skills, and cron jobs all see them |
 | `extraPlugins` | `listOf package` | `[]` | Directory plugin packages to symlink into `$HERMES_HOME/plugins/`. Each must contain `plugin.yaml` |
 | `extraPythonPackages` | `listOf package` | `[]` | Python packages added to PYTHONPATH for entry-point plugin discovery. Use the selected package’s `python.pkgs` |
-<<<<<<< HEAD
-| `extraDependencyGroups` | `listOf str` | `[]` | pyproject.toml optional extras to include in the sealed venv (e.g. `["voice"]`). Resolved by uv — no collisions |
-=======
 | `extraDependencyGroups` | `listOf str` | `[]` | pyproject.toml optional extras added to the groups `package` already ships (e.g. `["google-meet"]`). Resolved by uv — no collisions |
->>>>>>> origin/main
 | `restart` | `str` | `"always"` | The systemd `Restart=` policy. macOS does not use it. |
 | `restartSec` | `int` | `5` | The systemd `RestartSec=` value. macOS does not use it. |
 

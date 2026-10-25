@@ -1,10 +1,6 @@
 import { useStore } from '@nanostores/react'
 import type { ReactNode } from 'react'
-<<<<<<< HEAD
-import { useEffect } from 'react'
-=======
 import { useEffect, useMemo } from 'react'
->>>>>>> origin/main
 
 import { COMPOSER_AREAS } from '@/app/chat/composer/contrib'
 import { terminalMenuHandleFor } from '@/app/right-sidebar/terminal/terminal-context-menu'
@@ -29,10 +25,7 @@ import { isRemoteGateway } from '@/lib/media'
 import { reachablePreviewUrl } from '@/lib/preview-reach'
 import { openPreview } from '@/store/preview'
 
-<<<<<<< HEAD
-=======
 import { type ComposerMenuRow, resolveComposerMenuSections } from './composer-menu'
->>>>>>> origin/main
 import { ShellMenuItems } from './shell-menu-items'
 import {
   $contextMenu,
@@ -667,13 +660,9 @@ export function AppContextMenu() {
       ? terminalSections(open, t)
       : open.kind === 'guest'
         ? guestSections(open, t)
-<<<<<<< HEAD
-        : (list => (list.length ? list : [[<ShellMenuItems key="shell" kit={DROPDOWN_KIT} />]]))(domSections(open, t))
-=======
         : (list => (list.length ? list : [[<ShellMenuItems key="shell" kit={DROPDOWN_KIT} />]]))(
             domSections(open, t, composerSections)
           )
->>>>>>> origin/main
 
   return (
     <DropdownMenu

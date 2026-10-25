@@ -5,11 +5,7 @@ docs of config.yaml.
 """
 
 
-<<<<<<< HEAD
-#: Image every container terminal backend (docker/modal/daytona/singularity) uses unless the
-=======
 #: Image every container terminal backend (docker/modal/daytona, the singularity plugin) uses unless the
->>>>>>> origin/main
 #: user pins one. LEGACY_SANDBOX_IMAGES are the plain defaults that preceded the desktop stack
 #: (the 3.14 pin shipped between the two without a migration); a saved config still holding one
 #: is the template copied, and the config migration unsets it, never a user's own pin.
@@ -357,19 +353,11 @@ DEFAULT_CONFIG = {
         # reads host values) — useful under systemd without the user's shell env. Example:
         # {"SSH_AUTH_SOCK": "/run/user/1000/ssh-agent.sock"}
         "docker_env": {},
-<<<<<<< HEAD
-        "singularity_image": f"docker://{DEFAULT_SANDBOX_IMAGE}",
-=======
->>>>>>> origin/main
         "modal_image": DEFAULT_SANDBOX_IMAGE,
         "daytona_image": DEFAULT_SANDBOX_IMAGE,
         "vercel_image": DEFAULT_VERCEL_IMAGE,  # vercel_sandbox backend only: a Vercel-managed or VCR image
         "vercel_runtime": "",  # deprecated by Vercel; a legacy runtime pin (node24 | node22 | python3.13) overrides vercel_image
-<<<<<<< HEAD
-        # Container limits (docker, singularity, modal, daytona, vercel_sandbox; not local/ssh).
-=======
         # Container limits (docker, modal, daytona, vercel_sandbox, container plugin backends; not local/ssh).
->>>>>>> origin/main
         "container_cpu": 1,
         "container_memory": 5120,       # MB (default 5GB)
         "container_disk": 51200,        # MB (default 50GB)
@@ -433,26 +421,6 @@ DEFAULT_CONFIG = {
     },
 
     "browser": {
-<<<<<<< HEAD
-        # "" = Browser Use mode when the browser-use CLI (or uvx) is available, else built-in tools
-        # (Camofox setups always keep built-in tools: no CDP surface); "browser-use" = force one
-        # browser_exec tool driving the Browser Use CLI over any CDP backend (local Chrome, cloud);
-        # "off" = force the built-in browser_navigate/browser_click/... tools.
-        "backend": "",
-        "inactivity_timeout": 120,
-        "command_timeout": 30,  # seconds per browser command (screenshot, navigate, etc.)
-        "snapshot_threshold": 15000,  # max chars before snapshot truncate-and-store (min 1000)
-        "record_sessions": False,  # auto-record browser sessions as WebM videos
-        # headed: visible Chromium window (local); skips per-turn cleanup, idle reaper still applies
-        "headed": False,
-        "allow_private_urls": False,  # allow private/internal IPs (localhost, 192.168.x.x, ...)
-        # Local browser engine for both drivers. "auto" = Chrome; "lightpanda" = faster navigation,
-        # no screenshots (Browser Use mode spawns `lightpanda serve` per session; built-in tools
-        # pass `--engine <value>` to agent-browser with Chrome fallback); "chrome" = explicit.
-        # Ignored while a cloud provider, Camofox, cdp_url or use_real_profile is active. Also
-        # settable via AGENT_BROWSER_ENGINE.
-        "engine": "auto",
-=======
         # REMOVAL NOTE: `backend` (built-in browser_* tools vs browser_exec), `snapshot_threshold`,
         # `record_sessions`, `allow_unsafe_evaluate` and `restrict_evaluate` left with the built-in
         # browser tools; browser_exec is the only core browser. Config v52 drops `backend` (an `off`
@@ -476,7 +444,6 @@ DEFAULT_CONFIG = {
         # profile per session.
         "user_data_dir": "",
         "chromium_args": [],  # extra Chromium flags for local sessions, e.g. ["--lang=de"]
->>>>>>> origin/main
         # With a cloud provider, auto-spawn local Chromium for LAN/localhost URLs instead
         "auto_local_for_private_urls": True,
         "cdp_url": "",  # persistent CDP endpoint for attaching to an existing Chromium/Chrome
@@ -500,43 +467,14 @@ DEFAULT_CONFIG = {
         # agent the wrong identity. A pin naming a missing directory never falls back to another
         # profile: the session gets a fresh browser without the user's logins.
         "real_profile_pin": "",
-<<<<<<< HEAD
-        # restrict_evaluate: opt-in denylist blocking sensitive JS primitives (cookies/storage/
-        # clipboard/network/form values) in browser_console(expression=...); allow_unsafe_evaluate
-        # is the legacy override that bypasses that denylist entirely.
-        "allow_unsafe_evaluate": False,
-        "restrict_evaluate": False,
-=======
->>>>>>> origin/main
         # CDP supervisor: dialog + frame detection over a persistent WebSocket; active only with a
         # CDP-capable backend (Browserbase, or local Chrome via /browser connect). See
         # website/docs/developer-guide/browser-supervisor.md.
         "dialog_policy": "must_respond",  # must_respond | auto_dismiss | auto_accept
         "dialog_timeout_s": 300,  # safety auto-dismiss after N seconds under must_respond
-<<<<<<< HEAD
-        "camofox": {
-            # true = send a stable profile-scoped userId so Camofox maps it to a persistent Firefox
-            # profile; false = random ephemeral userId per session.
-            "managed_persistence": False,
-            # Externally managed Camofox identity, for when another app owns the visible browser.
-            "user_id": "",
-            "session_key": "",
-            "adopt_existing_tab": False,  # rehydrate tab_id from Camofox before creating a tab
-            # Docker Camofox opens page URLs from inside the container: rewrite loopback page URLs
-            # (localhost/127.0.0.1/::1) to the host alias; CAMOFOX_URL itself is unchanged.
-            "rewrite_loopback_urls": False,
-            "loopback_host_alias": "host.docker.internal",
-        },
-        # Authenticated browser-extension controller lane: a registered extension can become the
-        # exact controller for a session's browser_* tools (fail-closed once bound). Local API
-        # registration also requires the API server bearer key. developer_mode gates the privileged
-        # browser_cdp / browser_evaluate capabilities.
-        "extension_control": {"enabled": False, "developer_mode": False},
-=======
         # Read by the `camofox` catalog plugin (Camofox left core). An empty free-form mapping, so
         # `hermes config set browser.camofox.<key>` is accepted and user values are never stripped.
         "camofox": {},
->>>>>>> origin/main
     },
     # Stale git worktree lifecycle (`hermes -w`, `/worktree new`, subagent isolation, Desktop). The
     # sweep runs at `hermes -w` startup and every 6h from the cron ticker over every repo Hermes made
@@ -1385,17 +1323,10 @@ DEFAULT_CONFIG = {
         # hindsight, supermemory, mem0, openviking, holographic). Empty = built-in only.
         "provider": "",
     },
-<<<<<<< HEAD
-    # Subagent delegation — override the provider:model used by delegate_task so children run on a
-    # cheaper/faster model. Uses the same runtime provider resolution as CLI/gateway startup, so
-    # every configured provider is supported.
-    "delegation": {
-=======
     # Subagent delegation: `backend` = task-routing strategy ("default": keys below), `backends.<name>` = its settings.
     "delegation": {
         "backend": "default",
         "backends": {},
->>>>>>> origin/main
         "model": "",  # e.g. "google/gemini-3-flash-preview" (empty = inherit parent)
         "provider": "",  # e.g. "openrouter" (empty = inherit parent provider + credentials)
         # Fallback chain for delegated children (same entry format as the top-level list).
@@ -2595,11 +2526,7 @@ DEFAULT_CONFIG = {
         # 0 keeps screens up until stopped.
         "idle_stop_minutes": 30,
         # Where the screen (and with it computer_use and the bot's browser) runs.
-<<<<<<< HEAD
-        #   auto      follow the terminal backend: inside the docker / ssh / singularity sandbox when one is
-=======
         #   auto      follow the terminal backend: inside the docker / ssh / streaming plugin sandbox when one is
->>>>>>> origin/main
         #             configured, on the gateway host when terminal.backend is local. A sandbox backend that
         #             cannot host a screen (modal, daytona, vercel) REFUSES rather than quietly running the
         #             desktop on the host beside the sandbox you chose for the agent.
@@ -2786,11 +2713,7 @@ DEFAULT_CONFIG = {
         # Extra ports detection probes for an external llama-server (besides 8080).
         "detect_ports": [],
     },
-<<<<<<< HEAD
-    "_config_version": 51,  # Config schema version - bump this when adding new required fields
-=======
     "_config_version": 52,  # Config schema version - bump this when adding new required fields
->>>>>>> origin/main
 }
 
 
@@ -2964,35 +2887,6 @@ OPTIONAL_ENV_VARS = {
     "BROWSERBASE_API_KEY": _tool(
         "Browserbase API key for cloud browser (optional — local browser works without this)",
         "Browserbase API key", "https://browserbase.com/",
-<<<<<<< HEAD
-        tools=["browser_navigate", "browser_click"]),
-    "BROWSERBASE_PROJECT_ID": _tool(
-        "Browserbase project ID (optional — only needed for cloud browser)",
-        "Browserbase project ID", "https://browserbase.com/",
-        tools=["browser_navigate", "browser_click"], password=False),
-    "BROWSER_USE_API_KEY": _tool(
-        "Browser Use API key for cloud browser (optional — local browser works without this)",
-        "Browser Use API key", "https://browser-use.com/",
-        tools=["browser_navigate", "browser_click"]),
-    "FIRECRAWL_BROWSER_TTL": _tool(
-        "Firecrawl browser session TTL in seconds (optional, default 300)",
-        "Browser session TTL (seconds)", tools=["browser_navigate", "browser_click"],
-        password=False),
-    "AGENT_BROWSER_ENGINE": _env(
-        "Local browser engine: auto (default Chrome), lightpanda (faster, no screenshots; Browser Use mode "
-        "spawns lightpanda serve), chrome", "Browser engine (auto/lightpanda/chrome)",
-        url="https://lightpanda.io/docs/run-locally/installation/one-liner",
-        tools=["browser_exec", "browser_navigate", "browser_snapshot", "browser_click", "browser_vision"],
-        password=False, category="tool", advanced=True),
-    "CAMOFOX_URL": _tool(
-        "Camofox browser server URL for local anti-detection browsing (e.g. http://localhost:9377)",
-        "Camofox server URL", "https://github.com/jo-inc/camofox-browser",
-        tools=["browser_navigate", "browser_click"], password=False),
-    "CAMOFOX_API_KEY": _tool(
-        "Optional bearer token sent as Authorization header to a remote/authenticated Camofox "
-        "server", "Camofox API key", "https://github.com/jo-inc/camofox-browser",
-        tools=["browser_navigate", "browser_click"], advanced=True),
-=======
         tools=["browser_exec"]),
     "BROWSERBASE_PROJECT_ID": _tool(
         "Browserbase project ID (optional — only needed for cloud browser)",
@@ -3006,7 +2900,6 @@ OPTIONAL_ENV_VARS = {
         "Firecrawl browser session TTL in seconds (optional, default 300)",
         "Browser session TTL (seconds)", tools=["browser_exec"],
         password=False),
->>>>>>> origin/main
     "FAL_KEY": _tool("FAL API key for image and video generation", "FAL API key", "https://fal.ai/",
         tools=["image_generate", "video_generate"]),
     "KREA_API_KEY": _tool("Krea API key for Krea 3 and Krea 2 image generation",

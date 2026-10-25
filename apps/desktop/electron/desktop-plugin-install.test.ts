@@ -164,11 +164,7 @@ describe('installDesktopPluginFromGit', () => {
 
   /** A git repo whose root is one plugin: `desktop/plugin.js` plus, when
    *  `agentName` is given, the agent half that makes it a unified package. */
-<<<<<<< HEAD
-  function pluginRepo(agentName: null | string): string {
-=======
   function pluginRepo(agentName: null | string, desktopFiles: Record<string, string> = {}): string {
->>>>>>> origin/main
     const repo = mkdtemp('hermes-plugin-install-')
     roots.push(repo)
     const git = (...args: string[]) => execFileSync('git', args, { cwd: repo, stdio: 'pipe' })
@@ -176,13 +172,10 @@ describe('installDesktopPluginFromGit', () => {
     fs.mkdirSync(path.join(repo, 'desktop'), { recursive: true })
     fs.writeFileSync(path.join(repo, 'desktop', 'plugin.js'), 'export function register() {}\n')
 
-<<<<<<< HEAD
-=======
     for (const [name, text] of Object.entries(desktopFiles)) {
       fs.writeFileSync(path.join(repo, 'desktop', name), text)
     }
 
->>>>>>> origin/main
     if (agentName) {
       fs.writeFileSync(path.join(repo, 'plugin.yaml'), `name: ${agentName}\n`)
       fs.writeFileSync(path.join(repo, '__init__.py'), 'def register(ctx): pass\n')
@@ -265,8 +258,6 @@ describe('installDesktopPluginFromGit', () => {
     expect(fs.existsSync(path.join(appRoot, String(result.pluginName), 'plugin.js'))).toBe(true)
     expect(fs.existsSync(path.join(appRoot, String(result.pluginName), PACKAGE_MARKER))).toBe(false)
   })
-<<<<<<< HEAD
-=======
 
   it('drops a package marker a desktop-only repo ships, so it cannot pose as another package', async () => {
     // The marker is what pairs a desktop half with an agent package (and lets
@@ -282,5 +273,4 @@ describe('installDesktopPluginFromGit', () => {
     expect(fs.existsSync(path.join(appRoot, String(result.pluginName), 'plugin.js'))).toBe(true)
     expect(fs.existsSync(path.join(appRoot, String(result.pluginName), PACKAGE_MARKER))).toBe(false)
   })
->>>>>>> origin/main
 })

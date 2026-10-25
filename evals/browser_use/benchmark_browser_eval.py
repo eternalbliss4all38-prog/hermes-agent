@@ -87,26 +87,6 @@ def main():
             assert out.get("ok"), out
             ws_times.append((t1 - t0) * 1000)
 
-<<<<<<< HEAD
-        # ── Bench 2: agent-browser subprocess path ────────────────────────
-        # Skip if agent-browser isn't installed — the WS bench still tells
-        # us what we need.
-        if shutil.which("agent-browser") is None and shutil.which("npx") is None:
-            print("agent-browser CLI not found — skipping subprocess bench.")
-            sub_times = []
-        else:
-            from tools.browser_tool_session import _run_browser_command
-            from tools.browser_tool import _last_session_key
-            task_id = _last_session_key("bench-eval")
-            sub_times = []
-            for _ in range(args.iterations):
-                t0 = time.monotonic()
-                _run_browser_command(task_id, "eval", ["1 + 1"])
-                t1 = time.monotonic()
-                sub_times.append((t1 - t0) * 1000)
-
-=======
->>>>>>> origin/main
         def fmt(name: str, ts: list[float]) -> str:
             if not ts:
                 return f"  {name:<40} (skipped)"

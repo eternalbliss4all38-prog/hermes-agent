@@ -60,8 +60,6 @@ def has_failure_marker(result: str) -> bool:
 # ``timeout`` is deliberately absent: process(wait) returns it for a still-running job.
 _FAILED_STATUSES = frozenset({"failed", "error"})
 
-<<<<<<< HEAD
-=======
 _RATE_LIMIT_RE = re.compile(r"rate[\s_-]?limit|too many requests|\b429\b", re.IGNORECASE)
 _RETRY_AFTER_KEYS = ("retry_after", "retryAfter", "retry_after_seconds", "retry_after_ms")
 
@@ -84,7 +82,6 @@ def is_rate_limited(result: Any) -> bool:
     text = error.get("message") or error.get("code") if isinstance(error, dict) else error
     return isinstance(text, str) and bool(_RATE_LIMIT_RE.search(text))
 
->>>>>>> origin/main
 
 def shape_failure_error(data: dict) -> str | None:
     """Error text when a JSON-object result failed by SHAPE rather than by its top-level

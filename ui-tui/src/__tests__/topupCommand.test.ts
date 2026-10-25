@@ -382,8 +382,6 @@ describe('/billing slash command (overlay-driven)', () => {
     const ok = await getOverlayState().billing!.ctx.applyAutoReload(true, 20, 100)
     expect(ok).toBe(false)
     expect(printed(sys)).toContain(t('slashCmd.topup.error.monthlyCapExceeded'))
-<<<<<<< HEAD
-=======
   })
 
   it('ctx.applyKeepGoingOnCredits(on/off) → billing.keep_going_on_credits with just {enabled}', async () => {
@@ -399,6 +397,5 @@ describe('/billing slash command (overlay-driven)', () => {
       { enabled: true },
       { enabled: false }
     ])
->>>>>>> origin/main
   })
 })
