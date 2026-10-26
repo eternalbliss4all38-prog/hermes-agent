@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Command } from "lucide-react";
+import { Activity, Boxes, Command, Maximize2, Minimize2, X } from "lucide-react";
 import { useHermesChatStore } from "@/store/useHermesChatStore";
 import { ChatMessageList } from "@/components/agent-chat/ChatMessageList";
 import { ChatComposer } from "@/components/agent-chat/ChatComposer";
@@ -11,11 +11,18 @@ import { QuickActionBar } from "@/components/mission-control/QuickActionBar";
 import { LiveStatusStrip, type AgentSummary } from "@/components/mission-control/LiveStatusStrip";
 import { AgentControlRoomCard } from "@/components/mission-control/AgentControlRoomCard";
 
+type Panel = null | "preview" | "logs";
+
 function MissionControlInner() {
   const { connect, storedSessionId } = useHermesChatStore();
   const searchParams = useSearchParams();
   const [sessions, setSessions] = useState<{ id: string; title?: string }[]>([]);
   const [agents, setAgents] = useState<AgentSummary[]>([]);
+  const [lockedPane, setLockedPane] = useState<null | "chat" | "sandbox">(null);
+  // MOBILE LAYOUT: the chat owns the page. The preview/logs panel is NOT an
+  // always-on slab (that was too small to read) — it opens from the buttons
+  // underneath, and the lock button takes it full-screen.
+  const [panel, setPanel] = useState<Panel>(null);
   const resumeParam = searchParams.get("resume");
 
   useEffect(() => {
@@ -57,29 +64,43 @@ function MissionControlInner() {
       // one is already in flight, and never fork a chat out from under a live one.
       const st = useHermesChatStore.getState().status;
       if (st === "connected" || st === "connecting") return;
-      const lastSession =
-        typeof window !== "undefined"
-          ? localStorage.getItem("sams_last_session")
-          : null;
-      connect(lastSession || undefined);
+      connect(useHermesChatStore.getState().storedSessionId || undefined);
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () =>
       document.removeEventListener("visibilitychange", handleVisibility);
   }, [connect]);
 
+  // PANE LOCK: while locked, the page itself cannot scroll, so a gesture inside a
+  // pane can never drag the dashboard along with it. Pinch or Esc releases it.
+  useEffect(() => {
+    if (!lockedPane) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLockedPane(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [lockedPane]);
+
+  const panelOpen = panel !== null || lockedPane === "sandbox";
+
   return (
-    <div className="flex h-full flex-col gap-3 overflow-y-auto p-2 sm:p-4">
-      {/* REF-A header */}
-      <header className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-2 sm:p-4 lg:gap-3">
+      {/* Compact header on mobile — the chat needs the room. */}
+      <header className="flex shrink-0 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-foreground">Mission Control</h1>
-          <p className="text-[11px] text-muted">
+          <h1 className="text-base font-semibold text-foreground sm:text-lg">Mission Control</h1>
+          <p className="hidden text-[11px] text-muted sm:block">
             Status of every agent, every memory, every signal.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-1.5 rounded-lg border border-panel-border bg-panel/60 px-2 py-1 text-[10px] text-muted sm:inline-flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-panel-border bg-panel/60 px-2 py-1 text-[10px] text-muted">
             <Command size={11} /> K Command palette
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-lg border border-accent-emerald/30 bg-accent-emerald/10 px-2 py-1 text-[10px] font-mono uppercase text-accent-emerald">
@@ -88,36 +109,62 @@ function MissionControlInner() {
         </div>
       </header>
 
-      {/* REF-A live status strip */}
-      <LiveStatusStrip />
-
-      <QuickActionBar />
-
-      {/* REF-A agent control-room cards */}
-      <section className="flex flex-col gap-2">
+      {/* Dashboard chrome stays on desktop; on mobile the chat is the page. */}
+      <div className="hidden lg:block">
+        <LiveStatusStrip />
+      </div>
+      <div className="hidden lg:block">
+        <QuickActionBar />
+      </div>
+      <section className="hidden flex-col gap-2 lg:flex">
         <p className="text-[10px] font-semibold uppercase tracking-wider text-muted">
           Agents · click to open control room
         </p>
-        <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-1 xl:mx-0 xl:grid xl:grid-cols-3 xl:overflow-visible xl:px-0 xl:pb-0">
+        <div className="flex snap-x gap-2 overflow-x-auto pb-1 xl:grid xl:grid-cols-3 xl:overflow-visible xl:pb-0">
           {agents.map((a) => (
-            <div
-              key={a.id}
-              className="w-[260px] shrink-0 snap-start xl:w-auto xl:shrink"
-            >
+            <div key={a.id} className="w-[260px] shrink-0 snap-start xl:w-auto xl:shrink">
               <AgentControlRoomCard agent={a} />
             </div>
           ))}
         </div>
       </section>
 
-      <div className="flex flex-1 flex-col gap-3 lg:grid lg:grid-cols-2 lg:min-h-[380px]">
-        {/* Hermes Chat with Session Switcher */}
-        <section className="flex flex-col h-[45vh] min-h-[340px] lg:h-full lg:min-h-0 shrink-0 lg:shrink rounded-xl border border-panel-border bg-panel overflow-hidden">
-          <div className="flex items-center justify-between border-b border-panel-border px-3 py-1.5 bg-panel/50">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
-              Hermes Command & Chat
+      {/* MAIN: chat (owns the page) + optional panel + the switch buttons underneath */}
+      <div className="flex min-h-0 flex-1 flex-col gap-2 lg:min-h-[380px] lg:grid lg:grid-cols-2 lg:gap-3">
+        {/* CHAT */}
+        <section
+          onTouchStart={(e) => {
+            if (lockedPane === "chat" && e.touches.length >= 2) setLockedPane(null);
+          }}
+          className={
+            lockedPane === "chat"
+              ? "fixed inset-0 z-50 flex flex-col overflow-hidden bg-panel"
+              : "flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-panel-border bg-panel lg:h-full" +
+                (lockedPane === "sandbox" ? " hidden" : "")
+          }
+        >
+          <div className="flex items-center justify-between gap-1.5 border-b border-panel-border bg-panel/50 px-3 py-1.5">
+            <span className="truncate text-[11px] font-semibold uppercase tracking-wider text-muted">
+              Hermes Command &amp; Chat
             </span>
             <div className="flex items-center gap-1.5">
+              {lockedPane === "chat" && (
+                <button
+                  type="button"
+                  onClick={() => setLockedPane(null)}
+                  className="rounded border border-accent-cyan/50 bg-accent-cyan/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-cyan"
+                >
+                  ← Back
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setLockedPane(lockedPane === "chat" ? null : "chat")}
+                title={lockedPane === "chat" ? "Unlock — pinch out or Esc" : "Lock this pane to the screen"}
+                className="rounded border border-panel-border bg-panel-hover px-1.5 py-0.5 text-[10px] text-muted transition-colors hover:text-foreground"
+              >
+                {lockedPane === "chat" ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
+              </button>
               {sessions.length > 0 && (
                 <select
                   value={storedSessionId || ""}
@@ -125,7 +172,7 @@ function MissionControlInner() {
                     const sid = e.target.value;
                     if (sid) connect(sid);
                   }}
-                  className="bg-panel border border-panel-border text-[10px] text-foreground rounded px-1.5 py-0.5 outline-none max-w-[140px] truncate"
+                  className="max-w-[140px] truncate rounded border border-panel-border bg-panel px-1.5 py-0.5 text-[10px] text-foreground outline-none"
                 >
                   <option value="">Switch Chat...</option>
                   {sessions.map((s) => (
@@ -144,13 +191,15 @@ function MissionControlInner() {
                   }
                   connect(undefined, { forceNew: true });
                 }}
-                className="text-[10px] px-2 py-0.5 rounded bg-panel-hover text-muted hover:text-foreground border border-panel-border transition-colors"
+                className="rounded border border-panel-border bg-panel-hover px-2 py-0.5 text-[10px] text-muted transition-colors hover:text-foreground"
               >
                 + New
               </button>
             </div>
           </div>
-          <div className="flex-1 min-h-0 overflow-y-auto">
+          {/* No scroll here — ChatMessageList owns the scrolling, so there is exactly
+              one scroll container and the on-load jump cannot fight another one. */}
+          <div className="min-h-0 flex-1 overflow-hidden">
             <ChatMessageList />
           </div>
           <div className="border-t border-panel-border bg-panel/30">
@@ -158,17 +207,85 @@ function MissionControlInner() {
           </div>
         </section>
 
-        {/* Live Sandbox Preview */}
-        <section className="flex flex-col min-h-[460px] lg:min-h-0 h-[55vh] lg:h-full shrink-0 lg:shrink rounded-xl border border-panel-border bg-panel overflow-hidden">
-          <div className="flex items-center justify-between border-b border-panel-border px-3 py-1.5 bg-panel/50">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
-              Live Activity &amp; Preview
+        {/* PANEL: preview / logs, on demand on mobile, always on desktop */}
+        <section
+          onTouchStart={(e) => {
+            if (lockedPane === "sandbox" && e.touches.length >= 2) setLockedPane(null);
+          }}
+          className={
+            lockedPane === "sandbox"
+              ? "fixed inset-0 z-50 flex flex-col overflow-hidden bg-panel"
+              : panelOpen
+                ? "flex h-[58vh] min-h-[320px] shrink-0 flex-col overflow-hidden rounded-xl border border-panel-border bg-panel lg:h-full lg:min-h-0"
+                : "hidden lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:overflow-hidden lg:rounded-xl lg:border lg:border-panel-border lg:bg-panel"
+          }
+        >
+          <div className="flex items-center justify-between border-b border-panel-border bg-panel/50 px-3 py-1.5">
+            <span className="truncate text-[11px] font-semibold uppercase tracking-wider text-muted">
+              {panel === "logs" ? "Live Activity & Logs" : "Preview & Artifacts"}
             </span>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setLockedPane(lockedPane === "sandbox" ? null : "sandbox")}
+                title={lockedPane === "sandbox" ? "Unlock — pinch out or Esc" : "Lock this pane to the screen"}
+                className="rounded border border-panel-border bg-panel-hover px-1.5 py-0.5 text-[10px] text-muted transition-colors hover:text-foreground"
+              >
+                {lockedPane === "sandbox" ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
+              </button>
+              {panelOpen && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLockedPane(null);
+                    setPanel(null);
+                  }}
+                  title="Back to the chat"
+                  className="rounded border border-accent-cyan/50 bg-accent-cyan/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-cyan lg:hidden"
+                >
+                  ← Back to chat
+                </button>
+              )}
+            </div>
           </div>
-          <div className="flex-1 min-h-0 overflow-auto">
-            <OutputSandbox />
+          <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
+            <OutputSandbox initialTab={panel === "logs" ? "activity" : "artifacts"} />
           </div>
         </section>
+
+        {/* BUTTONS UNDERNEATH — mobile only */}
+        <nav className="grid shrink-0 grid-cols-2 gap-2 lg:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              setLockedPane(null);
+              setPanel(panel === "preview" ? null : "preview");
+            }}
+            className={
+              "flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-[11px] font-semibold uppercase tracking-wider transition-colors " +
+              (panel === "preview"
+                ? "border-accent-cyan/60 bg-accent-cyan/10 text-accent-cyan"
+                : "border-panel-border bg-panel text-muted")
+            }
+          >
+            <Boxes size={13} /> Preview
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setLockedPane(null);
+              setPanel(panel === "logs" ? null : "logs");
+            }}
+            className={
+              "flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-[11px] font-semibold uppercase tracking-wider transition-colors " +
+              (panel === "logs"
+                ? "border-accent-cyan/60 bg-accent-cyan/10 text-accent-cyan"
+                : "border-panel-border bg-panel text-muted")
+            }
+          >
+            <Activity size={13} /> Logs
+          </button>
+        </nav>
       </div>
     </div>
   );

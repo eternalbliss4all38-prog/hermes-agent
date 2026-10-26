@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-23",
-  "totalNodes": 36,
-  "rawBytes": 17573,
-  "compactBytes": 4641,
+  "totalNodes": 70,
+  "rawBytes": 32443,
+  "compactBytes": 9186,
   "tokenReductionPct": 74,
   "nodes": [
     {
@@ -234,9 +234,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_17_ab_chat_and_commen",
-        "node_25_sams_public_websit",
-        "node_33_youtube_organic_ca"
+        "node_17_active_project_md",
+        "node_25_room_md",
+        "node_33_tools_md",
+        "node_41_active_project_md",
+        "node_49_room_json",
+        "node_57_ab_in_app_saas_ret",
+        "node_65_campaign_video_and"
       ]
     },
     {
@@ -265,9 +269,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_18_ab_video_hooks_led",
-        "node_26_papp_pay_after_pro",
-        "node_34_instagram_reels_ca"
+        "node_18_persona_md",
+        "node_26_active_project_md",
+        "node_34_active_project_md",
+        "node_42_mission_md",
+        "node_50_room_md",
+        "node_58_compliant_tools_an",
+        "node_66_affiliate_top_prod"
       ]
     },
     {
@@ -296,9 +304,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_19_seasonal_and_4seas",
-        "node_27_top10_saas_market_",
-        "node_35_tiktok_organic_cam"
+        "node_19_room_json",
+        "node_27_mission_md",
+        "node_35_mission_md",
+        "node_43_persona_md",
+        "node_51_ab_chat_and_commen",
+        "node_59_sams_public_websit",
+        "node_67_youtube_organic_ca"
       ]
     },
     {
@@ -327,9 +339,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_20_ab_email_drip_ledg",
-        "node_28_pet_portrait_print",
-        "node_36_x_twitter_thread_c"
+        "node_20_room_md",
+        "node_28_model_md",
+        "node_36_persona_md",
+        "node_44_room_json",
+        "node_52_ab_video_hooks_led",
+        "node_60_papp_pay_after_pro",
+        "node_68_instagram_reels_ca"
       ]
     },
     {
@@ -358,8 +374,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_21_ab_landing_page_an",
-        "node_29_viral_forge_incuba"
+        "node_21_skills_md",
+        "node_29_persona_md",
+        "node_37_room_json",
+        "node_45_room_md",
+        "node_53_seasonal_and_4seas",
+        "node_61_top10_saas_market_",
+        "node_69_tiktok_organic_cam"
       ]
     },
     {
@@ -388,8 +409,13 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_22_ab_bridge_page_opt",
-        "node_30_bridge_and_landing"
+        "node_22_tools_md",
+        "node_30_room_json",
+        "node_38_room_md",
+        "node_46_skills_md",
+        "node_54_ab_email_drip_ledg",
+        "node_62_pet_portrait_print",
+        "node_70_x_twitter_thread_c"
       ]
     },
     {
@@ -418,8 +444,12 @@
         "node_3_agent_hermes_orche",
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
-        "node_23_ab_in_app_saas_ret",
-        "node_31_campaign_video_and"
+        "node_23_index_md",
+        "node_31_room_md",
+        "node_39_skills_md",
+        "node_47_tools_md",
+        "node_55_ab_landing_page_an",
+        "node_63_viral_forge_incuba"
       ]
     },
     {
@@ -449,8 +479,12 @@
         "node_4_agent_market_gap_a",
         "node_5_agent_openclaw_fie",
         "node_16_hermes_self_genera",
-        "node_24_compliant_tools_an",
-        "node_32_affiliate_top_prod"
+        "node_24_room_json",
+        "node_32_skills_md",
+        "node_40_tools_md",
+        "node_48_index_md",
+        "node_56_ab_bridge_page_opt",
+        "node_64_bridge_and_landing"
       ]
     },
     {
@@ -483,7 +517,993 @@
       ]
     },
     {
-      "id": "node_17_ab_chat_and_commen",
+      "id": "node_17_active_project_md",
+      "name": "ACTIVE_PROJECT.md",
+      "title": "Active Project",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/ACTIVE_PROJECT.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ACTIVE_PROJECT.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 77,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Active Project\n_none yet \u2014 set when a project spins up for this agent._",
+      "links": [
+        "node_8_dream_01_funnel_ab",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_18_persona_md",
+      "name": "PERSONA.md",
+      "title": "Hermes \u2014 Executive Orchestrator",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/PERSONA.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/PERSONA.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 152,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Hermes \u2014 Executive Orchestrator\nCalm operator. Direct, no-BS. Never claims work without a tool call.\nHolds the approval gate and the quality gate.",
+      "links": [
+        "node_9_dream_02_affiliate",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_19_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 136,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "{\n\"room\": \"room_agent_hermes_orchestrator\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_10_dream_03_saas_gaps",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_20_room_md",
+      "name": "ROOM.md",
+      "title": "Hermes \u2014 Executive Orchestrator",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 152,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Hermes \u2014 Executive Orchestrator\nCalm operator. Direct, no-BS. Never claims work without a tool call.\nHolds the approval gate and the quality gate.",
+      "links": [
+        "node_11_dream_04_seasonal_",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_21_skills_md",
+      "name": "SKILLS.md",
+      "title": "Skills \u2014 Hermes (orchestrator)",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/SKILLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/SKILLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 374,
+      "compactBytes": 97,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# Skills \u2014 Hermes (orchestrator)\n**ACCESS: ALL SKILLS.**\n- agent-swarm (Hermes-only fan-out; used only when a task needs parallel workers, monitored)\n- superpowers (writing-plans, executing-plans, dispatching-parallel-agents, subagent-driven-development, systematic-debugging, verification-before-completion)\n- vercel agent-skills, GitHub, and the full S.A.M.S. library",
+      "links": [
+        "node_12_dream_05_pet_portr",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_22_tools_md",
+      "name": "TOOLS.md",
+      "title": "Tools \u2014 Hermes",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_hermes_orchestrator",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_hermes_orchestrator/TOOLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/TOOLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 209,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Tools \u2014 Hermes\n- terminal / docker socket / /host access\n- delegate_task (subagents) \u00b7 detached build runner (/opt/data/bin/build)\n- Mem Palace (full read; writes project records)\n- Mission Control APIs",
+      "links": [
+        "node_13_dream_06_viral_for",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_23_index_md",
+      "name": "INDEX.md",
+      "title": "TOOL INDEX (agent -> tools)",
+      "category": "projects",
+      "wing": "wing_sams_os",
+      "room": "room_tools",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_tools/INDEX.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/INDEX.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 504,
+      "compactBytes": 131,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "projects"
+      ],
+      "summary": "# TOOL INDEX (agent -> tools)\nhermes       terminal, docker socket, /host, delegate_task, detached build runner, MC APIs, full palace\nresearch     sams-scrapling (127.0.0.1:8899), web fetch/extract, palace: research room\nopenclaw     OpenMontage runtime, Postiz, OpenClaw gateway, palace: production room\ncoding       Next.js/Supabase/Node, GitHub CLI, Vercel, palace: engineering room\nGATE: a tool outside an agent's role is added to its role folder for a specific job,\nthen removed. Hermes monitors.",
+      "links": [
+        "node_14_dream_07_papp_clon",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_24_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "projects",
+      "wing": "wing_sams_os",
+      "room": "room_tools",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_tools/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 116,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "projects"
+      ],
+      "summary": "{\n\"room\": \"room_tools\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_15_dream_08_hermes_v0",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_25_room_md",
+      "name": "ROOM.md",
+      "title": "room_tools \u2014 the tool index",
+      "category": "projects",
+      "wing": "wing_sams_os",
+      "room": "room_tools",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_tools/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 115,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "projects"
+      ],
+      "summary": "# room_tools \u2014 the tool index\nWho can reach which tool. Same rule: role-scoped, extras under Hermes' direction.",
+      "links": [
+        "node_8_dream_01_funnel_ab",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_26_active_project_md",
+      "name": "ACTIVE_PROJECT.md",
+      "title": "Active Project",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/ACTIVE_PROJECT.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ACTIVE_PROJECT.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 137,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Active Project\n**S.A.M.S. Agent OS \u2014 Agent Builder (self-hosted).**\nStatus: building. Owner: Coding Agent. Room: room_agent_coding.",
+      "links": [
+        "node_9_dream_02_affiliate",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_27_mission_md",
+      "name": "MISSION.md",
+      "title": "Standing Mission \u2014 Coding Agent",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/MISSION.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/MISSION.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 455,
+      "compactBytes": 118,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Standing Mission \u2014 Coding Agent\nBuild:\n1. the **SaaS apps**, and\n2. the **free TOOL** attached to each \u2014 a tool that **saves time, saves money, or increases revenue**.\n3. Same for **affiliate products**: each gets its own **free lead-magnet tool** that adds value to that affiliate product.\n**Giveaway model:** the TOOL is free \u2014 NOT the SaaS, NOT the affiliate product.\nGate = **sign up \u2192 click like \u2192 subscribe \u2192 comment to the agent.**",
+      "links": [
+        "node_10_dream_03_saas_gaps",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_28_model_md",
+      "name": "MODEL.md",
+      "title": "Model",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/MODEL.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/MODEL.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 82,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Model\n# reasoning model for the Coding Agent\nnvidia/nemotron-3.5-lightning:free",
+      "links": [
+        "node_11_dream_04_seasonal_",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_29_persona_md",
+      "name": "PERSONA.md",
+      "title": "Coding Agent",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/PERSONA.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/PERSONA.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 95,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Coding Agent\nEngineer. Tests before claims. Ships the free tool wired to the giveaway gate.",
+      "links": [
+        "node_12_dream_05_pet_portr",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_30_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 123,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "{\n\"room\": \"room_agent_coding\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_13_dream_06_viral_for",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_31_room_md",
+      "name": "ROOM.md",
+      "title": "Coding Agent",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 95,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Coding Agent\nEngineer. Tests before claims. Ships the free tool wired to the giveaway gate.",
+      "links": [
+        "node_14_dream_07_papp_clon",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_32_skills_md",
+      "name": "SKILLS.md",
+      "title": "Skills \u2014 Coding Agent",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/SKILLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/SKILLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 408,
+      "compactBytes": 106,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# Skills \u2014 Coding Agent\n- superpowers: test-driven-development, systematic-debugging, verification-before-completion\n- **dispatching-parallel-agents** + **subagent-driven-development** (the coding-specific fan-out \u2014 NOT the portable agent-swarm)\n- vercel agent-skills: react-best-practices, web-design-guidelines, deploy-to-vercel\n- GitHub\n**Swarm: YES \u2014 but only the coding parallel skills above.**",
+      "links": [
+        "node_15_dream_08_hermes_v0",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_33_tools_md",
+      "name": "TOOLS.md",
+      "title": "Tools \u2014 Coding Agent",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_coding",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_coding/TOOLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/TOOLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 142,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Tools \u2014 Coding Agent\n- Next.js / Supabase / Node tooling\n- GitHub CLI\n- Vercel deploy\n- Mem Palace: engineering room + active build ONLY",
+      "links": [
+        "node_8_dream_01_funnel_ab",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_34_active_project_md",
+      "name": "ACTIVE_PROJECT.md",
+      "title": "Active Project",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/ACTIVE_PROJECT.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ACTIVE_PROJECT.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 77,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Active Project\n_none yet \u2014 set when a project spins up for this agent._",
+      "links": [
+        "node_9_dream_02_affiliate",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_35_mission_md",
+      "name": "MISSION.md",
+      "title": "Standing Mission \u2014 OpenClaw",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/MISSION.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/MISSION.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 219,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Standing Mission \u2014 OpenClaw\n1. **Direct BOTH audio and video through OpenMontage.**\n2. Ensure **social media channels are set up and COMPLIANT**.\n3. Own the **scheduling + posting pipeline via Postiz** end to end.",
+      "links": [
+        "node_10_dream_03_saas_gaps",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_36_persona_md",
+      "name": "PERSONA.md",
+      "title": "OpenClaw \u2014 Production Manager (audio + video) & Distribution",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/PERSONA.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/PERSONA.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 185,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# OpenClaw \u2014 Production Manager (audio + video) & Distribution\nDirector. **Veto power**: STOP an off-spec render rather than ship it \u2014 a wasted render is worse than a stopped one.",
+      "links": [
+        "node_11_dream_04_seasonal_",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_37_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 136,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "{\n\"room\": \"room_agent_openclaw_production\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_12_dream_05_pet_portr",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_38_room_md",
+      "name": "ROOM.md",
+      "title": "OpenClaw \u2014 Production Manager (audio + video) & Distribution",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 185,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# OpenClaw \u2014 Production Manager (audio + video) & Distribution\nDirector. **Veto power**: STOP an off-spec render rather than ship it \u2014 a wasted render is worse than a stopped one.",
+      "links": [
+        "node_13_dream_06_viral_for",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_39_skills_md",
+      "name": "SKILLS.md",
+      "title": "Skills \u2014 OpenClaw",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/SKILLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/SKILLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 228,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# Skills \u2014 OpenClaw\n- OpenMontage (13 pipelines, 157 skills live with OpenMontage)\n- openmontage-dispatch (inbox/outbox bridge)\n- Postiz scheduling/posting\n- social channel setup + compliance\n**Swarm: no** \u2014 not its role.",
+      "links": [
+        "node_14_dream_07_papp_clon",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_40_tools_md",
+      "name": "TOOLS.md",
+      "title": "Tools \u2014 OpenClaw",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_openclaw_production",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_openclaw_production/TOOLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/TOOLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 209,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Tools \u2014 OpenClaw\n- OpenMontage runtime (audio + video direction)\n- Postiz (scheduling + publishing to all channels)\n- OpenClaw gateway (own container)\n- Mem Palace: production room + active campaign ONLY",
+      "links": [
+        "node_15_dream_08_hermes_v0",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_41_active_project_md",
+      "name": "ACTIVE_PROJECT.md",
+      "title": "Active Project",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/ACTIVE_PROJECT.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ACTIVE_PROJECT.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 77,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Active Project\n_none yet \u2014 set when a project spins up for this agent._",
+      "links": [
+        "node_8_dream_01_funnel_ab",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_42_mission_md",
+      "name": "MISSION.md",
+      "title": "Mission \u2014 S.A.M.S. Business Intelligence Research & Analysis Age",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/MISSION.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/MISSION.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 2024,
+      "compactBytes": 526,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Mission \u2014 S.A.M.S. Business Intelligence Research & Analysis Agent\n## Standing job\nBuild and run the marketing pipeline from start to finish \u2014 set it up, build the campaign, run it,\nthen improve it with the data it produces \u2014 and prove what actually works.\n## The pipeline (end to end)\n**SET UP** \u2014 pick the offer/niche; research the market and the top-3 competitors; define the\naudience, the angle, the offer and the channel mix; stand up the assets (domain, landing page, list,\nsending domain, phone number, social accounts, analytics, tracking).\n**BUILD** \u2014 write the campaign: hooks, ads, email sequences, SMS copy, blog/content, video scripts,\nlanding pages, lead magnet. Build the free TOOL t",
+      "links": [
+        "node_9_dream_02_affiliate",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_43_persona_md",
+      "name": "PERSONA.md",
+      "title": "Persona \u2014 S.A.M.S. Business Intelligence Research & Analysis Age",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/PERSONA.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/PERSONA.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 3022,
+      "compactBytes": 785,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Persona \u2014 S.A.M.S. Business Intelligence Research & Analysis Agent\n## Who you are\nYou are the **S.A.M.S. Business Intelligence Research & Analysis Agent** \u2014 the operator's market intelligence *and* marketing engine. You find out\nwhat is actually working online, why it works, and what the gap is; then you build the campaign\nthat exploits it, run it, read the data, and adjust it while it is live.\nYou are a full-stack online marketing expert: strategy, channels, copy, and the analytics that\nprove which version won. You are NOT the video production agent \u2014 OpenClaw produces the video. You\ndecide what it must say and how the whole pipeline converts.\n## What you are expert in\n1. **Business intel",
+      "links": [
+        "node_10_dream_03_saas_gaps",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_44_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 125,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "{\n\"room\": \"room_agent_research\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_11_dream_04_seasonal_",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_45_room_md",
+      "name": "ROOM.md",
+      "title": "Research Agent \u2014 text + video",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 150,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Research Agent \u2014 text + video\nAnalyst. Cites sources. Says \"I could not verify it\" rather than guessing.\nYou are NOT the video production agent.",
+      "links": [
+        "node_12_dream_05_pet_portr",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_46_skills_md",
+      "name": "SKILLS.md",
+      "title": "Skills \u2014 S.A.M.S. Business Intelligence Research & Analysis Agen",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/SKILLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/SKILLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 2296,
+      "compactBytes": 596,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# Skills \u2014 S.A.M.S. Business Intelligence Research & Analysis Agent\n## Pipeline (set up -> build -> run -> optimise)\n1. Market/offer research + positioning\n2. Competitor campaign teardown (top-3 -> win factor + gap)\n3. Offer, funnel and channel-mix design\n4. Copy: ads, landing pages, VSL, email sequences, SMS, blogs, video scripts\n5. Launch + distribution (social, email, SMS)\n6. **A/B variance analytics** \u2014 significance, sample size, sequential testing\n7. Live optimisation from campaign data\n8. Reporting with sourced evidence",
+      "links": [
+        "node_13_dream_06_viral_for",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_47_tools_md",
+      "name": "TOOLS.md",
+      "title": "Tools \u2014 S.A.M.S. Business Intelligence Research & Analysis Agent",
+      "category": "identity",
+      "wing": "wing_sams_os",
+      "room": "room_agent_business_intelligence",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_agent_business_intelligence/TOOLS.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/TOOLS.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 1544,
+      "compactBytes": 401,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "identity"
+      ],
+      "summary": "# Tools \u2014 S.A.M.S. Business Intelligence Research & Analysis Agent\n## Running on this box (verified 2026-10-25)\n- **Listmonk** (`sams-listmonk`) \u2014 email campaigns, lists, subscribers. The email channel.\n- **Postiz** (`sams-postiz`) \u2014 schedule + distribute to the social channels.\n- **Temporal** (`sams-temporal`) \u2014 workflow engine behind Postiz scheduling/posting.\n- **n8n** (`sams-n8n`) \u2014 automation glue between tools.\n- **Scrapling** (`sams-scrapling`) \u2014 scraping / competitor + SERP collection.\n- **PostgreSQL 16** (`sams-postgres`) + **Redis** (`sams-redis`) \u2014 data + queues.\n- **OpenMontage** (via OpenClaw) \u2014 video production; you brief it, you do not run it.\n## Required, NOT present on the b",
+      "links": [
+        "node_14_dream_07_papp_clon",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_48_index_md",
+      "name": "INDEX.md",
+      "title": "SKILL INDEX (agent -> skills)",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_skills",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_skills/INDEX.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/INDEX.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 715,
+      "compactBytes": 185,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# SKILL INDEX (agent -> skills)\nhermes              ALL (incl. agent-swarm, Hermes-only)\nresearch            scrapling/Crawl4AI stack, web+video research, market-gap-research  [NO swarm by default]\nopenclaw            openmontage-dispatch, OpenMontage pipeline skills, Postiz, channel compliance\ncoding              superpowers TDD/debugging/verification, dispatching-parallel-agents,\nsubagent-driven-development, vercel react/web/deploy, GitHub\nGROUPS\nengineering (shared): vendor/superpowers (15), vendor/vercel-agent-skills (14)\nHermes-private:       /opt/data/skills-private/agent-swarm  (NOT shared)\nRULE: never blanket-share the Hermes library. Role folders only; extras on demand.",
+      "links": [
+        "node_15_dream_08_hermes_v0",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_49_room_json",
+      "name": "ROOM.json",
+      "title": "{",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_skills",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_skills/ROOM.json",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.json.bak",
+      "date": "2026-10-23",
+      "rawBytes": 117,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "{\n\"room\": \"room_skills\",\n\"created\": \"2026-10-25T06:17:19Z\",\n\"wing\": \"wing_sams_os\",\n\"created_by\": \"hermes\"\n}",
+      "links": [
+        "node_8_dream_01_funnel_ab",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_50_room_md",
+      "name": "ROOM.md",
+      "title": "room_skills \u2014 the skill index",
+      "category": "skills",
+      "wing": "wing_sams_os",
+      "room": "room_skills",
+      "drawer": "drawer_main",
+      "season": "FALL",
+      "path": "/opt/agent-os/memory/palace/wing_sams_os/room_skills/ROOM.md",
+      "auditPath": "/opt/agent-os/memory/palace/audit_archive/ROOM.md.bak",
+      "date": "2026-10-23",
+      "rawBytes": 189,
+      "compactBytes": 64,
+      "tokenSavingsPct": 74,
+      "keywords": [
+        "wing_sams_os",
+        "skills"
+      ],
+      "summary": "# room_skills \u2014 the skill index\nWho has which skill. Hermes holds ALL; every other agent is role-scoped; extra\nskills are granted case-by-case **under Hermes' direction** and monitored.",
+      "links": [
+        "node_9_dream_02_affiliate",
+        "node_1_agent_ab_variance_",
+        "node_2_agent_context_jani",
+        "node_3_agent_hermes_orche",
+        "node_4_agent_market_gap_a",
+        "node_5_agent_openclaw_fie"
+      ]
+    },
+    {
+      "id": "node_51_ab_chat_and_commen",
       "name": "ab_chat_and_comment_funnel.md",
       "title": "A/B Drawer 02: Social Chat & Comment Curiosity Funnel",
       "category": "projects",
@@ -503,7 +1523,7 @@
       ],
       "summary": "# A/B Drawer 02: Social Chat & Comment Curiosity Funnel\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_02_social_chat_and_comment_bots`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: Curiosity-only reply in TikTok/IG/Shorts comments routing viewers to the full YouTube walkthrough (+34% CTR).\n[DOES NOT WORK]: Direct affiliate links in short-form comments (triggers reach suppression).",
       "links": [
-        "node_8_dream_01_funnel_ab",
+        "node_10_dream_03_saas_gaps",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -512,7 +1532,7 @@
       ]
     },
     {
-      "id": "node_18_ab_video_hooks_led",
+      "id": "node_52_ab_video_hooks_led",
       "name": "ab_video_hooks_ledger.md",
       "title": "A/B Drawer 01: Marketing Video Entry Hooks",
       "category": "projects",
@@ -532,7 +1552,7 @@
       ],
       "summary": "# A/B Drawer 01: Marketing Video Entry Hooks\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_01_marketing_video_hooks`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: 0-3s live visual proof of automated workflow solving the exact pain point before intro speech (68.4% 30s retention, +41% click-to-comment).\n[DOES NOT WORK | SEASONAL HOLD: FALL]: Slow logo opener >4s (54% drop-off). Held to test across Winter/Spring/Summer before 4-season blacklisting.",
       "links": [
-        "node_9_dream_02_affiliate",
+        "node_11_dream_04_seasonal_",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -541,7 +1561,7 @@
       ]
     },
     {
-      "id": "node_19_seasonal_and_4seas",
+      "id": "node_53_seasonal_and_4seas",
       "name": "seasonal_and_4season_blacklist_registry.md",
       "title": "A/B Drawer 07: Seasonal Retry Vault & 4-Season Permanent Blackli",
       "category": "failures",
@@ -561,7 +1581,7 @@
       ],
       "summary": "# A/B Drawer 07: Seasonal Retry Vault & 4-Season Permanent Blacklist\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_07_seasonal_vault_and_4season_blacklist`\n- **Category**: `failures` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n4-Season Rule: Variants failing in one season (FALL) are held with timestamp + season tag to re-test in WINTER, SPRING, and SUMMER. Once tried across all 4 seasons and failed in all 4, they are permanently blacklisted and removed across all analytics.",
       "links": [
-        "node_10_dream_03_saas_gaps",
+        "node_12_dream_05_pet_portr",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -570,7 +1590,7 @@
       ]
     },
     {
-      "id": "node_20_ab_email_drip_ledg",
+      "id": "node_54_ab_email_drip_ledg",
       "name": "ab_email_drip_ledger.md",
       "title": "A/B Drawer 05: Email Drip Sequences (Day 0 to Day 30+)",
       "category": "projects",
@@ -590,7 +1610,7 @@
       ],
       "summary": "# A/B Drawer 05: Email Drip Sequences (Day 0 to Day 30+)\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_05_email_drip_sequences`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: Email 0 (instant free tool) -> Email 1 (72h check-in + DFY offer) -> Email 2 (Day 7 manual vs automated ROI) -> Days 14/21/28 (3+1 missing variable education). Open rate 46.2%, CTR 11.4%.\n[DOES NOT WORK | SEASONAL HOLD: FALL]: Pitching annual billing in Email 0 before free tool delivery.",
       "links": [
-        "node_11_dream_04_seasonal_",
+        "node_13_dream_06_viral_for",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -599,7 +1619,7 @@
       ]
     },
     {
-      "id": "node_21_ab_landing_page_an",
+      "id": "node_55_ab_landing_page_an",
       "name": "ab_landing_page_and_cart.md",
       "title": "A/B Drawer 04: Sales Landing Page & Cart Checkout",
       "category": "projects",
@@ -619,7 +1639,7 @@
       ],
       "summary": "# A/B Drawer 04: Sales Landing Page & Cart Checkout\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_04_sales_landing_page_and_cart`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: 3-Rule Value Guarantee (Saves Time, Saves Money, or Increases Money) + Done-For-You (DFY) recurring setup beside self-serve checkout (+29% cart completion).\n[DOES NOT WORK | SEASONAL HOLD: FALL]: 4-page checkout form before showing monthly price.",
       "links": [
-        "node_12_dream_05_pet_portr",
+        "node_14_dream_07_papp_clon",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -628,7 +1648,7 @@
       ]
     },
     {
-      "id": "node_22_ab_bridge_page_opt",
+      "id": "node_56_ab_bridge_page_opt",
       "name": "ab_bridge_page_optin.md",
       "title": "A/B Drawer 03: Bridge Page & Email Signup (Free Value-Add Tool)",
       "category": "projects",
@@ -648,7 +1668,7 @@
       ],
       "summary": "# A/B Drawer 03: Bridge Page & Email Signup (Free Value-Add Tool)\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_03_bridge_page_and_email_optin`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: Interactive free calculator/micro-tool above the fold with instant email unlock + Living Web Avatar intro (52.8% opt-in rate).\n[DOES NOT WORK | SEASONAL HOLD: FALL]: Generic newsletter popup without interactive utility (8.1% opt-in).",
       "links": [
-        "node_13_dream_06_viral_for",
+        "node_15_dream_08_hermes_v0",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -657,7 +1677,7 @@
       ]
     },
     {
-      "id": "node_23_ab_in_app_saas_ret",
+      "id": "node_57_ab_in_app_saas_ret",
       "name": "ab_in_app_saas_retention.md",
       "title": "A/B Drawer 06: Inside SaaS Apps (Onboarding & Zero-Churn Moat)",
       "category": "projects",
@@ -677,7 +1697,7 @@
       ],
       "summary": "# A/B Drawer 06: Inside SaaS Apps (Onboarding & Zero-Churn Moat)\n- **Wing**: `wing_sams_os` | **Room**: `room_ab_invariance` | **Drawer**: `drawer_06_in_app_saas_onboarding_and_retention`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n[WORKS | 2026-10-22 | FALL]: 60-second single-screen onboarding delivering first tangible result before workspace setup (-64% Day-7 churn).\n[DOES NOT WORK | SEASONAL HOLD: FALL]: 8-step mandatory wizard before showing dashboard results.",
       "links": [
-        "node_14_dream_07_papp_clon",
+        "node_8_dream_01_funnel_ab",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -686,7 +1706,7 @@
       ]
     },
     {
-      "id": "node_24_compliant_tools_an",
+      "id": "node_58_compliant_tools_an",
       "name": "compliant_tools_and_affiliate_links.md",
       "title": "Compliant Affiliate & Business Automation Tools Directory",
       "category": "projects",
@@ -706,7 +1726,7 @@
       ],
       "summary": "# Compliant Affiliate & Business Automation Tools Directory\n- **Wing**: `wing_sams_os` | **Room**: `room_sams_frontend_hub` | **Drawer**: `drawer_compliant_affiliate_directory`\n- **Category**: `skills` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nMaster directory of affiliate & business automation tools with direct access links and Shawn's affiliate code attached. MANDATORY COMPLIANCE RULE: The affiliate disclosure is placed directly below the Product Name and BEFORE the Product Description.",
       "links": [
-        "node_15_dream_08_hermes_v0",
+        "node_9_dream_02_affiliate",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -715,7 +1735,7 @@
       ]
     },
     {
-      "id": "node_25_sams_public_websit",
+      "id": "node_59_sams_public_websit",
       "name": "sams_public_website_and_community.md",
       "title": "S.A.M.S. Public Front-End Website, Paid Community & Evaluation L",
       "category": "projects",
@@ -735,7 +1755,7 @@
       ],
       "summary": "# S.A.M.S. Public Front-End Website, Paid Community & Evaluation Library\n- **Wing**: `wing_sams_os` | **Room**: `room_sams_frontend_hub` | **Drawer**: `drawer_community_and_demos`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nFront-End Website (SAMSystems.org): (1) Paid VIP Community & Weekly SaaS Newsletter; (2) Active Projects currently being built; (3) Video Library of all AI & business automation walkthroughs, demos, and multi-product evaluations solving the same problem.",
       "links": [
-        "node_8_dream_01_funnel_ab",
+        "node_10_dream_03_saas_gaps",
         "node_1_agent_ab_variance_",
         "node_2_agent_context_jani",
         "node_3_agent_hermes_orche",
@@ -744,7 +1764,7 @@
       ]
     },
     {
-      "id": "node_26_papp_pay_after_pro",
+      "id": "node_60_papp_pay_after_pro",
       "name": "papp_pay_after_profit_master_blueprint.md",
       "title": "Wing 6: P.A.P.P. (Pay-After-Profit Protocol) \u2014 90/10 Cloned Busi",
       "category": "identity",
@@ -764,12 +1784,12 @@
       ],
       "summary": "# Wing 6: P.A.P.P. (Pay-After-Profit Protocol) \u2014 90/10 Cloned Business Engine\n- **Wing**: `wing_papp_clones` | **Room**: `room_papp_clone_protocol` | **Drawer**: `drawer_80pct_automated_clones_and_10pct_contracts`\n- **Category**: `identity` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nClones any business model proven to generate recurring revenue at 80%+ minimum automation (including the self-healing, self-improving analytics system running on autopilot) with all proven strategies and data. Launches the clone, verifies smooth operation, and gives it away under a strict contract: Shawn receives 10% of gross revenue forever (Shawn pays taxes on his 10%) and the operator keeps ",
       "links": [
-        "node_9_dream_02_affiliate",
+        "node_11_dream_04_seasonal_",
         "node_14_dream_07_papp_clon"
       ]
     },
     {
-      "id": "node_27_top10_saas_market_",
+      "id": "node_61_top10_saas_market_",
       "name": "top10_saas_market_gaps_and_presale_pitches.md",
       "title": "Drawer: Top 10 SaaS Market Gap Research & Pre-Paid Conversion Pi",
       "category": "projects",
@@ -789,15 +1809,16 @@
       ],
       "summary": "# Drawer: Top 10 SaaS Market Gap Research & Pre-Paid Conversion Pitches\n- **Wing**: `wing_saas_pipeline` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_saas_market_gap_top10`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nScrapes communities for people seeking a solution a paid SaaS can solve. Returns Top 10 Potential Ideas scored by how many people are currently looking for a solution, the exact URL/place they asked, and a pre-written response to convert them into a pre-paid customer by building the solution for them. #1 Ranked (Score 98/100, 1,420+ requests): Multi-Channel Comment-to-Bridge-Page Lead Router.",
       "links": [
+        "node_12_dream_05_pet_portr",
         "node_10_dream_03_saas_gaps",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod",
-        "node_33_youtube_organic_ca",
-        "node_34_instagram_reels_ca"
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod",
+        "node_67_youtube_organic_ca",
+        "node_68_instagram_reels_ca"
       ]
     },
     {
-      "id": "node_28_pet_portrait_print",
+      "id": "node_62_pet_portrait_print",
       "name": "pet_portrait_printify_shopify_architecture.md",
       "title": "Wing 4: AI Pet & Family Portrait App (Shopify + Printify Direct ",
       "category": "projects",
@@ -817,12 +1838,12 @@
       ],
       "summary": "# Wing 4: AI Pet & Family Portrait App (Shopify + Printify Direct Shipping)\n- **Wing**: `wing_pet_portraits` | **Room**: `room_pet_portrait_app` | **Drawer**: `drawer_product_and_customer_vault`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n1. New customers get a free upfront set of credits upon email + password signup.\n2. Upload pet/people photos -> select 3 different styles -> AI renders multiple variations per style.\n3. Combine multiple pets or people into one portrait, change backgrounds, remove objects.\n4. Pick favorites + select exact product (canvas, framed print, mug, blanket, apparel) with real-time live preview on the product; fulfilled vi",
       "links": [
-        "node_11_dream_04_seasonal_",
+        "node_13_dream_06_viral_for",
         "node_12_dream_05_pet_portr"
       ]
     },
     {
-      "id": "node_29_viral_forge_incuba",
+      "id": "node_63_viral_forge_incuba",
       "name": "viral_forge_incubator_and_1k_day_royalty_model.md",
       "title": "Wing 5: Viral Forge \u2014 Standalone AI Influencer Monetization Incu",
       "category": "projects",
@@ -842,12 +1863,12 @@
       ],
       "summary": "# Wing 5: Viral Forge \u2014 Standalone AI Influencer Monetization Incubator\n- **Wing**: `wing_viral_forge` | **Room**: `room_influencer_incubator` | **Drawer**: `drawer_personas_and_1k_day_exits`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\n100% separate from S.A.M.S. Agent OS. Builds brand/audience-specific AI influencers that talk, act, and relate to that audience, monetized across all social channels, email lists, brand deals, and affiliate marketing. Once an influencer reaches $1,000/day, it is offered for a substantial upfront buyout price PLUS 10% of everything they make from then on out.",
       "links": [
-        "node_12_dream_05_pet_portr",
+        "node_14_dream_07_papp_clon",
         "node_13_dream_06_viral_for"
       ]
     },
     {
-      "id": "node_30_bridge_and_landing",
+      "id": "node_64_bridge_and_landing",
       "name": "bridge_and_landing_seasonal_templates.md",
       "title": "Room: Landing & Bridge Page Templates (Seasonal & 4-Season Black",
       "category": "projects",
@@ -867,16 +1888,16 @@
       ],
       "summary": "# Room: Landing & Bridge Page Templates (Seasonal & 4-Season Blacklist)\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_landing_and_bridge_templates` | **Drawer**: `drawer_seasonal_holding_variants`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nStores winning Bridge/Landing templates + drawers of variants that did not work with timestamp and season (just because it fails now doesn't mean it won't work in Summer; once tried across all 4 seasons and failed, permanently blacklisted).",
       "links": [
-        "node_13_dream_06_viral_for",
+        "node_15_dream_08_hermes_v0",
         "node_9_dream_02_affiliate",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod",
-        "node_33_youtube_organic_ca",
-        "node_34_instagram_reels_ca"
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod",
+        "node_67_youtube_organic_ca",
+        "node_68_instagram_reels_ca"
       ]
     },
     {
-      "id": "node_31_campaign_video_and",
+      "id": "node_65_campaign_video_and",
       "name": "campaign_video_and_sound_vault.md",
       "title": "Drawer: Campaign Video Masters & Custom Sound/Music Assets",
       "category": "skills",
@@ -896,16 +1917,16 @@
       ],
       "summary": "# Drawer: Campaign Video Masters & Custom Sound/Music Assets\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_campaign_video_and_audio_assets`\n- **Category**: `skills` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nStores all campaign videos (RunPod Wan 2.2 / OpenMontage 16:9 + 9:16 cuts with .srt/.vtt sidecars) and custom sound/music (Kokoro-82M 24kHz voiceovers + MusicGen soundtracks auto-ducked via autoduck.sh).",
       "links": [
-        "node_14_dream_07_papp_clon",
+        "node_8_dream_01_funnel_ab",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_32_affiliate_top_prod",
-        "node_33_youtube_organic_ca"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_66_affiliate_top_prod",
+        "node_67_youtube_organic_ca"
       ]
     },
     {
-      "id": "node_32_affiliate_top_prod",
+      "id": "node_66_affiliate_top_prod",
       "name": "affiliate_top_products_and_3plus1_dna.md",
       "title": "Drawer: Top Recurring Affiliate Products & 3+1 Campaign DNA Synt",
       "category": "projects",
@@ -925,16 +1946,15 @@
       ],
       "summary": "# Drawer: Top Recurring Affiliate Products & 3+1 Campaign DNA Synthesizer\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_affiliate_dna_and_3plus1_variants`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nScrapes top affiliate products with: (1) 12+ months minimum recurring revenue (MRR), (2) 3+ months active on market, (3) <100 affiliate marketers promoting them, (4) High Gravity score. Extracts DNA from Top 3 videos/campaigns of the top 3 marketers with pre-written Top Winning Reasons + 1 Missing Thing -> builds 3 New Campaign Variants implementing the winning DNA + the 1 missing angle.",
       "links": [
-        "node_15_dream_08_hermes_v0",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_31_campaign_video_and",
-        "node_33_youtube_organic_ca"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_65_campaign_video_and",
+        "node_67_youtube_organic_ca"
       ]
     },
     {
-      "id": "node_33_youtube_organic_ca",
+      "id": "node_67_youtube_organic_ca",
       "name": "youtube_organic_campaigns.md",
       "title": "Social Drawer: YouTube Long-Form & Shorts ($10 Seed Accelerator)",
       "category": "projects",
@@ -954,16 +1974,16 @@
       ],
       "summary": "# Social Drawer: YouTube Long-Form & Shorts ($10 Seed Accelerator)\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_social_youtube`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nAll campaign data for YouTube: dual-branded channels, $10 algorithmic seed accelerator targeting 10k views in <72h and 100k in <30d, pinned comment routing to Bridge Page.",
       "links": [
-        "node_8_dream_01_funnel_ab",
+        "node_10_dream_03_saas_gaps",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod"
       ]
     },
     {
-      "id": "node_34_instagram_reels_ca",
+      "id": "node_68_instagram_reels_ca",
       "name": "instagram_reels_campaigns.md",
       "title": "Social Drawer: Instagram Reels Organic Campaigns",
       "category": "projects",
@@ -983,15 +2003,16 @@
       ],
       "summary": "# Social Drawer: Instagram Reels Organic Campaigns\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_social_instagram_reels`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nAll campaign data for Instagram Reels: visual hook variants, sidecar captions, and comment engagement.",
       "links": [
+        "node_11_dream_04_seasonal_",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod"
       ]
     },
     {
-      "id": "node_35_tiktok_organic_cam",
+      "id": "node_69_tiktok_organic_cam",
       "name": "tiktok_organic_campaigns.md",
       "title": "Social Drawer: TikTok Organic Campaigns",
       "category": "projects",
@@ -1011,16 +2032,16 @@
       ],
       "summary": "# Social Drawer: TikTok Organic Campaigns\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_social_tiktok`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nAll campaign data for TikTok: 9:16 vertical cuts, retention curves, and 24/7 curiosity comment routing to YouTube.",
       "links": [
-        "node_10_dream_03_saas_gaps",
+        "node_12_dream_05_pet_portr",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod"
       ]
     },
     {
-      "id": "node_36_x_twitter_thread_c",
+      "id": "node_70_x_twitter_thread_c",
       "name": "x_twitter_thread_campaigns.md",
       "title": "Social Drawer: X (Twitter) Thread & Video Teardown Campaigns",
       "category": "projects",
@@ -1040,12 +2061,12 @@
       ],
       "summary": "# Social Drawer: X (Twitter) Thread & Video Teardown Campaigns\n- **Wing**: `wing_affiliate_engine` | **Room**: `room_organic_marketing` | **Drawer**: `drawer_social_x_twitter`\n- **Category**: `projects` | **Season**: `FALL` | **Updated**: 2026-10-22T12:25:00-07:00\nAll campaign data for X: workflow teardowns and multi-tool evaluations routing to Bridge Pages.",
       "links": [
-        "node_11_dream_04_seasonal_",
+        "node_13_dream_06_viral_for",
         "node_9_dream_02_affiliate",
-        "node_27_top10_saas_market_",
-        "node_30_bridge_and_landing",
-        "node_31_campaign_video_and",
-        "node_32_affiliate_top_prod"
+        "node_61_top10_saas_market_",
+        "node_64_bridge_and_landing",
+        "node_65_campaign_video_and",
+        "node_66_affiliate_top_prod"
       ]
     }
   ]

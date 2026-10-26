@@ -60,10 +60,9 @@ export async function GET() {
 
   const agents: AgentSummary[] = [
     { id: "hermes", name: "Hermes", title: "Executive Orchestrator", level: "Executive", ...withDocker("hermes") } as AgentSummary,
-    { id: "engineer", name: "Open Engineer", title: "Principal Full-Stack Engineer", level: "Engineering", ...orBacking("poolside/laguna-s-2.1:free") } as AgentSummary,
-    { id: "vision", name: "Vision Analyst", title: "Multimodal Analysis & Video DNA Extraction", level: "Intelligence", ...orBacking("nvidia/nemotron-3.5-super-vl:free") } as AgentSummary,
-    { id: "openclaw", name: "OpenClaw", title: "Browser & Desktop Computer Use Agent", level: "Execution", ...withDocker("openclaw-gateway") } as AgentSummary,
-    { id: "swarm", name: "Swarm", title: "Bulk Processing & Background Tasks", level: "Parallel Swarm", ...orBacking("nvidia/nemotron-3.5-lightning:free") } as AgentSummary,
+    { id: "coding", name: "Coding Agent", title: "Builds the SaaS apps + their free value tools", level: "Engineering", ...orBacking("poolside/laguna-s-2.1:free") } as AgentSummary,
+    { id: "bi", name: "S.A.M.S. Business Intelligence", title: "S.A.M.S. Business Intelligence Research & Analysis Agent - competitor campaigns, analytics, entrepreneurship, copywriting", level: "Intelligence", ...orBacking("nvidia/nemotron-3.5-super-vl:free") } as AgentSummary,
+    { id: "openclaw", name: "OpenClaw", title: "Production Manager - audio + video via OpenMontage | compliance | Postiz", level: "Production", ...withDocker("openclaw-gateway") } as AgentSummary,
   ];
 
   return NextResponse.json(agents);

@@ -17,13 +17,13 @@ export const MODEL_SLUG: Record<string, string> = {
   "Inkling (free)": "thinkingmachines/inkling:free",
   "Gemma 4 31B (free)": "google/gemma-4-31b-it:free",
   "OpenRouter Auto": "openrouter/auto",
-  // Engineer (Principal Full-Stack Engineer)
+  // Coding Agent (SaaS + free value tools)
   "Laguna S 2.1 (free)": "poolside/laguna-s-2.1:free",
   "North Mini Code (free)": "cohere/north-mini-code:free",
-  // Vision (Multimodal Analysis & Video DNA Extraction)
+  // Research Agent (text + video research)
   "Nemotron 3.5 Super VL (free)": "nvidia/nemotron-3.5-super-vl:free",
   "Nemotron 3 Nano Omni (free)": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-  // Swarm (bulk processing / background tasks)
+  // Spare free slugs (Hermes may grant one case-by-case)
   "Nemotron 3.5 Lightning (free)": "nvidia/nemotron-3.5-lightning:free",
   "Xing4.0 29B (free)": "xingchen-agi/xing4.0-29b-a4b:free",
   "LFM2.5 2.6B (free)": "liquid/lfm-2.5-2.6b:free",

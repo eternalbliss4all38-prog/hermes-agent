@@ -9,6 +9,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Activity, ScrollText, Hammer, FileImage, RefreshCw, AlertTriangle } from "lucide-react";
+import { kindIcon, useArtifactStream } from "@/components/mission-control/ArtifactStream";
 
 interface ActivityLine {
   ts: string | null;
@@ -137,7 +138,9 @@ export default function LivePage() {
   const a = feed?.activity;
   const ru = feed?.runs;
   const bu = feed?.builds;
-  const ar = feed?.artifacts;
+  // Artifacts come from the live SSE stream (real-time), not the 5s poll,
+  // so new output appears the instant it lands.
+  const { artifacts, connected: artifactsLive } = useArtifactStream(40);
 
   return (
     <div className="flex h-full flex-col gap-3 p-3 sm:p-6">
@@ -222,19 +225,31 @@ export default function LivePage() {
         </Panel>
 
         <Panel
-          title="Artifacts"
+          title="Artifacts — live output"
           icon={<FileImage size={13} />}
-          via={ar?.via}
-          ok={ar?.ok ?? true}
-          error={ar?.error}
-          empty={!!ar && ar.ok && ar.data.length === 0}
+          via="stream"
+          ok
+          empty={artifacts.length === 0}
         >
+          <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider">
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                artifactsLive ? "bg-accent-emerald status-glow-emerald animate-pulse" : "bg-accent-red status-glow-red"
+              }`}
+            />
+            <span className={artifactsLive ? "text-accent-emerald" : "text-accent-red"}>
+              {artifactsLive ? "LIVE" : "OFFLINE"}
+            </span>
+            <span className="text-muted">· {artifacts.length} artifacts</span>
+          </div>
           <div className="space-y-1">
-            {(ar?.data ?? []).map((f, i) => (
-              <div key={i} className="flex items-center gap-2 rounded border border-panel-border px-2 py-1 text-[10px]">
-                <span className="min-w-0 flex-1 truncate text-foreground" title={f.name}>
+            {artifacts.map((f) => (
+              <div key={f.id} className="flex items-center gap-2 rounded border border-panel-border px-2 py-1 text-[10px]">
+                <span className="shrink-0 text-accent-cyan">{kindIcon(f.kind, 11)}</span>
+                <span className="min-w-0 flex-1 truncate text-foreground" title={f.path}>
                   {f.name}
                 </span>
+                <span className="shrink-0 text-muted">{f.source}</span>
                 <span className="shrink-0 text-muted">{fmtSize(f.size)}</span>
                 <span className="shrink-0 text-muted">{fmtTime(f.mtime)}</span>
               </div>

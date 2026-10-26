@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Activity, ExternalLink, Pause, Play } from "lucide-react";
+import { Activity, Boxes, ExternalLink, Pause, Play, RefreshCw } from "lucide-react";
+import {
+  ArtifactViewer,
+  fmtSize,
+  fmtTime,
+  kindIcon,
+  useArtifactStream,
+  type Artifact,
+} from "@/components/mission-control/ArtifactStream";
 
 /* ── Live activity: streams what Hermes is actually doing right now ───────── */
 function LiveActivity() {
@@ -148,34 +156,103 @@ function UrlPreview() {
   );
 }
 
-type Tab = "activity" | "preview";
+/* ── Artifacts: live output, rendered ─────────────────────────────────────── */
+//  Left: the live list of what the agent has produced (text, newest first).
+//  Right: the selected/newest artifact rendered — video plays, image shows,
+//  page renders. Newest auto-selects unless the user picks one.
+function ArtifactsView() {
+  const { artifacts, connected, updatedAt } = useArtifactStream(60);
+  const [picked, setPicked] = useState<string | null>(null);
 
-export function OutputSandbox() {
-  const [tab, setTab] = useState<Tab>("activity");
+  const selected: Artifact | null =
+    (picked && artifacts.find((a) => a.id === picked)) || artifacts[0] || null;
+
+  return (
+    <div className="flex h-full min-h-0 flex-col md:flex-row">
+      <div className="flex h-1/2 min-h-0 flex-col border-b border-panel-border md:h-full md:w-56 md:border-b-0 md:border-r">
+        <div className="flex items-center justify-between gap-1 border-b border-panel-border bg-black/30 px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-wider">
+          <span className="flex items-center gap-1.5">
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                connected ? "bg-accent-emerald status-glow-emerald animate-pulse" : "bg-accent-red status-glow-red"
+              }`}
+            />
+            <span className={connected ? "text-accent-emerald" : "text-accent-red"}>
+              {connected ? "LIVE" : "OFFLINE"}
+            </span>
+          </span>
+          <span className="text-muted">{artifacts.length} artifacts</span>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          {artifacts.length === 0 && (
+            <p className="p-2 text-[10px] text-muted">
+              {connected ? "No artifacts yet — they appear here as work lands." : "Connecting…"}
+            </p>
+          )}
+          {artifacts.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              onClick={() => setPicked(a.id)}
+              className={`flex w-full items-center gap-1.5 border-b border-panel-border/60 px-2 py-1.5 text-left text-[10px] hover:bg-panel-hover ${
+                selected?.id === a.id ? "bg-panel-hover" : ""
+              }`}
+              title={a.path}
+            >
+              <span className="shrink-0 text-accent-cyan">{kindIcon(a.kind, 11)}</span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-foreground">{a.name}</span>
+                <span className="block truncate text-muted">
+                  {a.source} · {fmtSize(a.size)} · {fmtTime(a.mtime)}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+        {updatedAt && (
+          <div className="flex items-center gap-1 border-t border-panel-border px-2 py-1 text-[9px] text-muted">
+            <RefreshCw size={9} /> {new Date(updatedAt).toLocaleTimeString()}
+          </div>
+        )}
+      </div>
+      <div className="min-h-0 flex-1">
+        <ArtifactViewer artifact={selected} />
+      </div>
+    </div>
+  );
+}
+
+type Tab = "activity" | "artifacts" | "preview";
+
+export function OutputSandbox({ initialTab = "artifacts" }: { initialTab?: Tab } = {}) {
+  const [tab, setTab] = useState<Tab>(initialTab);
+  // The mobile Preview/Logs buttons drive the tab; follow them when they change.
+  useEffect(() => {
+    setTab(initialTab);
+  }, [initialTab]);
+
+  const tabBtn = (id: Tab, label: string, icon: React.ReactNode) => (
+    <button
+      type="button"
+      onClick={() => setTab(id)}
+      className={`flex items-center gap-1.5 rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
+        tab === id ? "bg-panel-hover text-accent-cyan" : "text-muted hover:text-foreground"
+      }`}
+    >
+      {icon} {label}
+    </button>
+  );
 
   return (
     <div className="flex h-full min-h-0 flex-col rounded-lg border border-panel-border bg-black/20 backdrop-blur-md">
       <div className="flex items-center gap-1 border-b border-panel-border px-1.5 py-1">
-        <button
-          type="button"
-          onClick={() => setTab("activity")}
-          className={`flex items-center gap-1.5 rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
-            tab === "activity" ? "bg-panel-hover text-accent-cyan" : "text-muted hover:text-foreground"
-          }`}
-        >
-          <Activity size={11} /> Live Activity
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("preview")}
-          className={`flex items-center gap-1.5 rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
-            tab === "preview" ? "bg-panel-hover text-accent-cyan" : "text-muted hover:text-foreground"
-          }`}
-        >
-          <ExternalLink size={11} /> Preview URL
-        </button>
+        {tabBtn("artifacts", "Artifacts", <Boxes size={11} />)}
+        {tabBtn("activity", "Live Activity", <Activity size={11} />)}
+        {tabBtn("preview", "Preview URL", <ExternalLink size={11} />)}
       </div>
-      <div className="flex-1 min-h-0">{tab === "activity" ? <LiveActivity /> : <UrlPreview />}</div>
+      <div className="flex-1 min-h-0">
+        {tab === "activity" ? <LiveActivity /> : tab === "preview" ? <UrlPreview /> : <ArtifactsView />}
+      </div>
     </div>
   );
 }
