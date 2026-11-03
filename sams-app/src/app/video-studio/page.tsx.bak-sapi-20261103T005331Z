@@ -1,0 +1,296 @@
+"use client";
+
+/**
+ * Video Studio — a REAL page (not an iframe, not a stub).
+ *
+ * Before this, `nav.ts` advertised /video-studio but there was no page behind it:
+ * clicking it did nothing. Meanwhile the working studio service (sams-studio,
+ * 127.0.0.1:4700) was not linked from the dashboard at all.
+ *
+ * This page talks to the studio's real HTTP API through the `/studio-api/*`
+ * rewrite in next.config.mjs, so there is no cross-origin problem and no cramped
+ * embedded frame.
+ */
+
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Clapperboard, Loader2, RefreshCw, Play, AlertTriangle, CheckCircle2 } from "lucide-react";
+
+type Capability = {
+  id: string;
+  label: string;
+  kind: string;
+  runtime: string;
+  available: boolean;
+  detail?: string;
+  note?: string;
+  options?: Record<string, unknown>;
+};
+
+type Artifact = { path?: string; name: string; size: number; url: string };
+
+type Job = {
+  id: string;
+  kind: string;
+  params?: Record<string, unknown>;
+  status: string;
+  exit_code?: number | null;
+  created?: number;
+  started?: number | null;
+  finished?: number | null;
+  artifacts?: Artifact[];
+  log_tail?: string;
+  error?: string;
+};
+
+/** studio reports /studio/api/artifact?id=…; this origin serves /studio-api/… */
+const fixUrl = (u?: string) => (u ? u.replace("/studio/api/", "/studio-api/") : u);
+
+const fmtSize = (n?: number) =>
+  !n ? "—" : n > 1 << 20 ? `${(n / (1 << 20)).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`;
+
+export default function VideoStudioPage() {
+  const [caps, setCaps] = useState<Capability[]>([]);
+  const [capId, setCapId] = useState<string>("");
+  const [demo, setDemo] = useState<string>("");
+  const [script, setScript] = useState<string>("");
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ kind: "ok" | "err" | "info"; text: string } | null>(null);
+  const [reachable, setReachable] = useState<boolean | null>(null);
+  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const load = useCallback(async () => {
+    try {
+      const [c, j] = await Promise.all([
+        fetch("/studio-api/capabilities", { cache: "no-store" }),
+        fetch("/studio-api/jobs", { cache: "no-store" }),
+      ]);
+      if (!c.ok) throw new Error(`capabilities ${c.status}`);
+      const cd = await c.json();
+      const video = (cd.capabilities ?? []).filter((x: Capability) => x.kind === "video");
+      setCaps(video);
+      setReachable(true);
+      setCapId((prev) => prev || video.find((v: Capability) => v.available)?.id || video[0]?.id || "");
+      const jd = await j.json().catch(() => ({ jobs: [] }));
+      setJobs(jd.jobs ?? []);
+    } catch (e) {
+      setReachable(false);
+      setMsg({ kind: "err", text: `Studio service unreachable: ${(e as Error).message}` });
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+    timer.current = setInterval(() => void load(), 5000);
+    return () => {
+      if (timer.current) clearInterval(timer.current);
+    };
+  }, [load]);
+
+  useEffect(() => {
+    const c = caps.find((x) => x.id === capId);
+    const opts = (c?.options ?? {}) as Record<string, unknown>;
+    const d = opts.demo as string[] | undefined;
+    if (d?.length) setDemo((p) => (p && d.includes(p) ? p : d[0]));
+  }, [capId, caps]);
+
+  const cap = caps.find((c) => c.id === capId);
+  const opts = (cap?.options ?? {}) as Record<string, unknown>;
+
+  async function submit() {
+    if (!capId) return;
+    setBusy(true);
+    setMsg({ kind: "info", text: "Submitting…" });
+    const params: Record<string, unknown> = {};
+    if (demo) params.demo = demo;
+    if (script.trim()) params.script = script;
+    try {
+      const r = await fetch("/studio-api/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind: capId, ...params }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+      setMsg({ kind: "ok", text: `Job submitted${d.job_id ? ` (${d.job_id})` : ""}. Rendering runs on CPU — this can take minutes.` });
+      await load();
+    } catch (e) {
+      setMsg({ kind: "err", text: `Submit failed: ${(e as Error).message}` });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function cancel(id: string) {
+    try {
+      await fetch(`/studio-api/jobs/${id}/cancel`, { method: "POST" });
+      await load();
+    } catch (e) {
+      setMsg({ kind: "err", text: `Cancel failed: ${(e as Error).message}` });
+    }
+  }
+
+  return (
+    <div className="flex flex-col h-full w-full min-h-screen bg-slate-950 text-slate-100 p-4 space-y-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center space-x-2">
+            <Clapperboard className="w-4 h-4 text-cyan-400" />
+            <h1 className="text-sm font-bold tracking-wide uppercase text-slate-200">
+              Video Studio · sams-studio
+            </h1>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`text-xs font-mono px-2 py-0.5 rounded border ${
+                reachable
+                  ? "bg-emerald-950 text-emerald-400 border-emerald-800"
+                  : reachable === false
+                    ? "bg-red-950 text-red-400 border-red-800"
+                    : "bg-slate-800 text-slate-400 border-slate-700"
+              }`}
+            >
+              {reachable ? "service up" : reachable === false ? "service unreachable" : "checking…"}
+            </span>
+            <button onClick={() => void load()} className="p-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white">
+              <RefreshCw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {msg && (
+          <div
+            className={`text-xs rounded-lg px-3 py-2 border flex items-start gap-2 ${
+              msg.kind === "err"
+                ? "bg-red-950/60 border-red-800 text-red-200"
+                : msg.kind === "ok"
+                  ? "bg-emerald-950/60 border-emerald-800 text-emerald-200"
+                  : "bg-slate-950 border-slate-800 text-slate-300"
+            }`}
+          >
+            {msg.kind === "err" ? <AlertTriangle className="w-3.5 h-3.5 mt-0.5" /> : <CheckCircle2 className="w-3.5 h-3.5 mt-0.5" />}
+            <span>{msg.text}</span>
+          </div>
+        )}
+
+        <div className="grid gap-3">
+          <label className="text-xs text-slate-400">
+            Engine
+            <select
+              value={capId}
+              onChange={(e) => setCapId(e.target.value)}
+              className="mt-1 w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+            >
+              {caps.map((c) => (
+                <option key={c.id} value={c.id} disabled={!c.available}>
+                  {c.label}
+                  {c.available ? "" : " — unavailable"}
+                </option>
+              ))}
+              {!caps.length && <option value="">no engines reported</option>}
+            </select>
+          </label>
+
+          {cap?.note && (
+            <p className="text-[11px] text-amber-300/80 border border-amber-900/50 bg-amber-950/20 rounded-lg px-3 py-2">
+              {cap.note}
+            </p>
+          )}
+
+          {Array.isArray(opts.demo) && (
+            <label className="text-xs text-slate-400">
+              Composition
+              <select
+                value={demo}
+                onChange={(e) => setDemo(e.target.value)}
+                className="mt-1 w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+              >
+                {(opts.demo as string[]).map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+
+          {opts.script !== undefined && (
+            <label className="text-xs text-slate-400">
+              Script
+              <textarea
+                value={script}
+                onChange={(e) => setScript(e.target.value)}
+                rows={4}
+                placeholder="What should the voiceover say?"
+                className="mt-1 w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500"
+              />
+            </label>
+          )}
+
+          <button
+            onClick={() => void submit()}
+            disabled={busy || !capId || cap?.available === false}
+            className="justify-self-start inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-xs font-semibold px-4 py-2 rounded-lg"
+          >
+            {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
+            Render
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        <h2 className="text-xs font-bold tracking-wide uppercase text-slate-300">Recent renders</h2>
+        {!jobs.length && <p className="text-xs text-slate-500">No jobs yet.</p>}
+        <div className="space-y-3">
+          {jobs.slice(0, 12).map((j) => (
+            <div key={j.id} className="border border-slate-800 rounded-lg p-3 bg-slate-950/60">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="text-xs font-mono text-slate-300">
+                  {j.id} · {j.kind}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
+                      j.status === "done"
+                        ? "bg-emerald-950 text-emerald-400 border-emerald-800"
+                        : j.status === "failed"
+                          ? "bg-red-950 text-red-400 border-red-800"
+                          : "bg-slate-800 text-slate-300 border-slate-700"
+                    }`}
+                  >
+                    {j.status}
+                  </span>
+                  {(j.status === "running" || j.status === "queued") && (
+                    <button onClick={() => void cancel(j.id)} className="text-[11px] text-red-300 hover:text-red-200 underline">
+                      cancel
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {!!j.artifacts?.length && (
+                <div className="mt-3 space-y-2">
+                  {j.artifacts.map((a) => (
+                    <div key={a.url} className="space-y-1">
+                      <div className="text-[11px] text-slate-400">
+                        {a.name} · {fmtSize(a.size)}
+                      </div>
+                      <video src={fixUrl(a.url)} controls className="w-full max-h-72 rounded-lg border border-slate-800 bg-black" />
+                      <a href={fixUrl(a.url)} target="_blank" rel="noreferrer" className="text-[11px] text-cyan-400 underline">
+                        open
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {j.status === "failed" && (j.error || j.log_tail) && (
+                <pre className="mt-2 text-[10px] text-red-300 whitespace-pre-wrap max-h-32 overflow-auto">{j.error || j.log_tail}</pre>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -34,6 +34,11 @@ const nextConfig = {
     return [
       { source: '/behavior-api/:path*', destination: 'http://127.0.0.1:4600/:path*' },
       { source: '/ab-api/:path*', destination: 'http://127.0.0.1:4599/:path*' },
+      // sams-studio (the real working creator studio, port 4700).
+      // Prefix must NOT start with /studio: Traefik's `PathPrefix('/studio')` router
+      // (priority 110) captures /studio-api* and sends it to the studio container,
+      // which 404s. /sapi is not captured and reaches Mission Control.
+      { source: '/sapi/:path*', destination: 'http://127.0.0.1:4700/studio/api/:path*' },
       r('/home/:path*'),
       r('/workflow/:path*'),
       r('/workflows/:path*'),

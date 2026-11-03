@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { HermesGateway, type GatewayEvent } from "@/lib/hermes-gateway";
-import { getSessionMessages } from "@/lib/hermes-rest";
+import { getSessionMessages, listSessions } from "@/lib/hermes-rest";
 
 export interface ToolCall {
   id: string;
@@ -112,6 +112,9 @@ let outbox: string[] = [];
 let pendingClarifyAnswer: string | null = null;
 
 const LAST_SESSION_KEY = "sams_last_session";
+// Ids we have already tried to recover onto, so the fallback below can never
+// loop: a failed recovery must not attempt recovery again for the same id.
+const recoverTried = new Set<string>();
 const PENDING_CLARIFY_KEY = "sams_pending_clarify";
 const PENDING_APPROVALS_KEY = "sams_pending_approvals";
 // Approval decisions that could not be sent because the socket was down.
@@ -450,10 +453,35 @@ export const useHermesChatStore = create<HermesChatState>((set, get) => {
       } catch (err) {
         if (connectEpoch !== myEpoch) return;
         if (resumeStoredSessionId && !forceNew) {
-          // The stored id was stale or not a valid DB key (e.g. an old ephemeral
-          // live id), or the socket died mid-resume. Do NOT hang on
-          // "connecting…" forever, and do NOT silently fork the user's thread:
-          // note it, then open a fresh session so they are never stuck.
+          // FORK FIX (2026-11-03). This used to delete the stored key and open a
+          // brand-new EMPTY session. That silent fork is why every tab felt like a
+          // different agent with no history: a failed resume stranded the operator in
+          // a fresh thread and orphaned the conversation. Now recover onto the user's
+          // MOST RECENT real session; only if that also fails do we start fresh.
+          if (!recoverTried.has(resumeStoredSessionId)) {
+            recoverTried.add(resumeStoredSessionId);
+            try {
+              const { sessions } = await listSessions(10, 0);
+              const pick = (sessions ?? []).filter(
+                (s) => s?.id && s.id !== resumeStoredSessionId,
+              )[0];
+              if (pick?.id) {
+                try {
+                  localStorage.setItem(LAST_SESSION_KEY, pick.id);
+                } catch {
+                  /* ignore */
+                }
+                set({ storedSessionId: pick.id });
+                void get().connect(pick.id, {});
+                set({
+                  error: `Couldn't restore that exact thread \u2014 resumed your most recent session (${pick.id}).`,
+                });
+                return;
+              }
+            } catch {
+              /* fall through to a fresh chat */
+            }
+          }
           try {
             localStorage.removeItem(LAST_SESSION_KEY);
           } catch {
@@ -462,7 +490,7 @@ export const useHermesChatStore = create<HermesChatState>((set, get) => {
           set({ storedSessionId: null });
           void get().connect(undefined, { forceNew: true });
           set({
-            error: "Couldn't restore the previous chat — started a new one. Your old thread is under Sessions.",
+            error: "Couldn't restore the previous chat \u2014 started a new one. Your old thread is under Sessions.",
           });
           return;
         }
