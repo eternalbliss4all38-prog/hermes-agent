@@ -20,7 +20,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     category: "WORKSPACE",
     items: [
-      { href: "/mission-control", label: "Mission Control", icon: Terminal },
+      { href: "/mission-control", label: "S.A.M.S.", icon: Terminal },
       { href: "/agents", label: "Agent OS", icon: Bot },
       { href: "/agents/build", label: "Agent Builder", icon: Wrench },
       { href: "/ab-analytics", label: "A/B Variance", icon: Beaker },

@@ -63,8 +63,8 @@ export default function AbAnalyticsPage() {
     setLoading(true);
     try {
       const [t, c] = await Promise.all([
-        fetch("/api/ab/tests", { cache: "no-store" }).then((r) => r.json()),
-        fetch("/api/ab/tests?view=claims", { cache: "no-store" }).then((r) => r.json()),
+        fetch("/ab-api/tests", { cache: "no-store" }).then((r) => r.json()),
+        fetch("/ab-api/tests?view=claims", { cache: "no-store" }).then((r) => r.json()),
       ]);
       if (t?.error) throw new Error(t.error);
       setTests((t?.tests as Test[]) ?? []);
@@ -83,7 +83,7 @@ export default function AbAnalyticsPage() {
     if (!name.trim()) return;
     setBusy("new");
     try {
-      await fetch("/api/ab/tests", {
+      await fetch("/ab-api/tests", {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({
           name: name.trim(), source: "mission-control",

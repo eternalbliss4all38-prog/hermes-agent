@@ -5,6 +5,8 @@ import clsx from "clsx";
 import { ChevronRight, Clock, Wrench } from "lucide-react";
 import { useHermesChatStore, type ChatMessage, type ToolCall } from "@/store/useHermesChatStore";
 import { ClarifyPrompt } from "@/components/agent-chat/ClarifyPrompt";
+import { ApprovalPrompt } from "@/components/agent-chat/ApprovalPrompt";
+import { VaultPrompt } from "@/components/agent-chat/VaultPrompt";
 
 function ToolCallCard({ tool }: { tool: ToolCall }) {
   return (
@@ -147,6 +149,8 @@ export function ChatMessageList() {
       {messages.map((message) => (
         <MessageCard key={message.id} message={message} />
       ))}
+      <ApprovalPrompt />
+      <VaultPrompt />
       <ClarifyPrompt />
     </div>
   );

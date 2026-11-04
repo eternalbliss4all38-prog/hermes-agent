@@ -2,10 +2,15 @@
 // protocol its Electron Desktop app uses -- session.create, prompt.submit,
 // and image.attach_bytes over one newline-delimited JSON-RPC 2.0 socket,
 // with server-pushed {method:"event"} frames carrying streamed response
-// tokens. Deliberately bypasses /hermes/api/pty: that's raw terminal bytes
-// for the embedded xterm.js dashboard, not something a custom UI should
-// depend on (see tui_gateway/methods_prompt.py + apps/desktop/src/store/gateway.ts
-// for the reference implementation this mirrors).
+// tokens.
+//
+// FORK ADDITION (2026-11-03): server->client REQUESTS. The gateway can ask the
+// viewer a question mid-turn -- vault.unlock_prompt / vault.save_login /
+// vault.code (see tui_gateway/contracts/server_requests.py). Those arrive as
+// JSON-RPC requests {method, params, id} with a SERVER id, which the original
+// client silently dropped (it only understood "event" frames and its own
+// replies). Dropping them is why vault prompts never reached this dashboard.
+// onRequest()/respond() implement the client half of that contract.
 
 export interface GatewayEvent {
   type: string;
@@ -14,12 +19,20 @@ export interface GatewayEvent {
   timestamp?: number;
 }
 
+/** A server->client request: the gateway is invoking a method on THIS client. */
+export interface GatewayRequest {
+  id: number;
+  method: string;
+  params: Record<string, unknown>;
+}
+
 interface RpcPending {
   resolve: (value: unknown) => void;
   reject: (reason: Error) => void;
 }
 
 type EventListener = (event: GatewayEvent) => void;
+type RequestListener = (request: GatewayRequest) => void;
 
 export class HermesGatewayError extends Error {}
 
@@ -28,12 +41,10 @@ export class HermesGateway {
   private nextId = 1;
   private pending = new Map<number, RpcPending>();
   private listeners = new Set<EventListener>();
+  private requestListeners = new Set<RequestListener>();
   private closeListeners = new Set<() => void>();
   private intentionalClose = false;
   private closedNotified = false;
-  // Liveness probes: a probe resolves as soon as ANY frame with its id comes
-  // back (result OR JSON-RPC error), because "the server answered something"
-  // is precisely what tells us the socket is still alive.
   private probes = new Map<number, () => void>();
 
   connect(token: string): Promise<void> {
@@ -62,20 +73,10 @@ export class HermesGateway {
     });
   }
 
-  /** True while the underlying socket is open and ready for RPC. */
   isOpen(): boolean {
     return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
   }
 
-  /**
-   * Liveness probe. Sends a JSON-RPC frame with an intentionally unknown
-   * method: the server replies `-32601 unknown method`, which is a real frame
-   * coming back over the wire — exactly what we need to distinguish "quiet but
-   * healthy" from "silently dead" (a suspended iOS socket, a dropped NAT
-   * entry, a half-open TCP link). Resolves true if any reply arrived before
-   * the timeout, false otherwise. Costs the server nothing (no session lookup,
-   * no DB read).
-   */
   probe(timeoutMs = 8000): Promise<boolean> {
     const ws = this.ws;
     if (!ws || ws.readyState !== WebSocket.OPEN) return Promise.resolve(false);
@@ -99,11 +100,6 @@ export class HermesGateway {
     });
   }
 
-  /**
-   * Hard-drop a socket that stopped answering (probe timed out) but never
-   * emitted `close` — a half-open link looks "OPEN" to readyState forever.
-   * Fires the close listeners so the owner runs its reconnect path.
-   */
   kill(): void {
     const ws = this.ws;
     this.ws = null;
@@ -125,14 +121,10 @@ export class HermesGateway {
     this.closeListeners.forEach((l) => l());
   }
 
-  // The server's "newline-delimited JSON-RPC" wire format description
-  // applies to its stdio transport; over WebSocket each send_text() call
-  // (tui_gateway/ws.py) is already one complete, framed message with no
-  // trailing newline, so each onmessage event is exactly one JSON object.
   private handleMessage(line: string) {
     let msg: {
       method?: string;
-      params?: GatewayEvent;
+      params?: GatewayEvent & Record<string, unknown>;
       id?: number;
       result?: unknown;
       error?: { code: number; message: string };
@@ -147,6 +139,22 @@ export class HermesGateway {
       this.listeners.forEach((l) => l(msg.params as GatewayEvent));
       return;
     }
+
+    if (typeof msg.method === "string" && typeof msg.id === "number") {
+      // A server->client request. Only treat it as one when the id is not one
+      // of OUR in-flight calls/probes (those are matched below) -- the two id
+      // spaces are separate, but this guards a collision.
+      if (!this.pending.has(msg.id) && !this.probes.has(msg.id)) {
+        const req: GatewayRequest = {
+          id: msg.id,
+          method: msg.method,
+          params: (msg.params as Record<string, unknown>) ?? {},
+        };
+        this.requestListeners.forEach((l) => l(req));
+        return;
+      }
+    }
+
     if (typeof msg.id === "number") {
       const probe = this.probes.get(msg.id);
       if (probe) {
@@ -162,13 +170,31 @@ export class HermesGateway {
     }
   }
 
-  /** Subscribe to server-pushed events (streamed message/tool/status frames). */
   onEvent(listener: EventListener): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
 
-  /** Fires when the socket drops out from under us -- not on deliberate close(). */
+  /** Subscribe to server->client requests (vault/secret prompts, bridges). */
+  onRequest(listener: RequestListener): () => void {
+    this.requestListeners.add(listener);
+    return () => this.requestListeners.delete(listener);
+  }
+
+  /**
+   * Answer a server->client request by id. `result` is the JSON-RPC result the
+   * contract expects (e.g. {value: "..."} for ValueResult). Pass `undefined`
+   * value to decline a vault prompt (empty value == cancelled).
+   */
+  respond(id: number, result: unknown): void {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    try {
+      this.ws.send(JSON.stringify({ jsonrpc: "2.0", id, result }) + "\n");
+    } catch {
+      /* ignore */
+    }
+  }
+
   onClose(listener: () => void): () => void {
     this.closeListeners.add(listener);
     return () => this.closeListeners.delete(listener);
@@ -193,6 +219,7 @@ export class HermesGateway {
     this.pending.clear();
     this.probes.clear();
     this.listeners.clear();
+    this.requestListeners.clear();
     this.closeListeners.clear();
   }
 }

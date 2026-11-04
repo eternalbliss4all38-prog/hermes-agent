@@ -94,7 +94,7 @@ function MissionControlInner() {
       {/* Compact header on mobile — the chat needs the room. */}
       <header className="flex shrink-0 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-base font-semibold text-foreground sm:text-lg">Mission Control</h1>
+          <h1 className="text-base font-semibold text-foreground sm:text-lg">S.A.M.S.</h1>
           <p className="hidden text-[11px] text-muted sm:block">
             Status of every agent, every memory, every signal.
           </p>
@@ -249,7 +249,7 @@ function MissionControlInner() {
             </div>
           </div>
           <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
-            <OutputSandbox initialTab={panel === "logs" ? "activity" : "artifacts"} />
+            <OutputSandbox initialTab={panel === "logs" ? "activity" : "work"} />
           </div>
         </section>
 
@@ -296,7 +296,7 @@ export default function MissionControlPage() {
     <Suspense
       fallback={
         <div className="flex h-full items-center justify-center text-muted">
-          Loading Mission Control...
+          Loading S.A.M.S....
         </div>
       }
     >

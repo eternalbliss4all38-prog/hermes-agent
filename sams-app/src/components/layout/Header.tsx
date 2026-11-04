@@ -18,7 +18,7 @@ export function Header() {
         <div className="status-glow-emerald flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-accent-emerald via-accent-cyan to-accent-violet text-xs font-bold text-slate-950">
           OS
         </div>
-        <span className="truncate font-semibold tracking-tight text-slate-100">S.A.M.S. Agent OS</span>
+        <span className="truncate font-semibold tracking-tight text-slate-100">S.A.M.S.</span>
       </div>
 
       <ModelSelector />

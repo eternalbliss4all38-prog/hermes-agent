@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { HermesGateway, type GatewayEvent } from "@/lib/hermes-gateway";
 import { getSessionMessages, listSessions } from "@/lib/hermes-rest";
+import { useServerRequestStore } from "@/store/useServerRequestStore";
 
 export interface ToolCall {
   id: string;
@@ -380,6 +381,9 @@ export const useHermesChatStore = create<HermesChatState>((set, get) => {
           if (connectEpoch === myEpoch) handleGatewayEvent(set, get, event);
         });
         gateway = gw;
+        gw.onRequest((req) => {
+          useServerRequestStore.getState().receive(req, (result) => gw.respond(req.id, result));
+        });
 
         let history: ChatMessage[] = [];
         let result: { session_id: string; stored_session_id?: string };

@@ -43,7 +43,7 @@ function LoginForm() {
           OS
         </div>
         <h1 className="mb-1 text-center text-lg font-semibold tracking-tight">S.A.M.S. OS</h1>
-        <p className="mb-6 text-center text-xs text-muted">Agent OS Mission Control</p>
+        <p className="mb-6 text-center text-xs text-muted">S.A.M.S. — Strategic Agentic Managed System</p>
 
         <label className="mb-1.5 block text-[11px] uppercase tracking-wide text-muted">Password</label>
         <div className="mb-4 flex items-center gap-2 rounded-md border border-panel-border bg-panel-hover px-3 py-2">

@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "S.A.M.S. OS — Mission Control",
-  description: "Agent OS master control panel",
+  title: "S.A.M.S. — Strategic Agentic Managed System",
+  description: "S.A.M.S. — Strategic Agentic Managed System control panel",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.png",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "S.A.M.S. OS",
+    title: "S.A.M.S.",
   },
 };
 
